@@ -12,5 +12,6 @@ _Not available_
 
 ## Summary
 
-_To be added_
+**状态：** ⏭️ 跳过（OCR乱码/扫描版）
+
 
