@@ -28,6 +28,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Data-based, reduced-order, dynamic estimator for reconstruction of nonlinear flows exhibiting limit-cycle oscillations](./ai-for-physics/data-based-reduced-order-dynamic-estimator-for-reconstruction-of-nonlinear-flows.md)
 - 📄 [Data-driven low-dimensional dynamic model of Kolmogorov flow](./ai-for-physics/data-driven-low-dimensional-dynamic-model-of-kolmogorov-flow.md)
 - 📄 [Deep-Learning Density Functional Perturbation Theory](./ai-for-physics/deep-learning-density-functional-perturbation-theory.md)
+- 📄 [Deep learning in fluid dynamics](./ai-for-physics/deep-learning-in-fluid-dynamics.md)
 - 📄 [Deep learning of turbulent scalar mixing](./ai-for-physics/deep-learning-of-turbulent-scalar-mixing.md)
 - 📄 [DeePoly: A High-Order Accuracy and Efficiency](./ai-for-physics/deepoly-a-high-order-accuracy-and-efficiency.md)
 - 📄 [Desynchronization Transitions in Adaptive Networks](./ai-for-physics/desynchronization-transitions-in-adaptive-networks.md)
@@ -44,6 +45,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [From Bypass Transition to Flow Control and Data-Driven Turbulence Modeling: An Input–Output Viewpoint](./ai-for-physics/from-bypass-transition-to-flow-control-and-data-driven-turbulence-modeling-an-in.md)
 - 📄 [From limited observations to the state of turbulence: Fundamental difficulties of flow reconstruction](./ai-for-physics/from-limited-observations-to-the-state-of-turbulence-fundamental-difficulties-of.md)
 - 📄 [Fundamental Dynamics of Popularity-Similarity Trajectories in Real Networks](./ai-for-physics/fundamental-dynamics-of-popularity-similarity-trajectories-in-real-networks.md)
+- 📄 [Hamiltonian Neural Networks](./ai-for-physics/hamiltonian-neural-networks.md)
 - 📄 [IGA-Graph-Net: 基于图神经网络的等几何分析重用方法用于拓扑一致模型](./ai-for-physics/iga-graph-net-基于图神经网络的等几何分析重用方法用于拓扑一致模型.md)
 - 📄 [J. Fluid Mech. (2019), vol. 870, pp.106–120](./ai-for-physics/j-fluid-mech-2019-vol-870-pp106120.md)
 - 📄 [J. Fluid Mech. (2020), vol.905, A10. © The Author(s), 2020.](./ai-for-physics/j-fluid-mech-2020-vol905-a10-the-authors-2020.md)
@@ -104,8 +106,6 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Turbulence Modeling in the Age of Data](./ai-for-physics/turbulence-modeling-in-the-age-of-data.md)
 - 📄 [Uncertainty quantification for DeepONets with ensemble Kalman inversion](./ai-for-physics/uncertainty-quantification-for-deeponets-with-ensemble-kalman-inversion.md)
 - 📄 [Using large language models for parametric shape optimization](./ai-for-physics/using-large-language-models-for-parametric-shape-optimization.md)
-- 📄 [原文标题](./ai-for-physics/原文标题.md)
-- 📄 [（原文标题缺失，请提供）](./ai-for-physics/原文标题缺失请提供.md)
 
 > ⏭️ 1 篇已跳过
 
@@ -215,6 +215,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 
 ## Geometric Fluid
 
+- 📄 [A generalization of the Hamiltonian form for continuous systems](./geometric-fluid/a-generalization-of-the-hamiltonian-form-for-continuous-systems.md)
 - 📄 [A note on Hamilton's principle for perfect fluids](./geometric-fluid/a-note-on-hamiltons-principle-for-perfect-fluids.md)
 - 📄 [Abstract. Starting from the vortex filament](./geometric-fluid/abstract-starting-from-the-vortex-filament.md)
 - 📄 [Active nematic fluids on Riemannian 2-manifolds](./geometric-fluid/active-nematic-fluids-on-riemannian-2-manifolds.md)
@@ -229,11 +230,13 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Contact Hamiltonian mechanics](./geometric-fluid/contact-hamiltonian-mechanics.md)
 - 📄 [Covector Fluids](./geometric-fluid/covector-fluids.md)
 - 📄 [Discrete Hamilton’s equations for arbitrary](./geometric-fluid/discrete-hamiltons-equations-for-arbitrary.md)
+- 📄 [Effects of twist on the evolution of knotted magnetic flux tubes](./geometric-fluid/effects-of-twist-on-the-evolution-of-knotted-magnetic-flux-tubes.md)
 - 📄 [EMP_11_1_05_IFS.dvi](./geometric-fluid/emp_11_1_05_ifsdvi.md)
 - 📄 [Fluid Cohomology](./geometric-fluid/fluid-cohomology.md)
 - 📄 [Generalization of Hamilton's principle to continuous](./geometric-fluid/generalization-of-hamiltons-principle-to-continuous.md)
 - 📖 [Geometric hydrodynamics via Madelung transform](./geometric-fluid/geometric-hydrodynamics-via-madelung-transform.md)
 - 📄 [Hamilton principle for the vortex flow of an ideal fluid in special relativity](./geometric-fluid/hamilton-principle-for-the-vortex-flow-of-an-ideal-fluid-in-special-relativity.md)
+- 📄 [Hamiltonian description of axisymmetric vortex flows and the system of vortex rings](./geometric-fluid/hamiltonian-description-of-axisymmetric-vortex-flows-and-the-system-of-vortex-ri.md)
 - 📖 [Hamiltonian description of the ideal ﬂuid *](./geometric-fluid/hamiltonian-description-of-the-ideal-ﬂuid.md)
 - 📄 [Hamiltonian formulation towards minimization of viscous fluid fingering](./geometric-fluid/hamiltonian-formulation-towards-minimization-of-viscous-fluid-fingering.md)
 - 📄 [Hamiltonian structure, symmetries and conservation laws for water waves](./geometric-fluid/hamiltonian-structure-symmetries-and-conservation-laws-for-water-waves.md)
@@ -256,9 +259,6 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Volume 96A, number 2 PHYSICS LETTERS 13 June 1983](./geometric-fluid/volume-96a-number-2-physics-letters-13-june-1983.md)
 - 📄 [Über die Abbildungen der dreidimensionalen Sphäre auf die Kugelfläche](./geometric-fluid/über-die-abbildungen-der-dreidimensionalen-sphäre-auf-die-kugelfläche.md)
 - 📄 [Über die Integration der hydrodynamischen Gleichungen](./geometric-fluid/über-die-integration-der-hydrodynamischen-gleichungen.md)
-- 📄 [原文标题：CitationLETTER| SEPTEMBER 01 1985](./geometric-fluid/原文标题citationletter-september-01-1985.md)
-- 📄 [原文标题：Department of Mechanical Engineering, U.M.I.S.T., Manchester M60 1QD](./geometric-fluid/原文标题department-of-mechanical-engineering-umist-manchester-m60-1qd.md)
-- 📄 [原文标题：See discussions, stats, and author profiles for this publication at : https://www.researchgate.net/publication/341580854](./geometric-fluid/原文标题see-discussions-stats-and-author-profiles-for-this-publication-at-httpswwwre.md)
 
 > ⏭️ 11 篇已跳过
 
@@ -303,6 +303,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [An Introduction to Algorithms in Quantum Computation](./quantum-computing/an-introduction-to-algorithms-in-quantum-computation.md)
 - 📄 [arXiv:quant-ph/0004015v1 4 Apr 2000](./quantum-computing/arxivquant-ph0004015v1-4-apr-2000.md)
 - 📄 [Association of scattering matrices in quantum networks](./quantum-computing/association-of-scattering-matrices-in-quantum-networks.md)
+- 📄 [Bénard-von Kármán Vortex Street in a Bose-Einstein Condensate](./quantum-computing/bénard-von-kármán-vortex-street-in-a-bose-einstein-condensate.md)
 - 📄 [Coupling Navier-Stokes and Gross-Pitaevskii equations for the numerical simulation of two-fluid quantum flows](./quantum-computing/coupling-navier-stokes-and-gross-pitaevskii-equations-for-the-numerical-simulati.md)
 - 📄 [Efficient and fail-safe quantum algorithm for the transport equation](./quantum-computing/efficient-and-fail-safe-quantum-algorithm-for-the-transport-equation.md)
 - 📄 [Fully quantum algorithm for lattice Boltzmann methods](./quantum-computing/fully-quantum-algorithm-for-lattice-boltzmann-methods.md)
@@ -315,6 +316,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Measurement-Based Variational Quantum Eigensolver](./quantum-computing/measurement-based-variational-quantum-eigensolver.md)
 - 📄 [Numerical approach of the quantum circuit theory](./quantum-computing/numerical-approach-of-the-quantum-circuit-theory.md)
 - 📄 [Plane wave methods for quantum eigenvalue problems of incommensurate systems](./quantum-computing/plane-wave-methods-for-quantum-eigenvalue-problems-of-incommensurate-systems.md)
+- 📄 [Quantum computing for fluid dynamics: A survey](./quantum-computing/quantum-computing-for-fluid-dynamics-a-survey.md)
 - 📄 [Quantum computing of reacting flows via Hamiltonian](./quantum-computing/quantum-computing-of-reacting-flows-via-hamiltonian.md)
 - 📄 [Quantum Machine Learning for High Energy Physics: A Hybrid Quantum-Classical Approach to Jet Classification](./quantum-computing/quantum-machine-learning-for-high-energy-physics-a-hybrid-quantum-classical-appr.md)
 - 📄 [Quantum simulation for partial differential equations with physical boundary or interface conditions](./quantum-computing/quantum-simulation-for-partial-differential-equations-with-physical-boundary-or-.md)
@@ -328,19 +330,17 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Training Variational Quantum Algorithms Is NP-Hard](./quantum-computing/training-variational-quantum-algorithms-is-np-hard.md)
 - 📄 [Under consideration for publication in J. Fluid Mech. 1](./quantum-computing/under-consideration-for-publication-in-j-fluid-mech-1.md)
 - 📄 [Variational Quantum Algorithms的近期进展与挑战综述](./quantum-computing/variational-quantum-algorithms的近期进展与挑战综述.md)
-- 📄 [原文标题](./quantum-computing/原文标题.md)
-- 📄 [原文标题：untitled](./quantum-computing/原文标题untitled.md)
 
 ## Quantum Mechanics
 
 - 📄 [Discovering Quantum Phase Transitions with Fermionic Neural Networks](./quantum-mechanics/discovering-quantum-phase-transitions-with-fermionic-neural-networks.md)
+- 📄 [Evolution of hybrid quantum-classical wavefunctions](./quantum-mechanics/evolution-of-hybrid-quantum-classical-wavefunctions.md)
 - 📄 [Fundamental Limits for Realizing Quantum Processes in Spacetime](./quantum-mechanics/fundamental-limits-for-realizing-quantum-processes-in-spacetime.md)
 - 📄 [Quantum Control of a Single Magnon in a Macroscopic Spin System](./quantum-mechanics/quantum-control-of-a-single-magnon-in-a-macroscopic-spin-system.md)
 - 📄 [Quantum Mechanics of Gravitational Waves](./quantum-mechanics/quantum-mechanics-of-gravitational-waves.md)
 - 📄 [Solving Conformal Field Theories with Artificial Intelligence](./quantum-mechanics/solving-conformal-field-theories-with-artificial-intelligence.md)
 - 📄 [Thirty-six Entangled Officers of Euler: Quantum Solution to a Classically Impossible Problem](./quantum-mechanics/thirty-six-entangled-officers-of-euler-quantum-solution-to-a-classically-impossi.md)
 - 📄 [Variational Neural-Network Ansatz for Continuum Quantum Field Theory](./quantum-mechanics/variational-neural-network-ansatz-for-continuum-quantum-field-theory.md)
-- 📄 [原文标题：Contents lists available at ScienceDirect](./quantum-mechanics/原文标题contents-lists-available-at-sciencedirect.md)
 
 ## Vortex Dynamics
 
