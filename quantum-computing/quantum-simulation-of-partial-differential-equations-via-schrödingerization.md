@@ -29,7 +29,7 @@ _Not available_
 
 ## Review Questions
 
-### 🤔 Questions
-1. **Q:** What is the essential idea of "Schrödingerization" — how does it map a general linear PDE into a Schrödinger-type equation suitable for quantum simulation, and what is the role of the auxiliary "warped phase" variable?
-2. **Q:** What classes of PDEs are amenable to Schrödingerization, and what are the key limitations regarding nonlinearity, non-Hermitian operators, and general boundary conditions?
-3. **Q:** How does the warped phase transformation ensure the resulting evolution is unitary, and why is unitarity critical for achieving quantum advantage in PDE solving?
+### 🤔 问题
+1. **Q:** “Schrödingerization”的核心思想是什么？它如何将一般线性 PDE 映射为适合量子模拟的 Schrödinger 型方程，而辅助的“warped phase”变量起什么作用？
+2. **Q:** 哪些类别的 PDE 适合 Schrödingerization？在非线性、非 Hermitian 算子以及一般边界条件方面，它的关键限制是什么？
+3. **Q:** warped phase 变换如何保证所得演化是幺正的，而幺正性为什么对利用量子优势求解 PDE 至关重要？

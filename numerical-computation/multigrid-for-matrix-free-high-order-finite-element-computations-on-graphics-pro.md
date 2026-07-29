@@ -1,35 +1,34 @@
-# Multigrid for Matrix-Free High-Order Finite Element Computations on Graphics Processors
+# 面向图形处理器的矩阵无关高阶有限元多重网格计算
 
-**Journal:** ACM Transactions on Parallel Computing, 2019
+**期刊：** ACM Transactions on Parallel Computing，2019
 
-**DOI:** [10.1145/3322813](https://doi.org/10.1145/3322813)
+**DOI：** [10.1145/3322813](https://doi.org/10.1145/3322813)
 
-**Source PDF:** `matrix free 3.pdf`
+**来源 PDF：** `matrix free 3.pdf`
 
 ---
 
-## Abstract
+## 摘要
 
-_Not available_
+_无可用摘要_
 
-## Summary
+## 总结
 
-**核心问题：** 矩阵无关高阶有限元的GPU多重网格加速——如何结合高阶方法和多重网格的最优复杂度？
+**核心问题：** 如何在图形处理器上为矩阵无关高阶有限元构建高效的多重网格加速方案，并兼顾高阶方法的计算效率与多重网格的收敛性。
 
-**方法：** 提出GPU加速的矩阵无关多重网格方法用于高阶有限元：利用sum-factorization技术高效计算单元矩阵-向量乘，多级网格通过p-多重网格和h-多重网格组合实现。
+**方法：** 论文提出了一种面向 GPU 的矩阵无关多重网格方法用于高阶有限元计算：通过 sum-factorization 技术高效完成单元级矩阵-向量乘，并结合 p-多重网格与 h-多重网格实现多层求解。
 
 **关键结果：**
-- sum-factorization使高阶单元的矩阵-向量乘复杂度从O(p^6)降至O(p^4)
-- GPU加速的多重网格在三维高阶有限元中实现了近线性复杂度
-- p-多重网格 + h-多重网格的组合策略平衡了收敛性和并行效率
+- sum-factorization 将高阶单元的矩阵-向量乘复杂度从 O(p^6) 降至 O(p^4)
+- GPU 加速的多重网格在三维高阶有限元中实现了近线性复杂度
+- p-多重网格与 h-多重网格的组合策略平衡了收敛性与并行效率
 
-**与你工作的相关性：** 矩阵无关多重网格方法可参考用于HPC框架中高阶离散的最优复杂度求解。
+**与你工作的相关性：** 这种矩阵无关多重网格方法可为 HPC 框架中的高阶离散最优复杂度求解提供参考。
 
 **状态：** ✅ 完整摘要
 
 ## Review Questions
 
-### 🤔 Questions
-1. **Q:** How does sum-factorization reduce the complexity of high-order FEM operator evaluation from O(p^{2d}) to O(d p^{d+1}) and what are the implications for memory bandwidth and arithmetic intensity on GPUs?
-2. **Q:** Why is the combination of p-multigrid and h-multigrid necessary for robust convergence in high-order FEM, and how do the spectral radius properties differ between p-coarsening (reducing polynomial degree) and h-coarsening (coarsening the mesh)?
-3. **Q:** What are the key challenges in implementing matrix-free smoothers (e.g., Chebyshev-accelerated Jacobi) on GPUs for high polynomial degrees, and how does the element-local nature of sum-factorization interact with the need for global communication in multigrid cycles?
+1. **Q:** sum-factorization 如何将高阶 FEM 算子求值的复杂度从 O(p^{2d}) 降到 O(d p^{d+1})，这种变化对 GPU 上的内存带宽和算术强度意味着什么？
+2. **Q:** 为什么在高阶 FEM 中需要将 p-multigrid 与 h-multigrid 结合以获得稳健收敛，而 p-coarsening（降低多项式阶数）与 h-coarsening（粗化网格）在谱半径性质上有何差异？
+3. **Q:** 在高多项式阶数下实现无矩阵平滑器（例如 Chebyshev-accelerated Jacobi）时，关键挑战是什么，sum-factorization 的单元局部特性又如何与 multigrid cycles 中的全局通信需求相互作用？

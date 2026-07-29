@@ -1,35 +1,33 @@
-# Force-Free Fields are Conformally Geodesic
+# 无力场是共形测地的
 
-**Authors:** A. Chern and O. Gross
+**作者：** A. Chern 和 O. Gross
 
-**Source PDF:** `2312.05252v2.pdf`
+**来源 PDF：** `2312.05252v2.pdf`
 
 ---
 
-## Abstract
+## 摘要
 
-_Not available_
+_无可用内容_
 
-## Summary
-
+## 总结
 
 **核心问题：** 无力场的几何特征问题
 
 **方法：** 共形测地线理论
 
-**关键结果：** 
+**关键结果：**
 1. 证明了无力场等价于共形测地叶状结构
-2. 将MHD理论与微分几何联系起来
+2. 将 MHD 理论与微分几何联系起来
 3. 为太阳日冕磁场建模提供了新视角
 
-**与你工作的相关性：** 无力场理论直接关联磁流体力学（MHD），HPC-MHD模拟可从中获益
+**与你工作的相关性：** 无力场理论直接关联磁流体力学（MHD），HPC-MHD 模拟可从中获益
 
 **状态：** ✅ 完整摘要
 
-
 ## Review Questions
 
-### 🤔 Questions
-1. **Q:** What does it mean for a force-free magnetic field to be "conformally geodesic," and how does this geometric characterization reveal hidden structure in MHD equilibria?
-2. **Q:** How does the conformal geodesic foliation of a Riemannian 3-manifold provide a natural framework for constructing and classifying Beltrami fields, and what insight does this offer for solar coronal magnetic field modeling?
-3. **Q:** What is the mathematical connection between force-free fields and the geodesic spray of a conformally rescaled metric, and how does this unify the geometry of Euler flows, Beltrami fields, and contact structures?
+### 问题
+1. 无力磁场为何可以被理解为“共形测地”的结构？这一几何表述揭示了 MHD 平衡态中的哪些隐藏性质？
+2. 在一个 Riemannian 3-流形上，共形测地叶状结构如何为构造和分类 Beltrami 场提供自然框架？这对太阳日冕磁场建模有什么启发？
+3. 无力场与经共形缩放后的度量所对应的测地喷流之间存在怎样的数学联系？这种联系如何统一 Euler 流、Beltrami 场与接触结构的几何？

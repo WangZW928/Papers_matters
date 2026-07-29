@@ -225,7 +225,7 @@ G=\int_D(M\cdot\xi+\rho\eta+\sigma\kappa)\,d^3r ,
 
 ## Review Questions
 
-### 🤔 Questions
-1. **Q:** How does the degeneracy of the Lie-Poisson bracket give rise to Casimir invariants, and why does this degeneracy reflect the non-canonical nature of the Eulerian description?
-2. **Q:** What is the relationship between dynamically accessible perturbations and the energy-Casimir stability method? Why must physically admissible perturbations lie on the same symplectic leaf as the equilibrium state?
-3. **Q:** In the Clebsch representation, what gauge freedom exists, and how does this redundancy relate to the helicity invariant in three-dimensional ideal fluids?
+### 深度问题
+1. Lie-Poisson 括号的退化性如何产生 Casimir 不变量？这种退化又为何体现了 Euler 描述的非正则性质？
+2. 动态可达扰动与能量-Casimir 稳定性方法之间有什么关系？为什么物理上允许的扰动必须与平衡态位于同一辛叶片？
+3. 在 Clebsch 表示中存在哪些规范自由度？这种冗余如何与三维理想流体的 helicity 不变量联系起来？

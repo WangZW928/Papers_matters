@@ -1,36 +1,35 @@
-# Extended Lagrangian approach for the numerical study of multidimensional dispersive waves: Applications to the Serre-Green-Naghdi equations
+# 扩展拉格朗日方法用于多维色散波数值研究：以 Serre-Green-Naghdi 方程为例
 
-**Authors:** Sergey Tkachenko
+**作者：** Sergey Tkachenko
 
-**DOI:** [10.1016/j.jcp.2022.111901](https://doi.org/10.1016/j.jcp.2022.111901)
+**DOI：** [10.1016/j.jcp.2022.111901](https://doi.org/10.1016/j.jcp.2022.111901)
 
-**Source PDF:** `1-s2.0-S0021999122009640-main.pdf`
+**源 PDF：** `1-s2.0-S0021999122009640-main.pdf`
 
 ---
 
-## Abstract
+## 摘要
 
-_Not available_
+_暂无_
 
-## Summary
+## 总结
 
-**核心问题：** 如何处理多维非线性色散浅水波方程的数值求解——既要保双曲性（允许间断初值），又要准确捕获色散效应。
+**核心问题：** 如何处理多维非线性色散浅水波方程的数值求解，既要保持双曲性（允许间断初值），又要准确捕获色散效应。
 
-**方法：** 采用 Favrie & Gavrilyuk (2017) 的扩展 Lagrangian 方法：将原始的 Euler-Lagrange 方程通过增加松弛变量转化为无条件双曲的近似系统。针对 SGN 方程实现了二阶 IMEX ARS(2,2,2) 格式，隐式处理色散项，显式处理双曲部分。
+**方法：** 采用 Favrie & Gavrilyuk (2017) 的扩展拉格朗日方法：通过引入松弛变量，将原始的 Euler-Lagrange 方程转化为无条件双曲的近似系统。针对 SGN 方程实现了二阶 IMEX ARS(2,2,2) 格式，其中色散项采用隐式处理，双曲部分采用显式处理。
 
 **关键结果：**
-- 推导出了 Galilean 不变且无条件双曲的近似系统，同时保持色散精度
-- 1D 和 2D dam-break 问题数值解与精确解和其他数值方法高度一致
-- 二阶 IMEX 仅需 800×800 网格即可达到一阶 splitting 方法 10000×10000 网格的精度（~156× 网格效率提升）
+- 推导出了 Galilean 不变且无条件双曲的近似系统，同时保持了色散精度
+- 1D 和 2D dam-break 问题的数值解与精确解以及其他数值方法高度一致
+- 二阶 IMEX 仅需 800×800 网格即可达到一阶 splitting 方法在 10000×10000 网格下的精度（约 156× 的网格效率提升）
 
-**与你工作的相关性：** 扩展 Lagrangian 方法将非双曲色散系统转化为双曲系统的思路，对你在 HPC 框架中处理 multiphysics 耦合时的数学模型选择有参考价值；IMEX 格式的设计模式可作为你框架中时间积分模块的参考。
+**与工作的相关性：** 扩展拉格朗日方法将非双曲色散系统转化为双曲系统的思路，对在 HPC 框架中处理 multiphysics 耦合时的数学模型选择有参考价值；IMEX 格式的设计模式也可作为框架中时间积分模块的参考。
 
 **状态：** ✅ 完整摘要
 
-
 ## Review Questions
 
-### 🤔 Questions
-1. **Q:** How does the extended Lagrangian method convert a non-hyperbolic dispersive PDE system into an unconditionally hyperbolic one through the introduction of relaxation variables, and what determines the choice of relaxation time scales?
-2. **Q:** Why is the IMEX splitting strategy (implicit dispersive terms, explicit hyperbolic terms) well-suited for the extended Serre-Green-Naghdi system, and how does the CFL condition for the explicit hyperbolic part relate to the gravity wave speed rather than the dispersive stiffness?
-3. **Q:** How does the Galilean invariance of the extended system affect the accuracy of solutions involving moving reference frames or rotating coordinates, and why is this property essential for simulating ship wakes or coastal wave transformation?
+### 🤔 问题
+1. **问：** 扩展拉格朗日方法如何通过引入松弛变量，将非双曲色散 PDE 系统转化为无条件双曲系统？松弛时间尺度的选择由哪些因素决定？
+2. **问：** 为什么 IMEX 分裂策略（色散项隐式处理、双曲项显式处理）适用于扩展的 Serre-Green-Naghdi 系统？显式双曲部分的 CFL 条件为何主要与重力波速有关，而不是与色散刚性有关？
+3. **问：** 扩展系统的 Galilean 不变性如何影响涉及运动参考系或旋转坐标的解的精度？为什么这一性质对于模拟船舶尾流或近岸波浪变形至关重要？

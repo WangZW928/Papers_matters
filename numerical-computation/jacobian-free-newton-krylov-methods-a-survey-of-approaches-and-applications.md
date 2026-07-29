@@ -1,20 +1,20 @@
-# Jacobian-free Newton-Krylov Methods: A Survey of Approaches and Applications
+# Jacobian-free Newton-Krylov 方法：方法与应用综述
 
-**Authors:** D. A. Knoll, D. E. Keyes
+**作者：** D. A. Knoll、D. E. Keyes
 
-**Journal:** Journal of Computational Physics, 193 (2004) 357–397
+**期刊：** Journal of Computational Physics, 193 (2004) 357–397
 
-**DOI:** [10.1016/j.jcp.2003.08.010](https://doi.org/10.1016/j.jcp.2003.08.010)
+**DOI：** [10.1016/j.jcp.2003.08.010](https://doi.org/10.1016/j.jcp.2003.08.010)
 
-**Source PDF:** `JFK.pdf`
+**源 PDF：** `JFK.pdf`
 
 ---
 
-## Abstract
+## 摘要
 
-_Not available_
+_暂无_
 
-## Summary
+## 总结
 
 **核心问题：** Jacobian-free Newton-Krylov（JFNK）方法的全面综述——方法、应用和前沿
 
@@ -259,7 +259,7 @@ JFNK 对高性能 CFD 框架的架构启示很直接：最核心的 API 是 `res
 
 ## Review Questions
 
-### 🤔 Questions
-1. **Q:** Why does the inexact Newton forcing term need to be chosen dynamically rather than fixed, and what are the distinct risks of "oversolving" versus "undersolving" the linear system in early Newton iterations?
-2. **Q:** How does the Jacobian-free approximation Jv ~ [F(u+eps*v) - F(u)]/eps preserve the exact nonlinear residual's discretization while using only an approximate Jacobian action, and why is the choice of perturbation eps critical for balancing truncation and round-off errors?
-3. **Q:** In Newton-Krylov-Schwarz, what is the role of restricted additive Schwarz (RASM) in reducing communication costs, and why might it sometimes outperform standard ASM in convergence rate despite computing strictly less information?
+### 复习问题
+1. **问：** 为什么 inexact Newton 的 forcing term 需要动态调整而不是固定不变？在 Newton 早期迭代中，“过度求解”和“求解不足”分别会带来什么不同风险？
+2. **问：** Jacobian-free 近似 $Jv \approx [F(u+\varepsilon v)-F(u)]/\varepsilon$ 为什么能在只使用近似 Jacobian 作用的同时保留原始非线性残差的离散结构？扰动 $\varepsilon$ 的选择为什么对截断误差和舍入误差的平衡至关重要？
+3. **问：** 在 Newton-Krylov-Schwarz 中，restricted additive Schwarz（RASM）如何减少通信开销？为什么它有时会在只计算更少信息的情况下，仍比标准 ASM 取得更好的收敛速度？

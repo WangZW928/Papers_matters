@@ -1,38 +1,30 @@
-# Denoising Diffusion Probabilistic Models
+# 去噪扩散概率模型
 
-**Source PDF:** `2006.11239v2.pdf`
+**来源 PDF：** `2006.11239v2.pdf`
 
 ---
 
-## Abstract
+## 摘要
 
-_Not available_
+_暂无_
 
-## Summary
-
+## 总结
 
 **核心问题：** 高质量生成模型的训练与采样问题
 
 **方法：** 去噪扩散概率模型（DDPM）方法
 
-**关键结果：** 
+**关键结果：**
 1. 提出了扩散模型的完整概率框架
-2. 实现了与GAN可比的高质量图像生成
+2. 实现了与 GAN 可比的高质量图像生成
 3. 展示了扩散过程的渐进生成与插值能力
 
 **与你工作的相关性：** 扩散模型可用于流场重建、超分辨和数据同化
 
 **状态：** ✅ 完整摘要
 
-
 ## Review Questions
 
-### 🤔 Questions
-1. test
-
-## Review Questions
-
-### 🤔 Questions
-1. **Q:** How does the variational lower bound connecting the forward (fixed) diffusion process to the reverse (learned) generative process guarantee a tractable training objective, and why does this bound simplify to a weighted denoising score-matching objective?
-2. **Q:** Why does the reparameterization trick allow the DDPM loss to be expressed as a simple noise-prediction task, and how does this connect DDPMs to score-based generative modeling via the score function?
-3. **Q:** The forward diffusion process is mathematically equivalent to a discretization of the heat equation SDE. How might this physical analogy inspire fluid dynamics applications such as turbulence closure modeling, super-resolution of flow fields, or data assimilation in CFD?
+1. 去噪扩散概率模型中的前向固定扩散过程与反向学习生成过程之间，变分下界如何保证训练目标是可处理的？为什么该下界又可以简化为加权的去噪 score matching 目标？
+2. 为什么重参数化技巧可以把 DDPM 的损失写成一个简单的噪声预测任务？这一点又如何通过 score function 将 DDPM 与基于 score 的生成建模联系起来？
+3. 前向扩散过程在数学上等价于热方程 SDE 的离散化。这种物理类比如何启发流体力学中的应用，例如湍流闭合建模、流场超分辨或 CFD 中的数据同化？

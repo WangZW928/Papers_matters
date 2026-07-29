@@ -258,7 +258,7 @@ E_\epsilon(\psi)=\sum_{ij\in E}w_{ij}\left|P^\epsilon_{ij}(\nabla_{\eta_0}\psi)_
 
 ## Review Questions
 
-### 🤔 Questions
-1. **Q:** Why does the classical R^2 Clebsch map always yield zero helicity, and how does the spherical S^2 Clebsch map circumvent this limitation through the Hopf invariant quantization H = n h^2?
-2. **Q:** What is the geometric meaning of the Berger metric parameter epsilon in the energy functional, and why must it be gradually reduced (continuation) rather than set to zero from the start during optimization?
-3. **Q:** How does the pullback of the Maurer-Cartan form on SU(2) to the fluid domain simultaneously encode both the velocity one-form and the vorticity two-form, and what does this reveal about the relationship between velocity and vorticity in ideal fluids?
+### 深入问题
+1. 为什么经典的 R^2 Clebsch map 总是给出零 helicity，而球面 S^2 Clebsch map 又如何借助 Hopf 不变量的量子化关系 H = n h^2 突破这一限制？
+2. Berger 度量参数 epsilon 在能量泛函中具有怎样的几何含义，为什么优化时必须采用逐步减小（continuation）的方式，而不能一开始就直接设为零？
+3. SU(2) 上 Maurer-Cartan 形式的拉回如何同时编码速度一形式与涡量二形式，这对理想流体中的速度与涡量关系说明了什么？

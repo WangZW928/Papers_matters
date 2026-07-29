@@ -238,9 +238,8 @@ Fisher-Rao 几何还给 mesh adaptation 和误差度量提供线索：$\int \dot
 4. 多分量波函数如何对应含熵、旋涡或自旋自由度的完整压缩 Euler？
 5. 对工程 CFD，势流子空间与全旋转流之间能否通过 Helmholtz/Clebsch 分解做混合求解？
 
-## Review Questions
 
-### 🤔 Questions
-1. **Q:** How does the Madelung transform establish an isomorphism between T*Dens(M) with the Sasaki-Fisher-Rao metric and the projective Hilbert space with the Fubini-Study metric, and why is this an isometry and Kähler map rather than merely a symplectomorphism?
-2. **Q:** What is the physical interpretation of the quantum pressure term in the Madelung-transformed Schrödinger equation, and why does it vanish only for wavefunctions with constant amplitude?
-3. **Q:** How do the Wasserstein-Otto and Fisher-Rao metrics on density space correspond to different physical regimes of fluid motion, and why does the former produce barotropic Euler equations while the latter yields a fully nonlinear wave equation?
+### 问题
+1. Madelung 变换如何把 $T^*\mathrm{Dens}(M)$ 上的 Sasaki-Fisher-Rao 度量与射影 Hilbert 空间上的 Fubini-Study 度量联系成同一个几何对象，并且为什么这里不仅是辛同构，还是等距的 Kähler 映射？
+2. Madelung 变换后的 Schrödinger 方程中，量子压力项的物理含义是什么，它为什么只在波函数振幅为常数时才消失？
+3. 密度空间上的 Wasserstein-Otto 度量与 Fisher-Rao 度量分别对应什么不同的流体物理情形，为什么前者导出 barotropic Euler 方程，而后者导出全非线性波动方程？

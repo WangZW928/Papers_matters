@@ -1,16 +1,16 @@
-# The log-conformation formulation for single- and multi-phase axisymmetric viscoelastic flows
+# 单相与多相轴对称粘弹性流的对数构象格式
 
-**Authors:** William Doherty
+**作者：** William Doherty
 
-**DOI:** [10.1016/j.jcp.2024.113014](https://doi.org/10.1016/j.jcp.2024.113014)
+**DOI：** [10.1016/j.jcp.2024.113014](https://doi.org/10.1016/j.jcp.2024.113014)
 
-**Source PDF:** `The log-conformation formulation for single- and multi-phase.pdf`
+**来源 PDF：** `The log-conformation formulation for single- and multi-phase.pdf`
 
 ---
 
-## Abstract
+## 摘要
 
-_Not available_
+_暂无_
 
 ## Summary
 
@@ -29,7 +29,6 @@ _Not available_
 
 ## Review Questions
 
-### 🤔 Questions
-1. **Q:** Why does the matrix logarithm of the conformation tensor automatically guarantee its positive definiteness throughout time evolution, and how does this mathematical property eliminate the high-Weissenberg number problem (HWNP) without artificial diffusion?
-2. **Q:** How does the decomposition of the velocity gradient tensor into extensional and rotational components simplify the evolution equation for the log-conformation tensor, and what role does the Oldroyd derivative play in this decomposition?
-3. **Q:** In the axisymmetric formulation, what additional metric and curvature terms arise from the cylindrical coordinate system, and how do they interact with the log-conformation decomposition differently than in Cartesian coordinates?
+1. 对数构象张量的矩阵对数为什么能够在时间演化中自动保持正定性，这一性质在数值上如何缓解高Weissenberg数问题（HWNP）？
+2. 速度梯度张量分解为伸长项和旋转项后，log-conformation 张量的演化方程如何被简化，Oldroyd 导数在其中具体扮演什么角色？
+3. 在轴对称形式下，柱坐标系会引入哪些额外的度量项和曲率项，它们与 log-conformation 分解相比笛卡尔坐标时有哪些不同？

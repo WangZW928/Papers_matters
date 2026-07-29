@@ -174,7 +174,7 @@ Navier-Stokes 例子提示，物理约束可以内嵌到变量表示中：不可
 
 ## Review Questions
 
-### 🤔 Questions
-1. **Q:** Why does the PINN loss function unavoidably involve multi-objective optimization, and what strategies can prevent one loss term (e.g., PDE residual) from dominating another (e.g., boundary/initial data fitting)?
-2. **Q:** In the discrete-time PINN formulation with high-stage implicit Runge-Kutta, what is the fundamental trade-off between the number of RK stages and the network's trainability? Why does using hundreds of stages convert a time-stepping problem into a function approximation problem?
-3. **Q:** Given that PINNs use strong-form residuals, why might they systematically fail to capture discontinuous solutions like shocks, and how could weak-form, conservative, or variational PINN formulations address this fundamental limitation?
+### 🤔 问题
+1. **Q:** 为什么 PINN 的损失函数必然会演化成多目标优化问题，应该通过哪些策略避免某一项损失（例如 PDE 残差）压制另一项（例如边界/初值拟合）？
+2. **Q:** 在离散时间 PINN 的高阶段隐式 Runge-Kutta 形式中，RK 阶段数与网络可训练性之间的根本权衡是什么？为什么使用数百个阶段会把一个时间推进问题转化为函数逼近问题？
+3. **Q:** 既然 PINN 依赖强形式残差，为什么它会系统性地难以刻画激波这类不连续解？弱形式、守恒型或变分型 PINN 又能如何缓解这一根本局限？

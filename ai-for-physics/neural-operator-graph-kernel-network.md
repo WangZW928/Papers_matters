@@ -17,6 +17,6 @@
 ## Review Questions
 
 ### 🤔 Questions
-1. **Q:** How does the graph kernel network architecture achieve discretization invariance, and why is this property crucial for learning mesh-independent solution operators of PDEs rather than just mesh-specific mappings?
-2. **Q:** What is the relationship between the iterative message-passing updates in the graph network and the Green's function integral formulation of PDE solutions?
-3. **Q:** Why does the neural operator approach generalize to unseen discretizations and domain geometries, while standard CNN-based methods trained on a fixed grid fail when the resolution or domain changes?
+1. **Q:** 图核网络架构如何实现离散化不变性？为什么这一性质对于学习与网格无关的 PDE 解算子至关重要，而不仅仅是网格特定的映射？
+2. **Q:** 图网络中的迭代消息传递更新与 PDE 解的 Green 函数积分形式之间有什么对应关系？
+3. **Q:** 为什么神经算子方法能够泛化到未见过的离散化方式和区域几何，而在固定网格上训练的标准 CNN 方法在分辨率或区域变化时会失效？
