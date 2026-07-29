@@ -4,16 +4,11 @@
 
 ---
 
-## Abstract
+## 摘要
 
-_Not available_
+这篇 55 页的综述系统地阐述了理想流体在不同变量描述下的 Hamiltonian 结构：从材料坐标的正则 Hamilton 描述，到 Euler 变量的非正则 Lie-Poisson 括号，再到 Clebsch 变量的正则化。Morrison 推导了理想流体 Euler 方程的非正则 Poisson 括号、Casimir 不变量（如二维涡度泛函、三维 helicity），以及能量-Casimir 稳定性理论。核心结论是：流体 Hamilton 结构的选择取决于变量选取，不同的变量给出不同的约束（Casimir）和稳定性判据。
 
-## Summary
-
-
-**状态：** ⏭️ 跳过 — 文本过长 (232855c)
-
-
+**状态：** ✅ 已精读
 ## 精读笔记
 
 ### 数学结构与核心公式

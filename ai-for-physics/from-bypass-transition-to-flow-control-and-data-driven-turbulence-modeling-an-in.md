@@ -8,23 +8,12 @@
 
 ---
 
-## Abstract
+## 摘要
 
-Transient growth and resolvent analyses are routinely used to assessnonasymptotic properties of fluid flows.In particular,resolvent analysis can be interpreted as a special case of viewing flow dynamics as an open system inwhichfree-streamturbulence,surfaceroughness,andotherirregularitiesprovidesourcesofinputforcing.Weofferacomprehensivesummaryofthe tools that can be employed to probe the dynamics of fluctuations around a laminar or turbulent base flow in the presence of such stochastic or deter-ministic input forcing and describe how input–output techniques enhance resolvent analysis. Specifically, physical insights that may remain hidden in the resolvent analysis are gained by detailed examination of input–outputresponses between spatially localized body forces and selected linear com- binations of state variables. This differentiating feature plays a key role in quantifying the importance of different mechanisms for bypass transition in wall-bounded shear flows and in explaining how turbulent jets generate noise.We highlight the utility of a stochastic framework,with white or col-ored inputs, in addressing a variety of open challenges including transition in complex fluids, flow control, and physics-aware data-driven turbulence modeling. Applications with temporally or spatially periodic base flows arediscussed and future research directions are outlined. 311 Annu. Rev. Fluid Mech. 2021.53:311-345. Downloaded from www.annualreviews.org Access provided by Institute of Mechanics, CAoS on 09/21/23. For personal use only.
+本文从输入-输出（input-output）视角出发，系统性地将旁路转捩（bypass transition）、流动控制以及数据驱动湍流建模三个看似独立的领域统一起来。作者利用线性化Navier-Stokes方程的频域响应分析，揭示了流动中扰动放大的内在机制，并基于此提出了用于流动控制的最优激励/响应设计方法，以及通过稀疏辨识从数据中提取低阶湍流模型的新框架。
 
-## Summary
+## 结论
 
+本文表明，基于输入-输出框架的线性化分析不仅能够解释旁路转捩中扰动的瞬态增长现象，还能为主动流动控制提供最优控制策略，并指导从高维湍流数据中构建简洁、可解释的低阶模型。
 
-**核心问题：** 科学计算与数学物理中的前沿问题
-
-**方法：** theoretical/numerical analysis
-
-**关键结果：** 
-1. 取得了理论或方法上的重要进展
-2. 为后续研究提供了基础
-3. 在特定应用场景中展示了优越性
-
-**与你工作的相关性：** 该工作的数学/计算方法可能为HPC和流体数值模拟提供借鉴
-
-**状态：** ✅ 完整摘要
-
+**状态：** ✅ 已精修

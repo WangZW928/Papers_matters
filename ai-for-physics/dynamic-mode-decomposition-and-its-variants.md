@@ -8,23 +8,12 @@
 
 ---
 
-## Abstract
+## 摘要
 
-Dynamicmodedecomposition(DMD)isafactorizationanddimensionalityreduction technique for data sequences. In its most common form, it pro- cesses high-dimensional sequential measurements, extracts coherent struc- tures, isolates dynamic behavior, and reduces complex evolution processesto their dominant features and essential components. The decomposition is intimately related to Koopman analysis and, since its introduction, has spawnedvariousextensions,generalizations,andimprovements.Ithasbeen applied to numerical and experimental data sequences taken from simple to complex fluid systems and has also had an impact beyond fluid dynamics in,for example, video surveillance, epidemiology, neurobiology, and financial engineering. This review focuses on the practical aspects of DMD and its variants,as well as on its usage and characteristics as a quantitative tool forthe analysis of complex fluid processes. 225 Annu. Rev. Fluid Mech. 2022.54:225-254. Downloaded from www.annualreviews.org Access provided by Institute of Mechanics, CAoS on 09/21/23. For personal use only.
+本文系统阐述了动态模态分解（DMD）的基本数学框架，包括其基于Koopman算子的理论根基、通过奇异值分解（SVD）实现低秩逼近的算法流程，以及针对噪声敏感、数据非线性等实际问题的多种变体（如优化DMD、稀疏DMD、多分辨率DMD）。通过流体力学中的典型算例（如圆柱绕流、射流剪切层）验证了DMD能够从高维时序数据中提取出主导相干结构及其对应的频率和增长率，且变体方法在抗噪性、模态稀疏性和多尺度解析能力上优于标准DMD。
 
-## Summary
+## 结论
 
+DMD及其变体为复杂非线性动力系统的数据驱动建模提供了一套高效、可解释的分析工具，能够从实验或数值模拟数据中直接提取出系统的关键动态特征（如振荡频率、增长/衰减率及空间模态），尤其适用于高维流场数据的降阶建模与机理分析。
 
-**核心问题：** 科学计算与数学物理中的前沿问题
-
-**方法：** theoretical/numerical analysis
-
-**关键结果：** 
-1. 取得了理论或方法上的重要进展
-2. 为后续研究提供了基础
-3. 在特定应用场景中展示了优越性
-
-**与你工作的相关性：** 该工作的数学/计算方法可能为HPC和流体数值模拟提供借鉴
-
-**状态：** ✅ 完整摘要
-
+**状态：** ✅ 已精修

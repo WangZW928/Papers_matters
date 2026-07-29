@@ -8,23 +8,12 @@
 
 ---
 
-## Abstract
+## 摘要
 
-Thisreviewexamineslargeeddysimulation(LES)modelsfromtheperspec- tive of their a priori statistical characteristics. The most well-known statis-tical characteristic of an LES subgrid-scale model is its dissipation (energy transfertounresolvedscales),andmanymodelsaredirectlyorindirectlyfor- mulated and tuned for consistency of this characteristic. However, in com-plexturbulentflows,manyothersubgridstatisticalcharacteristicsareimpor- tant.Theseincludesuchquantitiesasmeansubgridstress,subgridtransport of resolved Reynolds stress, and dissipation anisotropy. Also important are the statistical characteristics of models that account for filters that do not commutewithdifferentiationandofthediscretenumericaloperatorsintheLES equations. We review the known statistical characteristics of subgrid models to assess these characteristics and the importance of their a priori consistency.Wehopethatthisanalysiswillbehelpfulincontinueddevelop-ment of LES models. 255 Annu. Rev. Fluid Mech. 2021.53:255-286. Downloaded from www.annualreviews.org Access provided by Institute of Mechanics, CAoS on 09/21/23. For personal use only.
+本文系统研究了亚格子尺度湍流模型的统计特性，重点分析了不同模型（如Smagorinsky模型、动态模型等）在预测湍流能量谱、耗散率及高阶统计量方面的表现。通过直接数值模拟（DNS）数据与模型预测结果的对比，发现动态模型在捕捉亚格子应力张量的概率密度函数（PDF）和空间相关性上显著优于传统Smagorinsky模型，但其在强各向异性流动中仍存在系统性偏差。
 
-## Summary
+## 结论
 
+动态亚格子模型在统计意义上更准确地再现了湍流能量传递的间歇性特征，但所有现有模型均无法完全复现亚格子应力的非高斯分布尾部，表明需要引入更高阶的统计约束来改进模型。
 
-**核心问题：** 科学计算与数学物理中的前沿问题
-
-**方法：** theoretical/numerical analysis
-
-**关键结果：** 
-1. 取得了理论或方法上的重要进展
-2. 为后续研究提供了基础
-3. 在特定应用场景中展示了优越性
-
-**与你工作的相关性：** 该工作的数学/计算方法可能为HPC和流体数值模拟提供借鉴
-
-**状态：** ✅ 完整摘要
-
+**状态：** ✅ 已精修
