@@ -189,12 +189,12 @@
 
   1. [Bogoliubov-Born-Green-Kirkwood-Yvon Hierarchy and Generalized Hydrodynamics](./fluid-mechanics/bogoliubov-born-green-kirkwood-yvon-hierarchy-and-generalized-hydrodynamics.md)
   2. [Coherent structures and turbulence](./fluid-mechanics/coherent-structures-and-turbulence.md)
-  3. [Cross-Scale Energy Transfer from Fluid-Scale Alfvén Waves to Kinetic-Scale Ion Acoustic Waves in the](./fluid-mechanics/cross-scale-energy-transfer-from-fluid-scale-alfvén-waves-to-kinetic-scale-ion-a.md)
-  4. [Dynamically regularized Lagrange multiplier schemes with energy dissipation for the incompressible N](./fluid-mechanics/dynamically-regularized-lagrange-multiplier-schemes-with-energy-dissipation-for-.md)
+  3. [Cross-Scale Energy Transfer from Fluid-Scale Alfvén Waves to Kinetic-Scale Ion Acoustic Waves in the Earth’s Magnetopaus](./fluid-mechanics/cross-scale-energy-transfer-from-fluid-scale-alfvén-waves-to-kinetic-scale-ion-a.md)
+  4. [Dynamically regularized Lagrange multiplier schemes with energy dissipation for the incompressible Navier-Stokes equatio](./fluid-mechanics/dynamically-regularized-lagrange-multiplier-schemes-with-energy-dissipation-for-.md)
   5. [Eulerian vs Lagrangian Irreversibility in an Experimental Turbulent Swirling Flow](./fluid-mechanics/eulerian-vs-lagrangian-irreversibility-in-an-experimental-turbulent-swirling-flo.md)
   6. [Exact Coherent Structures and Phase Space Geometry of Preturbulent 2D Active Nematic Channel Flow](./fluid-mechanics/exact-coherent-structures-and-phase-space-geometry-of-preturbulent-2d-active-nem.md)
   7. [Excitation of Initial Waves by Wind: A Theoretical Model and Its Experimental Verification](./fluid-mechanics/excitation-of-initial-waves-by-wind-a-theoretical-model-and-its-experimental-ver.md)
-  8. [Forward and Inverse Energy Cascade in Fluid Turbulence Adhere to Kolmogorov’s Refined Similarity Hyp](./fluid-mechanics/forward-and-inverse-energy-cascade-in-fluid-turbulence-adhere-to-kolmogorovs-ref.md)
+  8. [Forward and Inverse Energy Cascade in Fluid Turbulence Adhere to Kolmogorov’s Refined Similarity Hypothesis](./fluid-mechanics/forward-and-inverse-energy-cascade-in-fluid-turbulence-adhere-to-kolmogorovs-ref.md)
   9. [Generalizing Monin-Obukhov Similarity Theory (1954) for Complex Atmospheric Turbulence](./fluid-mechanics/generalizing-monin-obukhov-similarity-theory-1954-for-complex-atmospheric-turbul.md)
   10. [Hydrodynamic Mechanism for Clumping along the Equatorial Rings of SN1987A and Other Stars](./fluid-mechanics/hydrodynamic-mechanism-for-clumping-along-the-equatorial-rings-of-sn1987a-and-ot.md)
   11. [IFAC PapersOnLine 54-19 (2021)  8–12](./fluid-mechanics/ifac-papersonline-54-19-2021-812.md)
@@ -215,7 +215,7 @@
   26. [Tailor-Designed Models for the Turbulent Velocity Gradient through Normalizing Flow](./fluid-mechanics/tailor-designed-models-for-the-turbulent-velocity-gradient-through-normalizing-f.md)
   27. [Universal Anomalous Diffusion of Quantized Vortices in Ultraquantum Turbulence](./fluid-mechanics/universal-anomalous-diffusion-of-quantized-vortices-in-ultraquantum-turbulence.md)
   28. [Universal Velocity Statistics in Decaying Turbulence](./fluid-mechanics/universal-velocity-statistics-in-decaying-turbulence.md)
-  29. [An Energy Stable Immersed Boundary Method for Deformable Membrane Problem with Non-uniform Density a](./fluid-mechanics/粘弹性流体/an-energy-stable-immersed-boundary-method-for-deformable-membrane-problem-with-n.md)
+  29. [An Energy Stable Immersed Boundary Method for Deformable Membrane Problem with Non-uniform Density and Viscosity](./fluid-mechanics/粘弹性流体/an-energy-stable-immersed-boundary-method-for-deformable-membrane-problem-with-n.md)
   30. [An immersed boundary method for simulating Newtonian vesicles in viscoelastic fluid](./fluid-mechanics/粘弹性流体/an-immersed-boundary-method-for-simulating-newtonian-vesicles-in-viscoelastic-fl.md)
   31. [Benchmarking the immersed boundary method for viscoelastic flows](./fluid-mechanics/粘弹性流体/benchmarking-the-immersed-boundary-method-for-viscoelastic-flows.md)
   32. [J. Fluid Mech. (2017),vol. 827, pp.155193. c](./fluid-mechanics/粘弹性流体/j-fluid-mech-2017vol-827-pp155193-c-cambridge-university-press-2017.md)
@@ -224,6 +224,7 @@
   35. [J. Fluid Mech. (2025), vol.1025, A36, doi:10.1017/jfm.2025.10933](./fluid-mechanics/粘弹性流体/j-fluid-mech-2025-vol1025-a36-doi101017jfm202510933.md)
   36. [The beads-on-string structure of viscoelastic threads](./fluid-mechanics/粘弹性流体/the-beads-on-string-structure-of-viscoelastic-threads.md)
   37. [The log-conformation formulation for single- and multi-phase axisymmetric viscoelastic flows](./fluid-mechanics/粘弹性流体/the-log-conformation-formulation-for-single--and-multi-phase-axisymmetric-viscoe.md)
+
 
 ## Geometric Fluid
 
@@ -294,36 +295,35 @@
 
 ## Numerical Computation
 
-- 📂 [numerical-computation/](./numerical-computation/) (28 papers)
+- 📂 [numerical-computation/](./numerical-computation/) (26 papers)
 
   1. [A Fast, Matrix-free Implicit Method for Compressible Flows on Unstructured Grids](./numerical-computation/a-fast-matrix-free-implicit-method-for-compressible-flows-on-unstructured-grids.md)
   2. [A Fast, Matrix-free Implicit Method for Computing Low Mach Number Flows on Unstructured Grids](./numerical-computation/a-fast-matrix-free-implicit-method-for-computing-low-mach-number-flows-on-unstru.md)
-  3. [A Jacobian-Free Newton-GMRES(m) Method with Adaptive Preconditioner and Its Application for Power Fl](./numerical-computation/a-jacobian-free-newton-gmresm-method-with-adaptive-preconditioner-and-its-applic.md)
+  3. [A Jacobian-Free Newton-GMRES(m) Method with Adaptive Preconditioner and Its Application for Power Flow Calculations](./numerical-computation/a-jacobian-free-newton-gmresm-method-with-adaptive-preconditioner-and-its-applic.md)
   4. [A Matrix-free GMRES Algorithm on GPU Clusters for Implicit Large Eddy Simulation](./numerical-computation/a-matrix-free-gmres-algorithm-on-gpu-clusters-for-implicit-large-eddy-simulation.md)
   5. [A Matrix-free Preconditioned Newton/GMRES Method for Unsteady Navier-Stokes Solutions](./numerical-computation/a-matrix-free-preconditioned-newtongmres-method-for-unsteady-navier-stokes-solut.md)
-  6. [Acceleration of the data-parallel lower-upper relaxation time-integration method on GPU for an unstr](./numerical-computation/acceleration-of-the-data-parallel-lower-upper-relaxation-time-integration-method.md)
+  6. [Acceleration of the data-parallel lower-upper relaxation time-integration method on GPU for an unstructured CFD solver](./numerical-computation/acceleration-of-the-data-parallel-lower-upper-relaxation-time-integration-method.md)
   7. [AFiD-MHD: A finite difference method for magnetohydrodynamic flows](./numerical-computation/afid-mhd-a-finite-difference-method-for-magnetohydrodynamic-flows.md)
-  8. [AmgX: A Library for GPU Accelerated Algebraic Multigrid and Preconditioned Iterative Methods | SIAM ](./numerical-computation/amgx-a-library-for-gpu-accelerated-algebraic-multigrid-and-preconditioned-iterat.md)
+  8. [AmgX: A Library for GPU Accelerated Algebraic Multigrid and Preconditioned Iterative Methods | SIAM Journal on Scientifi](./numerical-computation/amgx-a-library-for-gpu-accelerated-algebraic-multigrid-and-preconditioned-iterat.md)
   9. [An immersed boundary method using online sequential data assimilation](./numerical-computation/an-immersed-boundary-method-using-online-sequential-data-assimilation.md)
   10. [Arbitrary Lagrangian-Eulerian Methods](./numerical-computation/arbitrary-lagrangian-eulerian-methods.md)
   11. [computing unsteady ﬂows on unstructured grids](./numerical-computation/computing-unsteady-ﬂows-on-unstructured-grids.md)
-  12. [Data-Parallel Lower-Upper Relaxation Method for Compressible Flows](./numerical-computation/data-parallel-lower-upper-relaxation-method-for-compressible-flows.md)
-  13. [Exact Jacobians for implicit Navier–Stokes simulations of equilibrium real gas flows](./numerical-computation/exact-jacobians-for-implicit-navierstokes-simulations-of-equilibrium-real-gas-fl.md)
-  14. [GMRES for Finite Element Methods (scanned PDF)](./numerical-computation/gmres-for-finite-element-methods-scanned-pdf.md)
-  15. [GPGPU-based heterogeneous parallel implementation of direct discontinuous Galerkin methods](./numerical-computation/gpgpu-based-heterogeneous-parallel-implementation-of-direct-discontinuous-galerk.md)
-  16. [Hybrid MPI and CUDA Parallelized Finite Volume Unstructured CFD Simulations on a Multi-GPU System](./numerical-computation/hybrid-mpi-and-cuda-parallelized-finite-volume-unstructured-cfd-simulations-on-a.md)
-  17. [Jacobian-free Newton-Krylov Methods: A Survey of Approaches and Applications](./numerical-computation/jacobian-free-newton-krylov-methods-a-survey-of-approaches-and-applications.md)
-  18. [Lattice Boltzmann Method for Fluid Flows](./numerical-computation/lattice-boltzmann-method-for-fluid-flows.md)
-  19. [Matrix-free GPU Implementation of a Preconditioned Conjugate Gradient Solver for Anisotropic Ellipti](./numerical-computation/matrix-free-gpu-implementation-of-a-preconditioned-conjugate-gradient-solver-for.md)
-  20. [Multigrid for Matrix-Free High-Order Finite Element Computations on Graphics Processors](./numerical-computation/multigrid-for-matrix-free-high-order-finite-element-computations-on-graphics-pro.md)
-  21. [Parallel Eulerian-Lagrangian coupling method on hierarchical meshes](./numerical-computation/parallel-eulerian-lagrangian-coupling-method-on-hierarchical-meshes.md)
-  22. [Path integral molecular dynamics approximations of quantum canonical observables](./numerical-computation/path-integral-molecular-dynamics-approximations-of-quantum-canonical-observables.md)
-  23. [Ruminated Tensor Decomposition algorithm for solving inviscid Burgers' equation](./numerical-computation/ruminated-tensor-decomposition-algorithm-for-solving-inviscid-burgers-equation.md)
-  24. [Sparse Matrix Solvers on the GPU: Conjugate Gradients and Multigrid](./numerical-computation/sparse-matrix-solvers-on-the-gpu-conjugate-gradients-and-multigrid.md)
-  25. [SU2: An Open-Source Suite for Multiphysics Simulation and Design](./numerical-computation/su2-an-open-source-suite-for-multiphysics-simulation-and-design.md)
-  26. [TeraFLOP Computing on a Desktop PC with GPUs for 3D CFD](./numerical-computation/teraflop-computing-on-a-desktop-pc-with-gpus-for-3d-cfd.md)
-  27. [The Hermite-Taylor Correction Function Method for Maxwell's Equations](./numerical-computation/the-hermite-taylor-correction-function-method-for-maxwells-equations.md)
-  28. [VFS](./numerical-computation/vfs.md)
+  12. [Exact Jacobians for implicit Navier–Stokes simulations of equilibrium real gas flows](./numerical-computation/exact-jacobians-for-implicit-navierstokes-simulations-of-equilibrium-real-gas-fl.md)
+  13. [GPGPU-based heterogeneous parallel implementation of direct discontinuous Galerkin methods](./numerical-computation/gpgpu-based-heterogeneous-parallel-implementation-of-direct-discontinuous-galerk.md)
+  14. [Hybrid MPI and CUDA Parallelized Finite Volume Unstructured CFD Simulations on a Multi-GPU System](./numerical-computation/hybrid-mpi-and-cuda-parallelized-finite-volume-unstructured-cfd-simulations-on-a.md)
+  15. [Jacobian-free Newton-Krylov Methods: A Survey of Approaches and Applications](./numerical-computation/jacobian-free-newton-krylov-methods-a-survey-of-approaches-and-applications.md)
+  16. [Lattice Boltzmann Method for Fluid Flows](./numerical-computation/lattice-boltzmann-method-for-fluid-flows.md)
+  17. [Matrix-free GPU Implementation of a Preconditioned Conjugate Gradient Solver for Anisotropic Elliptic PDEs](./numerical-computation/matrix-free-gpu-implementation-of-a-preconditioned-conjugate-gradient-solver-for.md)
+  18. [Multigrid for Matrix-Free High-Order Finite Element Computations on Graphics Processors](./numerical-computation/multigrid-for-matrix-free-high-order-finite-element-computations-on-graphics-pro.md)
+  19. [Parallel Eulerian-Lagrangian coupling method on hierarchical meshes](./numerical-computation/parallel-eulerian-lagrangian-coupling-method-on-hierarchical-meshes.md)
+  20. [Path integral molecular dynamics approximations of quantum canonical observables](./numerical-computation/path-integral-molecular-dynamics-approximations-of-quantum-canonical-observables.md)
+  21. [Ruminated Tensor Decomposition algorithm for solving inviscid Burgers' equation](./numerical-computation/ruminated-tensor-decomposition-algorithm-for-solving-inviscid-burgers-equation.md)
+  22. [Sparse Matrix Solvers on the GPU: Conjugate Gradients and Multigrid](./numerical-computation/sparse-matrix-solvers-on-the-gpu-conjugate-gradients-and-multigrid.md)
+  23. [SU2: An Open-Source Suite for Multiphysics Simulation and Design](./numerical-computation/su2-an-open-source-suite-for-multiphysics-simulation-and-design.md)
+  24. [TeraFLOP Computing on a Desktop PC with GPUs for 3D CFD](./numerical-computation/teraflop-computing-on-a-desktop-pc-with-gpus-for-3d-cfd.md)
+  25. [The Hermite-Taylor Correction Function Method for Maxwell's Equations](./numerical-computation/the-hermite-taylor-correction-function-method-for-maxwells-equations.md)
+  26. [VFS](./numerical-computation/vfs.md)
+
 
 ## Quantum Computing
 
@@ -377,7 +377,7 @@
 
 ## Vortex Dynamics
 
-- 📂 [vortex-dynamics/](./vortex-dynamics/) (20 papers)
+- 📂 [vortex-dynamics/](./vortex-dynamics/) (19 papers)
 
   1. [A Clebsch Method for Free-Surface Vortical Flow Simulation](./vortex-dynamics/a-clebsch-method-for-free-surface-vortical-flow-simulation.md)
   2. [A Moving Eulerian-Lagrangian Particle Method for Thin Film and Foam Simulation](./vortex-dynamics/a-moving-eulerian-lagrangian-particle-method-for-thin-film-and-foam-simulation.md)
@@ -385,20 +385,20 @@
   4. [Incompressible Flow Simulation on Vortex Segment Clouds](./vortex-dynamics/incompressible-flow-simulation-on-vortex-segment-clouds.md)
   5. [Inside Fluids: Clebsch Maps for Visualization and Processing](./vortex-dynamics/inside-fluids-clebsch-maps-for-visualization-and-processing.md)
   6. [Neural vortex method: From finite Lagrangian particles to infinite dimensional Eulerian dynamics](./vortex-dynamics/neural-vortex-method-from-finite-lagrangian-particles-to-infinite-dimensional-eu.md)
-  7. [See discussions, st ats, and author pr ofiles f or this public ation at : https://www .researchgate.](./vortex-dynamics/see-discussions-st-ats-and-author-pr-ofiles-f-or-this-public-ation-at-httpswww-r.md)
+  7. [See discussions, st ats, and author pr ofiles f or this public ation at : https://www .researchgate.ne t/public ation/34](./vortex-dynamics/see-discussions-st-ats-and-author-pr-ofiles-f-or-this-public-ation-at-httpswww-r.md)
   8. [Symplectic neural networks in Taylor series form for Hamiltonian systems](./vortex-dynamics/symplectic-neural-networks-in-taylor-series-form-for-hamiltonian-systems.md)
   9. [Under consideration for publication in J. Fluid Mech. 1](./vortex-dynamics/under-consideration-for-publication-in-j-fluid-mech-1.md)
-  10. [223 0 obj](./vortex-dynamics/涡环生成/223-0-obj-linearized-1l-584281o-226e-173456n-36t-583621h-542-1101-endobj.md)
-  11. [A universal time scale for vortex ring formation](./vortex-dynamics/涡环生成/a-universal-time-scale-for-vortex-ring-formation.md)
-  12. [Direct numerical simulation of a laminar vortex ring](./vortex-dynamics/涡环生成/direct-numerical-simulation-of-a-laminar-vortex-ring.md)
-  13. [Dynamics of thin vortex rings](./vortex-dynamics/涡环生成/dynamics-of-thin-vortex-rings.md)
-  14. [Genesis, evolution, and apocalypse of Loop Current rings](./vortex-dynamics/涡环生成/genesis-evolution-and-apocalypse-of-loop-current-rings.md)
-  15. [J. Fluid Mech. (2015),vol. 773, pp.460497. c](./vortex-dynamics/涡环生成/j-fluid-mech-2015vol-773-pp460497-c-cambridge-university-press-2015.md)
-  16. [Numerical experiments on vortex ring formation](./vortex-dynamics/涡环生成/numerical-experiments-on-vortex-ring-formation.md)
-  17. [Published online 16 February 2004](./vortex-dynamics/涡环生成/published-online-16-february-2004.md)
-  18. [Three-dimensional numerical simulation of a vortex ring impinging on a circular cylinder](./vortex-dynamics/涡环生成/three-dimensional-numerical-simulation-of-a-vortex-ring-impinging-on-a-circular-.md)
-  19. [Vortex ring dynamics at a free surface](./vortex-dynamics/涡环生成/vortex-ring-dynamics-at-a-free-surface.md)
-  20. [中，是高雷诺 （Reynolds ）数流动的一种基本存在形式 。现在，用解析方法研究的旋涡结构及其稳定性的理论已趋于饱和 ，还满](./vortex-dynamics/涡环生成/中是高雷诺-reynolds-数流动的一种基本存在形式-现在用解析方法研究的旋涡结构及其稳定性的理论已趋于饱和-还满.md)
+  10. [A universal time scale for vortex ring formation](./vortex-dynamics/涡环生成/a-universal-time-scale-for-vortex-ring-formation.md)
+  11. [Direct numerical simulation of a laminar vortex ring](./vortex-dynamics/涡环生成/direct-numerical-simulation-of-a-laminar-vortex-ring.md)
+  12. [Dynamics of thin vortex rings](./vortex-dynamics/涡环生成/dynamics-of-thin-vortex-rings.md)
+  13. [Genesis, evolution, and apocalypse of Loop Current rings](./vortex-dynamics/涡环生成/genesis-evolution-and-apocalypse-of-loop-current-rings.md)
+  14. [J. Fluid Mech. (2015),vol. 773, pp.460497. c](./vortex-dynamics/涡环生成/j-fluid-mech-2015vol-773-pp460497-c-cambridge-university-press-2015.md)
+  15. [Numerical experiments on vortex ring formation](./vortex-dynamics/涡环生成/numerical-experiments-on-vortex-ring-formation.md)
+  16. [Published online 16 February 2004](./vortex-dynamics/涡环生成/published-online-16-february-2004.md)
+  17. [Three-dimensional numerical simulation of a vortex ring impinging on a circular cylinder](./vortex-dynamics/涡环生成/three-dimensional-numerical-simulation-of-a-vortex-ring-impinging-on-a-circular-.md)
+  18. [Vortex ring dynamics at a free surface](./vortex-dynamics/涡环生成/vortex-ring-dynamics-at-a-free-surface.md)
+  19. [中，是高雷诺 （Reynolds ）数流动的一种基本存在形式 。现在，用解析方法研究的旋涡结构及其稳定性的理论已趋于饱和 ，还满](./vortex-dynamics/涡环生成/中是高雷诺-reynolds-数流动的一种基本存在形式-现在用解析方法研究的旋涡结构及其稳定性的理论已趋于饱和-还满.md)
+
 
 ## Wave Mechanics
 - 📂 [wave-mechanics/](./wave-mechanics/) (3 papers)
