@@ -401,14 +401,9 @@
   20. [中，是高雷诺 （Reynolds ）数流动的一种基本存在形式 。现在，用解析方法研究的旋涡结构及其稳定性的理论已趋于饱和 ，还满](./vortex-dynamics/涡环生成/中是高雷诺-reynolds-数流动的一种基本存在形式-现在用解析方法研究的旋涡结构及其稳定性的理论已趋于饱和-还满.md)
 
 ## Wave Mechanics
-
-- 📂 [wave-mechanics/](./wave-mechanics/) (7 papers)
+- 📂 [wave-mechanics/](./wave-mechanics/) (3 papers)
 
   1. [Diffusion Equation Is Compatible with Special Relativity](./wave-mechanics/diffusion-equation-is-compatible-with-special-relativity.md)
   2. [Extended Lagrangian approach for the numerical study of multidimensional dispersive waves: Applications to the Serre-Green-Naghdi equations](./wave-mechanics/extended-lagrangian-approach-for-the-numerical-study-of-multidimensional-dispers.md)
-  3. [Lagrangian Functions and Schrödinger's Rule](./wave-mechanics/lagrangian-functions-and-schrödingers-rule.md)
-  4. [Problems of Potential Theory](./wave-mechanics/problems-of-potential-theory.md)
-  5. [Schrödinger equation revisited](./wave-mechanics/schrödinger-equation-revisited.md)
-  6. [Theory of Transversal Curves and the Connections Between the Calculus of Variations and the Theory o](./wave-mechanics/theory-of-transversal-curves-and-the-connections-between-the-calculus-of-variati.md)
-  7. [Wave Motion and the Equation of Continuity](./wave-mechanics/wave-motion-and-the-equation-of-continuity.md)
+  3. [Schrödinger equation revisited](./wave-mechanics/schrödinger-equation-revisited.md)
 
