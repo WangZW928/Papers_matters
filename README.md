@@ -2,6 +2,8 @@
 
 论文阅读、笔记与归档。
 
+> 📋 [Codex Research Review — 12 个研究问题（3 个时间维度）](./CODEX_REVIEW.md)
+
 ---
 
 ## AI for Physics
