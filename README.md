@@ -405,7 +405,7 @@
 - 📂 [wave-mechanics/](./wave-mechanics/) (7 papers)
 
   1. [Diffusion Equation Is Compatible with Special Relativity](./wave-mechanics/diffusion-equation-is-compatible-with-special-relativity.md)
-  2. [Extended Lagrangian approach for the numerical study of multidimensional dispersive waves: Applicati](./wave-mechanics/extended-lagrangian-approach-for-the-numerical-study-of-multidimensional-dispers.md)
+  2. [Extended Lagrangian approach for the numerical study of multidimensional dispersive waves: Applications to the Serre-Green-Naghdi equations](./wave-mechanics/extended-lagrangian-approach-for-the-numerical-study-of-multidimensional-dispers.md)
   3. [Lagrangian Functions and Schrödinger's Rule](./wave-mechanics/lagrangian-functions-and-schrödingers-rule.md)
   4. [Problems of Potential Theory](./wave-mechanics/problems-of-potential-theory.md)
   5. [Schrödinger equation revisited](./wave-mechanics/schrödinger-equation-revisited.md)
