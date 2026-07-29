@@ -26,3 +26,10 @@ _Not available_
 **与你工作的相关性：** 涡方法的离散格式和快速算法可参考用于HPC框架中的涡动力学模拟。
 
 **状态：** ✅ 完整摘要
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** How do vortex segments improve upon traditional vortex particle (vorton) methods in representing the directional stretching and tilting of vortex lines, and why does this matter for accurately capturing the vortex stretching term?
+2. **Q:** What is the computational bottleneck in Lagrangian vortex methods, and how does the fast multipole method (FMM) reduce the O(N^2) complexity of Biot-Savart velocity evaluation to O(N) or O(N log N)?
+3. **Q:** How are vortex reconnection events naturally represented in a Lagrangian vortex segment framework without explicit numerical viscosity, and what topological constraints must be satisfied during the reconnection process?

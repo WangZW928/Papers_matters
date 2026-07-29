@@ -26,3 +26,10 @@ _Not available_
 **与你工作的相关性：** 对数构象格式是粘弹性流求解的关键技术，可参考用于HPC框架的高Weissenberg数粘弹性流求解器。
 
 **状态：** ✅ 完整摘要
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** Why does the matrix logarithm of the conformation tensor automatically guarantee its positive definiteness throughout time evolution, and how does this mathematical property eliminate the high-Weissenberg number problem (HWNP) without artificial diffusion?
+2. **Q:** How does the decomposition of the velocity gradient tensor into extensional and rotational components simplify the evolution equation for the log-conformation tensor, and what role does the Oldroyd derivative play in this decomposition?
+3. **Q:** In the axisymmetric formulation, what additional metric and curvature terms arise from the cylindrical coordinate system, and how do they interact with the log-conformation decomposition differently than in Cartesian coordinates?

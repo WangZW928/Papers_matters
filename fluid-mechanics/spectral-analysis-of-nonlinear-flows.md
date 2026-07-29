@@ -26,3 +26,10 @@ _Not available_
 **与你工作的相关性：** 模态分解和谱分析方法可参考用于HPC框架中的流动诊断和降阶建模。
 
 **状态：** ✅ 完整摘要
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** How does Koopman mode decomposition differ fundamentally from proper orthogonal decomposition (POD) in capturing the dynamics of nonlinear flows, and why can Koopman modes represent transient growth mechanisms that POD fails to capture?
+2. **Q:** What is the role of the Koopman operator's continuous spectrum in representing chaotic or turbulent dynamics, and how does this differ from the discrete spectrum that characterizes periodic and quasi-periodic flows?
+3. **Q:** Why do standard dynamic mode decomposition (DMD) algorithms fail for flows with multiple disparate time scales or strong transient behavior, and how do sparsity-promoting or optimized DMD variants address these shortcomings?

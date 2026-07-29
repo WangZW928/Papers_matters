@@ -17,3 +17,10 @@
 LPNets能够从数据中准确恢复哈密顿系统的对称性与守恒量，并在长时间积分中保持物理一致性，显著优于未嵌入几何结构的黑箱神经网络方法。
 
 **状态：** ✅ 已精修
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** How does LPNets embed the Jacobi identity and antisymmetry into the network architecture, and why does this structural constraint guarantee long-term energy and Casimir conservation during rollout?
+2. **Q:** What is the relationship between the learnable structure matrix J_{ij}(z) in LPNets and the Poisson bracket of the underlying Hamiltonian system? How does J_{ij} encode the system's symmetries?
+3. **Q:** In what way does LPNets generalize Hamiltonian Neural Networks (HNNs) to systems with non-canonical Poisson structures? Why can't standard HNNs learn systems like the rigid body or ideal fluid without architectural modification?

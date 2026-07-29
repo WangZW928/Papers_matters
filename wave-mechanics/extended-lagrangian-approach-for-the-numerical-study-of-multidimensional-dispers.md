@@ -27,3 +27,10 @@ _Not available_
 
 **状态：** ✅ 完整摘要
 
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** How does the extended Lagrangian method convert a non-hyperbolic dispersive PDE system into an unconditionally hyperbolic one through the introduction of relaxation variables, and what determines the choice of relaxation time scales?
+2. **Q:** Why is the IMEX splitting strategy (implicit dispersive terms, explicit hyperbolic terms) well-suited for the extended Serre-Green-Naghdi system, and how does the CFL condition for the explicit hyperbolic part relate to the gravity wave speed rather than the dispersive stiffness?
+3. **Q:** How does the Galilean invariance of the extended system affect the accuracy of solutions involving moving reference frames or rotating coordinates, and why is this property essential for simulating ship wakes or coastal wave transformation?

@@ -28,3 +28,10 @@ _Not available_
 
 **状态：** ✅ 完整摘要
 
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** What is the fundamental difference between advecting a velocity vector field versus advecting a velocity covector (1-form) field, and why does the latter naturally improve angular momentum and vorticity conservation?
+2. **Q:** How does the Jacobian of the flow map enter the covector advection scheme, and why is this additional matrix multiplication negligible in computational cost compared to the pressure projection step?
+3. **Q:** In what sense is covector advection equivalent to Lie advection of a differential one-form, and how does this connect the covector fluids method to the geometric structure of the incompressible Euler equations on the diffeomorphism group?

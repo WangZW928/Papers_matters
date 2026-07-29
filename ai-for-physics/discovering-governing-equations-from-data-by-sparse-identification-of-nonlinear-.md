@@ -13,3 +13,10 @@
 SINDy方法能够从时间序列数据中高效、可解释地提取出非线性动力系统的稀疏控制方程，为数据驱动的科学发现提供了一种实用工具。
 
 **状态：** ✅ 已精修
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** How does the sequential thresholded least-squares algorithm in SINDy balance sparsity promotion with numerical stability, and why is hard thresholding preferred over L1 regularization for identifying the correct sparsity pattern?
+2. **Q:** What are the key limitations of SINDy when the true governing equations contain rational functions, non-polynomial nonlinearities, or implicit algebraic constraints that cannot be expressed in a linear combination of candidate library functions?
+3. **Q:** How does the choice of numerical derivative approximation (e.g., finite differences vs. total variation regularized derivatives) fundamentally affect SINDy's robustness to measurement noise, and when would you choose one over the other?

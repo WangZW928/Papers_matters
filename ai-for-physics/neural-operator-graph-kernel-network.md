@@ -13,3 +13,10 @@
 实验表明，图核网络能够高效学习偏微分方程的解算子，在多种方程上均能泛化到未见过的参数配置，且预测误差随训练数据量增加呈指数下降趋势。
 
 **状态：** ✅ 已精修
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** How does the graph kernel network architecture achieve discretization invariance, and why is this property crucial for learning mesh-independent solution operators of PDEs rather than just mesh-specific mappings?
+2. **Q:** What is the relationship between the iterative message-passing updates in the graph network and the Green's function integral formulation of PDE solutions?
+3. **Q:** Why does the neural operator approach generalize to unseen discretizations and domain geometries, while standard CNN-based methods trained on a fixed grid fail when the resolution or domain changes?

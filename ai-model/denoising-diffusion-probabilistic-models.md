@@ -24,3 +24,15 @@ _Not available_
 
 **状态：** ✅ 完整摘要
 
+
+## Review Questions
+
+### 🤔 Questions
+1. test
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** How does the variational lower bound connecting the forward (fixed) diffusion process to the reverse (learned) generative process guarantee a tractable training objective, and why does this bound simplify to a weighted denoising score-matching objective?
+2. **Q:** Why does the reparameterization trick allow the DDPM loss to be expressed as a simple noise-prediction task, and how does this connect DDPMs to score-based generative modeling via the score function?
+3. **Q:** The forward diffusion process is mathematically equivalent to a discretization of the heat equation SDE. How might this physical analogy inspire fluid dynamics applications such as turbulence closure modeling, super-resolution of flow fields, or data assimilation in CFD?

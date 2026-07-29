@@ -26,3 +26,10 @@ _Not available_
 
 **状态：** ✅ 完整摘要
 
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** What does it mean for a force-free magnetic field to be "conformally geodesic," and how does this geometric characterization reveal hidden structure in MHD equilibria?
+2. **Q:** How does the conformal geodesic foliation of a Riemannian 3-manifold provide a natural framework for constructing and classifying Beltrami fields, and what insight does this offer for solar coronal magnetic field modeling?
+3. **Q:** What is the mathematical connection between force-free fields and the geodesic spray of a conformally rescaled metric, and how does this unify the geometry of Euler flows, Beltrami fields, and contact structures?

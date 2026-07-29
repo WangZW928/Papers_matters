@@ -28,3 +28,10 @@ _Not available_
 
 **状态：** ✅ 完整摘要
 
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** How does the Gross-Pitaevskii equation in the Thomas-Fermi limit recover the incompressible Euler equations, and what role does the pressure projection (enforcing constant density) play in establishing this correspondence?
+2. **Q:** Why does the Schrödinger formulation naturally conserve vortex topology (helicity, linking number, knot type) during evolution, whereas traditional grid-based CFD methods may introduce spurious numerical reconnection events?
+3. **Q:** What is the physical interpretation of the Madelung quantum potential term in the GP equation when applied to classical incompressible fluid dynamics, and under what conditions can it be safely neglected?

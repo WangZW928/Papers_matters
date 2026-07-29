@@ -26,3 +26,10 @@ _Not available_
 **与你工作的相关性：** 矩阵无关多重网格方法可参考用于HPC框架中高阶离散的最优复杂度求解。
 
 **状态：** ✅ 完整摘要
+
+## Review Questions
+
+### 🤔 Questions
+1. **Q:** How does sum-factorization reduce the complexity of high-order FEM operator evaluation from O(p^{2d}) to O(d p^{d+1}) and what are the implications for memory bandwidth and arithmetic intensity on GPUs?
+2. **Q:** Why is the combination of p-multigrid and h-multigrid necessary for robust convergence in high-order FEM, and how do the spectral radius properties differ between p-coarsening (reducing polynomial degree) and h-coarsening (coarsening the mesh)?
+3. **Q:** What are the key challenges in implementing matrix-free smoothers (e.g., Chebyshev-accelerated Jacobi) on GPUs for high polynomial degrees, and how does the element-local nature of sum-factorization interact with the need for global communication in multigrid cycles?
