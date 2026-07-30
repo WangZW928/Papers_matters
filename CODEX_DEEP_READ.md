@@ -1,6 +1,6 @@
-# Codex 精读推荐 — 18 篇论文排名
+# Codex 精读推荐 — 19 篇论文排名
 
-**日期：** 2026-07-29 | **审查范围：** 318 篇 | **Token：** 108,002
+**日期：** 2026-07-30 | **审查范围：** 319 篇 | **Token：** 108,002
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -76,6 +76,11 @@
 18. **Denoising Diffusion Probabilistic Models** — ai-model
     - 文件：[`ai-model/denoising-diffusion-probabilistic-models.md`](ai-model/denoising-diffusion-probabilistic-models.md)
 
+19. **Discrete variational calculus for double-bracket dissipation** — differential-geometry
+    - 文件：[`differential-geometry/discrete-variational-calculus-for-double-bracket-dissipation.md`](differential-geometry/discrete-variational-calculus-for-double-bracket-dissipation.md)
+    - 数理基础：forced Euler-Poincaré / forced Lie-Poisson 系统的离散变分积分器，几何积分器精确保守伴随轨道 + 能量耗散
+    - 为什么精读：在"几何耗散系统 + Lie-Poisson 结构 + 保结构算法"三者交叉点，核心启发——耗散不必破坏几何约束，只要耗散项写成余伴随方向，轨道可保持而能量可下降。离散层面把每步更新设计为精确 \(Ad^*\) 作用。关联：Hamiltonian ideal fluid、LPNets、Covector Fluids
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
@@ -83,7 +88,8 @@
 3. **PDE 学习主线** → PINN → Neural Operator → SINDy → DMD/Koopman → DDPM
 4. **HPC 求解器主线** → JFNK Survey → Matrix-Free High-Order FEM Multigrid → AmgX → GPU GMRES
 5. **前沿交叉补强** → Schrödingerization PDE → Force-Free Fields → Extended Lagrangian → Log-conformation viscoelastic
+6. **几何耗散系统** → Double-Bracket Dissipation（刚体 → 未来理想流体推广）
 
 ---
 
-*覆盖 10 个 topic | 每篇均关联库内至少 1 篇其他论文 | 18/18 文件已链接*
+*覆盖 10 个 topic | 每篇均关联库内至少 1 篇其他论文 | 19/19 文件已链接*
