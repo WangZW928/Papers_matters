@@ -1,0 +1,978 @@
+Special Issue Paper
+The International Journal of High
+Performance Computing Applications
+2021, Vol. 35(6) 508 –526
+© The Author(s) 2021Article reuse guidelines:
+sagepub.com/journals-permissions
+DOI: 10.1177/10943420211022811
+journals.sagepub.com/home/hpcAMReX: Block-structured adaptive mesh
+reﬁnement for multiphysics applications
+Weiqun Zhang1, Andrew Myers1, Kevin Gott2, Ann Almgren1
+and John Bell1
+Abstract
+Block-structured adaptive mesh re ﬁnement (AMR) provides the basis for the temporal and spatial discretization strategy
+for a number of Exascale Computing Project applications in the areas of accelerator design, additive manufacturing,astrophysics, combustion, cosmology, multiphase ﬂow, and wind plant modeling. AMReX is a software framework that
+provides a uni ﬁed infrastructure with the functionality needed for these and other AMR applications to be able to effectively
+and ef ﬁciently utilize machines from laptops to exascale architectures. AMR reduces the computational cost and memory
+footprint compared to a uniform mesh while preserving accurate descriptions of different physical processes in complexmultiphysics algorithms. AMReX supports algorithms that solve systems of partial differential equations in simple orcomplex geometries and those that use particles and/or particle –mesh operations to represent component physical
+processes. In this article, we will discuss the core elements of the AMReX framework such as data containers and iteratorsas well as several specialized operations to meet the needs of the application projects. In addition, we will highlight thestrategy that the AMReX team is pursuing to achieve highly performant code across a range of accelerator-based ar-
+chitectures for a variety of different applications.
+Keywords
+Adaptive mesh re ﬁnement, co-design, particles, performance portability, structured mesh/grids
+1. Introduction
+AMReX, a software framework developed and supported
+by the U.S. DOE Exascale Computing Project ’s AMReX
+Co-Design Center, supports the development of block-structured adaptive mesh re ﬁnement (AMR) algorithms
+for solving systems of partial differential equations, insimple or complex geometries, on machines from laptops toexascale architectures. Block-structured AMR provides the
+basis for the temporal and spatial discretization strategy for
+Exascale Computing Project (ECP) applications in accel-erator design, additive manufacturing, astrophysics, com-bustion, cosmology, multiphase ﬂow, and wind energy. This
+suite of applications represents a broad range of differentphysical processes with a wide range of algorithmicrequirements.
+Fundamental to block-struc tured AMR algorithms is a
+hierarchical representatio n of the solution at multiple
+levels of resolution. At each level, the solution is de ﬁned
+on the union of data containers at that resolution, each ofwhich represents the solution over a logically rectangularsubregion of the domain. For mesh-based algorithms,AMReX provides support for both explicit and implicitdiscretizations. Support for solving linear systems includes
+native geometric multigrid solvers as well the ability to linkto external linear algebra software. For problems that in-clude stiff systems of ordinary differential equations thatrepresent single-point processes such as chemical kineticsor nucleosynthesis, AMReX provides an interface toOrdinary Differential Equation (ODE) solvers provided
+by SUNDIALS Hindmarsh et al. (2005) . AMReX sup-
+ports algorithms that utilize particles and/or particle –mesh
+operations to represent component physical processes.AMReX also provides support for embedded boundary(EB) (cut cell) representations of complex geometries. Bothparticles and EB representations introduce additional ir-regularity and complexity in the way data are stored and
+1CCSE, Lawrence Berkeley National Laboratory, Berkeley, CA, USA
+2NERSC, Lawrence Berkeley National Laboratory, Berkeley, CA, USA
+Corresponding author:
+Weiqun Zhang, Center for Computational Sciences and Engineering,
+Lawrence Berkeley National Laboratory, MS 50A-3111, Berkeley, CA
+94720, USA.Email: weiqunzhang@lbl.gov
+
+operated on, requiring special attention in the presence of
+dynamically changing hierarchical mesh structures andAMR time-stepping approaches.
+There are a number of different open-source AMR
+frameworks; see the 2014 survey article by Dubey et al.
+(2014a) for a discussion of these frameworks and references
+to both the frameworks and application codes that use them.
+Most of these frameworks originally used MPI for basic
+parallelization where data are distributed to MPI ranks witheach rank performing operations on its own data. Morerecently, most of these frameworks, including BoxLib, theprecursor to AMReX, introduced some level of hierarchicalparallelism through the use of OpenMP directives. How-ever, as we have been moving toward the exascale era, nodearchitectures have been changing dramatically, with the
+advent and increasingly widespread use of many-core
+CPU-only nodes and hybrid nodes with GPU accelera-tors. Further complicating the landscape is the fact thatdifferent types of GPUs have different programmingmodels. A key driver behind the development of AMReX isto provide a high-performance framework for applicationsto run on a variety of current- and next-generation systemswithout substantial architecture-speci ﬁc code development/
+modiﬁcation costs for each new platform.
+In the remainder of the article, we ﬁrst de ﬁne what we
+mean by block-structured AMR followed by a discussion ofthe basic design issues considered in the development ofAMReX. We then discuss the ECP applications that areusing AMReX and brie ﬂy describe their computational
+requirements. Next, we discuss the data structures used todescribe the grid hierarchy and the data containers used to
+hold mesh data. We then discuss additional features of
+AMReX needed to support particle-based algorithms andEB discretizations. We also discuss linear solvers needed forimplicit discretizations. We close with a brief discussion ofsoftware engineering practice and some concludingremarks.
+2. Block-structured AMR
+In the context of this article, block-structured AMR isconsidered to have the following de ﬁning features:
+1. The mesh covering the computational domain is
+decomposed spatially into structured patches (grids)that each covers a logically rectangular region of thedomain.
+2. Patches with the same mesh spacing are disjoint; the
+union of such patches is referred to as a level. Onlythe coarsest level ( l= 0) is required to cover the
+domain, though ﬁner levels can cover it as well.
+3. The complete mesh hierarchy on which ﬁeld vari-
+ables are de ﬁned is the union of all the levels. Proper
+nesting is enforced, that is, the union of grids at levell> 0 is strictly contained within the union of grids at
+levell/C01. We note, however, that AMReX does not
+impose proper nesting at the individual grid level;that is, a level lgrid can span multiple grids at level
+l/C01.
+4. The decomposition of the physical region covered by
+each level can be different for mesh data versus
+particle data; we refer to this as a “dual grid ”
+approach.
+5. The mesh hierarchy can change dynamically
+throughout a simulation.
+We note the contrast to block-structured AMR frame-
+works that use a quadtree/octree structure, such as FLASH(Fryxell et al., 2000 ;Dubey et al., 2014b ), where the patches
+have a uniform size, each grid at level l> 0 has a unique
+parent grid at level l/C01, and algorithms are typically
+constrained to use the same time step at all levels. We notethat these grid patterns and algorithms are a subset of theAMReX capabilities.
+3. Design philosophy
+There are two major factors that inform the design of theAMReX framework. First, AMReX should be able tosupport a wide range of multiphysics applications withdifferent performance characteristics. Second, AMReXshould not impose restrictions on how application devel-opers construct their algorithms. Consequently, AMReXmust provide a rich set of tools with suf ﬁcient ﬂexibility that
+the software can meet the algorithmic requirements of many
+different applications without sacri ﬁcing the performance of
+any. To achieve these goals, careful attention has been paidto separating the design of the data structures and basicoperations from the algorithms that use those data struc-tures. The core software components provide the ﬂexibility
+to support the exploration, development, and im-plementation of new algorithms that might generate addi-tional performance gains.
+The AMReX design allows application developers to
+interact with the software at several different levels ofabstraction. It is possible to simply use the AMReX datacontainers and iterators and none of the higher-levelfunctionality. A more popular approach is to use the datastructures and iterators for single- and multilevel operationsbut retain complete control over the time evolution algo-rithm, that is, the ordering of algorithmic components at
+each level and across levels. In an alternative approach, the
+developer exploits additional functionality in AMReX thatis designed speci ﬁcally to support traditional subcycling-in-
+time algorithms. In this approach, stubs are provided for thenecessary operations such as advancing the solution on alevel, correcting coarse grid ﬂuxes with time- and space-
+averaged ﬁne grid ﬂuxes, averaging data from ﬁne to coarse,Zhang et al. 509
+and interpolating in both space and time from coarse to ﬁne.
+This layered design provides users with the ability tohave complete control over their algorithm or to utilizean application template that can provide higher-levelfunctionality.
+The other major factor in ﬂuencing the AMReX design is
+performance portability. As we enter the exascale era, a
+variety of new architectures are being developed with
+different capabilities and programming models. Our goal isto isolate applications from any particular architecture andprogramming model without sacri ﬁcing performance. To
+achieve this goal, we introduced a lightweight abstractionlayer that effectively hides the details of the architecturefrom the application. This layer provides constructs thatallow the user to specify what operations they want to
+perform on a block of data without specifying how those
+operations are carried out. AMReX then maps those op-erations onto the hardware at compile time so that thehardware is utilized effectively. For example, on a many-core node, an operation would be mapped onto a tiledexecution model using OpenMP to guarantee good cacheperformance while on a different architecture the sameoperation might be mapped to a kernel launch appropriate to
+a particular GPU.
+Similar in spirit to the other aspects of the design, ap-
+plications are not required to use the AMReX-providedkernel launch functionality. Applications can use OpenMP,OpenACC, or native programming models to implementtheir own kernel launches if desired. Furthermore, as part ofthe AMReX design, speci ﬁc language requirements are not
+imposed on users (although much of the AMReX internal
+performance portability capability requires C++). Speci ﬁ-
+cally, the project supports application modules written inFortran, C, C++ or other languages that can be linked toC++.
+4. AMReX-based ECP applications
+Seven ECP application projects, as well as numerous non-
+ECP projects, include codes based on AMReX. Here, we
+brieﬂy review the ECP applications and how they use
+AMReX.
+WarpX ( Vay et al., 2018 ) is a multilevel electromagnetic
+particle-in-cell (PIC) code for simulation of plasma accel-erators; electrons are modeled as AMReX particles whilethe electric and magnetic ﬁelds are de ﬁned (at edges and
+faces, respectively) on the hierarchical mesh. The PIC al-
+gorithm heavily leverages the particle –mesh functionality
+with particle data deposited onto the mesh and mesh datainterpolated to particles in every time step.
+The Castro ( Almgren et al., 2010 ) code for compressible
+astrophysics is part of the ExaStar project and uses the built-in support for subcycling in time. The basic time advanceincludes explicit hydrodynamics, solution of the Poissonequation for self-gravity, and time integration of stiff nu-
+clear reaction networks.
+Nyx ( Almgren et al., 2013 ) also solves the equations of
+compressible hydrodynamics with self-gravity but herecoupled with an N-body representation of dark matter in thecontext of an evolving universe. Dark matter particles in-teract with each other and with the mesh-based ﬂuid only
+through gravitational forcing. Time integration of the stiff
+source terms is typically done with a call to CVODE, asolver provided by the SUNDIALS project ( Hindmarsh
+et al., 2005 ), one of the ECP Software Technology projects.
+The MFiX-Exa ( MFiX-Exa, 2020 ) multiphase modeling
+code also heavily leverages both the mesh and particlefunctionality; the particles represent solid particles within agas. Unlike the applications mentioned above, in MFiX-
+Exa, particle/particle interactions play a major role in the
+dynamics. Typical MFiX-Exa applications take place insidenon-rectangular geometries represented using the EB datastructures. Multigrid solvers are used to solve for the dy-namic pressure ﬁeld in a projection formulation and for the
+implicit treatment of viscous terms.
+The compressible combustion code, PeleC ( PeleC, 2020 ),
+and the low Mach number combustion modeling code,
+PeleLM ( PeleLM, 2020 ), are both based on AMReX. Both
+use the EB methodology to represent the problem geometryand possibly CVODE to evolve the chemical kinetics. LikeMFiX-Exa, PeleLM uses the multigrid solvers to solve forthe dynamic pressure ﬁeld in a projection formulation and
+for the semi-implicit treatment of viscous terms. Particlescan be used both as tracer particles and to represent sprays.
+The ExaWind project combines AMR-Wind ( AMR-Wind,
+2020), an AMReX-based multilevel structured ﬂow solver
+with Nalu-Wind, an unstructured ﬂow solver. The ﬂow
+solvers are coupled using an overset mesh approach handledby the TIOGA library. Both Nalu-Wind and AMR-Windsolve the incompressible Navier –Stokes equations with
+additional physics to model atmospheric boundary layers. Ina wind-farm simulation, Nalu-Wind is designed to resolvethe complicated geometry and ﬂow near the wind turbine
+blades, while AMR-Wind solves for the ﬂow in the full
+domain away from the turbines.
+One of the codes in the ExaAM project ( ExaAM, 2020 ),
+TruchasPBF, is based on AMReX. TruchasPBF is a ﬁnite
+volume code that models free surface ﬂows with heat
+transfer, phase change, and species diffusion. TruchasPBFis used for continuum modeling of melt pool physics.
+5. Creating and managing the
+grid hierarchy
+Block-structured AMR codes de ﬁne the solution across a
+hierarchical representation of different levels of resolution.At each level, the solution is de ﬁned over a region repre-
+sented by the union of a collection of nonoverlapping510 The International Journal of High Performance Computing Applications 35(6)
+rectilinear regions with associated data containers. These
+data containers can hold mesh data, particles, informationdescribing an EB geometry, or other data used to representthe solution. In this section, we introduce the data structuresthat describe the grid hierarchy and how the hierarchy isgenerated.
+5.1. Basic data structures
+AMReX uses a number of data abstractions to represent thegrids at a given level. The basic objects are as follows:
+1.IntVect : a dimension-sized list of integers rep-
+resenting a spatial location in index space. The use ofIntVect allows the basic grid description to be
+dimension-independent.
+2.Box: a logically rectangular (or rectangular cuboid,
+in 3D) region of cells de ﬁned by its upper and lower
+corner indices. A Box also has an IndexType ,a
+specialized IntVect that describes whether the
+indices refer to cell centers, faces, edges or nodes.
+3.BoxArray : a collection of Boxes nonintersecting
+at the same resolution. Each individual Box in a
+BoxArray can be stored, accessed, copied, and
+moved independently of the other boxes.
+4.DistributionMapping : a vector that lists the
+MPI rank that the data associated with each Box in a
+BoxArray will be de ﬁned on.
+In an AMReX application, the BoxArray and
+DistributionMapping at each level describe how the
+data at that level are decomposed and where they are al-
+located. The relationship between boxes at different levels,thus resolution different levels, is de ﬁn e db yar e ﬁnement
+ratio. In a single application, the re ﬁnement ratio between
+any two levels may differ, but it must be prescribed atrun time. To facilitate ef ﬁcient communication across MPI
+ranks, the BoxArray andDistributionMapping at
+each level, also referred to as the metadata, are stored on
+every MPI rank.
+AMReX also includes distinct objects commonly used to
+describe other critical simulation parameters. Of particularimportance are as follows:
+1.Geometry : stores and calculates parameters that
+describe the relationship between index space andphysical space. The Geometry object holds in-
+formation that is the same at all levels, such as
+periodicity and coordinate system, but also level-speciﬁc information such as mesh size. A multilevel
+AMReX-based simulation will typically have aGeometry object at each level.
+2.BCRec : a multidimensional integer array that de-
+ﬁnes the physical boundary conditions for thedomain. A multilevel AMReX-based simulation will
+only need one BCRec .
+5.2. Regridding and load balancing
+AMR algorithms dynamically change the resolution of the
+mesh to re ﬂect the changing requirements of the problem
+being solved. AMReX provides support for the creation of
+new grids or the modi ﬁcation of existing grids (regridding)
+at levell+ 1 and above at user-speci ﬁed intervals. To do so,
+an error estimate is used to tag individual cells above a giventolerance at level l, where the error is de ﬁned by user-
+speciﬁed routines. Typical error criteria might include ﬁrst
+or second derivatives of the state variables or some type ofapplication-speci ﬁc heuristic.
+The tagged cells are grouped into rectangular grids at
+levellusing the clustering algorithm given in Berger and
+Rigoutsos (1991) . These rectangular patches are re ﬁned to
+form the grids at level l+ 1. Large patches are broken into
+smaller patches for distribution to multiple processors basedon a user-speci ﬁedmax_grid_size parameter; AMReX
+enforces that no grid is longer in any direction thanmax_grid_size cells. AMReX also provides the option
+to enforce that the dimensions of each newly created grid is
+divisible by a speci ﬁc factor, blocking_factor ; this is
+used to improve multigrid ef ﬁciency for single-level solves.
+(In this case, the grid creation algorithm is slightly different;we refer the interested reader to the AMReX documenta-tion: Zhang et al. (2019 ;2020) .) The re ﬁnement process is
+repeated until either an error tolerance criterion is satis ﬁed
+or a speci ﬁed maximum level is reached. Finally, we impose
+the proper nesting requirements that enforce that level l+1
+is strictly contained in level lexcept at physical boundaries.
+A similar procedure is used to generate the initial gridhierarchy. Once created, the BoxArray of new grids at
+each level is broadcast to every MPI rank.
+When creating a DistributionMapping associated
+with a BoxArray at a level, it is important to equidistribute
+the work to the nodes. Some type of cost function that is
+assumed or prescribed by the user is used to estimate the work.
+The default methodology assumes a cost function propor-tional to the number of cells per grid and implements aMorton-ordering space- ﬁlling curve (SFC) algorithm to de ﬁne
+an initial data distribution across the MPI ranks. Once datahave been allocated, applications can calculate an improvedDistributionMapping throughout run time based on
+any desired load-balancing parameter, such as data size, an
+estimation of the work, a user-de ﬁned cost function, or a timer.
+Prescribed cost functions are often less than optimal. For
+GPUs, both CUPTI timers and ef ﬁcient hand-written timers
+have been developed to accurately capture device kernel
+times respective to the device. This eliminates launch delaysand other latencies from the resulting timer that preventaccurate distribution.Zhang et al. 511
+AMReX provides a knapsack algorithm in addition to a
+SFC algorithm for load-balancing simulations across MPIranks. The knapsack algorithm creates the most optimaldistribution possible with respect to the load-balancingparameter, while the SFC tries to build contiguous spatialregions with near uniform costs (see Figure 1 for an il-
+lustration of how the two approaches distribute data).
+6. Mesh data and iterators
+At the core of the AMReX software is a ﬂexible set of data
+structures that can be used to represent block-structuredmesh data in a distributed memory environment. Multileveldata on the AMR grid hierarchy are stored in a vector ofsingle-level data structures. In this section, we describe the
+data containers for mesh data. We also discuss operations
+supported on these data structures including iterators foroperations at a level, a communications layer to handleghost cell exchange and data distribution and tools foroperations between levels.
+6.1. Containers for mesh data
+The basic single-level data structure in AMReX is a C ++
+class template, FabArray <FAB> , a distributed data
+structure for a collection of FABs, one for each grid. The
+template parameter FAB is usually a multidimensional array
+class such as FArrayBox forﬂoating point numbers. Most
+AMReX applications use a specialization of FabArray ,called a MultiFab , that is used for storing ﬂoating point
+data on single-level grids. However, FabArray can also be
+used to store integers, complex numbers, or any user-deﬁned data structures.
+AFArrayBox contains the Box that de ﬁnes its valid
+region and a pointer to a multidimensional array. For three-dimensional calculations, the data accessed by the pointer in
+aFArrayBox or its base class BaseFab <T> is a four-
+dimensional array. The ﬁrst three dimensions correspond to
+the spatial dimensions; the fourth dimension is for com-ponents. An important feature of a FArrayBox is that extra
+space is allocated to provide space for ghost cell data, whichis often required for ef ﬁcient stencil operations. Ghost cell
+data are typically ﬁlled by interpolating from coarser data,
+copying from other FArrayBox es at the same level, or by
+imposing boundary conditions outside the domain. The data
+in aFArrayBox (including ghost cells) are stored in a
+contiguous chunk of memory with the layout of the so-called struct of arrays (SoA) (i.e., struct of 3D arrays, one foreach component).
+AMReX provides a class template, Array4 <T> , that
+can be used to access the data in a FArrayBox or other
+similar objects. This class does not own the data and is not
+responsible for allocating or freeing memory; it simply
+provides a reference to the data. This property makes itsuitable for being captured by a C++ lambda functionwithout memory management concerns. The Array4 class
+has an operator() that allows the user to access it with
+Fortran multidimensional array like syntax.
+Figure 1. Comparison of the data distribution from the knapsack load-balancing algorithm (left) and space- ﬁlling curve (right). Image
+courtesy of Michael Rowan.512 The International Journal of High Performance Computing Applications 35(6)
+The SoA layout of FArrayBox is typically a good
+choice for most applications because it provides unit stridememory access for common operations. Nevertheless, somealgorithms (e.g., high-order discontinuous Galerkinmethods) perform computations that involve relatively largematrices within a single element, and an array of struct(AoS) is a better layout for performance. This can be
+achieved with BaseFab <T> , where Tis a struct. For
+example, one can use amrex::GpuArray ,aﬁxed size
+array class portable to host and device, as the struct, andaccess the data in Array4 <GpuArray <Real,2 >>a
+at cell (i,j,k) witha(i,j,k)[ 0]anda(i,j,k)[ 1]
+as opposed to the SoA access a(i,j,k,0) anda(i,j,
+k,1) . Note that in this example, the choice between AoS
+and SoA is made a priori , not at compile or run time. This
+explicit memory layout gives the users transparency re-
+garding the memory access pattern, and makes it easy forinteroperability with other languages such as Fortran. If,however, a different ordering is needed to achieve goodperformance on different hardware, a thin abstraction layerPolymorphicArray4 is provided to allow the users to
+access both SoA and AoS with operator()(int i,
+int j, int k, int n) where the choice is made at
+compile time.
+6.2. Iterators
+AMReX employs an owner-computes rule to operate on
+single AMR level data structures such as MultiFab s and
+FabArray s. A data iterator, MFIter , is provided to loop
+over the single box data structures such as FArrayBox s
+andBaseFab si na MultiFab /FabArray with the
+option of logical tiling. The iterator can be used toaccess data from multiple MultiFab s/FabArray s
+built on the same BoxArray with the same
+DistributionMapping .
+For CPU computing, tiling provides the bene ﬁt of cache
+blocking and parallelism for OpenMP threading. Theiterator performs a loop transformation, thereby improving
+data locality and relieving the user from the burden of
+manually tiling ( Zhang et al., 2016 ). For GPU computing,
+tiling is turned off by default because exposing more ﬁne-
+grained parallelism at the cell level and reducing kernellaunch overhead are more important than cache blocking.
+6.3. Operations on a level
+Many AMReX-based applications use stencil operationsthat require access to the data on neighboring and/or nearbycells. When that data lie outside the valid region of thepatch being operated on, pre- ﬁlling ghost cells is an ef ﬁcient
+way to optimize communication. The Boxes stored in
+FabArrays determine the “valid”region. The multidi-
+mensional array associated with each FArrayBox covers aregion larger than the “valid”region by nGrow cells on the
+low and high sides in each direction, where nGrow is
+speciﬁed when the MultiFab is created. AMReX pro-
+vides basic communication functions for ghost cell ex-changes of data in the same FabArray . It also provides
+routines for copying data between two different FabArrays
+at the same level. These routines use the metadata discussed
+in the previous section to compute where the data are lo-
+cated. Data between different MPI ranks are organized intobuffers to reduce the number of messages that need to besent. Techniques to optimize the communication are dis-cussed in more detail below.
+6.4. Operations between levels
+AMReX also provides functions for common communi-cation patterns associated with operations between adjacentlevels. The three most common types of inter-level oper-ations are interpolation from coarse data to ﬁne, restriction
+ofﬁne data to coarse, and explicit re ﬂuxing at coarse/ ﬁne
+boundaries.
+Interpolation is needed to ﬁllﬁne level ghost cells that
+are inside the domain but cannot be ﬁlled by copying from
+another patch at the same level and is also needed in re-
+gridding to ﬁll regions at the ﬁne level that were not pre-
+viously contained in ﬁne level patches. Note that to avoid
+unnecessary communication, we only obtain coarse data tointerpolate to the ﬁne level when ﬁne data are not available.
+Restriction is typically used to synchronize data betweenlevels, replacing data at a coarser level with an average orinjection of ﬁne data where possible. A number of inter-
+polation and restriction operations are provided within
+AMReX for cell-centered, face-centered, or nodal data; adeveloper can also create their own application-speci ﬁc
+interpolation or restriction operation. For these opera-tions, necessary communication is done ﬁrst and then
+interpolation/restriction is done locally, making itstraightforward for users to provide their own functions.AMReX only needs to know the width of the stencil to
+gather the necessary amount of data.
+Reﬂuxing effectively synchronizes explicit ﬂuxes across
+coarse/ ﬁne boundaries and is relevant only for cell-centered
+data being updated with face-centered ﬂuxes. Specialized
+data structures, referred to as FluxRegisters , hold the
+differences between ﬂuxes on a coarse level and time- and
+space-averaged ﬁne level ﬂuxes. Once the coarse and ﬁne
+level have reached the same simulation time, the data in
+theFluxRegisters a r eu s e dt ou p d a t et h ed a t ai nt h e
+coarse cells immediately next to the coarse- ﬁne bound-
+aries but not covered by ﬁne cells. This operation is
+common in multilevel algorithms with explicit ﬂux up-
+dates. FluxRegisters are also used to hold data needed
+to synchronize implicit discretizations of parabolic and el-liptic equations.Zhang et al. 513
+6.5. Communication
+AMReX grids can have a complicated layout, which makes
+the communication metadata needed for ghost cell exchangeand inter-level communication nontrivial to construct.AMReX uses a hash-based algorithm to perform intersec-
+tions between Boxes. The hash is constructed in an O(N)
+operation, where Nis the number of global Boxes, and
+cached for later use. It then takes only O(n) operations to
+construct the list of source and destination Boxes forcommunication, where nis the number of local Boxes.
+Furthermore, the communication metadata is also cachedfor reuse.
+AMReX supports GPU-aware MPI on GPU machines, if
+available. To reduce latency, the data needed to be com-
+municated through MPI are aggregated into communicationbuffers. For packing the buffer, we need to copy data fromslices of multidimensional arrays to the one-dimensionalbuffer, whereas for unpacking the buffer, data are copiedfrom the one-dimensional buffer to slices of multidimen-sional array. The straightforward approach of the copying isto launch a GPU kernel for each slice. Unfortunately, this
+simple approach is very expensive because there are often
+hundreds of very small GPU kernels. In AMReX, we haveimplemented a fusing mechanism that merges all thesesmall GPU kernels into one kernel, thus signi ﬁcantly re-
+ducing kernel launch overhead.
+7. Performance portability
+Performance portability across different architectures has
+been identi ﬁed as a major concern for the ECP. Most
+AMReX-based application codes either use or have plans touse a variety of platforms, including individual worksta-tions, many-core HPC platforms such as NERSC ’s Cori,
+and accelerator-based supercomputers such as Summit andFrontier at OLCF and Aurora at ALCF. In this section, wediscuss various features that enable applications to obtainhigh performance on different architectures without sub-
+stantial recoding.
+7.1. On-node parallelism
+AMReX is based on a hierarchical parallelism model. At a
+coarse-grained level, the basic AMReX paradigm is basedon distribution of one or more patches of data to each nodewith an owner-computes rule to allocate tasks betweennodes. For many use cases, a node is divided into a small
+number of MPI ranks and the coarse-grained distribution is
+over MPI ranks. For example, on a system with six GPUsper node, the node would typically have six MPI ranks. Thenodes on modern architectures all have hardware for parallelexecution within the node, but there is considerable vari-ability in the details of intranode parallel hardware. For codeexecuting on CPUs, AMReX supports logical tiling for
+cache reuse using OpenMP threading. Tile size can beadjusted at run time to improve cache performance; tile sizecan also vary between operations. AMReX includes both astandard synchronous strategy for scheduling tiles as well asan asynchronous scheduling methodology. AMReX alsoprovides extensive support for kernel launching on GPU
+accelerators (using C++ lambda functions) and for the ef-
+fective use of managed memory that allows users to controlwhere their data are stored. While much of the internalAMReX functionality currently uses CUDA/HIP/DPC++for maximum performance on current machines, AMReXsupports the use of CUDA, HIP, DPC++, OpenMP,or OpenACC in AMReX-based applications. Speci ﬁc
+architecture-dependent aspects of the software for GPUs
+are highly localized, enabling AMReX to easily support
+other GPU architectures.
+To isolate application code from the nuances of a par-
+ticular architecture, AMReX provides an abstraction layerconsisting of a number of ParallelFor looping constructs,similar to those provided by Kokkos ( Carter Edwards et al.,
+2014 ) or RAJA ( Beckingsale et al., 2019 ) but tailored to the
+needs of block-structured AMR applications. Users provide
+a loop body as a C++ lambda function that de ﬁnes the task
+to be performed over a set of cells or particles. The lambdafunction is then used in a kernel with a launching mech-anism provided by CUDA, HIP, or DPC++ for GPU orstandard C++ for CPU. The details of how to loop over theset of objects, and in particular how to map iterations of theloop to hardware resources such as GPU threads, are hiddenfrom users. By separating these details from the loop body,
+the same user code can run on multiple platforms. In ad-
+dition to 1D loops, users can also specify 3D and 4D loopsusing by passing in an amrex::Box as the loop bounds.
+Internally, the ParallelFor construct in AMReX is
+implemented using CUDA, HIP, and DPC++ as the parallelbackend. A key difference between AMReX ’sParallelFor
+functions and those provided by Kokkos or RAJA is theway OpenMP is handled. When using multi-threading, the
+AMReX ParallelFor does not include any OpenMP
+directives (it does, however, incorporate vectorizationthrough #pragma simd). Rather, OpenMP is incorporated attheMFIter level, as shown in Listing 1 . When this code is
+compiled to execute on CPUs with OpenMP, the MFIter
+loop includes tiling and the ParallelFor translates to a
+serial loop over the cells in a tile. However, when compilingfor GPU platforms, tiling at the MFIter level is switched
+off, and the ParallelFor translates to a GPU kernel
+launch.
+7.2. Parallel reductions
+Parallel reductions are commonly needed in scienti ﬁc
+computing. For example, in an explicit hydrodynamics514 The International Journal of High Performance Computing Applications 35(6)
+solver, one needs to calculate the time step by examining the
+CFL constraint in each cell and then ﬁnding the minimum
+over all cells. Similarly, in linear solvers, one needs to
+measure norms of the global residual. Performing reduc-tions ef ﬁciently in parallel in a way that is portable between
+CPU and various GPU platforms is nontrivial. To aid in thistask, AMReX provides generic functions for performingreduction operations in a performance-portable way. Thesefunctions can be used at the level of contiguous arrays bypassing in data pointers, or they can work on higher-level
+AMReX data containers to, for example, perform reductions
+over all the cells in a MultiFab , or all the particles in a
+ParticleContainer (see Section 8 for more infor-
+mation about particles in AMReX).
+A feature of the AMReX implementation of parallel
+reduce is that we provide an API for performing multiplereductions in one pass using a ReduceTuple data type
+(seeListing 2 for a code example). The code in this snippet
+computes the Sum, Min, and Max of all the Real data in a
+MultiFab , as well as the Sum of all the int data in an
+iMultiFab ( Long is used in the reduction to avoid over-
+ﬂow). Any arbitrary combination of data types and re-
+duction operators can be applied in this manner. Whenrunning on GPUs, all these operations would be done in asingle kernel launch.Note that the code in the above snippet does not perform
+MPI-level reductions. If that is needed, for convenience AMReXprovides wrappers such as ParallelDescriptor::
+ReduceRealMin and ParallelDescriptor::
+ReduceLongSum , so that the same code can work whether
+or not it is compiled with MPI support.
+7.3. Memory management
+Allocating and deallocating memory can be extremelycostly, especially on CPU –GPU platforms where data need
+to be copied back and forth between multiple memoryspaces. Furthermore, different architectures support dif-ferent types of memory models. AMReX includes a varietyof memory pools, referred to as Arena s, to improve the
+performance of memory activities and properly track and
+handle memory allocations. Arena s allocate a large block
+of memory during initialization and provide data pointers topieces of that pre-allocated space as needed. This minimizesexpensive allocation calls, provides a portability wrapperaround memory operations, and allows tracking of memoryuse across a simulation. In most cases, Arena s are used
+automatically according to AMReX ’s memory strategy.
+For example, when creating a new MultiFab , the mesh
+data are allocated with the default AMReX Arena ,
+The_Arena , unless otherwise speci ﬁed by the user.
+Based on the system architecture, AMReX prede ﬁnes an
+Arena for each available memory type during initializa-
+tion. A variety of Arena types are provided, including slab
+allocation, buddy memory and best- ﬁt, and they can be
+targeted to any desired memory type, which currently in-
+cludes CPU memory, pinned memory, GPU device memory,
+and GPU managed memory. Users can build their ownArena s, either to track a particular subset of memory usage
+or to manage memory according to a user-speci ﬁc strategy.
+AMReX also provides specialized std::vector varia-
+tions that track particle memory use as well as implement animproved memory allocation strategy.
+AMReX ’s default memory management strategy for
+CPU–GPU systems is based on placing ﬂoating point data
+on the device and moving it as little as possible. Using thisparadigm, metadata is usually allocated to the CPU to fa-cilitate ef ﬁcient host side solution control and pinned
+memory is used for temporary data that will be transferredbetween the host and device. This memory managementstrategy is implemented automatically, and users only in-teract directly with Arena s when it becomes necessary to
+deviate from this strategy. AMReX Arena s include a ro-
+bust design API, so manually controlling deviations issimple. For example, by default mesh and particle, data areallocated in managed memory, due to its convenience todevelopers and negligible overhead. But, this default can beoverridden for any speci ﬁcMultiFab ,iMultiFab ,o r
+ParticleContainer object during the object ’sListing 1. Example of ParallelFor. This code can be compiled to
+run on CPU with OpenMP or GPU with CUDA, HIP, or DPC++.
+Listing 2. Performing parallel reduce on mixed data types.
+Zhang et al. 515
+constructions. The default memory pool can also be
+changed to traditional device memory through a run-timeﬂag. Additional run-time options include setting the initial
+allocation sizes of the Arena s and aborting if device
+memory is oversubscribed, allowing users to adjust theAMReX memory management paradigm for their uniqueneeds.
+7.4. Example
+As an illustration of the performance of AMReX on a simpleexample, we carried out a weak scaling study on Summit(https://www.olcf.ornl.gov/summit/ ) using an explicit hy-
+drodynamics code for solving the compressible Eulerequations. The time-stepping strategy uses a second-order
+Runge –Kutta method on each level with subcycling in time
+between levels. A piecewise linear reconstruction methodwith a monotonized central slope limiter is used to ex-trapolate the primitive variables to cell faces, and an ap-proximate Riemann solver based on the two-shockapproximation is employed to compute ﬂuxes. We have
+performed a series of tests simulating the Rayleigh –Taylor
+instability. The runs have a base level and two re ﬁned levels,
+each with a re ﬁnement ratio of 2. On each node, there are
+128 × 128 × 256 cells on level 0. For multi-node runs, thedomain is replicated in the xandydirections. In the initial
+model, levels 1 and 2 occupy 12.5% and 6.25% of thedomain, respectively. Regridding is performed every 2 stepson each ﬁne level.
+Figure 2 shows the results of a series of runs on Summit.
+We de ﬁne the speedup as the time per step using CPUs only
+divided by the time per step using 6 GPUs per node. For
+single node runs, there is a ∼60× speedup for the com-
+putational kernels themselves and a 19× overall speedupwith GPUs. For the runs using 4096 nodes (24,576 GPUs), a
+4.4× speedup is obtained. The reduced speedup is due toincreased communication costs relative to compute costswhen using GPU accelerators; the effect is so large herebecause relatively little ﬂoating point work is needed to
+advance the solution in each cell.
+8. Particles
+In addition to mesh data, many AMReX applications useparticles to model at least some portion of the physicalsystem under consideration. At their simplest, particles canbe used as passive tracers that follow a ﬂowﬁeld, tracking
+changes to properties such as chemical composition but notfeeding back into the mesh-based solution. In most cases,
+however, the particles in AMReX applications actively
+inﬂuence the evolution of the mesh variables through, for
+example, drag or gravitational forces. Finally, particles candirectly in ﬂuence each other without an intervening mesh,
+for example, through particle –particle collisions or DSMC-
+style random interactions. AMReX provides data con-tainers, iterators, parallel communication routines, and othertools for implementing the above operations on particle
+data.
+Particles present a different set of challenges than
+structured grid data for several reasons. First, particle dataare inherently dynamic, even between AMR regriddingoperations; particles are constantly changing their positions.Additionally, the connectivity of particle data (e.g., nearestneighbors) is not as simple and in general cannot be inferredfrom metadata alone —rather, the particle data itself must be
+examined and processed. Finally, data access patterns are
+more irregular, in that (unless special sorting is employed)particles that are next to each other in memory do notnecessarily interact with the same set of grid cells or with thesame set of other particles. In what follows, we describe theparticle data structures and supporting operations providedby AMReX and how they help users manage thesechallenges.
+8.1. Data structures and iterators
+AMReX provides a ParticleContainer class for
+storing particle data in a distributed fashion. Particles inAMReX are associated with a block-structured mesh re-ﬁnement hierarchy based on their position coordinates.
+Internally, this hierarchy is represented by a Vector
+<BoxArray > that describes the grid patches on each level,
+as well as a Vector <DistributionMapping >t h a t
+describes how those grids are distributed onto MPI ranks.Particles are then assigned to levels, grids, and MPI ranksspatially, by binning them on a given level using theappropriate cell spacing and physical domain offset.Storing the particles in thi s fashion allows them to be
+Figure 2. Weak scaling study of a compressible hydrodynamics
+solver. Time per step is shown for a series of GPU and CPU
+runs. The adaptive mesh re ﬁnement runs have three total levels.516 The International Journal of High Performance Computing Applications 35(6)
+accessed and iterated over level-by-level, which is con-
+venient for many AMR time-stepping approaches. Ad-ditionally, splitting particles onto grids and then assigning
+multiple grids per MPI rank allows load balancing toperform by exchanging grids among the processes until aneven number of particles is achieved. Note also that al-though particles in AMReX always live on a set of AMR
+grids, this does not need to the same set of grids that is
+used to store the mesh data; in principle, the particle gridscan be different and can be load balanced separately (seeSection 8.7 for more information).
+Once the particles are stored in the ParticleContainer ,
+they can be iterated over in parallel in a similar manner totheMFIter for mesh data (see Listing 3 for a code sample).
+Speci ﬁcally, when an MPI rank executes a ParIter loop,
+it executes the loop body once for each grid (or tile, if tiling
+is enabled, see Section 8.2 ) on the level in question. By
+launching the same compute kernel on each grid, all theparticles on the level can be updated in a manner thatseparates the numerical operations from the details of thedomain decomposition. Inside the ParIter , the same
+ParallelFor constructs can be used to operate on par-
+ticles in a portable way. The 1D version of ParallelFor ,
+which takes a number of items to iterate over instead of a Box,
+is particularly useful for particle data.
+8.2. Data layout
+AMReX supports particle types that are arbitrary mixturesof real (i.e., ﬂoating point data of either single or double
+precision) and integer components. For example, a particle
+used to represent a star in a 3D N-body calculation might
+have four real components, a mass, and three velocitycomponents, while a particle that a represents an ion in afuel cell might have an integer component that tracks itsionization level. In general, the particles in a given containermust all have the same type, but there is no limit to thenumber of different types of ParticleContainers that
+can be in the same simulation. For example, a single cal-
+culation might have one type of particle that representscollisionless dark matter, another that represents neutrinos,
+and another that represents active galactic nuclei, each ofwhich would model different physics and exhibit differentbehavior.
+There is also the question of how the various components
+for the particles on a single grid should be laid out inmemory. In an Array-of-Structs (AoS) representation, all the
+components for particle 1 are next to each other, followed by
+all the components for particle 2, and so on. In a Struct-of-Arrays (SoA) representation, all the data over all the par-ticles for component 1 would be next to other, followed byall the data for component 2, and so on. AMReX allowsusers to specify a mixture of AoS and SoA data whendeﬁning the particle type. For example, consider an ap-
+plication where, in addition to position and velocity, each
+particle stores the mass fraction of a large number of
+chemical components. For many operations, such as ad-vancing the particle positions in time or assigning particlesto the proper grid in the AMR hierarchy, the values of thechemical concentration are irrelevant. If all of these com-ponents were stored in the particle struct, the data for theposition and velocity of all the particles would be spread outin memory, resulting in an inef ﬁcient use of cache for these
+common operations. By separating out these components
+from the core particle struct, we can avoid reading them intocache for operations in which they are not needed.
+The AMReX particle containers also support a tiling
+option. When tiling is enabled, instead of each grid havingits own separate set of particle data structures, the grids willbe further subdivided into tiles with a run time –speciﬁed
+size. Unlike with mesh data, with particle data, the tiles are
+not just logical, they actually change the way the data are
+laid out in memory, with each tile getting its own set ofstd::vector -like data structures. This tiling strategy can
+make working sets smaller and more cache-friendly, as wellas enable the use of OpenMP for particle –mesh deposition
+operations, in which race conditions need to be considered(seeSection 8.4 for more information).
+8.3. Particle communication
+There are two main parallel communication patterns that
+arise when implementing particle methods with AMReX.Theﬁrst is redistribution. Suppose that at a given time in a
+simulation, the particles are all associated with the correctlevel, grid, and MPI rank. The particle positions are thenupdated according to some time-stepping procedure. At
+their new positions, the particles may no longer be assigned
+to the correct location in the AMR hierarchy. The Re-
+distribute() method in AMReX takes care of as-
+signing the correct level, grid, and tile to each particle andmoving it to the correct place in the ParticleContainer ,
+including any necessary MPI communication. We providetwo forms of Redistribute() , one in which theListing 3. Example of ParIter loop.
+Zhang et al. 517
+particles have only moved a ﬁnite distance from the
+“correct ”grids and thus are only exchanged between
+neighboring MPI ranks, and another where the particlescan in principle move between any two ranks in the MPIcommunicator. The former is the version most often usedduring time evolution, while the latter is mostly useful afterinitialization, regridding, o r performing a load-balancing
+operation.
+The process of particle/grid assignment is done as fol-
+lows. First, consider a single level. Assigning a particle to agrid reduces to (1) binning the particle using the level ’s cell
+spacing and (2) identifying the box in the BoxArray that
+contains the associated cell. Internally, this operation isimplemented using a uniform binning strategy to avoid adirect search over all the boxes on the level. By binning
+boxes using the maximum box size as the bin size, only
+neighboring bins need to be searched to ﬁnd the possible
+intersections for a given cell. Additionally, this operationcan be performed purely on the GPU by using a ﬂattened
+map data structure to store the binned BoxArray .
+To extend this operation to multiple levels, we consider
+each level in a loop, from ﬁnest to coarsest. Usually, we
+associate the particles with the ﬁnest level possible. The
+exception is when subcycling in time is involved. In this
+case, we provide the option to exclude certain levels fromtheRedistribute() operation and to leave the particles
+alone if they are less than a speci ﬁed number of cells outside
+the coarse/ ﬁne boundary.
+The second communication pattern that comes up for
+particle data is the halo pattern, similar to ﬁlling ghost cells
+for mesh data. In this operation, each grid or tile obtains
+copies of particles that are within some number of cells
+outside its valid region. This is commonly needed in ap-plications with direct particle –particle collisions since there
+is no intermediate grid that can be used to communicateaccumulated values (in contrast to the pattern described inSection 8.4 ). The AMReX terminology for these copies of
+particles from other grids is NeighborParticles .A s
+with Redistribute() , any necessary parallel com-
+munication is handled automatically, and when AMReX is
+compiled with GPU support, the operation runs entirely onthe device.
+When using neighbor particles, it is common to compute
+a halo of particles (i.e., identify which particles need to becopied to which other grids) once and then reuse it forseveral time steps before computing a new halo. To enablethis, AMReX separates computing the halo and ﬁlling it
+with data for the ﬁrst time (the FillNeighbors opera-
+tion) from reusing the existing halo but replacing the datawith the most recent values from the “valid”particles on
+other grids (the UpdateNeighbors operation). Addi-
+tionally, AMReX provides a SumNeighbors func-
+tion that takes data from the ghosted particles and addsthe contribution back to the corresponding “valid ”
+particles.
+The particle communication routines in AMReX have
+been optimized for Summit and can weak scale up to nearlythe full machine. Figure 3 shows the results of a particle
+redistribution scaling study on up to 4096 Summit nodes,with and without mesh re ﬁnement. In this test, particles are
+initialized uniformly throughout the domain and then
+moved in a random direction for 500 time steps, callingRedistribute() after each one. The initial drop in
+weak scaling ef
+ﬁciency from 1 to ∼16 nodes is due to the
+fact that in 3D, the average number of communicationpartners per MPI rank grows until you have ≈27 neighbors
+per grid. After this point , the scaling is basically ﬂat
+up to 4096 nodes (24,576 MPI tasks). Finally, although
+this benchmark tests Redistribute() rather than
+FillNeighbors , the two routines share the same un-
+derlying communication code, so the scaling performance
+of each is similar.
+8.4. Particle –mesh operations
+Many of the application codes that use AMReX ’s particle
+data structures implement some form of the particle –mesh
+method, in which quantities are interpolated between theparticle positions and the cells, edges, faces, or nodes of astructured mesh. Example use cases include Lagrangiantracers (in which this interpolation is one-way only), models
+Figure 3. Weak scaling study of an AMReX particle
+redistribution benchmark on Summit. The x-axis is the number
+of nodes, while the y-axis shows parallel ef ﬁciency, that is, the run
+time on 1 node divided by the run time on a scaled up version of
+the benchmark on Nnodes. The total number of nodes on
+Summit is indicated by the red vertical line. All runs used 6 MPI
+ranks per node with 1 GPU per MPI rank. Results are shown for
+both a 1-level and a 3-level version of the benchmark.518 The International Journal of High Performance Computing Applications 35(6)
+of drag forces between a ﬂuid and colloidal particles, and
+electrostatic and electromagnetic PIC schemes.
+To perform these operations in a distributed setting, some
+type of parallel communication is required. We opt tocommunicate the mesh data rather than the particle data forthese operations because the connectivity of the mesh cellsis simpler, and thus, the operation can be made more ef-
+ﬁcient. However, this may not be the best choice when the
+particles are very sparse and/or the interpolation stencil isvery wide. Depending on the type and order of interpolationemployed, the mesh data involved in these interpolationsrequire some number of ghost cells to ensure that each gridhas enough data to fully perform the interpolation for theparticles inside it. For mesh-to-particle interpolation, we useFillBoundary to update the ghost cells on each grid
+prior to performing the interpolation. For particle-to-mesh
+(i.e., deposition), we use the analogous SumBoundary
+operation after performing a deposition, which adds thevalues from overlapping ghost cells back to the correspondingvalid cell, ensuring that all the particle ’s contributions are
+accounted for. We provide generic, lambda function –based
+ParticleToMesh andMeshToParticle functions for
+performing general interpolations. Additionally, users can
+always write their own MFIter loops to implement these
+operations in a more customized way.
+For particle-to-mesh interpolation, an additional factor is
+that race conditions need to be taken into account whenmultiple CPU or GPU threads are in use. Our approach tothis depends on whether AMReX is compiled for a CPU orGPU platform. When built for CPUs, we use AMReX ’s
+tiling infrastructure to assign different tiles to different
+OpenMP threads. Each thread then deposits its particles into
+a thread-local buffer, for which no atomics are needed. Wethen perform a second reduction step where each tile ’s local
+buffer is atomically added to the MultiFab storing the
+result of the deposition. For GPUs, no local buffer is used;each thread performs the atomic writes directly into globalmemory. This strategy works surprisingly well for NVIDIAV100 GPUs such as those on Summit, provided that we
+periodically sort the particles on each grid to better exploit
+the GPU ’s memory hierarchy.
+Figure 4 shows the results of a weak scaling study on a
+uniform plasma benchmark from the AMReX-using codeWarpX ( Vay et al., 2018 ). Of all AMReX users, WarpX
+places the most stress on the particle –mesh operations since
+the deposition of current from macro-particles is often thedominant cost. This benchmark also stresses several parallel
+communication routines, including particle redistribution,
+FillBoundary , and SumBoundary .
+Additionally, the WarpX project has identi ﬁed a plasma-
+acceleration run as its ECP KPP benchmark. At the time ofthis writing, the ﬁgure of merit from this benchmark
+measured on 4263 Summit nodes and extrapolated to thefull machine is over 100 times larger than the baseline,
+which was measured using the original Warp code on Cori.
+8.5. Particle –particle operations
+Another common need in AMReX particle applications, for
+example, MFIX-Exa and the ﬂuctuating hydrodynamics
+code DISCOS, is to precompute a neighbor list or a set of
+possible collision partners for each particle over the next Ntime steps. AMReX provides algorithms for constructingthese lists that run on both the CPU and the GPU based on auser-provided decision function that returns whether a pairof particles belong in each other ’s lists or not. These al-
+gorithms employ a spatial binning method similar to thatused in Redistribution that avoids an N
+2search over the
+particles on a grid. Tools for iterating over neighbor lists are
+also provided (see Listing 4 for example code).
+8.6. Parallel scan
+When running on GPUs, many particle operations can be
+expressed in terms of a parallel pre ﬁx sum, which computes
+a running tally of the values in an array. For example, a
+commonly needed operation is to compute a permutation
+array that puts the particles on a grid into a bin-sorted orderbased on some user-speci ﬁc bin size. This array can then be
+used to re-order the particles in memory, or it can be useddirectly to access physically nearby particles in an out-of-order fashion. To perform this operation in AMReX, we usea counting sort algorithm, which involves as one of its
+Figure 4. Weak scaling study of a WarpX uniform plasma
+benchmark on up to 2048 nodes on Summit. The x-axis is the
+number of nodes, while the y-axis displays a type of Figure-of-
+Merit: the total number of particles advanced per step per ns.
+Perfect weak scaling would be indicated by dark dashed lines.
+Results are shown for both CPU-only and GPU-accelerated runs.
+The CPU-only runs used all 42 cores per compute node, while the
+GPU-accelerated runs used all 6 GPUs per node. The overall
+speedup from using the accelerators is ≈30 at all problem sizes.Zhang et al. 519
+stages an exclusive pre ﬁx sum. Other operations that can be
+expressed in terms of a pre ﬁx sum include partitioning the
+particles in a grid, various stream compaction operations(ﬁltering, scattering, and gathering), and constructing
+neighbor lists.
+AMReX provides an implementation of pre ﬁx sum
+based on Merrill and Garland (2016) that works with
+CUDA, HIP, and DPC++. Our API allows callables to bepassed in that de ﬁne arbitrary functions to be called when
+reading in and writing out data (see Listing 5 for an ex-
+ample). This allows for the expression of, for example, apartition function that avoids unnecessary memory traf ﬁc
+for temporary variables.
+Using this scan implementation, AMReX provides tools
+for performing the above binning and stream compactionoperations. These tools are used internally in AMReXwhen, for example, redistributing particles or constructingneighbor lists. They are also used by AMReX applications,for example, to implement DSMC-style collisions whereparticles in the same bin undergo random collisions or tomodel a variety of particle creation processes in WarpX,
+such as ionization, pair production, and quantum syn-
+chrotron radiation.
+8.7. Dual grid approach for load balancing
+In AMReX-based applications that have both mesh data andparticle data, the mesh work and particle work have very
+different requirements for load balancing. Rather than using
+a combined work estimate to create the same grids for meshand particle data, AMReX supplies the option to pursuea“dual grid ”approach. With this approach, the mesh(MultiFab ) and particle ( ParticleContainer ) data
+are allocated on different BoxArrays with different
+DistributionMapping s. This enables separate load-
+balancing strategies to be used for the mesh and particlework. An MFiX-Exa simulation, for example, may havevery dense and very dilute particle distributions within thesame domain, while the dominant cost of the ﬂuid
+evolution —the linear solver for the projections —is evenly
+distributed throughout the domain. The cost of this strategy,of course, is the need to copy mesh data onto temporaryMultiFabs deﬁned on the particle BoxArrays when
+mesh –particle communication is required.
+9. EB representation
+AMReX supports complex geometries with an EB approach
+thatﬁts naturally within the block-structured AMR ap-
+proach. In this approach, the problem geometry is repre-
+sented as an interface that cuts through a regularcomputational mesh as shown in Figure 5 . Thus, although
+the computational domain has an irregular shape, the un-derlying computational mesh is uniform at each level of theAMR hierarchy.
+9.1. Data structures and algorithms
+When an EB is present in the domain, there are three typesof cells: regular, cut, and covered, as seen in Figure 5 .
+AMReX provides data structures for accessing EB infor-mation and supports various algorithms and solvers forsolving partial differential equations on AMR grids withcomplex geometries.
+The EB information is precomputed and stored in a
+distributed database at the beginning of the calculation. It is
+available for AMR meshes at each level and for coarsenedmeshes in multigrid solvers. The information includes celltype, volume fraction, volume centroid, face area fractions,and face centroids. For cut cells, the information also in-cludes the centroid, normal, and area of the EB face. Ad-ditionally, there is connectivity information betweenneighboring cells.
+The implementation of the EB data structures uses C ++
+std::shared_ptr s. Regular data structures such as
+MultiFabs andFArrayBox sh a v et h eo p t i o nt os t o r ea
+shared copy of the EB data. One can query a FArrayBox
+toﬁnd out if it has any cut or covered cells within a given
+Box. This allows the user to adapt an existing non-EB code
+to support EB by adding support to handle regions withEB. Computations with EB are usually not balanced in
+work load. Regions with cut cells are more expensive than
+regions with only regular cel ls, whereas the completely
+covered regions have no work. Applications can measurethe wallclock time spent in different regions and use thatListing 4. Iterating over particles in a neighbor list.
+Listing 5. API for Pre ﬁxSum.
+520 The International Journal of High Performance Computing Applications 35(6)
+information for load balancing when regridding is
+performed.
+Numerical algorithms that use an EB typically use
+specialized stencils in cells containing and near theboundary; in particular, they may pay special attention to the
+treatment of the solution in “small cells ”that can arise when
+the problem domain is intersected with the mesh.
+For example, due to the stability constraint for cut cells
+with very small volume fractions, EB-aware algorithmsoften need to redistribute part of the update from small cutcells to their neighbors. Furthermore, to maintain conser-vation when relevant, both the ﬂuxes and redistribution
+corrections at AMR coarse/ ﬁne boundaries need to be
+synchronized. AMReX provides a class EBFluxRegister
+for re ﬂuxing in solvers for hyperbolic conservation laws.
+AMReX also provides EB-aware interpolation functions fordata on different AMR levels.
+9.2. Geometry generation
+AMReX provides an implicit function approach for gen-erating the geometry information. In this approach, there is
+an implicit function that describes the surface of the em-
+bedded object. It returns a positive value, a negative value,or zero, for a given position inside the body, inside the ﬂuid,
+or on the boundary, respectively. Implicit functions forvarious simple shapes such as boxes, cylinders, and spheres,as well as a spline-based approach, are provided. Further-more, basic operations in constructive solid geometry(CSG) such as union, intersection, and difference are used to
+combine objects together. Geometry transformations (e.g.,
+rotation and translation) can also be applied to these objects.Figure 6 shows an example of geometry generated with
+CSG from simple shapes using the implicit function de ﬁned
+inListing 6 . Besides the implicit function –based approach,
+an application code can also use its own approach togenerate geometry information and then store it in AM-
+ReX’s EB database.
+9.3. Mesh pruning
+When the simulation domain is contained by EB surfaces,
+“mesh pruning ”can reduce the memory required by
+eliminating fully covered grids at each level (i.e., grids thatare fully outside of the region in which the solution will be
+computed) from the BoxArray at that level. As long as the
+MultiFabs holding the solution are created after the
+BoxArray has been pruned, no data will be allocated in
+those regions. This capability has been demonstrated for asimpli ﬁed chemical looping reactor geometry by the MFiX-
+Figure 5. Sketch illustrating embedded boundary representation
+of geometry.
+Figure 6. Example of complex geometry generated with
+constructive solid geometry from simple shapes.
+Listing 6. Example of constructing a complex implicit function
+based on simple objects (sphere, box, and cylinder) with
+transformations (intersection, union, and difference).
+Zhang et al. 521
+Exa project (see Figure 7 for an example of how mesh
+pruning becomes even more effective as the base mesh isresolved).
+9.4. Particle-wall interactions
+In cases where particles interact with EB surfaces, AMReX
+provides the functionality to build a level set, with values
+deﬁned at nodes, that represents the distance function from
+the EB surface. Particle-wall collisions can then be com-puted based on the level set values at the nodes surroundingthe cell holding the particle. In some applications, such asMFiX-Exa, the level set can be de ﬁned at a ﬁner level than
+the rest of the simulation in order to exploit a ﬁner repre-
+sentation of the geometry for calculating collisions.
+10. Linear solvers
+A key feature of a number of applications based on AMReXis that they require solution of one or more linear systems ateach time step. AMReX includes native single-level andmulti-AMR-level geometric multigrid and Krylov (CG and
+BiCG) solvers for nodal or cell-centered data, as well asinterfaces to external solvers such as those in hypre ( Falgout
+et al., 2006 ) and PETSc ( Balay et al., 2019 ). The external
+solvers can be called at the ﬁnest multigrid level, or as a
+“bottom solve ”where the native solver coarsens one or
+more levels, and then calls the external solver to reduce the
+residual by a speci ﬁed tolerance at that level.
+Discretizations include variable coef ﬁcient Poisson and
+Helmholtz operators as well as the full viscous tensor forﬂuid dynamics (requiring solution of a multi-component
+system). The AMReX multigrid solvers include aggregation(merging boxes at a level in the multigrid hierarchy toenable additional coarsening within the V-cycle) and con-solidation (reducing the number of ranks to reduce com-
+munication costs at coarser multigrid levels) strategies to
+reduce total cost.
+The linear solvers in AMReX also support complex
+geometries represented using the EB approach. For cell-centered data, the stencil uses EB information such as theboundary normal and employs a geometric coarseningstrategy. The nodal linear solver in AMReX is based on aﬁnite-element approach. The construction of the stencil uses
+various precomputed moment integrals (e.g.,ÐÐÐ
+x
+α
+yβzYdxdydz), with an algebraic multigrid approach to
+coarsening the operator.
+Figure 8 shows a weak scaling study of the cell-centered
+linear solver for
+aαf/C0b=/C1ðβ=fÞ¼rhs (1)
+where fis the unknown de ﬁned at cell centers, aandbare
+scalars, αis deﬁned at cell centers and may vary in space,
+andβis a variable coef ﬁcient de ﬁned on cell faces. The
+calculations were performed on Summit with 6 GPUs per
+node and on Cori Haswell nodes with 32 CPU cores per
+Figure 7. Mesh pruning of a chemical looping reactor geometry.
+Shown here are the embedded boundary geometry and the
+individual grids at level 0 for a relatively coarse simulation.
+Courtesy of MFiX-Exa team.Figure 8. Weak scaling study of linear solver. There are 2563
+cells per node.522 The International Journal of High Performance Computing Applications 35(6)
+node. The weak scaling tests had 2563cells per node, and
+there were 40963cells for the 4096 nodes jobs on Summit.
+On a single node, the GPU run was 6 times faster than theCPU run. The scaling behavior is consistent with thecharacterization that multigrid solvers are communicationheavy especially because of the ﬂoating point operation
+performance of GPUs.
+11. I/O
+AMReX provides a native ﬁle format for plot ﬁles that store
+the solution at a given time step for visualization. Plot ﬁles
+use a well-de ﬁned format that is supported by a variety of
+third-party tools for visualization. AMReX providesfunctions that directly write plot ﬁles from mesh and particle
+objects. Mesh and particle plot ﬁles are written indepen-
+dently for improved ﬂexibility and performance. AMReX
+also provides users the option to use HDF5 for data analysisand visualization.
+Writing a plot ﬁle requires coordination between MPI
+ranks to prevent overwhelming the I/O system with toomany simultaneous writes to the ﬁle system. AMReX has
+implemented multiple output methodologies to provide
+efﬁcient I/O across a variety of applications and simula-
+tions. A static output pattern prints in a predeterminedpattern that eliminates unnecessary overhead, which isuseful for well-balanced or small simulations. A dynamicoutput pattern improves write ef ﬁciency for complex cases
+by assigning ranks to coordinate the I/O in a task-likefashion. Finally, asynchronous output assigns the writingto a background thread, allowing the computation tocontinue uninterrupted while the write is completed on a
+stored copy of the data. The I/O output methodology and otherstandard features, such as the number of simultaneous writes,can be chosen through run-time and compile-time ﬂags.
+Asynchronous I/O is currently the targeted I/O method
+for exascale systems because it is a portable methodologythat substantially reduces I/O impact on total run time.
+AMReX ’s native Async I/O has reduced write time by a
+factor of around 80 on full-scale Summit simulations, asshown in Figure 9 . However, asynchronous I/O requires a
+scalable MPI_THREAD_MULTIPLE implementation to
+achieve the best results. Scalable Async I/O requires onethread passing zero-size messages while another threadperforms its own communication with as little overhead aspossible. On systems where MPI_THREAD_MULTIPLE
+implementations scale poorly, asynchronous I/O may not be
+the best choice.
+AMReX also provides the infrastructure, examples, and
+documentation to allow applications to write checkpointﬁles for simulation restarts. Each application requires a
+unique set of data to restart successfully that is not known toAMReX, such as run time determined constants or any pre-calculated datasets that cannot be easily reconstructed.
+Therefore, each application has to build their own check-
+point system. However, numerous examples and helpfulfunctions are provided to help facilitate its construction.
+11.1. Visualization
+The AMReX plot ﬁle format is supported by Paraview, Visit,
+and yt. AMReX also supports a native visualization tool,
+Figure 9. Weak scaling study of possible MPI implementations for Async I/O. Async I/O requires a zero-size message between
+I/O ranks. A variety of possibilities were tested while AMReX Reduction calls amrex::Min() andamrex::Max() are called
+continuously on another thread to test MPI_THREAD_MULTIPLE overhead. The results show only MPI_IBarrier yields scalable
+results. MPI_IBarrier ’s performance is equivalent to less than 2% overhead on full-scale Summit.Zhang et al. 523
+AMRVis ( AMRVis, 2020 ), which users and developers ﬁnd
+useful for testing, debugging, and other quick-and-dirtyvisualization needs. The AMREX team is working withthe ALPINE and Sensei teams, part of the ECP SoftwareTechnologies, to provide support for in situ data analysisand visualization (see, e.g., Biswas et al. (2020) ). Prelim-
+inary interfaces to both exist in the AMReX git repo.
+12. Software engineering
+AMReX is fully open source; source code, documentation,tutorials, and a gallery of examples are all hosted on Github
+(https://amrex-codes.github.io/amrex/ ). AMReX supports
+building applications with both GNUMake and CMake andcan also be built as a library. Development takes place usinga fork-and-pull request work ﬂow, with stable tags released
+monthly. Github CI is used to verify builds with a variety ofcompilers on Windows, Linux, and Mac for each pull re-quest. In addition, a suite of regression tests are performednightly, both on AMReX and on selected AMReX-based
+applications. These tests cover both CPU architectures and
+NVIDIA GPUs.
+In addition, AMReX has been part of the xSDK releases
+starting in 2018 and is available through spack. AMReX is alsoone of the software packages featured in the Argonne TrainingProgram for Extreme-Scale Computing (ATPESC) (seehttps://xsdk-project.github.io/MathPackagesTraining2020/lessons/amrex for the AMReX tutorial presented in 2020).
+12.1. Pro ﬁling and debugging
+Proﬁling is a crucial part of developing and maintaining a
+successful scienti ﬁc code, such as AMReX and its ap-
+plications. The AMReX community uses a wide variety ofcompatible pro ﬁlers, including VTune, CrayPat, ARM
+Forge, Amrvis, and the Nsight suite of tools. AMReXincludes its own lightweight in strumentation-based pro-
+ﬁling tool, TinyPro ﬁler. TinyPro ﬁl e rc o n s i s t so faf e w
+simple macros to insert scoped timers throughout the
+application. At the end of a simulation, TinyPro ﬁler reports
+the total time spent in each region, the number of times itwas called, and the variation across MPI ranks. This tool ison by default in many AMReX applications and includesNVTX markers to allow instrumentation when using Nsight.
+AMReX ’s make system includes a debug mode with a
+variety of useful features for AMReX developers. Debugmode includes array bound checking, detailed built-in as-
+sertions, initialization of ﬂoating point numbers to NaNs,
+signal handling (e.g., ﬂoating point exceptions), and
+backtrace capability for crashes. This combination of fea-tures has proven extremely helpful for catching commonbugs and reducing development time for AMReX users.13. Conclusions and future work
+In this article, we have discussed the main features of theAMReX framework for the development of block-structured AMR algorithms. In addition to core capabilityto support data de ﬁned on a hierarchical mesh, AMReX also
+provides support for different particle and particle/mesh
+algorithms and for an EB representation of complexproblem geometry. We have also discussed linear solversthat are needed to support implicit discretizations andAMReX ’s I/O capabilities that are used to write data for data
+analysis and visualization and for checkpoint/restart.
+A cross-cutting feature in all AMReX development is the
+need to provide performance portability. With the push
+toward exascale, we have seen the emergence of a variety of
+different architectures with disparate hardware capabilitiesand programming models. AMReX incorporates an ab-straction layer that isolates applications from the details of aparticular architecture without sacri ﬁcing performance. The
+framework also provides custom support for parallel re-ductions and memory management. We have shown ex-amples that illustrate that AMReX provides scalable
+performant implementations for a range of tasks typically
+found in multiphysics applications.
+There are a number of additional capabilities that could
+be added to AMReX. Currently, the framework is restrictedto one, two, or three spatial dimensions. Extending themethodology to higher dimensions would be relativelystraightforward. In a similar vein, the framework could alsobe generalized to handle mixed dimensions in which dif-
+ferent components of the physical model are solved in
+different dimensions.
+The framework currently assumes grid cells are rectilinear
+with an EB representation for complex geometries. A usefulgeneralization to increase geometric capabilities would be toincorporate curvilinear coordinates in which the grid is log-ically rectangular, but the individual cells can be generichexahedra. This type of capability could be further generalized
+to a mapped multiblock or overset mesh model in which
+multiple curvilinear meshes are coupled in a single simulation.
+Finally, one potentially exciting area is interfacing
+AMReX with a code generation system. The basic idea hereis to use a symbolic manipulation system that can generatecompilable AMReX code directly from equations. This typeof capability is particularly useful for problems that can bestated concisely mathematically but expand dramatically
+when translated into code. We have used a prototype code
+generation system for discretization of general relativity anda spectral representation of Boltzmann ’s equation. The
+ability to describe complex problems concisely has potentialto further increase the range of applications that can useAMReX.524 The International Journal of High Performance Computing Applications 35(6)
+Declaration of con ﬂicting interests
+The author(s) declared no potential con ﬂicts of interest with re-
+spect to the research, authorship, and/or publication of this article.
+Funding
+The author(s) disclosed receipt of the following ﬁnancial support
+for the research, authorship, and/or publication of this article: Thisresearch was supported by the Exascale Computing Project(17-SC-20-SC), a collaborative effort of the U.S. Department ofEnergy Of ﬁce of Science and the National Nuclear Security
+Administration. This work was supported by the U.S. Department
+of Energy, Of ﬁce of Science, Of ﬁce of Advanced Scienti ﬁc
+Computing Research, and Exascale Computing Project undercontract DE-AC02-05CH11231. This research used resources ofthe National Energy Research Scienti ﬁc Computing Center, a DOE
+Ofﬁce of Science User Facility supported by the Of ﬁce of Science
+of the U.S. Department of Energy under Contract No. DE-AC02-05CH11231, and resources of the Oak Ridge Leadership Com-puting Facility at the Oak Ridge National Laboratory, which is
+supported by the Of ﬁce of Science of the U.S. Department of
+Energy under Contract No. DE-AC05-00OR22725.
+ORCID iD
+John Bell https://orcid.org/0000-0002-5749-334X
+References
+Almgren AS, Beckner VE, Bell JB, et al. (2010) CASTRO: a new
+compressible astrophysical solver. I. Hydrodynamics and self-
+gravity. The Astrophysical Journal 715(2): 1221 –1238.
+Almgren AS, Bell JB, Lijewski MJ, et al. (2013) Nyx: a massively
+parallel AMR code for computational cosmology. The Astro-
+physical Journal 765(1): 39.
+AMR-Wind (2020) AMR-wind documentation . Available at:
+https://amr-wind.readthedocs.io/en/latest/ .
+AMRVis (2020) AMRVis documentation . Available at: https://
+amrex-codes.github.io/amrex/docs_html/Visualization.html .
+Balay S, Abhyankar S, Adams MF, et al. (2019) PETSc Web Page .
+Available at: https://www.mcs.anl.gov/petschttps://www.mcs.anl.
+gov/petsc .
+Beckingsale DA, Burmark J, Hornung R, et al. (2019) Raja: Portable
+performance for large-scale scienti ﬁc applications. In: IEEE/
+ACM international workshop on performance, portability andproductivity in HPC (P3HPC), Denver, CO, 22 November 2019,pp. 71 –81. New York: IEEE.
+Berger M and Rigoutsos I (1991) An algorithm for point clustering
+and grid generation. IEEE Transactions on Systems, Man, and
+Cybernetics 21: 1278 –1286.
+Biswas A, Ahrens J, Dutta S, et al. (2020) Feature analysis,
+tracking, and data reduction: an application to multiphase re-actor simulation m ﬁx-exa for in-situ use case. Computing in
+Science & Engineering 23: 75 –82.Carter Edwards H, Trott CR and Sunderland D (2014) Kokkos:
+enabling manycore performance portability through polymor-
+phic memory access patterns. Journal of Parallel and Dis-
+tributed Computing 74(12): 3202 –3216.
+Dubey A, Almgren A, Bell J, et al. (2014a) A survey of high level
+frameworks in block-structured adaptive mesh re ﬁnement
+packages. Journal of Parallel and Distributed Computing
+74(12): 3217 –3227.
+Dubey A, Antypas K, Calder AC, et al. (2014b) Evolution of
+ﬂash, a multi-physics scienti ﬁc simulation code for high-
+performance computing. The International Journal of High
+Performance Computing Applications 28(2): 225 –237.
+ExAM (2020) ExaAM: transforming additive manufacturing
+through exascale simulation . Available at: https://www.ornl.
+gov/project/exaam-transform ing-additive-manufacturing-
+through-exascale-simulation .
+Falgout RD, Jones JE and Yang UM (2006) The design
+and implementation of hypre, a library of parallel high
+performance preconditioners. In: Bruaset AM and TveitoA( e d s ) , N u m e r i c a lS o l u t i o no fP a r tial Differential Equa-
+tions on Parallel Computers . Springer –Verlag, pp. 267 –
+294.
+Fryxell B, Olson K, Ricker P, et al. (2000) Flash: an adaptive mesh
+hydrodynamics code for modeling astrophysical thermonuclearﬂashes. The Astrophysical Journal Supplement Series 131:
+273–334.
+Hindmarsh AC, Brown PN, Grant KE, et al. (2005) Sundials.
+ACM Transactions on Mathematical Software 31(3):
+363–396.
+Merrill D and Garland M (2016) Single-pass parallel pre ﬁx scan
+with decoupled lookback . Available at: https://research.nvidia.
+com/sites/default/ ﬁles/pubs/2016-03_Single-pass-Parallel-
+Preﬁx/nvr-2016-002.pdf .
+MFiX-Exa (2020) MFiX-Exa documentation . Available at: https://
+amrex-codes.github.io/MFIX-Exa/ .
+PeleC (2020) PeleC documentation . Available at: https://pelec.
+readthedocs.io/en/latest/ .
+PeleLM (2020) PeleLM documentation .https://amrex-combustion.
+github.io/PeleLM/ .
+Vay J-L, Almgren A, Bell J, et al. (2018) Warp-x: a new exascale
+computing platform for beam-plasma simulations. Nuclear
+Instruments and Methods in Physics Research Section A: Ac-
+celerators, Spectrometers, Detectors and Associated Equipment909: 476 –479.
+Zhang W, Almgren A, Beckner V, et al. (2019) AMReX: a
+framework for block-structured adaptive mesh re ﬁnement.
+Journal of Open Source Software 4: 1370.
+Zhang W, Almgren A, Beckner V, et al. (2020) Amrex docu-
+mentation . Available at: https://amrex-codes.github.io/amrex/
+docs_html/ .
+Zhang W, Almgren A, Day M, et al. (2016) Boxlib with tiling: an
+adaptive mesh re ﬁnement software framework. SIAM Journal
+on Scienti ﬁc Computing 38(5): S156 –S172.Zhang et al. 525
+Author biographies
+Weiqun Zhang is a Computer Systems Engineer at Law-
+rence Berkeley National Laboratory. He is interested inhigh-performance computing, computational physics, andprogramming in general. Currently, he works on the AM-ReX software framework and WarpX, an advanced elec-tromagnetic PIC code.
+Andrew Myers is a Computer Systems Engineer in the
+Center for Computational Sciences and Engineering atLawrence Berkeley National Laboratory. His work focuseson scalable particle methods for emerging architectures in
+the context of adaptive mesh re ﬁnement. He is an active
+developer of the AMReX framework and of the electro-magnetic PIC code WarpX.
+Kevin Gott is an application performance specialist at
+NERSC. His primary focus is supporting the AMReX Co-Design Center as it develops performance-portable solu-tions for next generation exascale supercomputers. His
+interests include C++ programming, portable GPU codedesign, MPI performance, and advanced parallel pro-
+gramming techniques.
+Ann Almgren is a Senior Scientist at Lawrence Berkeley
+National Laboratory and the Group Lead of LBL ’s Center
+for Computational Sciences and Engineering. Her primaryresearch interest is in computational algorithms for solvingPDEs in a variety of application areas. Her current projectsinclude the development and implementation of new mul-
+tiphysics algorithms in high-resolution adaptive mesh codes
+that are designed for the latest hybrid architectures. She is aFellow of the Society of Industrial and Applied Mathematicsand the Deputy Director of the AMReX Co-Design Center.
+John Bell is a Senior Scientist at Lawrence Berkeley Na-
+tional Laboratory. His research focuses on the development
+and analysis of numerical methods for partial differentialequations arising in science and engineering. He is a Fellowof the Society of Industrial and Applied Mathematics, amember of the National Academy of Sciences, and theDirector of the AMReX Co-Design Center.526 The International Journal of High Performance Computing Applications 35(6)

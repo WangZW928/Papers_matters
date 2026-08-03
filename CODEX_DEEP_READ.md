@@ -1,6 +1,6 @@
 # Codex 精读推荐 — 19 篇论文排名
 
-**日期：** 2026-07-30 | **审查范围：** 319 篇 | **Token：** 108,002
+**日期：** 2026-08-03 | **审查范围：** 320 篇 | **Token：** 200,400
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -56,7 +56,7 @@
 12. **Quantum Simulation of PDEs via Schrödingerization** — quantum-computing
     - 文件：[`quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md`](quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 
-## Tier 3 — 扩展阅读（6 篇）
+## Tier 3 — 扩展阅读（7 篇）
 
 13. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
@@ -77,6 +77,11 @@
     - 文件：[`ai-model/denoising-diffusion-probabilistic-models.md`](ai-model/denoising-diffusion-probabilistic-models.md)
 
 19. **Discrete variational calculus for double-bracket dissipation** — differential-geometry
+
+20. **AMReX: Block-structured AMR for multiphysics applications** — HPC
+    - 文件：[`HPC/amrex-block-structured-amr-for-multiphysics-applications.md`](HPC/amrex-block-structured-amr-for-multiphysics-applications.md)
+    - 数理基础：Block-structured AMR、Berger-Rigoutsos 聚类、Morton SFC 负载均衡、AMR subcycling/reflux 守恒、particle-mesh 插值沉积、cut-cell EB 离散、geometric multigrid、性能可移植抽象层
+    - 为什么精读：展示成熟 HPC 框架的分层抽象范式——把 AMR、粒子、EB、multigrid、GPU portability、MPI 通信放进统一框架；对高性能 PDE/流体计算框架设计有直接架构参考价值。关联：JFNK Survey、Matrix-Free Multigrid、AmgX
     - 文件：[`differential-geometry/discrete-variational-calculus-for-double-bracket-dissipation.md`](differential-geometry/discrete-variational-calculus-for-double-bracket-dissipation.md)
     - 数理基础：forced Euler-Poincaré / forced Lie-Poisson 系统的离散变分积分器，几何积分器精确保守伴随轨道 + 能量耗散
     - 为什么精读：在"几何耗散系统 + Lie-Poisson 结构 + 保结构算法"三者交叉点，核心启发——耗散不必破坏几何约束，只要耗散项写成余伴随方向，轨道可保持而能量可下降。离散层面把每步更新设计为精确 \(Ad^*\) 作用。关联：Hamiltonian ideal fluid、LPNets、Covector Fluids
@@ -86,10 +91,10 @@
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
 2. **结构保持与涡方法** → Covector Fluids → Vortex Segment Clouds → Lie-Poisson Neural Networks
 3. **PDE 学习主线** → PINN → Neural Operator → SINDy → DMD/Koopman → DDPM
-4. **HPC 求解器主线** → JFNK Survey → Matrix-Free High-Order FEM Multigrid → AmgX → GPU GMRES
+4. **HPC 求解器主线** → JFNK Survey → Matrix-Free High-Order FEM Multigrid → AMReX → AmgX → GPU GMRES
 5. **前沿交叉补强** → Schrödingerization PDE → Force-Free Fields → Extended Lagrangian → Log-conformation viscoelastic
 6. **几何耗散系统** → Double-Bracket Dissipation（刚体 → 未来理想流体推广）
 
 ---
 
-*覆盖 10 个 topic | 每篇均关联库内至少 1 篇其他论文 | 19/19 文件已链接*
+*覆盖 11 个 topic | 每篇均关联库内至少 1 篇其他论文 | 20/20 文件已链接*
