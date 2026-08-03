@@ -1,0 +1,587 @@
+arXiv:1604.03570v1  [cs.MS]  12 Apr 2016BOXLIB WITH TILING: AN AMR SOFTWARE FRAMEWORK∗
+WEIQUN ZHANG†, ANN ALMGREN†, MARCUS DAY†, TAN NGUYEN‡, JOHN SHALF§,ANDDIDEM
+UNAT¶
+Abstract
+In this paper we introduce a block-structured adaptive mesh reﬁn ement (AMR) software framework
+that incorporates tiling, a well-known loop transformation. Becaus e the multiscale, multiphysics codes
+built in BoxLib are designed to solve complex systems at high resolution , performance on current and next
+generation architectures is essential. With the expectation of man y more cores per node on next generation
+architectures, the ability to eﬀectively utilize threads within a node is essential, and the current model for
+parallelization will not be suﬃcient. We describe a new version of BoxLib in which the tiling constructs are
+embedded so that BoxLib-based applications can easily realize expec ted performance gains without extra
+eﬀort on the part of the application developer. We also discuss a pat h forward to enable future versions of
+BoxLib to take advantage of NUMA-aware optimizations using the TiD A portable library.
+1. Introduction. BoxLib is a mature, publicly available, software framework for building massively
+parallel block-structured adaptive mesh reﬁnement (AMR) applica tions [1]. It is one of a number of current
+publicly available AMR frameworks; see [16] for an overview. Numerou s application codes are based on
+these frameworks and are too many to list here, but sample resear ch codes in use today that are based on
+BoxLib include MAESTRO [5, 6, 4, 36, 23] and CASTRO [3, 34, 35] for as trophysicalsimulations, Nyx [2, 21]
+for cosmological simulations, LMC [13, 9, 8] for low Mach number comb ustion simulations, SMC [17] for
+compressible combustion simulations, as well as codes for moist atmo spheric physics [14, 15] and subsurface
+ﬂow [24].
+BoxLib contains extensive software support for explicit and implicit g rid-based operations as well as
+particle-mesh operation on adaptive hierarchical meshes. Multileve l multigrid solvers are included for cell-
+based and node-based data. Multiple time-subcyling modes are supp orted for adaptive mesh simulations.
+Most current BoxLib application codes evolve multiscale, multiphysics systems in time by solving systems
+of partial diﬀerential equations (PDEs) often accompanied by con straints. Because these codes are designed
+to solve complex systems at high resolution, performance on curre nt and next generation architectures is
+always of paramount importance.
+BoxLib uses a hybrid MPI/OpenMP approach for parallelization, and t he OpenMP parallelism has
+traditionally been expressed in the individual loops over cells. BoxLib a pplication codes have demonstrated
+good scaling behavior on up to 100,000 cores on current multi-core a rchitectures (see e.g., [3, 22]). However,
+with the current trends in system design, the next generation of h igh-performance computing systems will
+have node architectures based on many-core processors and no n-uniform memory access (NUMA) designs.
+Due to the irregularity of AMR algorithms, a ﬁne-grained loop-level t hreading approach is not expected to
+provide eﬃcient parallelism on a node with hundreds or thousands of t hreads. In addition, reducing the cost
+of data movement is expected be crucial for performance [31]. In r esponse to these architectural challenges,
+†Center for Computational Sciences and Engineering, Lawren ce Berkeley National Laboratory, One Cyclotron Road MS50A-
+1148, Berkeley, CA 94720, USA. https://ccse.lbl.gov/ Emai l: WeiqunZhang@lbl.gov, ASAlmgren@lbl.gov, MSDay@lbl.g ov
+‡Computer Architecture Group, Lawrence Berkeley National L aboratory, One Cyclotron Road MS50A-1148, Berkeley,
+CA 94720, USA. crd.lbl.gov/departments/computer-scienc e/computer-architecture/staﬀ/tan-thanh-nhat-nguyen, Email: Tan-
+Nguyen@lbl.gov
+§Computer Science Department, Lawrence Berkeley National L aboratory, One Cyclotron Road MS50A-1148, Berkeley, CA
+94720, USA. crd.lbl.gov/departments/computer-science/ , Email: JShalf@lbl.gov
+¶Computer Science and Engineering Department, Ko¸ c Univers ity, Rumelifeneri Yolu, Sariyer, Istanbul, Turkey 34450
+http://parcorelab.ku.edu.tr Email: dunat@ku.edu.tr
+∗This work was supported by the SciDAC Program and the Exascal e Co-Design Program of the DOE Oﬃce of Advanced
+Scientiﬁc Computing Research under the U.S. Department of E nergy under contract DE-AC02-05CH11231. This research use d
+resources of the National Energy Research Scientiﬁc Comput ing Center, which is supported by the Oﬃce of Science of the
+U.S. Department of Energy under Contract No. DE-AC02-05CH1 1231. Dr. Unat is supported by the Marie Sklodowska Curie
+Reintegration Grant by the European Commission, and by the T ubitak Grant No: 215E285. We would like to acknowledge and
+thank Brian Friesen for running some of the performance test s and John Bell for many useful discussions concerning tilin g.
+1
+2
+we are adopting a new programming model, tiling, in BoxLib to expose additional parallelism and optimize
+data access behavior.
+Tiling is a well known loop transformation that has been proven to be u seful in enhancing data locality
+and parallelism (e.g., [33, 25]). Tiling reduces the working set size so tha t the working set of a thread can ﬁt
+into cache, reducing the number of cache misses. This decreases t he memory traﬃc, resulting in improved
+performance. Tiling can also expose more parallelism by multi-dimension ally partitioning data or iteration
+space. Previously we added tiling to the BoxLib based SMC code [17] m anually. However, manual tiling of
+an application code is both labor intensive and error prone because t here is no standard language construct
+for tiling in any of the general-purpose programming languages. In t his paper, we introduce a new version
+of BoxLib that embeds tiling in the shared framework rather than in e ach application code. By supporting
+tiling in the Boxlib framework itself, application developers using BoxLib do not have to recode any of the
+tiling constructs.
+In Section 2, we present a brief introduction to tiling. In Section 3, w e give a brief overview of BoxLib
+and key abstractions in the pre-tiling version are presented. We th en present the new version of BoxLib with
+tiling and discuss the threadingapproach. Severalperformance r esults areshown in Section 4, demonstrating
+the improved performance of the tiling approach. In Section 5, we d iscuss our plans for further optimization
+of BoxLib using the TiDA portable library [29, 30]. We summarize the re sults of this paper in the ﬁnal
+section.
+2. Tiling Overview and Related Work. Modern systems contain complex memory hierarchies with
+multiple levels of caches and multiple NUMA nodes. It is essential that a software framework like BoxLib
+adapt to the increasing number of cores and possibly increasing num ber of NUMA domains in order to be
+able to take advantage of the current and future architectures . Tiling, also known as cache blocking, is a
+well known program transformation that has proven to be useful in improving data locality and parallelism.
+Tiling eliminates some of the memory traﬃc by reducing the size of the w orking set so that there are fewer
+cache misses. In addition, it enables high degrees of parallelism throu gh partitioning iteration space into
+independent units of execution. At the language level, there is no st andard programming support to express
+tiling information in the program. The programmer has to manually tile in dividual loops, which can be very
+labor-intensive and error-prone for large codes like the BoxLib-ba sed AMR applications. The most common
+way to implement tiling is to partition a nested loop by introducing tiling loops that iterate over tiles and
+element loops that iterate over the data elements within a tile.
+There is a long list of literature on iteration space tiling to move the bur den from the programmer to
+the compiler [33, 10, 26, 12, 18, 27]. Compiler methods rely on static lo op transformations [28], usually in
+the form of source-to-source translation. There is only limited sup port for tiling in commercial compilers
+because of the code generation complexity. The complexity emerge s primarily from the semantics of existing
+programming languages (e.g. C, C++, or Fortran) and the inability in c urrent programming environments
+to express essential information required for eﬀective performa nce analysis and safe code transformations
+to auto-generate tiled code. It is particularly diﬃcult for AMR codes , where crucial information needed
+to optimize data locality is only available at runtime. Our approach here is to decouple tiling from the
+individual loops and instead represent it at the data structure leve l within the BoxLib framework.
+HTA (Hierarchically Tiled Arrays) [10] oﬀers data structures for de scribing a hierarchy and topology of
+tileswherecomputationandcommunicationarerepresentedbyove rloadedarrayoperations. Extendingarray
+notations hides many details from the programmer but eventually cr eates performance problems because of
+the excessive use of temporary arrays or frequent data layout t ransformations. Adopting HTA in BoxLib
+would have meant extensive rewriting of BoxLib and BoxLib-based ap plication codes. TiDA [29, 30], on the
+other hand, is a library that allows parameterised data layout and tilin g but does not require restructuring
+of the original software framework. We are motivated here by TiDA ’s approach to tiling and have integrated
+many features of TiDA into the BoxLib framework.
+TiDA introduces two concepts: regionalandlogicaltiling. Figure 1 shows an example of regional tiling.
+We denote a rectangular domain in index space as a grid; each grid is tiled into multiple regionswith each
+region’s ﬂoating point data allocated contiguously in memory. Each re gion is further split into logical tiles
+in iteration space; the logical tile size can be changed dynamically on a lo op-by-loop basis. It should be
+emphasized that logical tiles exist only in the iteration space and do no t alter the ﬂoating point data layout
+3
+Grid
+Region
+Tile
+Fig. 1.Grid, Region and Tile. In this example of regional tiling, th ere are two grids. The grid on the left contains four
+regions, and the grid on the right contains two regions. Each region is split into four logical tiles in iteration space. T he
+ﬂoating point data are allocated contiguously in each regio n, thus the data within a grid are not in one contiguous block. Note
+that logical tiles do not aﬀect the data layout in memory.
+in memory. A tiling approach based on the hierarchy of grid, region an d tile is called regional tiling. Logical
+tiling is a special case of regional tiling in which each grid contains only on e region. Thus the data on a grid
+in logical tiling are contiguous in memory, whereas in regional tiling they are allocated in multiple contiguous
+blocks. Regional tiling is intended to address the NUMA nodes and reg ional coherence domains, and is more
+general than logical tiling; however it requires data structure cha nges because existing AMR frameworks
+usually allocate one contiguous block of memory for the data on each grid. In contrast, logical tiling is easily
+adoptable by the underlying framework, because it requires minimal bookkeeping and incurs little overhead
+on existing codes.
+3. BoxLib. The BoxLib software framework includes both a C ++framework that can call Fortran
+subroutines, and an entirely Fortran framework. Both framewor ks have been modiﬁed to use tiling, but we
+will present the illustrative examples in C ++only for simplicity.
+Fig. 2.Cartoon of AMR grids with two levels of factor 2 reﬁnement. Th e coarsest grid covers the domain with 162cells.
+Bold lines represent grid boundaries. The two intermediate resolution grids are at level 1 and the cells are a factor of tw o
+ﬁner than those at level 0. The two ﬁnest grids are at level 2 an d the cells are a factor of two ﬁner than the level 1 cells.
+Note that there is no direct parent-child connection. The da ta for each grid are contained in an object called FArrayBox ( see
+section 3.1). In this example, there are 1, 2 and 2 FArrayBox o bjects on level 0, 1, and 2, respectively. FArrayBox objects on
+each level are organized into an object called MultiFab (Mul tiple FArrayBox).
+The data in BoxLib is deﬁned on a nested hierarchy of logically rectang ular grids. Recall we use the
+4
+termgridto refer to a rectangular domain in index space; in the context of blo ck-structured AMR a levelis
+composed of a union of (in this case non-intersecting) grids that sh are the same mesh (or cell) spacing. The
+ratio of mesh spacings between adjacent levels is typically 2 or 4. Figu re 2 shows a cartoon of AMR grids in
+two dimensions with two levels of reﬁnement. One aspect that disting uishes BoxLib from frameworkssuch as
+FLASH [19] is that a ﬁne grid does not necessarily have a unique paren t grid. This allows the organizationof
+data into relatively large aggregate grids and as a result amortizes t he cost incurred by the irregular nature
+of adaptive meshes.
+The changes to BoxLib described in this paper focus on data locality a nd parallelism at each level of
+reﬁnement independently, thus for the rest of the paper we will co nﬁne ourselves to the geometry of a single
+level. However, the fact that a tiling strategy must work in the cont ext of complex multiphysics applications
+on adaptive grid hierarchies dictates three necessary features. First, the strategy must work for a union of
+grids that are not necessarily of equal size and shape, and that do not necessarily span the entire rectangular
+domain. Second, the strategy must be such that the tile size can be modiﬁed depending on the nature of the
+loop, as diﬀerent parts of the algorithm may have verydiﬀerent com putational and communication demands.
+Finally, the tiling strategy must be suﬃciently lightweight to adapt to t he frequently changing grid structure
+at all levels but the coarsest as the simulation evolves.
+3.1. BoxLib Without Tiling. Before we discuss the tiling strategy, we describe the data struct ures
+and methods for operating on the data on a level in BoxLib without tilin g. In BoxLib, a Boxis the data
+structure for a rectangular domain in index space, and a three-dim ensional Box can be represented by six
+integers. Each grid is represented by the Box type. A FArrayBox is the data structure that holds the ﬂoating
+point data on a single Box. The data can have multiple components (su ch as density and velocity), and
+are stored internally as a one-dimensional (1D) array allocated with C++’snewoperator, therefore are
+contiguous in memory. The index space information in FArrayBox can be used to reshape the 1D array into
+a multi-dimensional array to be used in a Fortran subroutine. We not e that while the grids themselves are
+non-intersecting boxes, the data in an FArrayBox may be deﬁned o n a Box larger than the grid if ghost (or
+halo)cells areneeded. A MultiFab is the paralleldatastructure containingmultiple FArrayBoxeswhich holds
+data on the multiple grids of an AMR level (see ﬁgure 2). The data in a M ultiFab are distributed among
+MPI processes. Thus, on each MPI process the MultiFab contains o nly the FArrayBoxobjects owned by this
+process, and the process operates only on its local data. For ope rations that require data owned by other
+MPI processes, ghost cells are ﬁlled via MPI communications. To redu ce the latency and use the network
+bandwidth more eﬃciently, the communication messages are aggreg ated. For the purpose of communication
+within each level and between levels, each MPI process has a copy of all the grids.
+Many common operations in BoxLib can be performed at the abstrac t level of MultiFab with the data
+and implementation details hidden from the application developers. A f ew examples are given below.
+// Return the maximum value contained in component 0 of the Mu ltiFab mf
+max_val = mf.max(0);
+// Fill the ghost cells of each FArrayBox in the MultiFab mf
+mf.FillBoundary();
+To operate on the data in more application-speciﬁc ways, BoxLib sup plies iterators, called MFIters, over
+the FArrayBoxes in a MultiFab. The application developer provides a F ortran subroutine that performs the
+operations; each subroutine operates on one grid’s worth of data at a time. For example,
+for (MFIter mfi(mf); mfi.isValid(); ++mfi) // Loop over gri ds
+{
+// Define vbox to be the grid associated with this iteration.
+// This "valid" region will be used to define the extent of the data
+// that the subroutine will operate on.
+const Box& vbox = mfi.validbox();
+// Get a reference to the FArrayBox so that we can access
+// both the data and the size of the FArrayBox.
+5
+FArrayBox& fab = mf[mfi];
+// Define the double* pointer to the data of this FArrayBox.
+double* a = fab.dataPtr();
+// Define abox as the Box on which the data in the FArrayBox is d efined.
+// Note that "abox" includes ghost cells (if there are any), a nd is thus
+// larger than or equal to "vbox".
+const Box& abox = fab.box();
+// We can now pass the information to a Fortran routine,
+// which treats the double* as a multi-dimensional array
+// with dimensions specified by the information in "abox".
+// We will also pass the index information in "vbox",
+// which specifies our "work" region.
+// Functions loVect() and hiVect() return the lower and uppe r
+// indices of a box, respectively.
+f(vbox.loVect(), vbox.hiVect(), a, abox.loVect(), abox. hiVect());
+}
+The Fortran subroutine might look as shown here:
+subroutine f(lo, hi, a, alo, ahi)
+integer, intent(in) :: lo(3), hi(3), alo(3), ahi(3)
+double precision , intent(inout) :: a(alo(1):ahi(1),alo( 2):ahi(2),alo(3):ahi(3))
+integer :: i, j, k
+!$OMP PARALLEL DO private(i,j,k)
+do k = lo(3), hi(3)
+do j = lo(2), hi(2)
+do i = lo(1), hi(1)
+! ...
+end do
+end do
+end do
+!$OMP END PARALLEL DO
+end subroutine f
+Here, for the sake of simplicity, we have omitted the code that facilit ates calling Fortran subroutines from
+C++. In BoxLib, this is usually handled by C preprocessor macros; one ca n also use the ISO CBINDING
+module in Fortran 2003. In this example, OpenMP is used on the loop lev el for work sharing among threads.
+3.2. BoxLib With Logical Tiling. In the new version of BoxLib1, we introduce the capability for
+logical tiling as deﬁned earlier. For backward compatibility the default is to have t iles the same size as (or
+larger than) the grids so that tiling is eﬀectively turned oﬀ. In our log ical tiling approach, each grid is
+now logically split into tiles (both grids and tiles are of type Box), and th e modiﬁed looping construct is
+completely incorporated into the MFIter iterator which now loops ov er each tile in each grid rather than
+just over the grids themselves. With logical tiling, the data layout is u nchanged; just the access pattern to
+the data is changed. An example of using tiling is shown below.
+bool tiling = true;
+for (MFIter mfi(mf,tiling); mfi.isValid(); ++mfi) // Loop over tiles
+{
+// Define the tile of this iteration
+// This tile, rather than the grid that the tile is a part of,
+// will be used to define the extent of the data
+1BoxLib is under active development and all updates are publi cly available through git as soon as they are tested and
+committed. By “new version”, we do not refer to any particula r version number.
+6
+// that the subroutine will operate on.
+const Box& tbox = mfi.tilebox();
+// Get a reference to the FArrayBox so that we can access
+// both the data and the size of the FArrayBox; the FArrayBox
+// is unchanged by using tiling
+FArrayBox& fab = mf[mfi];
+// Define the double* pointer to the data of this FArrayBox.
+// The dataPtr of the FArrayBox is unchanged by using tiling.
+double* a = fab.dataPtr();
+// Define abox as the Box on which the data in the FArrayBox is d efined.
+// This is also unchanged by using tiling.
+const Box& abox = fab.box();
+// We can now pass the information to a Fortran routine.
+// We now pass the index information in "tbox" to specify the w ork region.
+f(tbox.loVect(), tbox.hiVect(), a, abox.loVect(), abox. hiVect());
+}
+In this example, the loop controlled by MFIter can be regarded as a n ested loop collapsed into one iteration
+space, where the nested loop is composed of an outer loop of grids a nd an inner loop of tiles in a grid. Note
+that the code is almost identical to the one in §3.1; the Fortran subroutine and the data pointer passed to
+it are unchanged, but the index space on which the subroutine oper ates is now deﬁned by the tile rather
+than the grid. Loop tiling is achieved without any modiﬁcation in the ker nel function f. This is important to
+application developers using BoxLib since typically the kernels are app lication-speciﬁc. Moreover, any local
+arrays in the kernel function can now be the size of the tile rather t han the potentially much larger grid,
+thus the working set size is further reduced, resulting in better da ta access patterns.
+The MFIter class has several constructors:
+MFIter(const MultiFab& mf);
+MFIter(const MultiFab& mf, bool do_tiling);
+MFIter(const MultiFab& mf, const int tilesize[]);
+In the ﬁrst version, each grid has one tile and the tiling is eﬀectively tu rned oﬀ. If the second version is
+used, the default tile size (that can be speciﬁed at runtime) is used. The third version provides more control
+over the tile size by passing an integer array specifying the tile size in e ach spatial dimension. This allows
+applications to use diﬀerent tile sizes in diﬀerent parts of the algorith m, which is essential for maximizing
+performance in a complex multiphysics code. The new tilebox member function of MFIter returns a box for
+the current tile of the iteration. Additional MFIter member functio ns that are useful for building application
+codes include
+Box growntilebox(int nghost) const;
+Box nodaltilebox(int direction) const;
+The function growntilebox returns a grown tile box that includes ghost cells at grid boundaries o nly;
+therefore the returned boxes originating from the same grid are s till non-overlapping. This is useful when
+the work region includes ghost cells. The function nodaltilebox returns non-overlapping face-type boxes
+for tiles, with the face speciﬁed by the integer argument. This func tion is particularlyuseful for ﬁnite-volume
+methods where face-based ﬂuxes are often used.
+3.3. Threading in BoxLib. BoxLib uses OpenMP for threading. As seen in section 3.1, BoxLib
+traditionally used OMP DOin a ﬁne-grained loop-level threading approach. Tiling provides the o pportunity
+for a coarse-grained approach for threading, which enables the r emoval of OpenMP constructs from the
+individual Fortran routines. For example, OpenMP parallelism at the t ile level can now be achieved by
+adding OpenMP pragmas around the MFIter loops:
+7
+#pragma omp parallel
+for (MFIter mfi(mf,true); mfi.isValid(); ++mfi) // Loop ov er tiles
+{
+const Box& tbox = mfi.tilebox();
+FArrayBox& fab = mf[mfi];
+double* a = fab.dataPtr();
+const Box& abox = fab.box();
+f(tbox.loVect(), tbox.hiVect(), a, abox.loVect(), abox. hiVect());
+}
+Heremfiis a thread private MFIter object because it is created inside an Ope nMP parallel region. Because
+an OpenMP parallel region has already started when function f is calle d, we remove the OpenMP directives
+in function f unless nested OpenMP parallelism is desired.
+When MFIter detects that it is inside an OpenMP parallel region as in th e code above, the iterations
+over tiles are shared among OpenMP threads. In our current implem entation, the work scheduling policy is
+similar to OpenMP’s static scheduling. Let us consider an example. Sup pose there are four grids of diﬀerent
+sizes at a level, and the tile size is such that the ﬁrst and fourth grids are each divided into 4 logical tiles,
+while the second and third are divided into 2 logical tiles each. In the tilin g version, the loop body will be
+run 12 times in total, as opposed to 4 times in the untiled version. Assu ming four threads are used, thread
+0 will work on 3 tiles from the ﬁrst grid, thread 1 on 1 tile from the ﬁrst grid and 2 tiles from the second
+grid, and so forth.
+In addition to the beneﬁts of tiling itself, this coarse-grained tile-lev el threading approach has several
+advantages over the ﬁne-grained loop-level approach shown in Se ction 3.1. First, when individual grids are
+small (such as often occurs after multiple coarsenings near the bo ttom of a multigrid V-cycle in a multigrid
+solver), there can still be enough parallelism for the tile-level appro ach even though there might not have
+been enough without tiling. Second, the tile-level approach has rem oved the need to use OpenMP directives
+in the application-speciﬁc Fortran subroutines in most cases, which reduces the chance of application-speciﬁc
+OpenMP coding errors. Finally, it reduces thread overhead and syn chronization points because there is only
+one OpenMP parallel region as opposed to many parallel regions in the ﬁne-grained loop-level approach.
+There could be an even coarser grained grid-level parallelism approa ch, in which the operations on
+each grid are performed by only one thread and diﬀerent threads o perate on diﬀerent grids. This grid-level
+approach is less desirable than the tile-level approach, because in c omplex AMR applications the boxes
+typically have diﬀerent sizes,resulting in load imbalance among threads , and because there will typically
+be more threads than grids on many-core architectures unless ma ny small grids are used. Increasing the
+amount of parallelism by using many small grids in an AMR framework suc h as BoxLib is not recommended.
+It increases the size of the AMR metadata, increases the cost of p erforming box-box intersections needed
+to ﬁll ghost cells and copy data between AMR levels, and increases th e actual computation because of the
+increased volume of ghost cells. All of the beneﬁts one would achieve with many small grids are achieved by
+tiling the grids instead.
+Besides providing a backward compatible tiling capability and a coarse- grained tile-level threading ap-
+proach, the new version of BoxLib also includes many performance im provements that are made possible
+by applying the tiling concept. One such example is the operation of ﬁllin g ghost cells, which involves both
+local and remote communications. For data available on its own MPI pr ocess, simple copy operations are
+performed, whereas to get data from a remote MPI process, MPI calls must be made. In BoxLib, MPI
+messages between processes are aggregated by using buﬀers fo r MPI send and receive calls to reduce com-
+munication overhead and to increase the utility of network bandwidt h. Thus the remote communication also
+involves local data movement. These local data copy operations ar e usually considered cheap. However, on
+a many-core architecture with hundreds of threads, they could b ecome a bottleneck if they are not threaded
+or have low parallel eﬃciency, as expected from Amdahl’s law [7]. In Sec tion 4.1, we will present such an
+example and demonstrate the improvement from using tiling.
+The user function called inside the MFIter loop often dynamically alloca tes its own temporary arrays.
+In a multi-threaded environment, this often results in lock content ion and sometimes translation lookaside
+8
+buﬀer (TLB) misses or even page faults. One way of avoiding these is sues is using Fortran automatic arrays,
+which are usually put on the stack instead of the heap by default (se e [32]) for an example of this approach).
+Another approach we have implemented in BoxLib is creating thread p rivate memory arenas and allocating
+dynamic arrays from the arenas. One advantage of the latter app roach is that it provides the ﬂexibility
+of allocating the high-bandwidth on-package memory available on the next generation of chips (e.g., Intel
+Knights Landing).
+Finally we note that tiling is not always desired or better. The tradition al ﬁne-grained loop-level thread-
+ing approach coupled with dynamic scheduling is more appropriate for work with unbalanced loads, such as
+calculating chemical reactions in cells by an implicit solver such as VODE [1 1].
+4. Performance. In this section, we present several results demonstrating the pe rformance beneﬁts of
+tiling in BoxLib. In the ﬁrst test we consider an explicit heat equation s olver built with the BoxLib C ++
+framework, and in the second test we use a minimalist version of SMC [1 7] built with the BoxLib Fortran
+framework. Unless stated otherwise, we deﬁne speedup as the ra tio of the run time to the corresponding
+time in the 1-thread untiled run. Note that MPI is not used in these te sts so that we can accurately measure
+the on-node performance impact of tiling.
+4.1. Heat Equation Solver. In our tests of tiling in the heat equation solver, the code took 1000 time
+steps on a single level using a forward Euler method with second-ord er centered diﬀerences for the spatial
+derivatives2. Thedomaincontainedasinglegridwith 1283cells, andperiodicboundarieswereassumedinall
+threedimensions. Thecomputationofsecondderivativesinthehea tequationkernelisperformedintwosteps
+with three separate loops for the ﬂux components and another loo p for the divergence of the ﬂux. Although
+these loops in this memory-bound situation can be fused to improve c ache locality, this implementation is a
+typical pattern for application developers without speciﬁc comput er architecture knowledge. This test was
+intentionally simple so that the impact of tiling can be clearly identiﬁed.
+The ﬁrst test was a series of non-threaded runs carried out on a s ingle core of Edison at the National
+Energy Research Scientiﬁc Computing Center (NERSC), using eithe r the default Gnu or Intel compiler. In
+these runs we varied the tile size and found that even with no parallelis m, tiling can signiﬁcantly improve
+the performance due to the smaller working set size (Table 1). In th is serial test, a factor of 1.8 speedup
+(Intel) and a factor of 3.4 speedup (Gnu), due entirely to logical tilin g, were achieved.
+Table 1
+Impact of tiling on the performance of the heat equation kern el on the Edison machine at NERSC using the Gnu and
+Intel compilers. We show the run time and speedup of the compu tational kernel for various tile sizes. The tile size refers to
+the number of cells in a logical tile in the x,yandz-direction, respectively.
+Tile Size Time - Gnu (s) Speedup - Gnu Time - Intel (s) Speedup - Intel
+128×4×4 8.5 3.4 8.7 1.8
+128×8×8 9.0 3.2 9.6 1.6
+128×16×16 9.6 3.0 10.5 1.5
+128×32×32 23.7 1.2 10.4 1.5
+128×64×64 24.4 1.2 10.9 1.4
+no tiling 28.6 – 15.5 –
+We next explored the parallel performance of the tiled heat equatio n solver. We performed a strong
+scaling study on Edison, which has 12-core Intel Ivy Bridge proces sors, and used OpenMP for threading.
+Figure 3 compares the tiled runs with untiled runs where a tile size of 12 8×4×4 cells was used for all of the
+tiled runs. Two diﬀerent threading approaches were used; the tiled runs used the coarse-grained tile-level
+threading approach as described in Section 3.2, whereas the untiled runs used the ﬁne-grained loop-level
+threading approach described in Section 3.3. The speedup shown in F igure 3 is for the computational kernel
+only. In this ﬁgure the tile-level threading clearly demonstrates mu ch better scaling behavior than the loop-
+level approach. The 12-thread tiled run was more than 5.3 times fas ter than the 12-thread untiled run, and
+2The source code of the test is available at Tutorials/Tiling HeatCin BoxLib.
+9
+12 4 8 12
+Number of Threads02468101214161820SpeedupHeat Equation Kernel (Intel Ivy Bridge)
+tiling
+no tiling
+perfect scaling (tiling)
+perfect scaling (no tiling)
+Fig. 3.Heat equation kernel speedup on 12-core Intel Ivy Bridge. We compare the results of tiled and untiled runs. A
+16.5x speedup was obtained in the 12-thread tiled run.
+it had a 16.5x speedup over the single thread untiled run. For the tiled runs, a 9.6x speedup over the single
+thread tiled run was obtained with 12 threads. We note that perfec t strong scaling within a socket is diﬃcult
+to achieve because Edison has 30 MB L3 cache shared among 12 core s on a processor.
+1816 32 60 120
+Number of Threads020406080100SpeedupHeat Equation Kernel (Intel KNC)
+tiling
+no tiling
+Fig. 4.Heat equation kernel speedup on 60-core Intel KNC. We compar e the results of tiled and untiled runs. A speedup
+of 86x was obtained for the 120-thread tiled run.
+A similar strong scaling study of the heat equation was carried out on a single 60-core Intel Knights
+Corner processor on NERSC’s Babbage computer. We again observ ed the performance beneﬁt of the tiling
+approach with coarse-grained tile-level parallelism over the non-tilin g approach with ﬁne-grained loop-level
+parallelism. Figure 4 shows the speedup of the computational kerne l for untiled and tiled runs. The 120-
+10
+thread tiled run had a speedup of 69x and 86x with respect to the 1- thread tiled and non-tiled runs,
+respectively. The 60-core Intel KNC processors on Babbage are capable of spawning 4 hardware threads
+per core. The results using 180 and 240 threads are not shown in th e ﬁgure because no speedup of the
+computational kernel was obtained beyond 120 threads. In fact the 240-thread run was about 20% slower
+than the 120-thread run. We note that no eﬀort was spent on opt imizing the kernel for KNC.
+18163260 120 180 240
+Number of Threads020406080100120SpeedupHeat Equation Filling Ghost Cells (Intel KNC)
+tiling
+no tiling
+Fig. 5.Speedup in ﬁlling ghost cells in the heat equation solver on 6 0-core Intel KNC. We compare the results of tiled
+and untiled runs. A speedup of 126x was obtained for the 240-t hread tiled run.
+18163260 120
+Number of Threads0.150.200.250.300.350.400.45Fraction of Filling Ghost Cells TimeHeat Equation: Cost of Filling Ghost Cells (Intel KNC)
+tiling
+no tiling
+Fig. 6.Heat equation: cost of ﬁlling ghost cells time on 60-core Int el KNC. We show the ratio of the time spent ﬁlling
+ghost cells to the sum of ﬁlling ghost cells and kernel times. Note that a signiﬁcant fraction of the time was spent ﬁlling g host
+cells for the untiled runs.
+In the strong scaling study described above, we also measured the time to ﬁll ghost cells at the periodic
+boundaries. Note again that MPI was not used and the data moveme nt was completely local. The scaling
+11
+18163260 120 180 240
+Number of Threads0102030405060708090SpeedupSMC (Intel KNC)
+tiling
+no tiling
+Fig. 7.SMC speedup on 60-core Intel KNC. We show the speedup of the wh ole run excluding the one-time initialization.
+The 180-thread tiled run had a 92x speedup over the single thr ead untiled run.
+results for just ﬁlling the ghost cells are shown in Figure 5. The 240-t hread tiled run had a speedup of 96x
+and 126x in ﬁlling ghost cells with respect to the 1-thread tiled and non -tiled runs, respectively. Figure 6
+shows the fraction of time spent ﬁlling ghost cells deﬁned as ﬁll time / ( ﬁll time + kernel time). It is a
+striking reminder of Amdahl’s law [7] that the 120-thread non-tiled ru n spent more than 40% of the time
+ﬁlling ghost cells.
+4.2. SMC. The SMC code solves the multicomponent, reacting, compressible Na vier-Stokes equations
+using a mixture model for species diﬀusion [17]. The spatial derivative s are computed with 8th-order stencils
+that span 9 cells in each coordinate direction. Here we use a minimalist v ersion of SMC for performance
+testing3. In this minimalist version, Sutherland’s viscosity law is adopted, a con stant Schmidt number is
+used for mass diﬀusivity, and a constant Prandtl number is used to compute thermal diﬀusivity. The runs
+considered here used a 9-species H 2/O2reaction mechanism [20] and a 3rd-order Runge-Kutta method was
+used for time integration. We have previously demonstrated excelle nt scaling behavior of manually tiled
+SMC [17]. The version of SMC described here is based on the new versio n of BoxLib described in this paper.
+A series of SMC runs were carried out on a single 60-core processor on Babbage. As with the heat
+equation solver, the domain contained a single grid of 1283cells and periodic boundaries were assumed in all
+three dimensions. The tile size was againchosento be 128 ×4×4in thex,yandz-direction, respectively. For
+comparison, we have performed both tiled and untiled runs. As abov e, the tiled runs used the coarse-grained
+tile-level threading approach whereas the untiled runs used the ﬁn e-grained loop-level threading approach.
+The scaling results are shown in Figure 7. A speedup of 86x was obtain ed for the 180-thread tiled run over
+the single thread tiled run, similar to the result obtained with the manu al tiling. Moreover, the best tiled
+run was 2.4 times faster than the best untiled run, and a 92x speedu p was obtained for the 180-thread tiled
+run over the single thread untiled run. The results demonstrate cle arly that excellent performance can be
+obtained using BoxLib with tiling on many-core architectures with mor e than 100 threads.
+5. Future Work. Future work for the BoxLib framework includes integrating the TiDA library cur-
+rently under development into the BoxLib framework in order to ena ble regional tiling as well as logical
+tiling. Regional tiling addresses potential NUMA issues that are likely t o become even more prevalent on
+next-generation architectures. Such architectures enable a th read placed on a NUMA domain to access
+3The source code of this minimalist version of SMC is availabl e atMiniApps/SMC in BoxLib.
+12
+remote memory of another domain at a cost of higher latency and low er bandwidth, often referred to as
+NUMA eﬀects. One can address NUMA eﬀects by either placing data in the memory local to where most
+computations will be carried out, or by moving computations to the N UMA domain that holds the data.
+However, neither memory management nor thread management is a trivial task for the application devel-
+oper. The approach currently adopted in BoxLib is to place one MPI p rocess per NUMA node and use a
+threaded model such as OpenMP within a NUMA node. However, such a model results in higher overhead
+for inter-process synchronization (e.g. barrier and reduction), due to more MPI processes, than a model
+in which a single MPI process spans multiple NUMA nodes. In addition, MP I often requires additional
+memory to buﬀer messages at both the application and system levels . In future architectures we expect to
+see a signiﬁcant reduction in memory capacity per core and a substa ntial increase in the number of NUMA
+domains per compute node [31]. Regional tiling allows one to respect NU MA eﬀects while operating with
+one MPI process per compute node.
+48 16 24 32
+Number of Threads051015202530SpeedupSMC with Regional Tiling
+regional tiling
+logical tiling
+no tiling
+Fig. 8.SMC with regional tiling on Trestles
+The TiDA library [29, 30] will provide developers with NUMA-aware tiling and layout abstractions at
+the application level and hides details of how regions and tiles are cons tructed, mapped and executed on
+various hardware platforms. The layout abstraction manages the memory allocation for regions and keeps
+track of their location on physical partitions of the memory. In Figu re 8 we show a performance comparison
+betweenprototypelogicalandregionaltilingimplementationsofSMC .Inthisexample,weconductedastrong
+scaling study on up to 8 NUMA domains (i.e. 32 cores) of a compute nod e on Trestles, a system at San Diego
+Supercomputer Center. It can be seen that when only one NUMA no de (4 cores) is used, the performance of
+both implementations matches. However, with more NUMA domains re gional tiling overtakes logical tiling,
+and the performance gap expands as the number of NUMA domains in creases. The reason is that regional
+tiling reduces NUMA eﬀects by allocating each region on a diﬀerent NUM A node. In particular, with logical
+tiling a tile may access remote memory if a neighbor resides in a diﬀerent NUMA domain. Latency costs will
+become signiﬁcant when there are many remote memory accesses o n small amounts of data. With regional
+tiling, tiles at the boundary exchange ghost cells, realizing higher ban dwidth and amortizing the latency
+overhead. In this protoype version of the SMC code, regional tiling achieves 32x the performance over one
+thread on 32 cores.
+6. Summary. In order to address the performance challenges that will accompa ny next generation
+node architectures based on many-core processors with NUMA do mains, we have implemented logical tiling
+in BoxLib, a block-structuredadaptive mesh reﬁnement software framework. In this paper we havedescribed
+13
+howthetilingconstructsareembeddedintheiteratorconstructs inBoxLibsothatBoxLib-basedapplications
+can easily realize the expected serial and parallel performance gain s without extra eﬀort on the part of the
+applicationdeveloper. Wealsodiscussedapathforwardtoenablefu tureversionsofBoxLibtotakeadvantage
+of NUMA-aware optimizations using the TiDA portable library.
+REFERENCES
+[1] Center for Computational Sciences and Engineering, Law rence Berkeley National Laboratory, BoxLib, software available
+athttps://ccse.lbl.gov/BoxLib/ .
+[2]A.S. Almgren, J.B. Bell, M.J. Lijewski, Z. Lukic, and E. Van Ande l,Nyx: A massively parallel AMR code for
+computational cosmology , APJ, 765 (2013), p. 39.
+[3]A. S. Almgren, V. E. Beckner, J. B. Bell, M. S. Day, L. H. Howell, C. C. Joggerst, M. J. Lijewski, A. Nonaka,
+M. Singer, and M. Zingale ,CASTRO: A New Compressible Astrophysical Solver. I. Hydrod ynamics and Self-
+gravity, ApJ, 715 (2010), pp. 1221–1238.
+[4]A. S. Almgren, J. B. Bell, A. Nonaka, and M. Zingale ,Low Mach number modeling of Type Ia supernovae. III.
+Reactions , APJ, 684 (2008), pp. 449–470. paper III.
+[5]A. S. Almgren, J. B. Bell, C. A. Rendleman, and M. Zingale ,Low Mach number modeling of Type Ia supernovae.
+I. Hydrodynamics , APJ, 637 (2006), pp. 922–936. paper I.
+[6] ,Low Mach number modeling of Type Ia supernovae. II. Energy Ev olution, APJ, 649 (2006), pp. 927–938. paper
+II.
+[7]Gene M Amdahl ,Validity of the single processor approach to achieving larg e scale computing capabilities , in Proceedings
+of the April 18-20, 1967, spring joint computer conference, ACM, 1967, pp. 483–485.
+[8]A.J. Aspden, M. S. Day, and J. B. Bell ,Turbulence-chemistry interaction in lean premixed hydrog en combustion , Proc.
+Comb. Inst., 35 (2014), pp. 1321–1329.
+[9]J.B. Bell, M.S. Day, and M.J. Lijewski ,Simulation of nitrogen emissions in a premixed hydrogen ﬂam e stabilized on
+a low swirl burner , Proc. Comb. Inst., 34 (2013), pp. 1173–1182.
+[10]Ganesh Bikshandi, Jia Guo, Daniel Hoeflinger, Gheorghe Almas i, Basilio B. Fraguela, Mar ´ıa J. Garzar ´an,
+David Padua, and ˜Christoph von Praun ,Programming for parallelism and locality with hierarchica lly tiled arrays ,
+in Proceedings of the eleventh ACM SIGPLAN symposium on Prin ciplesand practice of parallelprogramming, PPoPP
+’06, New York, NY, USA, 2006, ACM, pp. 48–57.
+[11]P. Brown, G. Byrne, and A. Hindmarsh ,Vode: A variable-coeﬃcient ode solver , SIAM Journal on Scientiﬁc and
+Statistical Computing, 10 (1989), pp. 1038–1051.
+[12]S. Carr and K. Kennedy ,Compiler blockability of numerical algorithms , in Proceedings of the 1992 ACM/IEEE con-
+ference on Supercomputing, Supercomputing ’92, Los Alamit os, CA, USA, 1992, IEEE Computer Society Press,
+pp. 114–124.
+[13]M. S. Day and J. B. Bell ,Numerical simulation of laminar reacting ﬂows with complex chemistry , Combust. Theory
+Modelling, 4 (2000), pp. 535–556.
+[14]M. Duarte, A. S. Almgren, K. Balakrishnan, J. B. Bell, and D. M. R omps,A numerical study of methods for moist
+atmospheric ﬂows: Compressible equations , Mon. Wea. Rev., 142 (2014), pp. 4269–4283.
+[15]M. Duarte, A. S. Almgren, and J. B. Bell ,A low mach number model for moist atmospheric ﬂows , J. Atmos. Sci.,
+72 (2015), pp. 1605–1620.
+[16]A. Dubey, A. Almgren, J. Bell, M. Berzins, S. Brandt, G. Bryan, D. Graves P. Colella, M. Lijewski, F. Loffler,
+B. O’Shea, E. Schnetter, B. Van Straalen, and K. Weide ,A survey of high level frameworks in block-structured
+adaptive mesh reﬁnement packages , Journal of Parallel and Distributed Computing, 74 (2014), pp. 3217–3227.
+[17]Matthew Emmett, Weiqun Zhang, and John B. Bell ,High-order algorithms for compressible reacting ﬂow with
+complex chemistry , Combustion Theory and Modelling, 18 (2014), pp. 361–387.
+[18]Georgios Goumas et al. ,Automatic parallel code generation for tiled nested loops , in Proceedings of the 2004 ACM
+symposium on Applied computing, SAC ’04.
+[19]B. Fryxell, K. Olson, P. Ricker, F. X. Timmes, M. Zingale, D. Q. Lamb, P. MacNeice, R. Rosner, J. W. Truran,
+and H. Tufo ,FLASH: An adaptive mesh hydrodynamics code for modeling ast rophysical thermonuclear ﬂashes ,
+Astrophysical Journal Supplement, 131 (2000), pp. 273–334 .
+[20]Juan Li, Zhenwei Zhao, Andrei Kazakov, and Frederick L. Dryer ,An updated comprehensive kinetic model of
+hydrogen combustion , International Journal of Chemical Kinetics, 36 (2004), pp . 566–575.
+[21]Zarija Lukic, Casey Stark, Peter Nugent, Martin White, Avery Meiksin, and Ann Almgren ,The lyman-alpha
+forest in optically-thin hydrodynamical simulations , MNRAS, 446 (2015), pp. 3697–3724.
+[22]C. M. Malone, A. Nonaka, S. E. Woosley, A. S. Almgren, J. B. Bell, S. Dong, and M. Zingale ,The deﬂagration
+stage of chandrasekhar mass models for type ia supernovae. i . early evolution , The Astrophysical Journal, 782 (2014),
+p. 11.
+[23]A. Nonaka, A. S. Almgren, J. B. Bell, M. J. Lijewski, C. M. Malone, a nd M. Zingale ,MAESTRO:an adaptive low
+mach number hydrodynamics algorithm for stellar ﬂows , APJ:sup, 188 (2010), pp. 358–383. paper V.
+[24]George Shu Heng Pau, John B Bell, Ann S Almgren, Kirsten M Fagnan, and Michael J Lijewski ,An adaptive
+mesh reﬁnement algorithm for compressible two-phase ﬂow in porous media , Computational Geosciences, 16 (2012),
+pp. 577–592.
+[25]Gabriel Rivera and Chau-Wen Tseng ,Tiling optimizations for 3d scientiﬁc computations , in Proceedings of the 2000
+14
+ACM/IEEE Conference on Supercomputing, SC ’00, Washington , DC, USA, 2000, IEEE Computer Society.
+[26]Gabriel Rivera and Chau Wen Tseng ,Tiling optimizations for 3d scientiﬁc computations , in Proceedings of the
+2000 ACM/IEEE conference on Supercomputing, Supercomputi ng ’00, Washington, DC, USA, 2000, IEEE Computer
+Society.
+[27]Yonghong Song and Zhiyuan Li ,New tiling techniques to improve cache temporal locality , SIGPLAN Not., 34 (1999),
+pp. 215–228.
+[28]Didem Unat, Xing Cai, and Scott B. Baden ,Mint: realizing CUDA performance in 3D stencil methods with annotated
+C, in Proceedings of the international conference on Superco mputing, ICS ’11, New York, NY, USA, 2011, ACM,
+pp. 214–224.
+[29]Didem Unat, Cy Chan, Weiqun Zhang, John Bell, and John Shalf ,Tiling as a durable abstraction for parallelism and
+data locality , Workshop on Domain-Speciﬁc Languages and High-Level Fram eworks for High Performance Computing,
+(November 18, 2013).
+[30]Didem Unat, Tan Nguyen, Weiqun Zhang, MuhammedNufail Farooqi, Burak Bastem, GeorgeMichelogiannakis,
+Ann Almgren, and John Shalf ,Tida: High-level programming abstractions for data locali ty management , in
+Supercomputing, Lecture Notes in Computer Science, Spring er Berlin Heidelberg, 2016.
+[31]Didem Unat, John Shalf, Torsten Hoefler, Thomas Schulthess, An shu Dubey (Editors), et al. ,Programming
+Abstractions for Data Locality , tech. report, 04 2014.
+[32]Antonio Valles and Weiqun Zhang ,Optimizing for reacting navier-stokes equations , in High Performance Parallelism
+Pearls Volume One: Multicore and Many-core Programming App roaches, James Reinders and James Jeﬀers, eds.,
+Morgan Kaufmann, 2014.
+[33]M. Wolfe ,More iteration space tiling , in Proceedings of the 1989 ACM/IEEE conference on Supercom puting, Super-
+computing ’89, New York, NY, USA, 1989, ACM, pp. 655–664.
+[34]W. Zhang, L. Howell, A. Almgren, A. Burrows, and J. Bell ,Castro: A new compressible astrophysical solver. ii.
+gray radiation hydrodynamics , APJ:sup, 196 (2011), p. 20.
+[35]W. Zhang, L. Howell, A. Almgren, A. Burrows, J. Dolence, and J. Bel l,Castro: A new compressible astrophysical
+solver. iii. multigroup radiation hydrodynamics , APJ:sup, 204 (2013), p. 7.
+[36]M. Zingale, A. S. Almgren, J. B. Bell, A. Nonaka, and S. E. Woosley ,Low mach number modeling of Type Ia
+supernovae. IV. White dwarf convection , APJ, 704 (2009), pp. 196–210.

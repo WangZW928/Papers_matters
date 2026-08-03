@@ -1,6 +1,6 @@
-# Codex 精读推荐 — 19 篇论文排名
+# Codex 精读推荐 — 20 篇论文排名
 
-**日期：** 2026-08-03 | **审查范围：** 320 篇 | **Token：** 200,400
+**日期：** 2026-08-03 | **审查范围：** 321 篇 | **Token：** 295,000
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -56,7 +56,7 @@
 12. **Quantum Simulation of PDEs via Schrödingerization** — quantum-computing
     - 文件：[`quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md`](quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 
-## Tier 3 — 扩展阅读（7 篇）
+## Tier 3 — 扩展阅读（8 篇）
 
 13. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
@@ -97,4 +97,4 @@
 
 ---
 
-*覆盖 11 个 topic | 每篇均关联库内至少 1 篇其他论文 | 20/20 文件已链接*
+*覆盖 11 个 topic | 每篇均关联库内至少 1 篇其他论文 | 21/21 文件已链接*
