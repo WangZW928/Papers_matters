@@ -1,0 +1,444 @@
+arXiv:1512.04611v2  [math.SG]  13 Apr 2016
+The Madelung Transform as a Momentum Map
+Daniel Fusca∗
+Abstract
+The Madelung transform relates the non-linear Schr¨ odinge r equation and a com-
+pressible Euler equation known as the quantum hydrodynamic al system. We prove that
+the Madelung transform is a momentum map associated with an a ction of the semidi-
+rect product group Diﬀ (Rn)⋉H ∞(Rn), which is the conﬁguration space of compressible
+ﬂuids, on the space Ψ = H ∞(Rn,C) of wave functions. In particular, this implies that
+the Madelung transform is a Poisson map taking the natural Po isson bracket on Ψ to
+the compressible ﬂuid Poisson bracket. Moreover, the Madel ung transform provides
+an example of “Clebsch variables” for the hydrodynamical sy stem.
+1 Introduction
+The Madelung transform was introduced in 1927, soon after the bir th of quantum mechanics,
+as a way to relate Schr¨ odinger-type equations to hydrodynamical equations [4]. It turns out
+that the Madelung transform not only maps one equation to the oth er, but it also preserves
+the Hamiltonian properties of both equations. Namely, the non-linea r Schr¨ odinger equation
+is Hamiltonian with respect to the constant Poisson structure on th e space of wave functions,
+which are complex valued fast decaying smooth functions on Rn. On the other hand, the
+compressible Euler equation is Hamiltonian with respect to the natura l Lie-Poisson structure
+on the space of pairs consisting of ﬂuid momenta µ and ﬂuid densities ρ. This space is the
+dual of the Lie algebra of the semidirect product group of the grou p of diﬀeomorphisms of
+Rn times the space of real-valued fast decaying functions, which is the conﬁguration space of
+a compressible ﬂuid. In this paper we show that the Madelung transf orm sends one Poisson
+structure to the other. Moreover, the transform is a momentum map associated with a
+natural action of this semidirect product group on the space of wa ve functions.
+Let complex valued functions ψ ∈ Ψ =H ∞(Rn; C) ∶= ∩k≥0Hk(Rn; C) evolve according to
+the non-linear Schr¨ odinger equation
+∂tψ = i
+2 /parenleft.alt1 ∆ψ − 2f /parenleft.alt1 /divides.alt0ψ/divides.alt0 2/parenright.alt1 ψ/parenright.alt1 . (NLS)
+∗ Department of Mathematics, University of Toronto, Toronto, ON M5S 2E4, Canada; e-mail:
+dfusca@math.toronto.edu
+1
+Here f ∶ R → R is a smooth function which characterizes the type of non-linear Sch r¨ odinger
+equation being considered. For example, the Gross-Pitaevskii equ ation corresponds to f (r) =
+r−1. Depending on the type of non-linearity, one may consider ψ belonging to an appropriate
+function space other than H ∞(Rn; C), but for simplicity this will not be discussed in the
+present paper, see [1] for details.
+The Madelung transform is a map between the NLS-type and hydrod ynamical equations.
+It takes a nonvanishing complex valued function ψ to the pair of real valued functions (τ,ρ )
+deﬁned by ψ = √ρeiτ . Such a substitution for ψ sends (NLS) into a system of equations for
+the functions ρ and v ∶= ∇τ known as the “quantum hydrodynamical system”
+⎧
+⎪
+⎪
+⎪
+⎪
+⎨
+⎪
+⎪
+⎪
+⎪
+⎩
+∂tρ = −∇ ⋅ (ρv)
+∂tv = −v ⋅ ∇v − ∇ ⎛
+⎝f (ρ) − ∆ /parenleft.alt1 √
+ρ/parenright.alt1
+2√ρ
+⎞
+⎠
+. (QHDa)
+The ﬁrst equation of this system is the continuity equation for a den sityρ moved by a ﬂow
+with velocity v. The second equation would be the classical Euler equation of a baro tropic
+ﬂuid except for the fact that the “quantum pressure” P(ρ) ∶=
+∆ √
+ρ
+2√ρ depends on both ρ and
+its derivatives rather than just on ρ itself.
+This system can be written in terms of the momentum, which is the 1-f orm µ = ρv♭
+deﬁned with respect to the Euclidean metric on Rn. (Throughout this paper v♭ is identiﬁed
+with v, so we write µ =ρv as well.) Assuming ρ is always positive, the system (QHDa) is
+equivalent to the following:
+⎧
+⎪
+⎪
+⎪
+⎪
+⎨
+⎪
+⎪
+⎪
+⎪
+⎩
+∂tρ = −∇ ⋅µ
+∂tµ = −∇ ⋅ /parenleft.alt3 1
+ρµ ⊗µ/parenright.alt3 −ρ∇ ⎛
+⎝f (ρ) −
+∆ /parenleft.alt1 √
+ρ/parenright.alt1
+2√ρ
+⎞
+⎠
+. (QHD)
+The term ∇ ⋅ /parenleft.alt2 1
+ρµ ⊗µ/parenright.alt2 , in components, is given by
+/parenleft.alt3 ∇ ⋅ /parenleft.alt3 1
+ρµ ⊗µ/parenright.alt3/parenright.alt3
+j
+= /summation.disp
+i
+∂i( 1
+ρµiµj).
+Note that ρ andµ are natural coordinates on the dual of the Lie algebra of the semid irect
+Lie group S = Diﬀ (Rn) ⋉H ∞(Rn) which is the conﬁguration space of the compressible ﬂuid.
+Here Diﬀ (Rn) stands for the group of diﬀeomorphisms that asymptotically appro ach the
+identity map at inﬁnity.
+Remark: While we formulate and prove the main result in the setting of Rn, the deﬁnitions
+and all proofs can be extended to an arbitrary manifold with volume f ormdVol by replacing
+all gradients with exterior diﬀerentiation and by deﬁning the diverge nce of a vector ﬁeld in
+terms of dVol. Note however that one needs a metric structure to deﬁne th e equations (NLS)
+and (QHD) on manifolds.
+2
+We start the paper with a review of the relevant geometric structu res associated with
+(NLS) and (QHD) to establish the context for the Madelung transf orm. The Hamiltonian
+structures of these systems are reviewed in Section 2.1, while Sect ion 2.2 deﬁnes the action
+of the semidirect product group S on the space of wave functions Ψ. The proof of the
+main result, that the Madelung transform is a momentum map for this action, is given in
+Section 3.2, Theorem 3.5. For more details on applications of the Made lung transform we
+refer to [1].
+2 Geometric preliminaries
+2.1 Hamiltonian structures of non-linear Schr¨ odinger and the quan-
+tum hydrodynamical system
+Both (NLS) and (QHD) are Hamiltonian systems with respect to the f ollowing Hamiltonians
+and Poisson structures. Note that these Poisson structures ar e only deﬁned a subclasses
+AΨ ⊂C ∞(Ψ ) and As∗ ⊂C ∞(s∗) of smooth functionals on Ψ and s∗. As always with Poisson
+brackets on inﬁnite-dimensional spaces, the deﬁnition of the Poiss on algebra of functionals
+is a subtle question. For instance, functionals on a space of functio ns u deﬁned as integrals
+of polynomials (in u and ﬁnitely many derivatives of u) are closed under the Poisson bracket
+but not under multiplication. The same is true of functionals having sm ooth L2 gradients:
+they are closed under the Poisson bracket but not under multiplicat ion, cf. [3].
+We start with (NLS) and consider the space Ψ =H ∞(Rn; C) of complex valued functions
+ψ. The real Hermitian inner product on Ψ is deﬁned by ⟨f,g ⟩ ∶= Re ∫ ¯fgdx , and the gradient
+∇ is deﬁned with respect to this inner product. The Poisson bracket o n Ψ is given by
+{F,G }NLS (ψ) = /uni27E8.alt∇F, −i
+2 ∇G/uni27E9.alt1.
+The Hamiltonian associated with (NLS) is
+HNLS = /int⟩gral.dispRn
+1
+2 /divides.alt0 ∇ψ/divides.alt0 2 +U(/divides.alt0ψ/divides.alt0 2)dx,
+whereU ∶ R → R is a function satisfying U ′ =f . One ﬁnds that the Hamiltonian vector ﬁeld
+XHNLS associated with this Hamiltonian functional and Poisson bracket {⋅, ⋅}NLS is given by
+XHNLS = −i
+2 ∇H = i
+2 (∆ψ − 2f (/divides.alt0ψ/divides.alt0 2)ψ),
+which is the right-hand side of (NLS).
+Now consider the equation (QHD), which describes the motion of a co mpressible isentropic-
+type ﬂuid. The Poisson geometry of such ﬂuids was studied in [5], and we outline the results
+below.
+3
+Consider the semidirect product group S = Diﬀ (Rn) ⋉H ∞(Rn; R). Here and below we
+assume that the elements “decay suﬃciently fast at inﬁnity.” The sp aceH ∞(Rn; R) is deﬁned
+as H ∞(Rn; R) ∶= ∩k≥0Hk(Rn; R), while Diﬀ (Rn) is the set of diﬀeomorphisms on Rn of the
+form g = id +f with f ∈ H ∞(Rn; Rn). The Lie algebra of the group S is s = vect(Rn) ⋉
+H ∞(Rn; R), and the (smooth) dual of this Lie algebra is s∗ = vect∗(Rn) ⊕H ∞∗(Rn; R). The
+space s∗ is the space of elements (µ,ρ ), where ρ is a density and µ =ρv♭ is a 1-form deﬁned
+with respect to the Euclidean metric on Rn. As mentioned above, we also identify µ withρv.
+There is a natural linear Poisson structure on the dual of any Lie alg ebra, the Lie-Poisson
+bracket. For this reason we work with the momentum µ rather than the velocity v. The
+Lie-Poisson bracket on s∗ is given by
+{F,G }CF (µ,ρ ) = /int⟩gral.dispRn
+µ ⋅ /bracketleft.alt3/parenleft.alt3 δG
+δµ ⋅ ∇/parenright.alt3 δF
+δµ − /parenleft.alt3 δF
+δµ ⋅ ∇/parenright.alt3 δG
+δµ /bracketright.alt3 dx
++ /int⟩gral.dispRn
+ρ /bracketleft.alt3/parenleft.alt3 δG
+δµ ⋅ ∇/parenright.alt3 δF
+δρ − /parenleft.alt3 δF
+δµ ⋅ ∇/parenright.alt3 δG
+δρ /bracketright.alt3 dx.
+This bracket is also called the compressible ﬂuid bracket . The Hamiltonian for (QHD),
+written in terms of momentum µ, is
+HCF = /int⟩gral.dispRn
+1
+2
+/divides.alt0µ/divides.alt0 2
+ρ + 1
+8
+/divides.alt0 ∇ρ/divides.alt0 2
+ρ +U(ρ)dx.
+We denote the associated Hamiltonian vector ﬁeld on the (µ,ρ )-space by XHCF. One can
+check that it agrees with the right-hand side of (QHD): if Xρ
+HCF
+andXµ
+HCF
+denote the ρ and
+µ components of XHCF, then
+Xρ
+HCF
+= −∇ ⋅µ,
+Xµ
+HCF
+= −∇ ⋅ /parenleft.alt3 1
+ρµ ⊗µ/parenright.alt3 −ρ∇ ⎛
+⎝f (ρ) −
+∆ /parenleft.alt1 √
+ρ/parenright.alt1
+2√ρ
+⎞
+⎠.
+2.2 Lie group and Lie algebra actions on the space of wave func -
+tions
+It turns out that it is natural to think of Ψ as being a space of comple x valued half-densities
+on Rn since ψ is square-integrable and /divides.alt0ψ/divides.alt0 2 is often interpreted as a probability measure.
+Half-densities are characterized by how they are transformed un der diﬀeomorphisms of the
+underlying space: if ψ is a half-density on Rn andg is a diﬀeomorphism of Rn, the pushfor-
+wardg∗(ψ) ofψ isg∗(ψ) =
+/radical.alt1
+/divides.alt0 Det(Dg −1)/divides.alt0 ψ ○g−1. With this in mind, the following action of
+S on Ψ is natural.
+4
+Deﬁnition 2.1. The semidirect product group S = Diﬀ (Rn) ⋉H ∞(Rn) acts on the Poisson
+space (Ψ, {⋅, ⋅}NLS) as follows: if (g,a ) ∈S is a group element, then
+(g,a ) ∶ψ ↦ (g,a ) ⋅ψ ∶=
+/radical.alt1
+/divides.alt0 Det(Dg −1)/divides.alt0 e−ia(ψ ○g−1). (2.1)
+In other words, ψ is pushed forward under the diﬀeomorphism g as a complex-valued
+half-density, followed by a pointwise phase adjustment e−ia.
+For the above Lie group action (2.1), the Lie algebra action is as follow s.
+Proposition 2.2. Given an element ξ = (v,α ) ∈ s = vect(Rn) ⋉H ∞(Rn), the inﬁnitesimal
+action of ξ on Ψ corresponding to the action (2.1) is the vector ﬁeld ξΨ ∈ X(Ψ ) deﬁned at
+each point ψ by
+ξΨ (ψ) = −1
+2ψ∇ ⋅v −iαψ − ∇ψ ⋅v. (2.2)
+Proof. The proof is a direct computation.
+In the next section we deﬁne the Madelung transform and show tha t it is a momentum
+map associated with the action (2.2).
+3 The Madelung transform and a geometric interpre-
+tation
+3.1 The Madelung transform
+The classical Madelung transform is a map (τ,ρ ) ↦ ψ = √
+ρeiτ deﬁned for positive ρ. We
+consider the inverse map as a more fundamental object and deﬁne it below.
+Deﬁnition 3.1. The (inverse) Madelung transform is the map M ∶ Ψ → s∗ deﬁned by
+M(ψ) ∶= /parenleft.alt4 Im ¯ψ∇ψ
+Re ¯ψψ /parenright.alt4 = /parenleft.alt4 µ
+ρ /parenright.alt4 .
+Proposition 3.2. The map M is the inverse of the classical Madelung transform in the sen se
+that if ψ = √ρeiτ , then M(ψ) = (ρ∇τ,ρ ). If ρ is positive, then (ρ∇τ,ρ ) can be identiﬁed with
+([τ ],ρ ), where [⋅] is the equivalence class of functions on Rn modulo an additive constant.
+Proof. By the deﬁnition of M,
+M(√ρeiτ ) = /par⟩nl⟩f⟪.al⟪4Im √ρe−iτ ∇ /par⟩nl⟩f⟪.al⟪1√ρeiτ /par⟩nrigh⟪.al⟪1
+Re √ρe−iτ √ρeiτ /par⟩nrigh⟪.al⟪4
+= ⎛
+⎝
+Im √
+ρe−iτ /par⟩nl⟩f⟪.al⟪21
+2ρ− 1
+2eiτ ∇ρ +i√ρeiτ ∇τ /par⟩nrigh⟪.al⟪2
+ρ
+⎞
+⎠ = /par⟩nl⟩f⟪.al⟪4ρ∇τ
+ρ /par⟩nrigh⟪.al⟪4.
+If ρ is positive, one can recover [τ ] from ρ∇τ by dividing by ρ and integrating.
+5
+Remark: Note that the equivalence of functions τ and τ ′ diﬀering by an additive constant
+corresponds to the physical equivalence of two wave functionsψ andψ′ diﬀering by a constant
+phase factor.
+Proposition 3.3. (cf. eg. [4]) The (inverse) Madelung transform M sends (NLS) to (QHD):
+dM(XHNLS) =XHCF.
+Proof. The pushforward dMψ(φ) of a tangent vector φ ∈TψΨ by the map M is given by
+dMψ(φ) = /par⟩nl⟩f⟪.al⟪4Im( ¯ψ∇φ + ¯φ∇ψ)
+2Re( ¯ψφ) /par⟩nrigh⟪.al⟪4=∶ /par⟩nl⟩f⟪.al⟪4(dMψ(φ))µ
+(dMψ(φ))ρ /par⟩nrigh⟪.al⟪4.
+Recall that XHNLS = i
+2 (∆ψ − 2f (/divid⟩s.al⟪0ψ/divid⟩s.al⟪02)ψ). Now substitute ψ = √ρeiτ into the expression
+for XHNLS, which results in
+XHNLS = i
+2 /par⟩nl⟩f⟪.al⟪1∆ /par⟩nl⟩f⟪.al⟪1√ρeiτ /par⟩nrigh⟪.al⟪1− 2f (ρ)√ρeiτ /par⟩nrigh⟪.al⟪1
+= i
+2 /par⟩nl⟩f⟪.al⟪4−/divid⟩s.al⟪0∇ρ/divid⟩s.al⟪02
+4ρ
+3
+2
+eiτ + ∆ρ
+2√ρeiτ − √ρ/divid⟩s.al⟪0∇τ /divid⟩s.al⟪02eiτ − 2f (ρ)√ρeiτ /par⟩nrigh⟪.al⟪4
+− 1
+2 /par⟩nl⟩f⟪.al⟪4∇ρ ⋅ ∇τ√ρ eiτ + √ρ∆τeiτ /par⟩nrigh⟪.al⟪4. (3.1)
+The ρ-component of the image dMψ(XHNLS) is obtained by multiplying (3.1) by 2 ¯ψ =
+2√ρe−iτ and then taking the real part. We have
+(dMψ(XHNLS))ρ = 2Re( ¯ψXHNLS) = − (∇ρ ⋅ ∇τ +ρ∆τ )
+= −∇ ⋅ (ρ∇τ ) = −∇ ⋅µ =Xρ
+HCF
+,
+which is the right-hand side of the continuity equation in (QHD).
+The µ-component of dMψ(XHNLS) is found in a similar fashion. Namely, after straight-
+forward computations, one obtains
+(dMψ(XHNLS))µ = Im /par⟩nl⟩f⟪.al⟪1¯ψ∇XHNLS + ¯XHNLS∇ψ/par⟩nrigh⟪.al⟪1
+= /divid⟩s.al⟪0∇ρ/divid⟩s.al⟪02∇ρ
+4ρ2 − ∇/divid⟩s.al⟪0∇ρ/divid⟩s.al⟪02
+8ρ − ∆ρ∇ρ
+4ρ + ∇∆ρ
+4
+−ρ∇/divid⟩s.al⟪0∇τ /divid⟩s.al⟪02
+2 − ∇τ ∇ ⋅ (ρ∇τ ) −ρ∇f (ρ).
+Direct computation shows that the ﬁrst line of the right-hand side o f the last equality is
+equal to ρ∇ /par⟩nl⟩f⟪.al⟪2
+∆ √ρ
+2√ρ /par⟩nrigh⟪.al⟪2. The terms involving τ simplify to
+−ρ∇/divid⟩s.al⟪0∇τ /divid⟩s.al⟪02
+2 − ∇τ ∇ ⋅ (ρ∇τ ) = − [(ρ∇τ ⋅ ∇)∇τ + ∇τ ∇ ⋅ (ρ∇τ )]
+= − /brack⟩⟪l⟩f⟪.al⟪3(µ ⋅ ∇) /par⟩nl⟩f⟪.al⟪3µ
+ρ /par⟩nrigh⟪.al⟪3+µ
+ρ ∇ ⋅µ/brack⟩⟪righ⟪.al⟪3= −∇ ⋅ /par⟩nl⟩f⟪.al⟪31
+ρµ ⊗µ/par⟩nrigh⟪.al⟪3,
+6
+so that
+(dMψ(XHNLS))µ = −∇ ⋅ /par⟩nl⟩f⟪.al⟪31
+ρµ ⊗µ/par⟩nrigh⟪.al⟪3−ρ∇ /par⟩nl⟩f⟪.al⟪4f (ρ) − ∆ √ρ
+2√ρ /par⟩nrigh⟪.al⟪4=Xµ
+HCF
+.
+3.2 The Madelung transform as a momentum map
+We ﬁrst recall the deﬁnition of a momentum map.
+Suppose we are given a Poisson manifold P , a Lie algebra g, and an action A ∶ g → X(P ),
+A(ξ) = ξP . Let ⟪, ⟫ denote the pairing of g and g∗. The Lie algebra action A admits a
+momentum map if there exists a map J ∶P → g∗ satisfying the following deﬁnition:
+Deﬁnition 3.4. A momentum map associated with a Lie algebra action A(ξ) =ξP is a map
+J ∶P → g∗ such that for every ξ ∈ g the function J(ξ) ∶P → R deﬁned by J(ξ)(p) ∶= ⟪J(p),ξ ⟫
+satisﬁes
+XJ(ξ) =ξP.
+Thus Lie algebra actions that admit momentum maps are Hamiltonian ac tions on P , and
+the pairing of the momentum map at a point with an element ξ ∈ g returns a Hamiltonian
+function associated with the Hamiltonian vector ﬁeld ξP . We now show that M is a momen-
+tum map associated with the action (2.2). In the proofs below we will u se the notation of
+Deﬁnition 3.4 and deﬁne M(ξ) ∶ Ψ → R byM(ξ)(ψ) ∶= ⟪M(ψ),ξ ⟫.
+Theorem 3.5. For the Lie algebra s = vect(Rn) ⋉H ∞(Rn), its action (2.2) on the Pois-
+son space Ψ =H ∞(Rn; C) equipped with the Poisson structure {F,G }NLS (ψ) = /uni27E8.al⟪∇F, −i
+2 ∇G/uni27E9.al⟪1
+admits a momentum map. The map M ∶ Ψ → s∗ deﬁned by (3.1) is a momentum map
+associated with this Lie algebra action.
+Proof. The Hamiltonian vector ﬁeld of M(ξ) is given by
+XM (ξ) = −i
+2 ∇M(ξ),
+where the gradient is deﬁned with respect to the inner product ⟨f,g ⟩ = Re ∫ ¯fgdx . Let
+ξ = (v,α ) be an element of s = vect(Rn) ⋉H ∞(Rn) and its pairing with (µ,ρ ) ∈ s∗ is given
+by ⟪(v,α ), (µ,ρ )⟫ ∶= ∫Rnρ ⋅α +µ ⋅vdx . We have
+M(ξ)(ψ) = /int⟩gral.dispRn
+M(ψ)ρ ⋅α + M(ψ)µ ⋅vdx
+= Re /int⟩gral.dispRn
+¯ψψα −i ¯ψ∇ψ ⋅vdx .
+7
+To ﬁnd the gradient, or variational derivative, let φ ∈ C ∞c (Rn; C) be a test function and
+consider the variation of ψ in the direction φ:
+d
+dǫM(ξ)(ψ +ǫφ)/divid⟩s.al⟪3
+ǫ=0
+= Re /int⟩gral.dispRn
+¯ψφα + ¯φψα −i ¯φ∇ψ ⋅v −i ¯ψ∇φ ⋅vdx
+= Re /int⟩gral.dispRn
+2 ¯φψα −i ¯φ∇ψ ⋅v +iφ∇ ⋅ ( ¯ψv)dx
+= Re /int⟩gral.dispRn
+¯φ [2ψα − 2i∇ψ ⋅v −iψ∇ ⋅v]dx,
+so that ∇M(ξ)(ψ) = 2ψα − 2i∇ψ ⋅v −iψ∇ ⋅v. Finally we conclude that
+XM (ξ)(ψ) = −iαψ − ∇ψ ⋅v − 1
+2ψ∇ ⋅v.
+Comparing this with (2.2), one obtains that XM (ξ)(ψ) =ξΨ (ψ).
+Any momentum map J ∶P → g∗ is also a Poisson map taking the bracket on P to the
+Lie-Poisson bracket on g∗ provided that it is inﬁnitesimally equivariant (see, for example,
+[6, Thm. 12.4.1]). Recall that a momentum map J of a Lie algebra g is inﬁnitesimally
+equivariant if for all ξ,η ∈ g the following holds:
+J([ξ,η ]) = {J(ξ),J (η)}. (3.2)
+Theorem 3.6. The map M ∶ Ψ → s∗ is inﬁnitesimally equivariant for the action of the
+semidirect product Lie algebra s.
+Proof. We start by computing the left hand side of (3.2). In our context, t he Lie bracket on
+a pair of elements ξ = (u,α ),η = (v,β ) ∈ s = vect(Rn) ⋉H ∞(Rn) is given by
+[(u,α ), (v,β )] = ([u,v ],v ⋅ ∇α −u ⋅ ∇β). (3.3)
+We refer to [5] for the general formula of the Lie bracket on a semid irect product algebra.
+Using the bracket (3.3) and the deﬁnition of M, we have
+M([ξ,η ])(ψ) = Re /int⟩gral.dispRn
+−i ¯ψ∇ψ ⋅ [u,v ] + ¯ψψ (v ⋅ ∇α −u ⋅ ∇β)dx.
+For the right-hand side of (3.2) we obtain
+{M(ξ),M (η)}NLS (ψ) = ⟨∇M(ξ), −i
+2 ∇M(η)⟩(ψ)
+= 1
+2 Re /int⟩gral.dispRn
+/brack⟩⟪l⟩f⟪.al⟪12 ¯ψα + 2i∇ ¯ψ ⋅u +i ¯ψ∇ ⋅u/brack⟩⟪righ⟪.al⟪
+× [−2iψβ − 2∇ψ ⋅v −ψ∇ ⋅v]dx
+= Re /int⟩gral.dispRn
+/brack⟩⟪l⟩f⟪.al⟪1−2 ¯ψ∇ψ ⋅vα − ¯ψψ∇ ⋅vα + 2ψ∇ ¯ψ ⋅uβ + ¯ψψ∇ ⋅uβ/brack⟩⟪righ⟪.al⟪
++ /brack⟩⟪l⟩f⟪.al⟪1−i∇ ¯ψ ⋅u∇ψ ⋅v +i∇ψ ⋅u∇ ¯ψ ⋅v −iψ∇ ¯ψ ⋅u∇ ⋅v +iψ∇ ¯ψ ⋅v∇ ⋅u/brack⟩⟪righ⟪.al⟪dx. (3.4)
+8
+At this point we use two identities that are easily veriﬁed. The ﬁrst is
+− 2 ¯ψ∇ψ ⋅vα − ¯ψψ∇ ⋅vα = −∇ ⋅ /par⟩nl⟩f⟪.al⟪1¯ψψvα /par⟩nrigh⟪.al⟪1+ ¯ψψv ⋅ ∇α +ψ∇ ¯ψ ⋅vα − ¯ψ∇ψ ⋅vα. (3.5)
+Notice that ψ∇ ¯ψ ⋅vα − ¯ψ∇ψ ⋅vα is purely imaginary, so this term will not contribute to the
+integral in (3.4). Neither will −∇ ⋅ /par⟩nl⟩f⟪.al⟪1¯ψψvα /par⟩nrigh⟪.al⟪1since it is an exact derivative. There is a similar
+identity involving u and β in the place of v and α.
+The second identity we use is
+−i∇ ¯ψ ⋅u∇ψ ⋅v +i∇ψ ⋅u∇ ¯ψ ⋅v −iψ∇ ¯ψ ⋅u∇ ⋅v +iψ∇ ¯ψ ⋅v∇ ⋅u
+= −i∇ ⋅ (ψ∇ ¯ψ ⋅uv) +i∇ ⋅ (ψ∇ ¯ψ ⋅vu)
++iψ∇ /par⟩nl⟩f⟪.al⟪1∇ ¯ψ ⋅u/par⟩nrigh⟪.al⟪1⋅v −iψ∇ /par⟩nl⟩f⟪.al⟪1∇ ¯ψ ⋅v/par⟩nrigh⟪.al⟪1⋅u
+= −i∇ ⋅ (ψ∇ ¯ψ ⋅uv) +i∇ ⋅ (ψ∇ ¯ψ ⋅vu) −iψ∇ ¯ψ ⋅ [u,v ]. (3.6)
+The ﬁrst two terms on the right-hand side of (3.6) do not contribut e to (3.4).
+So, using (3.5) and (3.6), we can rewrite the Poisson bracket in (3.4) as
+{M(ξ),M (η)}NLS (ψ) = Re /int⟩gral.dispRn
+¯ψψ [v ⋅ ∇α −u ⋅ ∇β] −i ¯ψ∇ψ ⋅ [u,v ]dx.
+Since the latter expression is equal to M([ξ,η ])(ψ), this completes the proof.
+Corollary 3.7. The map M is a Poisson map sending the bracket {⋅, ⋅}NLS to the bracket
+{⋅, ⋅}CF.
+Proof. This is an immediate corollary of Theorems 3.5 and 3.6.
+One can also check the Poisson property of M by a direct computation very similar to
+the proof of Theorem 3.6.
+Remark: In the language of [7], the map M is an example of symplectic or Clebsch variables
+for the “gradient subspace” of the space s∗, where (µ,ρ ) ∈ s∗ with µ =ρv♭ and v = ∇τ . The
+term “Clebsch variables” means a Poisson map ψ ∶R →P from a symplectic space R to a
+Poisson space P . Corollary 3.7 shows that our map M is a Poisson map from the symplectic
+space Ψ (with symplectic form given by ω(U,V ) = −2⟨U,iV ⟩) to the gradient subspace of
+the Poisson space s∗. Such a map ψ is also called a symplectic realization [9].
+Remark: In [2, 8] the Madelung transform is understood somewhat diﬀerent ly. It is a sur-
+jectionσ from the space C(M) of smooth non-vanishing complex functions on a Riemannian
+manifold M to the tangent bundle T P(M) of the space P(M) of probability measures over
+M. Here T P(M) plays the role of the phase space for potential motions of the comp ress-
+ible ﬂuid. It is shown in [8] that σ is a symplectic submersion of C(M) equipped with the
+constant symplectic structure on complex functions into T P(M) equipped with the natural
+symplectic structure induced by the Wasserstein metric.
+9
+Remark: One of possible applications of the momentum map nature of the Made lung trans-
+form is its use for Hamiltonian reduction to the space of singular solut ions such as vortex
+sheets and vortex membranes. We hope to address this issue in a fu ture publication.
+Acknowledgements
+The author is grateful to Boris Khesin for posing the problem of stu dying the geometric
+properties of the Madelung transform.
+References
+[1] R´ emi Carles, Rapha¨ el Danchin, and Jean-Claude Saut. Madelung, Gross-Pitaevskii and
+Korteweg. Nonlinearity, 25(10):2843–2873, oct 2012.
+[2] Boris Khesin, Gerard Misiolek, and Klas Modin. Newton’s equation on groups of diﬀeo-
+morphisms and spaces of densities. In preparation.
+[3] Boris Kolev. Poisson brackets in hydrodynamics. Discrete and Continuous Dynamical
+Systems, 19(3):555–574, jul 2007.
+[4] E. Madelung. Quantentheorie in hydrodynamischer Form. Zeitschrift f¨ ur Physik, 40(3-
+4):322–326, 1927.
+[5] Jerrold E. Marsden, Tudor Raiu, and Alan Weinstein. Semidirect pr oducts and reduction
+in mechanics. Transactions of the American Mathematical Society , 281(1):147–147, jan
+1984.
+[6] Jerrold E. Marsden and Tudor Ratiu. Introduction to Mechanics and Symmetry: A Basic
+Exposition of Classical Mechanical Systems . Springer Science & Business Media, 2002.
+[7] Jerrold E. Marsden and Alan Weinstein. Coadjoint orbits, vortice s, and Clebsch variables
+for incompressible ﬂuids. Physica D: Nonlinear Phenomena , 7(1-3):305 – 323, 1983.
+[8] Max-K. von Renesse. An optimal transport view of Schr¨ odinge r’s equation. Canad.
+Math. Bull. , 55(4):858–869, 2012.
+[9] Alan Weinstein. The local structure of Poisson manifolds. Journal of Diﬀerential Geom-
+etry, 18(3):523–557, 1983.
+10

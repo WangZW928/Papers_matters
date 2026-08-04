@@ -150,6 +150,11 @@
     - 数理基础：因果变分原理、因果费米子系统、osculating vacua、Lagrangian 诱导 Lorentz 度量、Euler-Lagrange → Einstein 方程推导链、引力常数 = 正则化长度²、修正项程序
     - 为什么精读：从底层量子变分原理几何推导宏观引力——连接几何与物理前沿；变分原理推导场方程的完整范例，与 Hamiltonian 变分原理、Force-Free Fields 的几何方法呼应。关联：Force-Free Fields、Einstein 1905、Geometric DL（规范几何）
 
+34. **The Madelung Transform as a Momentum Map** — geometric-fluid
+    - 文件：[`geometric-fluid/the-madelung-transform-as-a-momentum-map.md`](geometric-fluid/the-madelung-transform-as-a-momentum-map.md)
+    - 数理基础：波函数空间实 Hermite 内积与 NLS Poisson 括号、半直积群 Diff(Rⁿ)⋉H^∞ 作用、动量映射定义与无穷小等变性、Lie-Poisson 可压流体括号、量子压 Δ√ρ/(2√ρ)、Clebsch/symplectic realization
+    - 为什么精读：把 Madelung 变换从“代数代换”提升为动量映射/Poisson 映射——量子-经典流体对应的几何力学机制，为 HNN/LPNets 双坐标（辛波函数 vs Lie-Poisson 流体）学习提供结构桥。关联：Geometric hydrodynamics via Madelung transform、Morrison-Greene 1980、Clebsch Maps、Schrödinger's Smoke
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
