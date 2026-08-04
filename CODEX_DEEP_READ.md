@@ -1,6 +1,6 @@
 # Codex 精读推荐 — 20 篇论文排名
 
-**日期：** 2026-08-03（2026-08-04 追加 Berger-Colella AMR 精读，+70,977 tokens） | **审查范围：** 321 篇 | **Token：** 366,000
+**日期：** 2026-08-03（2026-08-04 追加 Berger-Colella AMR 精读 +70,977、WarpX GPU 移植精读 +81,317 tokens） | **审查范围：** 321 篇 | **Token：** 447,000
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -56,7 +56,7 @@
 12. **Quantum Simulation of PDEs via Schrödingerization** — quantum-computing
     - 文件：[`quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md`](quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 
-## Tier 3 — 扩展阅读（9 篇）
+## Tier 3 — 扩展阅读（10 篇）
 
 13. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
@@ -91,12 +91,17 @@
     - 数理基础：块结构 AMR 源头框架——嵌套矩形网格层级、空间/时间同比例细化（subcycling）、守恒 reflux 修正（δF 通量寄存器）、Richardson 局部截断误差估计、bisection+merge 聚类、proper nesting 不变量
     - 为什么精读：Berger-Colella 1989 是 AMReX/BoxLib 整个块结构 AMR 谱系的奠基论文，reflux、average-down、subcycling、tagging、Berger-Rigoutsos 聚类的思想均源于此，对 HPC/AMR 框架设计与冲击动力学模拟有直接价值。关联：AMReX、BoxLib with Tiling、JFNK Survey
 
+22. **Porting WarpX to GPU-accelerated platforms** — HPC
+    - 文件：[`HPC/porting-warpx-to-gpu-accelerated-platforms.md`](HPC/porting-warpx-to-gpu-accelerated-platforms.md)
+    - 数理基础：电磁 PIC 的 GPU 移植——AMReX ParallelFor 性能可移植层（CUDA/HIP/DPC++）、MultiFab/ParticleContainer 数据布局、gather+push kernel 融合（footprint 1.6×、+25%）、memory arena、粒子排序、SFC/knapsack 动态负载均衡、KPP-1 FOM 基准（2.2e10 → 2.5e12）
+    - 为什么精读：AMReX 生态应用落地的样板——单代码库性能可移植如何实现、GPU 内存足迹优先的优化方法论、以整机 FOM 为准的调优观；对高性能框架设计有直接工程价值。关联：AMReX、BoxLib with Tiling、Berger-Colella AMR
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
 2. **结构保持与涡方法** → Covector Fluids → Vortex Segment Clouds → Lie-Poisson Neural Networks
 3. **PDE 学习主线** → PINN → Neural Operator → SINDy → DMD/Koopman → DDPM
-4. **HPC 求解器主线** → JFNK Survey → Matrix-Free High-Order FEM Multigrid → Berger-Colella AMR (1989) → AMReX → AmgX → GPU GMRES
+4. **HPC 求解器主线** → JFNK Survey → Matrix-Free High-Order FEM Multigrid → Berger-Colella AMR (1989) → AMReX → WarpX GPU 移植 → AmgX → GPU GMRES
 5. **前沿交叉补强** → Schrödingerization PDE → Force-Free Fields → Extended Lagrangian → Log-conformation viscoelastic
 6. **几何耗散系统** → Double-Bracket Dissipation（刚体 → 未来理想流体推广）
 

@@ -1,0 +1,1214 @@
+Porting WarpX to GPU-accelerated platforms
+A. Myersa, A. Almgrena, L. D. Amorima, J. Bella, L. Fedelie, L. Geb,a, K. Gotta, D. P. Grotec,
+M. Hoganb, A. Huebla, R. Jambunathana, R. Lehea, C. Ngb, M. Rowana, O. Shapovala,
+M. Thévenetd, J.-L. Vaya, H. Vincentie, E. Yanga, N. Zaïme, W. Zhanga, Y. Zhaoa and E. Zonia
+aLawrence Berkeley National Laboratory, Berkeley, CA 94720, USA
+bSLAC National Accelerator Laboratory Menlo Park, CA 94025, USA
+cLawrence Livermore National Laboratory, Livermore, CA 94550, USA
+dDeutsches Elektronen Synchrotron (DESY), Hamburg, Hamburg 22607, Germany
+eLIDYL, CEA-Université Paris-Saclay, CEA Saclay, 91 191 Gif-sur-Yvette, France
+A R T I C L E I N F O
+Keywords:
+Exascale Computing
+Particle-in-Cell Methods
+Accelerator Modelling
+A B S T R A C T
+WarpX is a general purpose electromagnetic particle-in-cell code that was originally designed to run
+on many-core CPU architectures. We describe the strategy, based on the AMReX library, followed
+to allow WarpX to use the GPU-accelerated nodes on OLCF’s Summit supercomputer, a strategy we
+believe will extend to the upcoming machines Frontier and Aurora. We summarize the challenges
+encountered, lessons learned, and give current performance results on a series of relevant benchmark
+problems.
+1. Introduction
+WarpX [22] is a fully electromagnetic Particle-in-Cell
+(PIC) code that is being developed as part of the US Depart-
+ment of Energy’s Exascale Computing Project [9]. Origi-
+nally designed for particle accelerator modelling, and in par-
+ticular for the study of laser- and beam-driven wakeﬁeld ac-
+celerators, it has also been used to study several other topics
+in the ﬁeld of laser-plasma interaction, such as probing the
+onset of Quantum Electrodynamics (QED) in extreme ﬁelds
+and laser-ion acceleration.
+WarpX implements the well-known electromagnetic PIC
+method for solving the motion of relativistic, charged par-
+ticles in the presence electromagnetic ﬁelds. In addition,
+it also includes support for many advanced features, such
+as: perfectly matched layers (PMLs) [18], a pseudo-spectral
+(PSATD) Maxwell solver [25], and multi-physics options
+such a ionization, QED pair creation [15, 11], a QED vac-
+uum polarization solver [6], and binary collisions [17]. WarpX
+currently supports 2D, 3D and azimuthally decomposed ge-
+ometries [13] and has the ability to operate in a Lorentz-
+boosted reference frame [20]. It also includes support for
+mesh reﬁnement and dynamic load balancing through the
+AMReX library [29, 30].
+WarpX was originally designed with many-core archi-
+tectures in mind. While the high-level operations such as
+time-stepping and MPI parallelization were implemented in
+C++ using AMReX data structures, the core PIC operations,
+ORCID(s): 0000-0001-8427-8330 (A. Myers); 0000-0003-2103-312X (A.
+Almgren); 0000-0002-1445-0032 (L.D. Amorim); 0000-0002-7215-4178 (L.
+Fedeli); 0000-0003-3244-5525 (K. Gott); 0000-0002-4057-8582 (D.P. Grote);
+0000-0003-1943-7141 (A. Huebl); 0000-0001-9432-2091 (R. Jambunathan);
+0000-0002-3656-9659 (R. Lehe); 0000-0003-2406-1273 (M. Rowan);
+0000-0003-4003-4507 (O. Shapoval); 0000-0001-7216-2277 (M. Thévenet);
+0000-0002-0040-799X (J.-L. Vay); 0000-0002-9839-2692 (H. Vincenti);
+0000-0002-9319-4216 (E. Yang); 0000-0002-9582-5894 (N. Zaïm);
+0000-0001-8092-1974 (W. Zhang); 0000-0003-4362-3630 (Y. Zhao);
+0000-0001-5662-4646 (E. Zoni)
+such as current deposition, ﬁeld gathering, and various par-
+ticle pushers and ﬁeld solvers, were handled by the PICSAR
+library of Fortran kernels [24]. These routines were highly
+optimized for the Intel’s Knight’s Landing (KNL) architec-
+ture found on supercomputers such as NERSC’s Cori and
+ALCF’s Theta platforms and featured hand-vectorized ver-
+sions of the core PIC operations. Related works presenting
+early adoptions of accelerator hardware in PIC codes are pre-
+sented in Refs. [3, 4, 19, 24].
+As the ECP focus shifted towards GPU-based machines
+such as Summit, Frontier, and Aurora, the question natu-
+rally arose about what to do with the Fortran kernels in PIC-
+SAR. CUDA Fortran provided a way forward for platforms
+with NVIDIA hardware such as Summit [23], but it was not
+clear what support for Fortran would look like on AMD or
+Intel hardware. Likewise, OpenACC provided an easy-to-
+use model for oﬄoading Fortran routines to NVIDIA GPUs,
+but again it was not clear how that would work with non-
+NVIDIA GPUs and compiler support was limited to a sin-
+gle vendor. OpenMP oﬀered better prospects for portability;
+however, early implementations suﬀered performance prob-
+lems when compared to OpenACC on NVIDIA hardware.
+Ultimately, the choice was made to port the PIC kernels
+in PICSAR from Fortran to C++, and to oﬄoad kernels us-
+ing either CUDA, HIP, or DPC++, depending on whether
+NVIDIA, AMD, Intel hardware is targeted. This removed
+any need for mixed language programming, which adds sub-
+stantial complication to the codebase and also defeats im-
+portant compiler optimizations such as inlining. Addition-
+ally, C++ usually gets better and, importantly, earlier sup-
+port from vendors, owing to its prominence in industry rel-
+ative to Fortran. Finally, CUDA, HIP, and DPC++ oﬀer a
+relatively consistent programming model across all three tar-
+get platforms. Any implementation diﬀerences between the
+three could be entirely hidden in a performance portability
+layer; in our case, in the ParallelFor routines in AMReX
+(see Section 2.5). In this manner, NIVIDA, AMD, and Intel
+A. Myers et al.: Preprint submitted to Elsevier
+Page 1 of 11
+arXiv:2101.12149v2  [physics.comp-ph]  2 Sep 2021
+Porting WarpX to GPU platforms
+GPUs could all be supported, with little to no change to the
+WarpX code required.
+Today, WarpX is a C++14 application with an optional,
+standardized Python interface (PICMI) that can be used to
+drive simulations interactively[5]. It runs on NVIDIA, AMD,
+and Intel GPUs, in addition to many-core CPU architectures
+such as KNL and Fujitsu’s A64FX processors. The core of
+the GPU support is the ParallelFor kernel launching method
+from AMReX. In what follows, we give a brief overview
+of the features in AMReX that WarpX uses to enable par-
+allelization and GPU support. Then, we summarize several
+key lessons learned from the experience of scaling up the
+code on Summit. In particular, we discuss the importance
+of memory management, the importance of optimizing for
+memory footprint as well as run time, the importance of
+optimizing parallel communication routines, and the impor-
+tance of properly utilizing the memory hierarchy. Finally, we
+will present weak and strong scaling results from a uniform
+plasma problem setup and performance numbers obtained
+on a plasma acceleration stage benchmark problem.
+2. Parallelization
+WarpX leverages AMReX for parallelization and GPU
+oﬄoading. AMReX is a framework for building block struc-
+tured, adaptive mesh reﬁnement (AMR) applications that is
+being developed as part of the Exascale Computing Project.
+It provides distributed data containers for storing and iterat-
+ing over mesh and particle data deﬁned on AMR hierarchies,
+tools for performing parallel communication, inter-level op-
+erations, linear solvers, and support for embedded bound-
+aries via a cut cell approach. In what follows we summarize
+the main features of the hierarchical parallelism model from
+AMReX that WarpX uses to run on multi-node CPU and
+GPU platforms.
+2.1. Domain Decomposition
+WarpX makes use of the AMReX-provided tools for de-
+scribing block-structured AMR hierarchies. From the sim-
+plest to the most complex, these are the IntVect, which de-
+scribes a point in an integer index space; the Box, which
+describes a region in the same index space and consists of
+low- and high- end IntVects plus a third IntVect that de-
+scribes the staggering (i.e. is the box cell-, node- face, or
+edge-centered); the BoxArray, which describes a collection of
+Boxes at a given level of reﬁnement; and the Distribution-
+Mapping, which describes how each of those Boxes is mapped
+to MPI ranks. Vector<BoxArray> and Vector<Distribution-
+Mapping> then describe the mesh hierarchy across multiple
+levels of reﬁnement. When used to describe a block in an
+AMR hierarchy like this, we use the term ‘grid‘ interchange-
+ably with Box.
+DistributionMappings can be user-generated, or AMReX
+can generate them for a given BoxArray using a number of al-
+gorithms: round robin, knapsack, and space ﬁlling curve. By
+default, the boxes in WarpX are assigned to MPI ranks ac-
+cording to the space ﬁlling curve algorithm, which attempts
+to put nearby boxes on the same rank. When dynamic load
+balancing is employed, the user can select to use either space
+ﬁlling curve, which attempts to maintain spatial locality, or
+knapsack, which provides the most ﬂexibility to achieve a
+balanced work distribution.
+2.2. Mesh and particle data structures
+The basic mesh data structure in AMReX is the FArrayBox,
+which is a multi-dimensional array of ﬂoating point values
+deﬁned on a given Box. FArrayBoxes can be single- or multi-
+component and used to represent scalar or vector physical
+quantities. In the multi-component case, the components are
+stored in a Struct-of-Array style. A distributed collection of
+FArrayBoxes deﬁned on a given BoxArray and Distribution-
+Mapping is called a MultiFab. The MultiFab data structure is
+what stores the core mesh data ﬁelds in WarpX - the electric
+and magnetic ﬁelds, the current density, and so forth.
+The core particle data structure in AMReX is the Particle,
+which consists of a collection of real and integer compo-
+nents. In WarpX, the majority of these components are stored
+in Struct-of-Array style. The exceptions are the particle po-
+sitions and a 64-bit integer identiﬁcation number, which are
+stored together in a separate struct.
+A ParticleContainer is a distributed collection of parti-
+cles associated with a given AMR hierarchy. In WarpX, each
+particle species (driver beam, plasma elections, ions, etc...)
+is stored in a separate ParticleContainer. Particles are as-
+signed to AMR levels and grids based on their physical po-
+sitions. The particles in the ParticleContainer can then be
+looped over grid-by-grid, and PIC operations such as ﬁeld
+gathering, particle pushing, and current deposition can be
+performed.
+2.3. Hierarchical Parallelism
+The above data structures naturally lend themselves to an
+“MPI+X" hierarchical approach to parallelism, where "X" is
+one of OpenMP, CUDA, HIP, or DPC++ for on-node accel-
+erated compute. Boxes are assigned to MPI tasks, and we
+typically use a form of over decomposition so that each MPI
+tasks is responsible for processing multiple boxes. This al-
+lows for more ﬂexible grid structures and also aids load bal-
+ancing via swapping boxes across ranks. AMReX provides
+MultiFab and ParticleContainer iterator objects that can in-
+struct each rank to loop over their local grids, processing
+each one in turn. When processing individual grids, an ac-
+celerated compute backend such as OpenMP or CUDA can
+be selected to perform the actual computations. See the sec-
+tion on ParallelFor for more information.
+2.4. Parallel Communication routines
+Communicating mesh and particle data between MPI ranks
+is handled by the AMReX framework. In particular, WarpX
+makes use of the following parallel communication routines:
+• FillBoundary: This method is used to ﬁll guard cells
+for the mesh data (e.g. the electric and magnetic ﬁeld
+components, and current / charge densities). It ﬁlls the
+data in the guard cells with the (possibly more recent)
+data from the corresponding valid cells. Here, "valid"
+A. Myers et al.: Preprint submitted to Elsevier
+Page 2 of 11
+Porting WarpX to GPU platforms
+refers to cells that are uniquely owned by the grid in
+question, as opposed to ghosted copies that may exist
+on other grids / MPI processes.
+• SumBoundary: This operation is analogous to Fill-
+Boundary, except that instead of copying from valid to
+guard, it takes the values in the ghost cells and adds
+them to corresponding valid cells. This is useful when
+doing current and charge deposition operations on par-
+ticles that are near the edge of grid boundaries. These
+particles add some of their weights to guard cells, and
+these contributions are summed to the proper valid
+cell by the SumBoundary method.
+• SyncNodal: This function is used when staggered or
+node-centered grids are employed to represent physi-
+cal quantities. For example, when using the standard
+Finite-Diﬀerence Time-Domain (FDTD) Maxwell solver,
+WarpX uses the Yee [28] discretization of the ﬁeld
+variables, which stores the magnetic ﬁeld components
+on cell faces, and the electric ﬁeld and current density
+components at cell edges. In this case, some points
+in the discretization are represented on multiple grids
+and potentially multiple MPI ranks. Note that, unlike
+in the cell-centered case, no one grid can be said to
+uniquely “own" these points. To prevent spurious nu-
+merical eﬀects, it is necessary to synchronize these
+shared nodal points so that they have exactly the same
+values to machine precision. The SyncNodal method
+accomplishes this. Several diﬀerent options for de-
+ciding which value to use are implemented, e.g. sim-
+ple or weighted averaging. By default, WarpX simply
+chooses an arbitrary value as the ‘winner‘ and over-
+rides the others.
+• ParallelCopy: This is the most general form of par-
+allel communication for mesh data in AMReX. It per-
+forms copy on intersection from one MultiFab to an-
+other, even when those MultiFabs have diﬀerent Box-
+Arrays and DistributionMappings. This is needed when,
+for example, copying data between diﬀerent levels of
+reﬁnement, performing regridding or load balancing
+operations, and when copying data between the PML
+grids and the rest of the domain.
+• Particle Redistribution: This refers to putting parti-
+cles back on the proper level and grid after they have
+been pushed. AMReX includes two versions of this
+operation, one in which the particles are assumed to
+only move between neighboring ranks, and another in
+which they are allowed to move between any two ranks
+in the MPI communicator. The former, local version
+is the one used most often during normal time step-
+ping, while the latter version is used when performing
+load balancing.
+These parallel communication routines have been opti-
+mized for hybrid CPU/GPU platforms, in particular, Sum-
+mit. All run fully on the GPUs, meaning that they do not
+trigger any unnecessary host/device copies of mesh or par-
+ticle data. Communication has been refactored to reduce
+the number of GPU kernels launched, in particular when
+performing packing and unpacking operations on MPI send
+and receive buﬀers (see Section 3.3). Finally, WarpX can
+take advantage of gpu-aware MPI implementations that can
+operate directly on device data pointers, if one is available.
+This operation can be enabled using a runtime option. When
+turned oﬀ, right before the MPI sends are performed, the
+data to be sent is copied into pinned memory buﬀers on the
+host and the MPI exchanges are made between host memory
+buﬀers instead.
+2.5. ParallelFor
+The core of the GPU support in WarpX consists of a se-
+ries of ParallelFor functions provided by the AMReX frame-
+work. These are similar to those provided by the perfor-
+mance portability layers Kokkos [7] and RAJA [2], but have
+been tailored towards the needs of structured grid applica-
+tions. These functions separate the details of how the loop is
+performed from the loop body, which is supplied as a C++
+lambda function describing the operation done on each el-
+ement. The amrex::ParallelFor loops are translated into ei-
+ther GPU kernel launches or normal host for depending on
+a compile-time option. Using this approach, a single code
+base can be maintained that can run on CPUs and on multi-
+ple GPU platforms. Note, however, that amrex::ParallelFor
+does not include OpenMP parallelization - that is included
+in the outer, MFIter level instead (see Listing 3).
+Listings 1 and 2 show two examples of ParallelFor. The
+ﬁrst speciﬁes the loop bounds using an AMReX Box object,
+which results in a 3-dimensional loop over the cells in the
+box. The second shows a one-dimensional ParallelFor, which
+loops over the particles in a grid.
+1 amrex : : P a r a l l e l F o r ( bx ,
+2
+[=] AMREX_GPU_DEVICE ( i n t
+i ,
+i n t
+j ,
+i n t
+k )
+3
+{
+4
+d s t a r r ( i , j , k , 0 ) = s r c a r r ( i , j , k , 0 ) ;
+5
+}) ;
+Listing 1: A ParallelFor routine operating on a single box
+of mesh data. In this example case, the threading will be
+performed over the cells of a 3-dimensional box. AMReX
+arrays use Fortran index order.
+1 amrex : : P a r a l l e l F o r ( np ,
+2
+[=] AMREX_GPU_DEVICE ( i n t
+i )
+3
+{
+4
+amplitude [ i ] = 0.0 _ r t ;
+5
+}) ;
+Listing 2: A one-dimensional ParallelFor used to thread
+over all the particles in a grid.
+2.6. Reductions
+Parallel reductions are used in several places in WarpX;
+for example, in diagnostic functions for particles and beams
+that act as an in situ data reduction technique. AMReX pro-
+vides functions implementing these reduction operations in-
+A. Myers et al.: Preprint submitted to Elsevier
+Page 3 of 11
+Porting WarpX to GPU platforms
+cluding both “oﬀ-node" reductions over MPI ranks and “on-
+node" reductions using either CPU threads or on-device ac-
+celeration. On GPUs, these functions make use of vendor-
+supported libraries such as CUB [16] and rocPRIM [1] when
+possible, and otherwise fall back on AMReX’s own imple-
+mentation based on on warp-level primitives such as CUDA’s
+__shfl_down operation and atomics.
+A feature of the AMReX implementation of parallel re-
+ductions is that it provides an API for performing multiple
+reductions in one pass on any combination of data types and
+reduction operators. When running on GPUs, all these op-
+erations would be done in a single kernel launch. These re-
+ductions operations have been tested and implemented for
+CUDA, HIP, and DPC++, as well as on CPU platforms us-
+ing OpenMP.
+3. Lessons from Summit
+In the following section, we summarize some key lessons
+learned from our experience of porting WarpX to Summit.
+These fall under three main areas: issues relating to memory
+management and overall footprint, issues relating to parallel
+communication, and ﬁnally, the importance of cache utiliza-
+tion on GPU platforms.
+3.1. Memory Optimization
+With the trend towards GPU computing, the importance
+of optimizing codes for memory consumption has increased.
+Consider the example of Summit. Summit has 4608 nodes,
+each of which has 608 GB of host memory (512 DDR4 +
+96 HBM2), for a system total of 2.8 Petabytes. This is con-
+siderably more than Cori’s KNL nodes, which have a total
+aggregate memory of 1.1 Petabytes. However, if we con-
+sider only device memory, each Summit node has 6 NVIDIA
+V100 GPUs with 16 GB of memory each, for a total of only
+440 TB, substantially less than Cori phase II. This means
+that, provided that one wants to run in a mode in which your
+problem entirely ﬁts on the GPUs (which is desirable con-
+sidering the performance penalties associated with frequent
+host / device data transfers), one actually cannot run as big
+of a problem on Summit than one could ﬁt on Cori. This
+makes reducing the memory footprint of a simulation code
+quite impactful in terms of enabling production-level science
+calculations.
+Reducing the memory footprint can have performance
+implications as well. Originally in WarpX, every particle
+stored persistent values for the electric and magnetic ﬁelds
+interpolated to the particle’s position. In addition to the stor-
+age overhead, these values need to be communicated every
+time particles change MPI domains, and shuﬄed around in
+memory every time particles are sorted (see Section 3.4.2).
+Additionally, if the performance of a GPU kernel is memory-
+bound, meaning that its performance is limited by the rate
+at which data can be transferred from main memory to the
+streaming multiprocessors on the GPUs, then increasing the
+arithmetic intensity of those kernels by streaming less data
+and recomputing values on-the-ﬂy can improve their overall
+performance.
+Recently, WarpX removed the persistent electric and mag-
+netic ﬁelds at the particle positions in favor of re-gathering
+these values inside GPU kernels as they are needed. For this,
+the ﬁeld gathering and particle pushing kernels were fused
+together in the PIC loop, resulting in less data that needed to
+be streamed to the processors in a given timestep. In addition
+to reducing the memory footprint by a factor of ≈1.6, this
+also led to a ≈25% percent speedup in the overall runtime
+on several key benchmarks. When the ﬁeld values at the
+particle positions are needed more than once in a step, as,
+for example, when modelling additional eﬀects such as ion-
+ization or using certain diagnostics, the gather operation is
+simply performed multiple times. This kind of optimization
+has the added beneﬁt that it will likely improve CPU per-
+formance as well for computational kernels that are memory
+bound, which includes most of the operations performed in
+WarpX on modern CPU hardware.
+Finally, we are currently exploring other means of re-
+ducing the overall memory footprint of WarpX, including
+exploiting single / mixed precision and employing compres-
+sion.
+3.2. Memory Arenas
+Dynamic memory allocation is many times more expen-
+sive on GPU than CPU architectures. This fact, combined
+with common programming patterns involving temporary
+variables, can lead to drastic performance penalties on GPU
+systems. For example, consider the code in Listing 3. This
+snippet demonstrates how to loop over mesh data using the
+AMReX data structures. The MFIter object instructs each
+MPI rank to loop over the grids it owns. For each grid, we
+resize a temporary scratch space called tmp, then launch a
+ParallelFor kernel to do some calculations using it. The
+Elixir is not essential to the point, but it keeps the scratch
+space alive in memory until the kernel is ﬁnished working
+with it - this is needed due to the asynchronous nature of
+GPU kernel launches. If every call to resize the buﬀer ended
+up triggering cudaMalloc and cudaFree calls, this could easily
+end up becoming the dominant cost of this routine. Another
+place this comes up is in out-of-place sorting and partition-
+ing operations, which require a temporary buﬀer in which to
+store the result.
+One way to mitigate this is to refactor application codes
+to keep temporary buﬀers alive in memory instead of letting
+them go out of scope. However, this is error-prone and labor-
+intensive. Instead, AMReX provides a number of memory
+pool classes termed “Arenas", which allocate memory in large
+chunks and dole out pieces of it as the application runs. Thus,
+even though WarpX makes frequent use of temporary vari-
+ables, during most time steps that are no calls to cudaMalloc
+or cudaFree.
+These Arenas have a number of diﬀerent options for man-
+aging memory fragmentation; currently, the default in AM-
+ReX is to use a "ﬁrst ﬁt" strategy. AMReX provides memory
+arenas that use host, device, pinned, and managed memory.
+WarpX uses these Arenas for all of its mesh and particle data
+structures.
+A. Myers et al.: Preprint submitted to Elsevier
+Page 4 of 11
+Porting WarpX to GPU platforms
+By default, when running on NVIDIA GPUs, WarpX
+places all of its core data in an Arena that uses managed
+memory. However, this feature is optional, and we have
+tested the performance implications of this compared to plac-
+ing the data in the device Arena on the 1-node version of the
+test problem presented in Section 4.1.1. Overall, the over-
+head associated with using uniﬁed memory appears to be
+less than 0.2% on NVIDIA V100, likely because WarpX ini-
+tializes all data on the device and AMReX uses cudaMemAdvise
+to set the preferred location of the managed memory Arena
+to “device."
+In addition to the managed and device memory arenas,
+WarpX also uses a pinned memory arena in a few places
+where frequent device-to-host transfers are needed: ﬁrst, when
+performing MPI communication when GPU-aware is not avail-
+able or is switched oﬀ(see Section 3.3), and second, when
+copying simulation data to host for IO.
+1 # i f d e f AMREX_USE_OMP
+2 #pragma omp
+p a r a l l e l
+i f
+( notInLaunchRegion ( ) )
+3 # e n d i f
+4 {
+5
+FArrayBox tmp ;
+6
+f o r
+( MFIter
+mfi ( mf ,
+TilingIfNotGPU ( ) ) ;
+7
+mfi . i s V a l i d ( ) ; ++mfi )
+8
+{
+9
+const Box& bx = mf . t i l e b o x ( ) ;
+10
+tmp . r e s i z e ( bx ) ;
+11
+E l i x i r
+e l i = tmp . e l i x i r ( ) ;
+12
+auto
+const& tmp_arr = tmp . a r r a y ( ) ;
+13
+14
+amrex : : P a r a l l e l F o r ( bx ,
+15
+[=] AMREX_GPU_DEVICE ( i n t
+i ,
+i n t
+j ,
+i n t
+k )
+16
+{
+17
+compute_tmp ( i ,
+j ,
+k ,
+tmp_arr ) ;
+18
+}
+19
+}
+20 }
+Listing 3: Example of an MFIter loop with a ParallelFor
+inside. This code can be compiled to run on CPUs with
+OpenMP or GPUs with CUDA, HIP, or DPC++.
+3.3. Communication Optimization
+Once the initial port of WarpX to NVIDIA GPUs was
+complete, the initial experience was that compute kernels
+such as current deposition and ﬁeld gathering were much
+faster on V100 hardware than on KNL. However, the same
+was not true for the AMReX parallel communication rou-
+tines. The primary reason for this was that the parallel com-
+munication routines involved many small, "copy on intersec-
+tion" routines between neighboring boxes, especially when
+packing and unpacking MPI send and receive buﬀers. These
+operations involved little to no computation but launched
+many small kernels that packed and unpacked data buﬀers.
+Thus, the dominant cost in these routines was the latency as-
+sociated with the kernel launches, which could be fused into
+a fewer number. After optimization, each MPI rank makes
+only 1 kernel launch to pack and unpack its MPI buﬀers,
+which led to greatly improved performance on Summit.
+Additionally, the parallel communication routines in AM-
+ReX were restructured to take advantage of GPU-aware MPI
+implementations, in which pointers to device memory can
+be passed directly to MPI function calls without any need
+to explicitly transfer data to the host ﬁrst. This feature is op-
+tional; in the event that it is switched oﬀ, data in MPI buﬀers
+is copied to pinned memory before it is passes to MPI. Note
+that to date, we have not seen large performance beneﬁt from
+using GPUDirect on Summit.
+3.4. Cache utilization
+As with CPU-based many-core architectures, rearrang-
+ing computations so that they properly exploit the memory
+hierarchy can lead to signiﬁcant performance increases on
+V100 GPUs. In this section, we discuss a case-study in this
+eﬀect - speciﬁcally, on how periodic sorting of particle data,
+so that it is processed in a cache-friendly way, can greatly
+improve the performance of PIC operations like ﬁeld gath-
+ering and current deposition on V100. First, however, we
+will describe the current deposition algorithm we use, and
+how it diﬀers between CPU and GPU runs, in more detail.
+3.4.1. Current Deposition
+In PIC codes, most operations are straightforward to par-
+allelize, since particles can be threaded over and processed
+independently without needing to worry about potential race
+conditions. Charge and current deposition operations, how-
+ever, require special consideration, since when threading over
+particles there is the potential for collisions as multiple threads
+may attempt to update the same cell simultaneously. Note
+that, while most work loops in WarpX are performance portable
+between CPU and GPU architectures in the manner of List-
+ing 3, the current deposition step is the one area where it does
+maintain two diﬀerent code paths through the use of #ifdef
+preprocessor directives. This is because the current deposi-
+tion is a particularly important routine in terms of computa-
+tional cost, and because fundamentally diﬀerent approaches
+need to be selected depending on whether we are running
+with OpenMP or CUDA/HIP/DPC++ as the parallel back-
+end, for reasons discussed below.
+In WarpX, our approach to concurrent scatter operations
+in particle deposition kernels varies With OpenMP, the par-
+ticles on a grid are sorted onto smaller sub-regions called
+tiles. This sorting achieves two things: ﬁrst, it is good for
+data locality, because particles in the same tile are likely to
+contribute to cells that are near each other in memory, and
+second, because it allows OpenMP threads to be mapped
+to tiles, which can then be processed simultaneously. Each
+OpenMP thread deposits particles onto its own, private de-
+position buﬀer with enough cells to capture the support of
+all the particles on the tile. There is no need for atomics at
+this stage, since each thread has its own buﬀer. After de-
+position onto the buﬀer is complete, the buﬀer values are
+atomically added to the values for the full grid using atomic
+writes. Thus atomics are only needed on a per-cell basis, not
+a per-particle basis.
+The above algorithm requires having few enough OpenMP
+threads that each one can have its own private deposition
+buﬀer large enough to cover the support of all the particles
+in a tile, a strategy sometimes called data duplication. While
+A. Myers et al.: Preprint submitted to Elsevier
+Page 5 of 11
+Porting WarpX to GPU platforms
+this is possible when running on a few (say, 8-32) OpenMP
+threads, it becomes infeasible on GPUs, which can easily
+have tens of thousands of concurrently active threads. Thus,
+when running on GPUs, we dispense with thread-private
+buﬀers and perform atomic writes directly to global mem-
+ory for each particle. The performance of global atomics
+on V100 is quite good; however it still beneﬁcial to perform
+some sort of sub-box level sorting for the particles on a grid
+to achieve better data locality. Unlike with the OpenMP al-
+gorithm, this sorting process does not need to be done every
+time step, since we only need an approximate ordering to sig-
+niﬁcantly improve cache re-use, not a strong guarantee that
+all the particles being processed by an OpenMP thread are
+inside the thread’s buﬀer region. WarpX has experimented
+with thread-block level buﬀers in GPU shared memory to re-
+duce the number of global atomic updates; however, none of
+these methods have been faster than the one described above.
+This details of particle sorting on GPUs are discussed in the
+next section.
+3.4.2. Particle Sorting
+Figure 1:
+The eﬀect of sorting interval (i.e., sorting every
+푁time steps) and sort bin size on the overall performance
+on a uniform plasma benchmark. The 푥-axis shows the sort
+interval, while the 푦-axis shows the overall time to take 100
+steps, including the cost of the sorting. A sort interval > 100
+means that the particles are never re-sorted during the run.
+Periodic sorting of the particles on each grid by their spa-
+tial locations so that particles that are close to each in mem-
+ory also interact with cells that are close to each in memory
+exploits the memory hierarchy on the GPUs more eﬀectively
+than processing them in an unordered fashion. This is par-
+ticularly true in the case that particles are moving with high
+velocities, such that they frequently change cells. In that
+case, even if particles are sorted at a particular time, they
+will rapidly become disordered, leading to signiﬁcant per-
+formance degradation in the particle-mesh operations.
+Note that we diﬀerentiate between binning, which com-
+putes a permutation array that assigns particle indices to cells
+with user-deﬁned bin size, and sorting, which uses this per-
+Figure 2:
+Rooﬂine analysis of the 3rd-order Esirkepov current
+deposition [8] kernel in WarpX on a single V100 GPU, with
+and without particle sorting. In the memory streaming limit,
+three diﬀerent lines are shown, corresponding to the band-
+widths of the L1 and L2 caches as well as that for the main
+high-bandwidth memory (HBM) on the GPU. Likewise, in the
+compute-bound regime, two diﬀerent values are used for the
+peak ﬂoating point performance: both with and without taking
+advantage of fused multiply-add instructions. The arithmetic
+intensity (A.I.) is measured three times for each kernel, using
+the memory traﬃc for each level of the memory hierarchy. For
+the sorted version, the fact the A.I. is signiﬁcantly lower for
+the L1 and L2 data points shows that we are getting substan-
+tial reuse in both levels of cache. Conversely, the fact that the
+data points are all on top of each for the unsorted run indicates
+that without sorting, the degree of reuse is poor.
+Figure 3:
+Same as Figure 2, but for the fused gather and push
+kernel in WarpX. Again, there is substantial cache reuse when
+sorting is employed, although for this kernel performance still
+appears to be limited by HBM bandwidth, even with sorting.
+mutation array to actually reorder the particle data in mem-
+ory. Cache utilization requires full sorting, but for many
+operations simply knowing the cell-sorted indices is suﬃ-
+cient. AMReX provides a GPU-capable implementation of
+the counting sort operation that can be used to perform both
+of these operations. Internally, it is built using a GPU imple-
+mentation of parallel preﬁx sum, which is based on Ref. [14]
+and works on NVIDIA, AMD, and Intel GPUs.
+In addition to the presented cache-utilization optimiza-
+A. Myers et al.: Preprint submitted to Elsevier
+Page 6 of 11
+Porting WarpX to GPU platforms
+tion, sorting and/or binning particles is needed for the mod-
+eling of particle-particle interactions. The PIC method by
+default only models particle-mesh interaction and mesh up-
+dates. WarpX implements binary collisions, which depend
+on a prior binning of neighboring particles, to address vari-
+ous applications in accelerator and beam physics.
+Figure 1 shows the results of a parameter study in which
+the bin size and sorting interval were varied. For example, a
+bin size of 2푥2푥2 and sorting interval of 4 means that parti-
+cles were sorted into 2푥2푥2 supercells every 4 timesteps. On
+this problem, the optimal sorting is to sort by cell (i.e. a bin
+size of 1푥1푥1 every time step, and the diﬀerence between
+sorting optimally and not sorting at all is a factor of ≈7.5,
+with most of the improvement comings from the current de-
+position and fused gather and push kernels. However, the
+very frequent sorting interval for this problem is a special,
+because the particles in this problem change cell more often
+than in most WarpX applications. Currently, the default in
+WarpX, used throughout Section 4, is to sort the particles by
+their PIC cell every 4 time steps.
+Note that, although the Redistribute() function in AM-
+ReX does not maintain this cell-sorted order for particles that
+left one grid and been migrated to another, this only applies
+to particles that have changed grids - typically only a small
+subset of the total that are near the “surface". The bulk of the
+particles on a grid will maintain their sorted order in between
+Redistribute() calls.
+Figures 2 and 3 show the results of a rooﬂine analysis
+[26] on the current deposition and fused gather and push ker-
+nels in WarpX, which are the two most computationally ex-
+pensive operations. Our analysis followed the methodology
+of [27]. For this test, we used a uniform plasma setup with
+8 particles per cell and gave the particles a large thermal ve-
+locity, so that they frequently change cells. To rule out any
+transient eﬀects, we ran the problem for a total of 100 steps
+and only proﬁled the last one.
+The rooﬂine analysis reveals three things. First, as al-
+ready demonstrated, sorting the particles gives signiﬁcantly
+better performance on V100 GPUs than not sorting them.
+Second, the fact that the arithmetic intensity measured us-
+ing the memory bandwidth for the L1 and L2 caches is sig-
+niﬁcantly lower than for HBM indicates that, in the sorted
+run, we are getting signiﬁcant reuse in both of these levels
+of cache. Third, the arithmetic intensity for the current de-
+position for the sorted run is right up against the streaming
+limit for the L2 cache. This indicates that the performance of
+this kernel is now limited by the L2 cache bandwidth. Gather
+and push, on the other hand, is likely still limited by HBM
+bandwidth. Taken together, these results suggest that these
+kernels should get signiﬁcantly better performance on the
+A100, which has a larger L2 cache and higher HBM band-
+width than the V100.
+Finally, we note that some PIC codes, such as PICon-
+GPU [4], achieve a similar eﬀect by explicitly using shared
+memory to cache the electric and magnetic ﬁelds for nearby
+particles during ﬁeld gathering, and by using it as a write
+buﬀer when performing current deposition. We have exper-
+imented with this approach and have thus far not seen an ad-
+vantage to doing so. However, work on this front is ongoing.
+We note that our approach achieves a similar caching eﬀect
+by implicitly relying on L2 rather than explicitly managing
+the contents of shared memory buﬀers.
+4. Performance Results
+In this section, we give current performance results on
+Summit for two key benchmark problems. We concentrate
+on two areas - the scaling of the code on a uniform plasma
+test case and the performance on a plasma accelerator bench-
+mark problem.
+4.1. Uniform Plasma Scaling
+4.1.1. Weak scaling study
+In order to test the scaling of WarpX in an idealized set-
+ting, as well as to gauge the speedup associated with us-
+ing accelerated nodes, we have performed a weak scaling
+study using a uniform plasma setup on OLCF’s Summit su-
+percomputer. The base case for this scaling study used a
+256 x 256 x 384 domain with a box size of 1283 and ran
+on 1 Summit node; thus, on the GPU-accelerated runs, each
+GPU was responsible for processing two 1283-sized boxes.
+Particles were initially distributed uniformly with 8 parti-
+cles per cell. We used the standard Yee FDTD solver for
+these runs, with Esirkepov current deposition and third or-
+der shape functions. For the weak-scaling study, the number
+of Summit nodes were doubled with the number of cells (and
+particles therein) in the x-, y-, or z- directions, while hold-
+ing everything else constant, maintaining a constant work-
+load per node. We continued this process up to 2048 nodes
+- about half of the Summit machine. Overhead associated
+with time spent in problem initialization, memory allocation,
+etc., was minimized by running for a total of 100 steps.
+The results are shown in Figure 4. We performed the
+above scaling study twice, once using all six GPUs per Sum-
+mit node, and again using only the POWER9 CPUs. All
+CPU and GPU results presented in this section used ver-
+sions of WarpX 1 and AMReX 2 from 10/2020, in which
+all the optimizations discussed in Section 3 were present.
+For both runs, we used 6 MPI tasks per node. For the GPU-
+accelerated runs, we used one GPU per MPI task, and for
+the CPU-only case, we used 7 OpenMP threads per task,
+so that all 42 physical cores on the node were active. Note
+that, while the POWER9 CPUs on Summit are capable of
+simultaneous multi-threading (SMT) - running more than 1
+hardware thread per physical core - we do not typically see
+a large beneﬁt to using this feature with WarpX. To con-
+ﬁrm this trend for this problem setup, we have taken the 1
+node version of the problem above and also run it using 2
+(SMT2) and 4 (SMT4) hardware threads per physical core.
+The SMT2 run was approximately 2.4% faster than without
+using SMT, while the SMT4 run was 13.9% slower. Thus,
+while there is a small beneﬁt to using SMT on this prob-
+1WarpX Version: 20.10-58-g7a3d26f1cc8d
+2AMReX Version: 20.10-47-gf29a0c9d1b8e
+A. Myers et al.: Preprint submitted to Elsevier
+Page 7 of 11
+Porting WarpX to GPU platforms
+lem, using it would not signiﬁcantly alter our conclusions
+here. Likewise, we have experimented with diﬀerent combi-
+nations of MPI ranks per node and OpenMP threads per rank
+other than 6-7 split shown in Figure 4. Using one MPI rank
+per socket rather than 3 and 21 OpenMP threads per rank
+gives the same timings to within 0.2%, while other combi-
+nations, such as 1 MPI and 42 OpenMP threads per node,
+were slower by a few percentage points.
+Using these results, we can characterize both the weak
+scaling behavior of the CPU and GPU versions of the WarpX,
+as well as see the overall speedup obtained on Summit from
+using the accelerators. In both cases, the code scales well
+up to 2048 nodes. The weak scaling eﬃciency, deﬁned as
+the total time taken for 100 time steps on 1 node divided by
+the total taken on 2048 nodes, is 81% for the GPU case and
+90% for the CPU case. The diﬀerence in scaling eﬃciency
+between the CPU and GPU can be attributed to the fact that,
+because the local work is signiﬁcantly faster when using the
+V100s, communication operations like FillBoundary, which
+are inherently harder to scale, become relatively more expen-
+sive. Additionally, the speedup from the accelerators at all
+scales tested was a factor of 30. This speedup refers to the
+total run time, including time associated with host / device
+memory traﬃc and communication, not to isolated compute
+kernels.
+Figure 4:
+Results of a weak scaling study on a uniform plasma
+setup on Summit. The x-axis shows the number of Summit
+nodes, while the y-axis is the number of particles advances per
+nanosecond.
+Both the CPU and GPU versions of the code
+scale well, and the overall speedup associated with using the
+accelerators is ∼30.
+4.1.2. Strong Scaling study
+We have also conducted a series of strong scaling tests,
+using a very similar uniform plasma problem setup as before.
+The only diﬀerence is that the box size has been set to 643, to
+allow for more GPUs / MPI tasks to be used as the problem is
+strong scaled. There is some overhead associated with doing
+this, since with smaller boxes, the surface to volume ratio of
+ghost cells is higher. Other than the box size, the parameters
+are all the same as before.
+We use a series of problem sizes, each scaled up a fac-
+tor of 2 in terms of the number of cells and particles in the
+domain. For each one, we conduct a series of ﬁve runs, in-
+creasing the number of MPI tasks by a factor of 2 each time.
+Thus, in the ﬁfth run, the run time should have decreased by a
+factor of 16, assuming perfect strong scaling. By the time we
+have multiplied the number of MPI ranks by 16, this prob-
+lem has reached the point where the compute work and the
+communication work take approximately the same amount
+of time, so we would not expect the problem to scale further
+than that.
+The smallest scaling study in this series goes from 1 to
+16 nodes, while the largest goes from 256 to 4096, nearly the
+entire machine. The scaling eﬃciency, deﬁned as the time
+a run should take assuming perfect strong scaling within a
+problem size and perfect weak scaling from the base prob-
+lem size divided by the actual run time, is plotted in Figure 5.
+The eﬃciencies after strong scaling by a factor of 16 for each
+problem size vary from approximately 70% for the smallest
+case to approximately 50% for the largest.
+Figure 5:
+Strong scaling studies for a variety of problem sizes.
+Each tick type refers to a diﬀerent problem size. The 푥-axis
+shows the number of Summit nodes, and the 푦-axis shows scal-
+ing eﬃciency, deﬁned as the time a run should take assuming
+perfect strong scaling within a problem size and perfect weak
+scaling from the base problem size, divided by the actual run
+time.
+4.2. Plasma Acceleration Stage
+The above tests were highly idealized in several ways.
+First, the workload was perfectly uniform at initial time, and
+approximately uniform at later times, subject only to random
+ﬂuctuations in the particle density from cell to cell. Second,
+the number of particles per cell, 8, is signiﬁcantly higher
+than used in some WarpX physics applications. Laser-wake-
+ﬁeld acceleration runs, for example, tend to use about 2 par-
+ticles per cell on average, which can change the performance
+proﬁle of the code. Evaluating WarpX on this important
+A. Myers et al.: Preprint submitted to Elsevier
+Page 8 of 11
+Porting WarpX to GPU platforms
+science scenario, the following setup was used, designed to
+mimic the essential features of modelling a single plasma-
+accelerator stage from WarpX’s challenge problem. This
+is also the benchmark problem used to determine a Figure-
+of-Merit (FOM) for the ECP Key-Performance Parameters
+(KPP) assessment. As a KPP-1 project, WarpX needs to
+show at least a factor of 50 increase in its FOM over the
+baseline on the eventual Exascale hardware. In this setup,
+an accelerated particle beam is tracked using the moving
+window feature in WarpX, in which the simulation domain
+itself shifts along with the beam at speed c. Additionally,
+the entire simulation is modeled in a Lorentz-boosted refer-
+ence frame [20], using a gamma boost of 30. New plasma is
+continuously injected at the right-hand side of the domain,
+while particles that leave the domain at the left-hand side
+are removed from the simulation. The plasma consists of
+two particles per cell (one electron and one proton), while
+the accelerated beam is comprised of electrons. Mitigating
+the numerical Cherenkov instability in the modeling of a rel-
+ativistically ﬂowing plasma, the Godrey ﬁlter [10] is applied
+to the electromagnetic ﬁelds prior to gathering them to par-
+ticle positions. For the algorithmic options, we have used
+the Vay particle pusher [21], the Cole-Karkkainen-Cowan
+FDTD solver [12], and energy-conserving ﬁeld gathering.
+We have again used Esirkepov current deposition with 3rd-
+order interpolation. To minimize the computer time needed
+to conduct these simulations, we initialize the problem to
+have the simulation domain entirely ﬁlled with plasma, which
+would normally not be the case when modelling an acceler-
+ator stage.
+To gauge the impact of using accelerated nodes on this
+more realistic problem setup, we have measured the FOM on
+Summit, deﬁned as
+FOM = num_cells ∗(훼+훽∗ppc)∕avg_time_per_it (1)
+where num_cells is the total number of grid points in the
+simulation, 훼is 0.1 as heuristic grid update cost, 훽is 0.9
+for particle update costs, ppc is the average number of par-
+ticles per cell, and avg_time_per_it is the average time per
+iteration after 1000 steps. We performed this measurement
+on 4263 Summit nodes, and extrapolated this number to the
+full machine assuming perfect weak scaling. Our baseline
+FOM was measured on NERSC’s Cori using the original
+Warp code. The baseline FOM value, measured in March
+2019 on 6625 Cori nodes and extrapolated to the 9668 on
+the full machine, was 2.2e10. The corresponding value on
+Summit, measured in July 2020, was 2.5e12, over a factor of
+100 improvement from the baseline. Additionally, the best
+CPU-only FOM obtained using the WarpX code was 1.0e11,
+also measured in March 2019. So there is a substantial (25x)
+improvement in our FOM measured with WarpX from using
+the GPUs on Summit, as compared to Cori.
+These values are all summarized in Table 1, along with
+several other data points showing the evolution of WarpX’s
+FOM over time. Of particular interest, the improvement from
+9/19 to 1/20 was mostly due to optimizations in the parallel
+communication routines in AMReX (Section 3.3); from 1/20
+to 2/20, the addition of the particle sorting described in Sec-
+tion 3.4.2; from 2/20 to 6/20, the reduction in the size of the
+particle data described in Section 3.1. Finally, the improve-
+ment from 6/20 to 7/20 was solely due to being able to run a
+problem with more cells per node. This illustrates the point
+made in Section 3.1, about the importance of reducing the
+memory footprint on Summit. Both by reducing the size of
+the WarpX particle data and by reducing overhead in AM-
+ReX’s Arenas, an overall larger problem was able to be run
+on Summit, resulting in a more eﬃcient use of the machine.
+Table 1
+Progress in the FOM measurement over time. Code: either
+the original Warp code (baseline) or WarpX. Date: the date
+when the measurement was taken. Machine: which computer
+was used to make the measurement. 푁푐/Node: the problem
+size in number of cells per node. Nodes: how many nodes the
+measurement was performed on; there are 9668 KNL nodes on
+Cori and 4608 nodes on Summit. FOM: the ﬁgure of merit,
+extrapolated from the number of nodes the measurement was
+taken on to the full machine.
+Code
+Date
+Machine
+N푐/Node
+Nodes
+FOM
+Warp
+3/19
+Cori
+0.4e7
+6625
+2.2e10
+WarpX
+3/19
+Cori
+0.4e7
+6625
+1.0e11
+WarpX
+6/19
+Summit
+2.9e7
+32
+8.6e11
+WarpX
+6/19
+Summit
+2.8e7
+1000
+7.8e11
+WarpX
+9/19
+Summit
+2.3e7
+2560
+6.8e11
+WarpX
+1/20
+Summit
+2.3e7
+2560
+1.0e12
+WarpX
+2/20
+Summit
+2.5e7
+4263
+1.2e12
+WarpX
+6/20
+Summit
+2.0e7
+4263
+1.4e12
+WarpX
+7/20
+Summit
+2.0e8
+4263
+2.5e12
+5. Conclusion
+We have summarized the approach taken to porting
+WarpX, which was originally designed for many-core CPU
+architectures, to take advantage of GPU-accelerated nodes.
+This approach is largely based on the amrex::ParallelFor set
+of performance portability functions. We have summarized
+several key lessons learned from the port, including the im-
+portance of managing memory allocation and the code’s over-
+all memory footprint, the importance of minimizing the ef-
+fect of kernel launch latency in MPI communication rou-
+tines, and the importance of utilizing the cache hierarchy on
+V100 GPUs. The GPU port of WarpX scales up to nearly
+all of Summit and currently sees good improvements in its
+KPP-1 ﬁgure of merit on Summit relative to its baseline.
+While the measurements of the GPU performance op-
+timizations discussed in this paper were all based on the
+NVIDIA GPUs on Summit, we expect that most of these
+(for example, refactoring code to reduce overhead associated
+with kernel launch latency) will generalize to other accelera-
+tor architectures, such as AMD’s MI100, as well. Addition-
+ally, the optimizations based on reducing memory footprint
+and exploiting cache hierarchy should transfer to CPU archi-
+tectures as well. Finally, although the AMReX ParallelFor
+targets CUDA, HIP, and DPC++ as parallel backends, the
+A. Myers et al.: Preprint submitted to Elsevier
+Page 9 of 11
+Porting WarpX to GPU platforms
+optimizations discussed here are not speciﬁc to those pro-
+gramming models and should transfer to other approaches
+such as OpenACC and OpenMP.
+6. Acknowledgements
+This research was supported by the Exascale Computing
+Project (17-SC-20-SC), a joint project of the U.S. Depart-
+ment of Energy’s Oﬃce of Science and National Nuclear Se-
+curity Administration, responsible for delivering a capable
+exascale ecosystem, including software, applications, and
+hardware technology, to support the nation’s exascale com-
+puting imperative. This work was performed in part under
+the auspices of the U.S. Department of Energy by Lawrence
+Berkeley
+National
+Laboratory
+under
+Contract
+DE-AC02-05CH11231, SLAC National Accelerator Labo-
+ratory under contract AC02-76SF00515, and Lawrence Liv-
+ermore
+National
+Laboratory
+under
+Contract
+DE-AC52-07NA27344.
+This research used resources of the Oak Ridge Leader-
+ship Computing Facility, which is a DOE Oﬃce of Science
+User
+Facility
+supported
+under
+Contract
+DE-AC05-00OR22725.
+WarpX is developed as open source project and avail-
+able under https://github.com/ECP-WarpX/WarpX. Presented
+code versions correspond to the monthly releases of the code
+between 3/2019 and 10/2020. The data that support the ﬁnd-
+ings of this study are available under DOI:10.5281/
+zenodo.4277941.
+References
+[1] Advanced Micro Devices, Inc., . rocPRIM github page.
+https://
+github.com/ROCmSoftwarePlatform/rocPRIM. Accessed: 2020-06-14.
+[2] Beckingsale, D.A., Burmark, J., Hornung, R., Jones, H., Killian,
+W., Kunen, A.J., Pearce, O., Robinson, P., Ryujin, B.S., Scogland,
+T.R., 2019.
+Raja: Portable performance for large-scale scientiﬁc
+applications, in: 2019 IEEE/ACM International Workshop on Per-
+formance, Portability and Productivity in HPC (P3HPC), pp. 71–81.
+doi:10.1109/P3HPC49587.2019.00012.
+[3] Burau, H., Widera, R., Hönig, W., Juckeland, G., Debus, A., Kluge,
+T., Schramm, U., Cowan, T.E., Sauerbrey, R., Bussmann, M., 2010.
+Picongpu: A fully relativistic particle-in-cell code for a gpu cluster.
+IEEE Transactions on Plasma Science 38, 2831–2839. doi:10.1109/
+TPS.2010.2064310.
+[4] Bussmann, M., Burau, H., Cowan, T.E., Debus, A., Huebl, A.,
+Juckeland, G., Kluge, T., Nagel, W.E., Pausch, R., Schmitt, F.,
+Schramm, U., Schuchart, J., Widera, R., 2013.
+Radiative signa-
+tures of the relativistic kelvin-helmholtz instability, in: Proceedings
+of the International Conference on High Performance Computing,
+Networking, Storage and Analysis, ACM, New York, NY, USA. pp.
+5:1–5:12. URL: https://github.com/ComputationalRadiationPhysics/
+picongpu, doi:10.1145/2503210.2504564.
+[5] CAMPA Collaboration, . Particle-in-cell modeling interface (PICMI).
+URL: https://github.com/picmi-standard/picmi.
+[6] Carneiro, P., Grismayer, T., Fonseca, R., Silva, L., 2017. Quantum
+electrodynamics vacuum polarization solver. arXiv:1607.04224.
+[7] Carter Edwards, H., Trott, C.R., Sunderland, D., 2014. Kokkos: En-
+abling manycore performance portability through polymorphic mem-
+ory access patterns. Journal of Parallel and Distributed Computing
+74, 3202 – 3216. doi:10.1016/j.jpdc.2014.07.003. domain-Speciﬁc
+Languages and High-Level Frameworks for High-Performance Com-
+puting.
+[8] Esirkepov, T., 2001. Exact charge conservation scheme for particle-
+in-cell simulation with an arbitrary form-factor. Computer Physics
+Communications 135, 144 – 153. doi:10.1016/S0010-4655(00)00228-9.
+[9] Exascale Computing Project, .
+Homepage.
+URL: https://www.
+exascaleproject.org.
+[10] Godfrey, B., Vay, J.L., 2014. Suppressing the numerical cherenkov
+instability in fdtd pic codes. Journal of Computational Physics 267.
+doi:10.1016/j.jcp.2014.02.022.
+[11] Gonoskov, A., Bastrakov, S., Eﬁmenko, E., Ilderton, A., Marklund,
+M., Meyerov, I., Muraviev, A., Sergeev, A., Surmin, I., Wallin, E.,
+2015. Extended particle-in-cell schemes for physics in ultrastrong
+laser ﬁelds: Review and developments. Phys. Rev. E 92, 023305.
+doi:10.1103/PhysRevE.92.023305.
+[12] Karkkainen, M., Gjonaj, E., Lau, T., Weiland, T., 2006.
+Low-
+Dispersionwake Field Calculation Tools, in: Proc. Of International
+Computational Accelerator Physics Conference, Chamonix, France.
+pp. 35–40.
+[13] Lifschitz, A., Davoine, X., Lefebvre, E., Faure, J., Rechatin, C.,
+Malka, V., 2009. Particle-in-cell modelling of laser–plasma interac-
+tion using fourier decomposition. Journal of Computational Physics
+228, 1803 – 1814. doi:10.1016/j.jcp.2008.11.017.
+[14] Merrill, D., Garland, M., 2016. Single-pass Parallel Preﬁx Scan with
+Decoupled Lookback.
+Technical Report NVR2016-001. NVIDIA
+Research. URL: https://research.nvidia.com/sites/default/files/
+pubs/2016-03_Single-pass-Parallel-Prefix/nvr-2016-002.pdf.
+[15] Nikishov, A., 1970. Pair production by a constant external ﬁeld. Sov.
+Phys. JETP 30, 660.
+[16] NVIDIA Research, . Cub documentation. https://nvlabs.github.io/
+cub/. Accessed: 2020-06-14.
+[17] Pérez, F., Gremillet, L., Decoster, A., Drouin, M., Lefebvre, E., 2012.
+Improved modeling of relativistic collisions and collisional ionization
+in particle-in-cell codes. Physics of Plasmas 19, 083104. doi:10.1063/
+1.4742167.
+[18] Shapoval, O., Vay, J.L., Vincenti, H., 2019.
+Two-step perfectly
+matched layer for arbitrary-order pseudo-spectral analytical time-
+domain methods. Computer Physics Communications 235, 102 – 110.
+doi:10.1016/j.cpc.2018.09.015.
+[19] Surmin, I., Bastrakov, S., Matveev, Z., Eﬁmenko, E., Gonoskov, A.,
+Meyerov, I., 2016. Co-design of a particle-in-cell plasma simulation
+code for intel xeon phi: A ﬁrst look at knights landing, in: Algorithms
+and Architectures for Parallel Processing, Springer International Pub-
+lishing, Cham. pp. 319–329. doi:10.1007/978-3-319-49956-7_25.
+[20] Vay, J.L., 2007. Noninvariance Of Space- And Time-Scale Ranges
+Under A Lorentz Transformation And The Implications For The
+Study Of Relativistic Interactions.
+Physical Review Letters 98,
+130405/1–4. doi:10.1103/PhysRevLett.98.130405.
+[21] Vay, J.L., 2008. Simulation of beams or plasmas crossing at relativis-
+tic velocity. Physics of Plasmas 15, 056701. doi:10.1063/1.2837054.
+[22] Vay, J.L., Almgren, A., Amorim, L.D., Bell, J., Ge, L., Gott, K.,
+Grote, D.P., Hogan, M., Huebl, A., Jambunathan, R., Lehe, R., Myers,
+A., Ng, C., Park, J., Rowan, M., Shapoval, O., Thévenet, M., Zhang,
+W., Zhao, Y., Zoni, E., 2020. Toward the modeling of chains of plasma
+accelerator stages with WarpX.
+Journal of Physics: Conference
+Series 1596, 012059.
+URL: https://github.com/ECP-WarpX/WarpX,
+doi:10.1088/1742-6596/1596/1/012059.
+[23] Vazhkudai, S.S., de Supinski, B.R., Bland, A.S., Geist, A., Sexton,
+J., Kahle, J., Zimmer, C.J., Atchley, S., Oral, S., Maxwell, D.E., Lar-
+rea, V.G.V., Bertsch, A., Goldstone, R., Joubert, W., Chambreau, C.,
+Appelhans, D., Blackmore, R., Casses, B., Chochia, G., Davison, G.,
+Ezell, M.A., Gooding, T., Gonsiorowski, E., Grinberg, L., Hanson,
+B., Hartner, B., Karlin, I., Leininger, M.L., Leverman, D., Marroquin,
+C., Moody, A., Ohmacht, M., Pankajakshan, R., Pizzano, F., Rogers,
+J.H., Rosenburg, B., Schmidt, D., Shankar, M., Wang, F., Watson, P.,
+Walkup, B., Weems, L.D., Yin, J., 2018. The design, deployment, and
+evaluation of the coral pre-exascale systems, in: SC18: International
+Conference for High Performance Computing, Networking, Storage
+and Analysis, pp. 661–672. doi:10.1109/SC.2018.00055.
+[24] Vincenti, H., Lobet, M., Lehe, R., Sasanka, R., Vay, J.L., 2017. An
+A. Myers et al.: Preprint submitted to Elsevier
+Page 10 of 11
+Porting WarpX to GPU platforms
+eﬃcient and portable simd algorithm for charge/current deposition in
+particle-in-cell codes. Computer Physics Communications 210, 145
+– 154. doi:10.1016/j.cpc.2016.08.023.
+[25] Vincenti, H., Vay, J.L., 2016. Detailed analysis of the eﬀects of stencil
+spatial variations with arbitrary high-order ﬁnite-diﬀerence Maxwell
+solver. Computer Physics Communications 200, 147–167. doi:10.
+1016/j.cpc.2015.11.009.
+[26] Williams, S., Waterman, A., Patterson, D., 2009. Rooﬂine: An in-
+sightful visual performance model for multicore architectures. Com-
+mun. ACM 52, 65–76. doi:10.1145/1498765.1498785.
+[27] Yang, C., Kurth, T., Williams, S., 2020. Hierarchical rooﬂine anal-
+ysis for gpus: Accelerating performance optimization for the nersc-9
+perlmutter system. Concurrency and Computation: Practice and Ex-
+perience 32, e5547. doi:10.1002/cpe.5547. e5547 cpe.5547.
+[28] Yee, K., 1966. Numerical solution of initial boundary value problems
+involving maxwell’s equations in isotropic media. IEEE Transactions
+on Antennas and Propagation 14, 302–307. doi:10.1109/TAP.1966.
+1138693.
+[29] Zhang, W., Almgren, A., Beckner, V., Bell, J., Blaschke, J., Chan,
+C., Day, M., Friesen, B., Gott, K., Graves, D., Katz, M.P., Myers, A.,
+Nguyen, T., Nonaka, A., Rosso, M., Williams, S., Zingale, M., 2019.
+AMReX: a framework for block-structured adaptive mesh reﬁnement.
+Journal of Open Source Software 4, 1370. URL: https://ccse.lbl.
+gov/AMReX, doi:10.21105/joss.01370.
+[30] Zhang, W., Myers, A., Gott, K., Almgren, A., Bell, J., 2020. Amrex:
+Block-structured adaptive mesh reﬁnement for multiphysics applica-
+tions. arXiv:2009.12009.
+A. Myers et al.: Preprint submitted to Elsevier
+Page 11 of 11
