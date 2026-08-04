@@ -155,6 +155,11 @@
     - 数理基础：波函数空间实 Hermite 内积与 NLS Poisson 括号、半直积群 Diff(Rⁿ)⋉H^∞ 作用、动量映射定义与无穷小等变性、Lie-Poisson 可压流体括号、量子压 Δ√ρ/(2√ρ)、Clebsch/symplectic realization
     - 为什么精读：把 Madelung 变换从“代数代换”提升为动量映射/Poisson 映射——量子-经典流体对应的几何力学机制，为 HNN/LPNets 双坐标（辛波函数 vs Lie-Poisson 流体）学习提供结构桥。关联：Geometric hydrodynamics via Madelung transform、Morrison-Greene 1980、Clebsch Maps、Schrödinger's Smoke
 
+35. **Neural Tangent Kernel: Convergence and Generalization in Neural Networks** — ai-theory
+    - 文件：[`ai-theory/neural-tangent-kernel-convergence-and-generalization-in-neural-networks.md`](ai-theory/neural-tangent-kernel-convergence-and-generalization-in-neural-networks.md)
+    - 数理基础：无限宽极限、NNGP 核递推、NTK 定义与层递推（Θ=Σ̇Θ+Σ）、核梯度流 ∂ₜf=-Θ∇C、训练中核不变、正定性（球面+非多项式激活）、谱分解 e^{-ηΛt} 与谱偏置、lazy training 线性化
+    - 为什么精读：训练动力学与泛化的核语言统一框架——直接解释 PINN 多尺度/刚性 PDE 的收敛失败与 NTK 自适应加权，为物理约束网络提供诊断工具。关联：PINN、NSFnets、HNN/LPNets、Geometric DL、DDPM
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
