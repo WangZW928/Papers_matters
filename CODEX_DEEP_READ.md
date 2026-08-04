@@ -165,6 +165,11 @@
     - 数理基础：不动点/求根（Broyden 拟牛顿、Anderson 加速）、隐式微分 dz*/dθ = (I-J_f)^{-1}∂f/∂θ、Neumann 级数与谱半径条件、Jacobian-free 反向线性系统 (I-J_f^T)u=v、内存 O(1)
     - 为什么精读：把“网络层 = 非线性方程求解”范例化——与 JFNK/Newton-Krylov、隐式时间步进/稳态 PDE 求解直接对应，是可微隐式求解器与深度学习的共同接口。关联：JFNK Survey、PINN、DDPM、NTK、Geometric DL
 
+37. **Graph Neural Networks: A Review of Methods and Applications** — ai-model
+    - 文件：[`ai-model/graph-neural-networks-a-review-of-methods-and-applications.md`](ai-model/graph-neural-networks-a-review-of-methods-and-applications.md)
+    - 数理基础：消息传递/传播-采样-池化流水线、谱域（Laplacian 特征分解、ChebNet、GCN 一阶近似）与空间域（GraphSAGE、GAT、MPNN）、GAE/VGAE、时空 GNN、1-WL 表达力上限与过平滑
+    - 为什么精读：GNN 分类体系的地基综述——直接支撑 MeshGraphNet/物理网格学习（不规则网格→图、AMR 层次图、conservative transfer），并与 Geometric DL 等变、NTK 谱、DEQ 不动点传播衔接。关联：Geometric DL、Graph Kernel Network、DEQ、NTK、AMReX/BoxLib
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
