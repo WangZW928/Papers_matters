@@ -1,0 +1,1295 @@
+Quantum mechanical closure of partial differential equations with symmetries
+Chris Valesa,∗, David C. Freemana, Joanna Slawinskaa, Dimitrios Giannakisa
+aDepartment of Mathematics, Dartmouth College, Hanover, NH 03755, USA
+Abstract
+We develop a statistical framework for the dynamical closure of spatiotemporal dynamics governed by partial
+differential equations. Employing the mathematical framework of quantum mechanics to embed the original
+classical dynamics into a quantum mechanical representation, we use the space of quantum density operators
+to model the unresolved degrees of freedom of the original dynamics in a statistical sense, and the framework
+of quantum measurement to predict their contributions to the resolved dynamics. The embedded dynamics
+is discretized by a positivity preserving process, leading to a compressed representation that is invariant
+under the dynamical symmetries of the resolved dynamics. We present a data based formulation of the
+closure scheme and apply it to a closure problem for the shallow water equations. The numerical results
+demonstrate that our closure model can accurately predict the main features of the true dynamics, including
+for out of sample initial conditions.
+Keywords:
+dynamical closure, parametrization, quantum mechanics, kernel methods, delay embedding,
+transfer operator, shallow water equations
+1. Introduction
+Complex dynamical systems often encompass degrees of freedom that evolve over a wide range of temporal
+and spatial scales, with their evolution potentially depending on different physical regimes. A challenging
+problem in such multiscale, multiphysics systems is incorporating dynamical information for degrees of
+freedom that either are too computationally expensive to simulate directly, or depend on fully or partially
+unknown physical processes [1–3].
+The approach employed by closure or parametrization methods is to derive surrogate dynamical models
+that can be used to approximate the contributions of fine grain degrees of freedom to the dynamics of
+coarse grain processes we can simulate consistently. Early applications included turbulent flows and climate
+modeling [1, 4, 5], but closure methods have since found consequential applications in a wide range of fields
+[6]. For example, in atmospheric dynamics a technique known as super-parametrization employs column
+models with explicitly resolved cloud microphysics as surrogate models of small scale moist convection,
+embedded within the discretization cells of a coarse atmospheric model [7, 8]. In plasma dynamics there are
+ongoing efforts to derive models for subgrid scale processes in fluid models, as well as to derive fluid closures
+of kinetic models, incorporating both physical modeling and data based approaches [9–12].
+In this work we focus on the development of a statistical, data based framework for the closure of
+dynamics governed by partial differential equations (PDEs).
+More specifically, we employ the operator
+theoretic framework of quantum mechanics to define surrogate dynamical models, using quantum density
+operators to encode statistical information about fine grain degrees of freedom and quantum observables to
+model their contributions to the coarse dynamics. Our approach extends a previously developed quantum
+mechanical closure (QMCl) framework [13] to the closure of spatiotemporal dynamics, explicitly taking
+∗Corresponding author.
+Email addresses: chris.vales@dartmouth.edu (Chris Vales), david.c.freeman.gr@dartmouth.edu (David C. Freeman),
+joanna.m.slawinska@dartmouth.edu (Joanna Slawinska), dimitrios.giannakis@dartmouth.edu (Dimitrios Giannakis)
+arXiv:2505.07519v3  [math.DS]  16 Mar 2026
+into account the presence of dynamical symmetries to improve the numerical efficiency and training data
+requirements of our surrogate models [14].
+In the rest of Section 1 we briefly discuss the problem of dynamical closure and different modeling
+approaches toward addressing it, present the main aspects of our proposed closure scheme and summarize
+the main results of this work. In Section 2 we develop in detail the different aspects of our closure framework.
+In Section 3 we present an application to a closure problem for the shallow water equations, followed by a brief
+conclusion in Section 4. Finally, Appendix A provides additional details on the numerical implementation
+of our closure scheme. The code used to generate the numerical results and plots of this work is available
+online1.
+1.1. Dynamical closure
+We consider a dynamical system Φt : X →X, t ≥0 on a state space X. The flow map Φt represents the
+spatiotemporal dynamics governed by a PDE on a bounded spatial domain S. As such, the state space X
+is a Hilbert space of functions on the considered spatial domain. To define the general dynamical closure
+problem, we decompose the state space as X = Xr ⊕Xu, with Xr denoting the state space of the resolved
+degrees of freedom of the dynamics and Xu the state space of the unresolved degrees. The flow map of
+the original dynamics Φt can then also be decomposed into the resolved dynamics Φt
+r : X →Xr and the
+unresolved dynamics Φt
+u : X →Xu.
+To provide an illustrative example of this decomposition we consider the advection equation with periodic
+boundary conditions
+∂tu + c∂xu = F(u)
+(1)
+where u denotes a function of time t ≥0 and space x ∈S ⊂R, F a nonlinear function of u, and c ∈R the
+advection velocity. We define the spatially averaged state function
+ˆu(·, x) = 1
+ℓ
+Z x+ℓ/2
+x−ℓ/2
+u(·, y)dy
+where ℓ> 0 denotes the length of the averaging window. The evolution equation for ˆu is derived by spatially
+averaging (1) to obtain
+∂tˆu + c∂xˆu = F(ˆu) + G(ˆu, u)
+(2)
+with residual term
+G(ˆu, u)(·, x) = 1
+ℓ
+Z x+ℓ/2
+x−ℓ/2
+F(u)(·, y)dy −F(ˆu)(·, x).
+(3)
+A version of this type of spatial averaging on a discretized spatial domain will be used for our numerical
+application in Section 3.
+We consider the original PDE (1) as the equation generating the true dynamics Φt with u ∈X as the
+state variable. Motivating the decomposition described above, we take the spatially averaged equation (2) as
+the equation governing the resolved dynamics, meaning that ˆu is the resolved state variable with state space
+Xr and Φt
+r the flow map governing its evolution. The associated unresolved state space Xu is then implicitly
+defined as the orthogonal complement of Xr in X, representing phenomena that cannot be resolved by ˆu.
+Due to the nonlinear term F(u) in the original PDE, the spatial averaging operation has not eliminated
+the dependence of (2) on the unresolved degrees of freedom. This is clearly demonstrated by the presence
+of the residual terms (3), which retain their dependence on the original state variable u. As a result, the
+resolved dynamics map Φr generated by (2) requires at least partial knowledge of unresolved variables at any
+given time. This is a manifestation of the dynamical closure problem: to form a closed system of evolution
+for the resolved degrees of freedom, we need knowledge of additional, unresolved variables. The residual
+terms (3) still depending on the unresolved degrees of freedom are often referred to as the flux terms or
+fluxes.
+1https://github.com/cval26/qmcl_swe
+2
+To address this problem, closure or parametrization methods construct a surrogate model for the resolved
+degrees of freedom, which approximates the evaluation of the fluxes by modeling the unresolved variables
+appropriately.
+The surrogate models formed for the resolved and unresolved variables can then evolve
+in parallel, leading to a closed system of evolution for the resolved variables.
+To be useful, the model
+employed for the unresolved variables has to be computationally efficient and lead to surrogate dynamics
+that constitutes an effective and consistent approximation of the original dynamics in an appropriate sense.
+Closure problems in physics also arise when deriving a fluid model from a kinetic description of a system
+by considering the evolution of moments of the phase space probability density function [15]. In that setting,
+the resolved variables are the low order velocity moments involved in the fluid description—usually mass,
+momentum and energy—while the unresolved variables are the ignored higher order moments. To define
+a closed system of evolution for the fluid model, one is again tasked with forming a surrogate model to
+estimate the required fluxes.
+1.2. Modeling approaches
+One approach toward defining a surrogate model is to model the unresolved variables by a deterministic
+function of the resolved variables. Defining such a function can be achieved by both physical modeling and
+data based approaches [3, 16–19]. A drawback of this approach is that it corresponds to a reduction in the
+dimension of the full state space of the dynamics, thereby potentially reducing the overall complexity that
+can be produced by the surrogate model [20].
+Our work is motivated by an alternative, statistical approach, where the state space of the unresolved
+degrees of freedom is replaced by the space of probability density functions on the full state space of the
+dynamics [21–23]. More specifically, a probability density function is used to assign a probability that the
+dynamical system is in a given state at a given time. Contrary to purely functional approaches, where a
+single state of the system is uniquely identified for any given time, statistical methods take into consideration
+the presence of uncertainty in our knowledge of the full state of the dynamical system.
+To illustrate the main features of this approach we define a probability density function p ∈L1(X) on the
+state space. This is a real valued, nonnegative function whose integral over X is equal to one with respect
+to an appropriate measure. At any given time, the evaluation of the density function p(u) ≥0 assigns a
+probability that the dynamical system is currently in state u ∈X. Equipped with statistical knowledge of
+the current state of the dynamics, one can use it to compute the fluxes required for the evolution of the
+resolved variables. To that end, the fluxes are modeled by a bounded, real valued function f ∈L∞(X)
+called an observable; namely, given a state u ∈X, the associated flux is f(u) ∈R. The required flux can
+then be estimated by the expected value of f with respect to p, namely
+R
+X f(u)p(u)du ∈R with respect to
+an appropriate measure.
+Having estimated the required flux term, one can then proceed with the evolution of the resolved variables;
+in our motivating example, this corresponds to integrating in time the spatially averaged PDE. For the
+surrogate evolution system to be closed, it must also account for the time evolution of the surrogate model
+of the unresolved variables, namely the density function p. This can be accomplished by using the transfer or
+Perron-Frobenius operator, which governs the evolution of probability density functions under the dynamics
+[24]. These notions will be made precise in the following sections.
+As explained in the following section, one of the main features differentiating our closure framework from
+the general statistical framework sketched above is that we replace the probability density function p with a
+probability density operator. Namely, the nonnegative function p with unit integral is replaced by a positive
+semidefinite operator with unit trace. Accordingly, the bounded function f modeling the fluxes is replaced
+by a bounded operator. In our framework, the estimated flux is then given by the expected value of the
+observable operator with respect to the probability density operator.
+1.3. Quantum mechanical closure framework
+We provide a brief overview of the QMCl framework as it has been developed in [13] for the closure of
+dynamics governed by ordinary differential equations. A detailed treatment of the framework will be given
+in Section 2, where we extend it to the closure of dynamics governed by PDEs.
+3
+As already mentioned earlier, we adopt a statistical description of the unresolved dynamics, meaning that
+we model the evolution of a probability density function of the state vectors, rather than the evolution of the
+state vectors themselves. One of the main features of the QMCl framework is that this statistical description
+is embedded into the operator setting of quantum mechanics on a complex Hilbert space H = L2(X, µ),
+where X denotes the state space and µ an invariant probability measure of the original dynamics. This
+involves embedding observables and probability densities, as well as the evolution of said densities under the
+dynamics and their bayesian conditioning.
+In the classical statistical description, a probability density function p ∈L1(X, µ) was used to model
+the state of the unresolved degrees of freedom.
+Given that √p ∈H, we now map function p to the
+quantum density operator ρ ∈B(H), ρ = ⟨√p, ·⟩√p, representing a pure quantum state. Quantum density
+operators—also called quantum states—are positive semidefinite, selfadjoint operators in B(H) with unit
+trace, and can be thought of as the operator analog of probability density functions. In this work we mainly
+use pure quantum states, which are rank-one quantum density operators equivalent to projections along a
+unit vector [25, 26]. The statistical description of the dynamics obtained by mapping the density function p
+to the density operator ρ is an example of the Koopman-von Neumann representation of classical dynamics
+[27–29].
+The fluxes needed for the closure of the resolved dynamics were modeled classically by an observable
+f ∈L∞(X, µ) ⊂H. This is now mapped to a selfadjoint multiplication operator A ∈B(H), Ag = fg for
+all g ∈H, which is referred to as a quantum observable. With these definitions in place, the surrogate flux
+needed for the evolution of the resolved dynamics is defined as the expected value of A with respect to ρ,
+namely EρA = tr(ρA) ∈R, which is connected to the theory of quantum measurement. In other words, we
+use the space of quantum density operators to model the unresolved degrees of freedom of the dynamics and
+the framework of quantum measurement to estimate their fluxes.
+In addition to evaluating the required flux terms, we need to be able to evolve the density operator ρ
+under the system’s dynamics and condition it based on observed dynamical behavior. In the classical case,
+the square root of the probability density function √p evolved according to the transfer or Perron-Frobenius
+operator P : H →H, P√p = √p ◦Φ−1. Accordingly, the evolution of the density operator ρ is governed by
+the induced transfer operator P : B(H) →B(H), acting by conjugation Pρ = PρP −1.
+In analogy to the bayesian conditioning of the probability density function p, we can condition the density
+operator ρ using a quantum effect operator e ∈B(H)
+ρ|e =
+√eρ√e
+Eρe
+(4)
+where √e denotes the positive square root of e. The above equation can be interpreted as the operator
+analog of the classical Bayes rule [30]. In addition, the quantum effect operator e can be thought of as the
+operator analog of an indicator function, which is used in classical probability to represent an event, namely
+a set in the event space. For instance, for a given set F ⊂X we can build the indicator function 1F ∈H
+taking the value one on F and zero elsewhere. The quantum effect operator eF ∈B(H) can then be defined
+as multiplication by 1F , namely eF g = 1F g for all g ∈H.
+The following diagram depicts the evolution for one timestep of the QMCl closure model built using the
+tools developed in the previous paragraphs. The top row of the diagram is concerned with the resolved
+degrees of freedom ˆu ∈Xr, while the bottom row with the density operator ρ acting as our surrogate model
+for the unresolved degrees of freedom. In the diagram, subscripts are used to denote the time index, while
+Id denotes the identity map.
+ˆun
+ˆun+1
+ˆun+1
+ρn
+ρ′
+n+1
+ρn+1
+resolved
+Id
+effect
+flux
+transfer
+Bayes
+(5)
+To evolve the resolved variables for one timestep, we require knowledge of the flux term depending on the
+unresolved degrees of freedom. As explained above, this is estimated by the expected value of an observable
+4
+A with respect to the density ρn. The evolution of the density operator ρn consists of two steps, a prediction
+step and a correction step. The prediction step employs the transfer operator to update the density operator
+ρn, yielding the prior density ρ′
+n+1. The correction step relies on the quantum Bayes formula (4) to correct
+this prediction, yielding the posterior density ρn+1. The bayesian correction uses information extracted
+from the updated resolved variables ˆun+1, in the form of a quantum effect, to condition the prior density,
+concluding one timestep of the evolution of the density operator.
+1.4. Main results
+We offer a preliminary description of the way QMCl is extended to the closure of dynamics governed
+by PDEs. As explained in Section 1.1, in the setting of spatiotemporal dynamics the resolved state ˆu is
+a spatially averaged function on the spatial domain S. Motivated by this, the main point of departure of
+the extended QMCl framework from the one outlined above is that we use a field of density operators ρ(x)
+to model the unresolved degrees of freedom at each point x, instead of using one density operator for the
+whole domain. This enables us to compute surrogate fluxes that vary over the spatial domain, and are thus
+capable of modeling the true flux terms (3) introduced earlier. Schematically, this means that the extended
+QMCl scheme involves one copy of diagram (5) for each gridpoint x, with the diagrams evolving in parallel.
+The main features of the present work can be summarized as follows.
+1. Positivity preservation. Using probability density operators to encode statistical information about
+the original dynamics leads to a closure scheme that is positivity preserving, which is important for
+sign definite quantities. More specifically, positive flux terms in the original dynamics are represented
+by positive definite operators, in turn leading to positive surrogate flux terms in our scheme’s imple-
+mentation (Section 2.5).
+2. Symmetry factorization. We incorporate elements of the vector valued spectral analysis (VSA) frame-
+work [14] to develop a data based formulation of our scheme that is efficient and effective in the
+presence of dynamical symmetries. More specifically, our scheme rests on a compressed approximate
+representation of the original dynamics that is invariant with respect to the dynamical symmetries of
+the resolved dynamics (Section 2.4).
+3. Computational efficiency. The numerical implementation of our closure scheme requires solving an
+eigenvalue problem for a kernel matrix, which is one of the most expensive tasks of the scheme (Section
+2.5). To address that we compute a low rank approximation of the original kernel matrix and use it
+to solve the eigenvalue problem with reduced cost [31].
+4. Application. We apply our scheme to a closure problem for the shallow water equations on a one
+dimensional spatial domain (Section 3). The results demonstrate that the derived surrogate model
+can effectively capture and reproduce the main features of the dynamics, including for out of sample
+initial conditions. The numerical results can be reproduced using the provided code2.
+We end this section by offering a partial answer to the question: why formulate a statistical closure
+framework using the operator setting of quantum mechanics, instead of the original function setting of
+classical mechanics? First, working in an operator setting leads to an implementation of our closure scheme
+that is naturally positivity preserving, meaning that the required discretization of classical observables and
+probability density functions preserves their positivity (Section 2.5). Second, the use of density operators
+to encode statistical information about the unresolved degrees of freedom offers a potential increase in the
+available encoding capacity, compared to using density functions (Section 3.4). However, these benefits
+are accompanied by an increase in computation and memory cost, since most discretized quantities are now
+represented by matrices instead of vectors (Section 2.5). Finally, the fact that our closure scheme rests on the
+mathematical framework of quantum mechanics offers the opportunity to explore its future implementation
+in quantum computers, especially in order to investigate whether a more efficient implementation can be
+devised by doing so.
+2https://github.com/cval26/qmcl_swe
+5
+2. Closure of partial differential equations
+In this section we develop the extended QMCl closure scheme and its data based formulation.
+We
+begin by setting up the problem in Section 2.1, before presenting the main aspects of our closure modeling
+framework in Section 2.2. As explained in Section 2.2, the extended QMCl scheme is formulated in an infinite
+dimensional Hilbert space H. In Section 2.3 we construct a finite dimensional subspace of H, which will be
+used in the numerical implementation of our scheme. Section 2.4 then investigates some of the properties
+of the constructed subspace with respect to dynamical symmetries. Finally, Sections 2.5 and 2.6 deal with
+the data based formulation of the extended QMCl scheme that will be used for our numerical experiments.
+2.1. Problem setting
+Expanding on the preliminary material presented in Section 1.1, we consider the spatiotemporal dynamics
+Φn : X →X, n ∈N, possessing an invariant probability measure µ. The discrete time map Φn is assumed to
+be a discrete time version of the continuous time dynamics, with Φn = Φn∆t for a timestep ∆t > 0. Based
+on the guiding example of the advection equation given in Section 1.1, the dynamics map Φn is generated
+by the temporally discretized version of (2), corresponding to the spatially averaged dynamics.
+The state space X of the dynamics is a Hilbert space of functions on a bounded spatial domain S ⊂Rc,
+c ∈N. Specifically, we assume X ⊂L2(S, ν; Rd), d ∈N, with ν denoting the Lebesgue measure. We consider
+the state space decomposition X = Xr ⊕Xu into the resolved and unresolved state spaces. Based on (1)–(2),
+the resolved state space is associated with spatially averaged or coarsened functions, which were denoted by
+ˆu in Section 1.1. Analogously, the unresolved state space Xu = X⊥
+r is defined as the orthogonal complement,
+representing degrees of freedom that cannot be resolved by the coarse state ˆu.
+Introducing the product state space Ω= X × S and product measure σ = µ × ν, we define the Hilbert
+space of spatiotemporal observables H = L2(Ω, σ; C). Given a real valued observable f ∈H, for almost
+every u ∈X we have that f(u, ·) ∈L2(S, ν; R) yields a real valued function on the spatial domain S, with
+f(u, x) ∈R its value at x ∈S. The motivation for our choice of space H is our interest in spatiotemporal
+observables; that is, patterns of evolution that have both a temporal dependence through u ∈X and a
+spatial dependence through x ∈S. An example of such an observable is the flux function introduced in
+(3); given a state u ∈X and gridpoint x ∈S, it outputs the residual term required for the local closure of
+the coarse dynamics (2). Moving forward, the range space of a function space is assumed to be C unless
+explicitly noted otherwise, and the measure notation is dropped when clear from the context; for example,
+we write L2(X) instead of L2(X, µ; C).
+The fact that we employ an invariant measure µ means that the dynamics Φn is volume preserving—also
+called incompressible—when the state space “volume” is measured with µ. This means that µ(Φ−n(F)) =
+µ(F) for every measurable set F ⊆X and n ∈N. For instance, there are dissipative nonlinear PDEs which,
+although not volume preserving with respect to the ambient Lebesgue measure, can be shown to possess
+an invariant measure related to their dynamics on an attractor [32, 33].
+The existence of an invariant
+probability measure for compact X and continuous Φn is ensured by the Krylov-Bogoliubov theorem [24],
+which is sufficient for the applications considered in the present work.
+In the data based formulation of our scheme treated in Sections 2.5, 2.6 and 3, we use dynamical
+trajectories to collect state space samples as our training data.
+The process of sampling the dynamics
+along a trajectory can be naturally interpreted as sampling an invariant measure µ, since it is the dynamics
+that dictates the statistical distribution of the sampled points in the state space. This may be contrasted
+to sampling the dynamics on a predefined cartesian grid in the state space, which would correspond to
+sampling the ambient Lebesgue measure.
+2.2. Closure model
+The flux terms needed for the closure of the resolved dynamics are represented by d classical real valued
+observables fj ∈L∞(Ω) ⊂H, j ∈{0, . . . , d −1}. Following the approach outlined in Section 1.3, each
+observable fj is mapped to a bounded, selfadjoint multiplication operator Aj ∈B(H), which we refer to as
+a quantum observable.
+6
+As mentioned earlier, an example of such an observable is the flux function (3), which generates the
+residual terms needed for the integration of the coarse dynamics (2). Given that the advection equation (1)
+models the evolution of the scalar field u, it follows that d = 1 and thus only one observable is needed to
+model the fluxes. In Section 3 we are going to consider a closure problem for the shallow water equations
+(14), a system of PDEs for two scalar fields (height and momentum). As a result, in that case d = 2 and
+thus two observables will be used to generate the needed fluxes.
+To model the unresolved degrees of freedom we employ a field of quantum density operators ρ: S →B(H)
+over the discretized spatial domain S. Each density operator ρ(x) ∈B(H) represents the unresolved degrees
+of freedom of the dynamics at a point x ∈S in a statistical sense. It is defined as the rank-one projection
+along the square root of a probability density function px ∈L1(Ω), ρ(x) = ⟨√px, ·⟩√px.
+Using a field
+of density operators allows us to compute fluxes that vary over the spatial domain S for each quantum
+observable Aj. More specifically, we define the corresponding d surrogate flux functions ˜fj : S →R with
+action
+˜fj(x) = tr(ρ(x)Aj) ∈R
+(6)
+yielding d surrogate flux terms at each gridpoint.
+For the closure of the coarse advection dynamics (2), one density operator ρ(x) is required for each
+gridpoint x of the spatial domain. Using equation (6) with the single quantum observable modeling the
+flux terms (3), we can generate one surrogate flux at each gridpoint x for each timestep, thus creating a
+surrogate evolution equation for the coarse dynamics.
+The time evolution of each density operator ρ(x) is performed by conjugation with the transfer operator
+P : H →H, P√px (u, ·) = √px (Φ−1(u), ·), yielding ρn+1(x) = Pρn(x)P −1, where superscripts denote the
+time index. Finally, the bayesian conditioning of each density operator ρ(x) is performed using a quantum
+effect operator ex ∈B(H) and the quantum Bayes rule (4) introduced in Section 1.3. The way the quantum
+effects ex ∈B(H) are computed in practice will be explained in Section 2.5.
+2.3. Finite dimensional projection
+As explained above, our extended closure model is formed in the infinite dimensional Hilbert space of
+observables H. In this section we form a finite dimensional subspace HL ⊂H by constructing a collection
+of orthonormal basis functions that span HL.
+To construct a finite dimensional subspace of H we use the orthonormal basis generated by the eigen-
+functions of a positive definite, selfadjoint kernel integral operator K : H →H
+Kf =
+Z
+Ω
+κ(·, ω)f(ω)dσ(ω)
+(7)
+with a positive definite, symmetric and uniformly continuous kernel function κ ∈Cb(Ω× Ω) ∩L2(Ω× Ω).
+By forming an operator acting directly on the product Hilbert space H we obtain eigenfunctions that
+are generally not of separable, tensor product form.
+This is in contrast to traditional approaches such
+as the proper orthogonal decomposition, where one would build a basis for L2(X) (the temporal space
+in this context) and form its tensor product with a basis for the spatial space L2(S) to form a basis for
+H ≃L2(X) ⊗L2(S). As explained below, in the presence of dynamical symmetries our approach leads to a
+more compressed finite dimensional representation of the dynamics on H, meaning that each eigenfunction
+of operator K as defined above can represent spatiotemporal patterns that are not expressible as a product
+of a single pair of temporal and spatial modes [14].
+The kernel function κ(ω, ω′) = k(WQ(ω), WQ(ω′)) is formed by composing a gaussian kernel function
+k: RdQ × RdQ →R and a time delay embedding map WQ : Ω→RdQ, where Q ∈N denotes the number of
+time delays. More specifically, the map WQ acts by
+WQ((u, x)) =
+ projr(u)(x), projr(Φ−1(u))(x), . . . , projr(Φ−(Q−1)(u))(x)
+
+(8)
+which corresponds to pointwise time delay embedding of the product state sample ω = (u, x). Note that WQ
+considers only the resolved component of state vector u ∈X by using the projection operator projr : X →Xr.
+7
+This is because in many practical situations one has access to data only for the resolved variables, not the
+full state of the system. The gaussian kernel then acts by
+k(WQ(ω), WQ(ω′)) = exp
+
+−1
+ϵQ∥WQ(ω) −WQ(ω′)∥2
+(9)
+where ∥·∥denotes the euclidean norm in RdQ and ϵ > 0 is a tunable bandwidth parameter. The bandwidth
+parameter ϵ can be calibrated using the procedure developed in [34]. In our numerical experiments we
+normalize the above kernel to turn it into a bistochastic kernel.
+The bistochastic kernel normalization
+process and motivation for using it can be found in [35, 36].
+The eigenfunctions of operator K from (7) form an orthonormal basis for its range ran K ⊂H. We use
+its L ∈N leading eigenfunctions {ϕℓ}L−1
+ℓ=0 to define the finite dimensional subspace HL ⊂H as their linear
+span. Next, the density operators and observables introduced in Section 2.2 are projected from B(H) to
+B(HL), which can be represented by L×L matrices with respect to our basis. This process will be presented
+in Section 2.5 along with the data based formulation of our closure scheme.
+In the next section we describe some of the properties of the subspace ran K ⊂H obtained through the
+eigendecomposition of K as they relate to dynamical symmetries.
+2.4. Dynamical symmetries
+We build the finite dimensional subspace HL via the eigenfunctions of the kernel integral operator K,
+using a kernel function that acts by time delay embedding each state vector u at a fixed gridpoint x. This
+choice of kernel function is motivated by the VSA framework developed in [14], where the following material
+is presented in more detail.
+We are particularly interested in PDEs with dynamical symmetries, which often arise from symmetries
+on the spatial domain such as spatial translations or rotations. We stress that our closure framework does
+not require the presence of dynamical symmetries. However, when symmetries are present, then our choice
+of kernel function exhibits some favorable properties.
+We consider a symmetry group G acting on the spatial domain S by a continuous left action Γg, which
+preserves the measure ν for all g ∈G. In particular, G is the group of dynamical symmetries associated
+with the resolved dynamics Φn
+r , and is generally a subgroup of the group of symmetries associated with the
+true dynamics Φn. This is because some of the original symmetries may be lost when deriving the resolved
+dynamics by spatial averaging or coarsening.
+The actions Γg induce the associated actions ΓX,g(u) = u ◦Γ−1
+g
+on the state space X. Assuming that
+Xr is invariant under Γg, they also induce the corresponding actions Γr,g(ˆu) = ˆu ◦Γ−1
+g
+on the resolved state
+space Xr. The induced actions represent dynamical symmetries of the resolved dynamics Φn
+r , which means
+that they satisfy the equivariance property
+Φn
+r ◦ΓX,g = Γr,g ◦Φn
+r
+(10)
+for all n ∈N and g ∈G. In addition, we assume that the resolved dynamics is derived in such a way that the
+true flux functions fj ∈H satisfy the analogous equivariance property fj(ΓX,g(u), x) = fj(u, Γg(x)) for all
+x ∈S, u ∈X, g ∈G and j ∈{0, . . . , d −1}. As explained below, our choice of kernel naturally exploits the
+equivariance property (10) to bestow an analogous invariance property on the eigenfunctions of the kernel
+integral operator.
+As an example, the dynamics generated by the advection equation (1) with periodic boundary conditions
+is equivariant under the continuous group of spatial translations. The translation symmetry is preserved
+during the spatial averaging employed to derive the averaged equation (2). As a result, in this case both the
+true and the resolved (averaged) dynamics satisfy the same group of dynamical symmetries. Furthermore,
+in Section 3 we will consider the shallow water equations (14) with periodic boundary conditions, which are
+also equivariant under spatial translations. More specifically, we will consider the discretized equations on
+a fine grid as the true dynamics, and an averaged version on a coarse grid as the resolved dynamics. In that
+case, the true dynamics will be equivariant under the discrete group of translations associated with the fine
+8
+grid. However, the symmetries of the resolved dynamics will be a subgroup of that group, containing only
+the spatial translations on the coarser grid.
+Under the action of map WQ from (8), the product space Ωis factored into a space of equivalence classes
+[ω]Q ⊂Ω, ω ∈Ω, with each class defined as the subset of Ωon which WQ is constant. Namely, a product
+state ω′ is a member of [ω]Q if and only if WQ(ω) = WQ(ω′). For our choice of map WQ, each equivalence
+class consists of the points in Ωwhose resolved dynamical evolution over Q delays is identical. From the
+equivariance property (10) it follows that, for any ω ∈Ω, the set of all symmetry transformations of ω under
+G is a subset of its equivalence class [ω]Q. This is because any product state vectors that differ only by a
+symmetry transformation will demonstrate the same evolution under the resolved dynamics Φn
+r , by virtue
+of (10).
+Because the kernel function κ in (7) acts by composition with the delay embedding map WQ, it follows
+that κ is constant on the [·]Q equivalence classes by construction. As a result, every function f ∈ran K is
+constant on the equivalence classes; namely, f(ω′) = f(ω) for all ω′ ∈[ω]Q. Since each equivalence class
+[ω]Q contains all symmetry transformations of ω under G, it follows that functions f ∈ran K satisfy the
+invariance property
+f ◦ΓΩ,g = f
+(11)
+for all g ∈G, with ΓΩ,g = ΓX,g ⊗Γg the induced group action on Ω.
+In particular, this implies that
+the eigenfunctions of the integral operator K satisfy this property as well. Combined with the fact that
+all f ∈ran K are continuous by the uniform continuity of κ, we conclude that ran K consists entirely of
+continuous functions that are constant on the equivalence classes [·]Q.
+As a result of (11), by using the eigenfunctions of K we derive a basis of ran K that is invariant under
+the actions of G, instead of getting multiple “copies” of the same underlying functions generated by the
+action of different g ∈G. Most importantly for our purposes, this means that fewer eigenfunctions are
+needed to represent complex spatiotemporal dynamics, thereby producing a more efficient compression of
+the dynamics from H to subspace HL.
+2.5. Data based formulation
+In this section we consider the data based formulation of the extended QMCl scheme developed in the
+previous sections, using a single dynamical trajectory to generate our training data. In the next section we
+extend this construction to the case of training data consisting of multiple trajectories.
+In the theoretical formulation of QMCl developed above, the state space X is generally an infinite
+dimensional Hilbert space of functions on the spatial domain S, with the dynamics map Φn generated by
+a PDE. To be able to simulate the “true” dynamics numerically, we approximate the true dynamics by a
+discretization of the original PDE associated with a discretized spatial domain SM ⊂S, where M ∈N
+denotes the number of gridpoints. In what follows, we denote by νM a restriction of the Lebesgue measure
+ν to a σ-algebra of sets generated by the discretization cells of the spatial domain SM.
+With respect to our motivating example of the advection PDE (1), the above corresponds to considering
+the true discrete time dynamics Φn as being generated by a high fidelity discretized version of (1). The
+resolved dynamics and associated resolved state space are again defined by forming a spatially averaged
+version of the discretized true dynamics. A detailed description of this construction will be presented in
+Section 3, where we consider an application of QMCl to the shallow water equations.
+We consider a finite dynamical trajectory of N ∈N samples XN = {un}N−1
+n=0 ⊂X with un = Φn(u0),
+u0 ∈X, and the associated sampling measure µN = PN−1
+n=0 δun/N. The space of observables is defined as
+the NM-dimensional Hilbert space HN = L2(Ω, σN) with product measure σN = µN × νM. To construct
+our closure model we require access to the resolved state samples ˆun = projr(un) ∈Xr and associated
+flux samples fj(un, ·) ∈L2(S, νm), j ∈{0, . . . , d −1}. We denote the product state samples by ωnm =
+(un, xm) ∈ΩNM with un ∈XN and xm ∈SM.
+We operate under the assumption that the sampling
+measures µN converge weakly to the invariant measure µ, in the sense that limN→∞
+R
+X f dµN =
+R
+X f dµ
+for all f ∈Cb(X) [13].
+9
+In the discrete setting the kernel integral operator KN : HN →HN corresponding to (7) is defined as
+KNf =
+Z
+Ω
+k(WQ(·), WQ(ω))f(ω)dσN(ω) =
+1
+NM
+N−1
+X
+n=0
+M−1
+X
+m=0
+k(WQ(·), WQ(ωnm))f(ωnm).
+(12)
+Using the L leading eigenfunctions {ϕℓ}L−1
+ℓ=0 of KN we construct the L-dimensional subspace HL
+N ⊂HN
+as their linear span. Computing the eigenfunctions of KN with a direct method has a computational cost
+that scales with (NM)3, making the computation prohibitively expensive as NM grows.
+To make the
+computation more tractable, in our numerical experiments we build a low rank approximation of the kernel
+matrix KN associated with KN and use it to compute its eigenfunctions with reduced cost (Section 3.3).
+In what follows, we make use of the orthogonal projection projL : HN →HL
+N ⊂HN to project an operator
+A ∈B(HN) to projL A projL ∈B(HL
+N), which can then be represented by an L × L matrix of coefficients
+with respect to our basis.
+Each flux function fj ∈HN corresponds to a vector in RNM with entries fj(un, xm), where un ∈XN and
+xm ∈SM. Every such function is used to define a multiplication operator ˜Aj ∈B(HN) and, after orthogonal
+projection, form a quantum observable Aj ∈B(HL
+N), which is generally no longer a multiplication operator.
+Using our orthonormal basis, each Aj is represented by an L×L matrix Aj with entries Aj,ik = ⟨ϕi, ˜Ajϕk⟩N.
+The discretization process employed by QMCl to generate the observables Aj is positivity preserving.
+This means that if fj is a sign definite function (positive or negative), then so will be the resulting observable
+Aj, producing surrogate fluxes that agree in sign with the true fluxes. This is one of the main benefits of
+mapping classical observables and density functions to their associated operators before discretizing them
+with respect to our basis. This is in contrast to discretizing the functions directly, which does not guarantee
+the preservation of their positivity, potentially leading to surrogate fluxes that differ in sign from the true
+ones. Of course, this benefit is accompanied by an increase in computational cost, since every observable is
+represented by a matrix of coefficients with respect to our basis, instead of a vector of coefficients.
+To model the unresolved degrees of freedom we form a field of quantum density operators ρ: SM →
+B(HL
+N), consisting of one density operator ρm = ρ(xm) ∈B(HL
+N) for each gridpoint xm ∈SM. Each density
+operator ρm is constructed as the projection along a real valued function hm ∈HL
+N, ρm = ⟨hm, ·⟩Nhm.
+Taking advantage of its rank-one structure, each ρm is represented by the coefficient vector ρm ∈RL with
+entries ρm,ℓ= ⟨ϕℓ, hm⟩N.
+Having formed the quantum observables and density operators, we are now in a position to formulate
+the calculation of the required surrogate fluxes. For each j ∈{0, . . . , d −1} we define the surrogate flux
+function ˜fj : SM →R, which uses the quantum observable Aj and field of density operators ρ to produce
+the surrogate fluxes ˜fj(xm) = tr(ρ(xm)Aj) ∈R at each gridpoint xm ∈SM. Using our basis representation
+this corresponds to ˜fj(xm) = ρ⊤
+mAjρm.
+The time evolution of the quantum density operators under the dynamics is carried out using the pro-
+jected transfer operator P L
+N : B(HL
+N) →B(HL
+N).
+To build P L
+N we begin by defining the shift operator
+PN : HN →HN
+PNf(ˆun, xm) =
+(
+0
+if n = 0
+f(ˆun−1, xm)
+if 1 ≤n < N.
+After orthogonal projection we obtain P L
+N and its L × L coefficients matrix P L
+N. Given a quantum density
+operator ρn(xm) at time tn with vector representation ρn we obtain the updated state ρn+1 by
+ρn+1 =
+P L
+N ρn
+∥P L
+N ρn∥2
+where the renormalization is performed because the matrix P L
+N is generally not orthogonal.
+Finally, we arrive at the bayesian conditioning of quantum density operators. Each density operator
+ρm is conditioned by a quantum effect operator em ∈B(HL
+N) formed based on a given product state
+vector ωm = (u, xm).
+To build em from ωm we use the conditioning kernel function κc : Ω× Ω→R,
+10
+κc(ω, ω′) = kc(WJ(ω), WJ(ω′)) which acts by composition of a gaussian kernel function kc : RJ × RJ →R
+and an embedding map WJ : Ω→RJ with parameter J ∈N. The map WJ returns the resolved state
+component of the J nearest spatial neighbors of ωm in a specified order. For example, for a one dimensional
+grid and odd J its action is given by
+WJ((u, xm)) =
+ projr(u)(xm−(J−1)/2), . . . , projr(u)(xm), . . . , projr(u)(xm+(J−1)/2)
+
+.
+This can be generalized analogously for higher dimensional grids. The gaussian kernel kc then acts by
+kc(WJ(ω), WJ(ω′)) = exp
+ −1
+ϵ′J ∥WJ(ω) −WJ(ω′)∥2
+(13)
+where ∥·∥denotes the euclidean norm in RJ and ϵ′ > 0 a bandwidth parameter. Note that the bandwidth
+parameter ϵ′ is different from the one introduced earlier in kernel (9); it can again be selected using the
+tuning procedure developed in [34].
+In our numerical experiments we employ the above kernel using a
+variable bandwidth; details on this construction and an algorithm for computing the variable bandwidth
+can be found in [37, 38].
+For the given product state vector ωm, we use the kernel κc and the full training dataset ΩNM to produce
+the function fm ∈HN, fm(·) = κc(ωm, ·), which compares the vector ωm with every other product state
+vector included in our training dataset. Intuitively, the function fm can be thought of as a similarity function
+on the dataset ΩNM, measuring how “similar” the given state ωm is to the states included in ΩNM. Because
+kernel κc acts by composition with WJ, it compares the nearest spatial neighbors of ωm with the nearest
+neighbors of every other available state vector, mimicking the structure of the stencil used for the spatial
+discretization of the considered dynamics. This makes for a stronger similarity condition than comparing
+values of states at only a single gridpoint, forcing the kernel to be more selective in the states it considers
+to be dynamically similar to the given ωm.
+Next, we use the square root f 1/2
+m
+to form a multiplication operator and, after orthogonal projection, the
+desired quantum effect em ∈B(HL
+N). This is then used to condition the prior density operator ρm via the
+quantum Bayes rule (4), thereby creating the posterior density operator ρm|em that encodes the state space
+similarities captured by fm. Based on our basis representation, this operation takes the form
+ρm|em =
+emρm
+∥emρm∥2
+where em denotes the L × L matrix of coefficients of effect em. We refer to the map ωm 7→em as the feature
+map and to fm as the feature vector produced by kernel κc from the product state vector ωm. Explanation
+for why we use the square root of the feature vector f 1/2
+m
+instead of fm to build em is given in [13].
+Using the procedure outlined above, the density operator ρm = ρ(xm) associated with every point xm
+on our grid can be conditioned based on the corresponding product state vector (u, xm). That is, given a
+new state vector u ∈X, the density operator ρm is conditioned based on the spatially local information
+ωm = (u, xm), by comparing this product state vector to every other product state vector available in our
+training dataset. Because the spatially local value ωm is used for the conditioning process (rather than
+the full state u), spatial translations of the state u are naturally factored during the conditioning process.
+This means that if a spatial translation of the state u is present in our training dataset, then the similarity
+between the product state ωm and the corresponding value of the spatial translation of u will be identified
+in the conditioning process. For PDEs with spatial translation symmetry, this means that we do not have
+to artificially inflate our training dataset by including all spatial translations of the sampled states.
+2.6. Multi-trajectory data
+In the previous section we presented the data based implementation of our closure scheme using a single
+dynamical trajectory as our training dataset. In this section we generalize this construction to the case
+where the training dataset consists of multiple trajectories. We begin by motivating the use of multiple
+trajectories, before presenting the modifications required in the theoretical and data based formulations of
+the scheme.
+11
+Using a single dynamical trajectory is generally sufficient when considering a dynamical system possessing
+a unique physical measure, namely a measure that can be sampled by a set of initial conditions of positive
+measure with respect to the ambient measure [39, 40].
+Using multiple trajectories is of interest when
+considering dynamical systems possessing multiple physical measures; for instance, hamiltonian systems or
+hyperbolic systems with several competing basins of attraction. Additionally, using multiple trajectories
+is necessary in the forecasting of parameter dependent systems, whose qualitative dynamics changes with
+respect to a bifurcation parameter. Finally, even in systems with a unique physical measure, being able to
+use multiple trajectories allows one to consider optimal sampling strategies. In designing such a strategy
+one tries to optimize the sampling rate with respect to a chosen objective, instead of relying on the inherent
+rate provided by a single trajectory.
+For example, in Section 3 we will consider an application of our scheme to a closure problem for the shallow
+water equations (14), a hyperbolic, energy conservative system of PDEs. Depending on the initial condition,
+the solution trajectory of equations (14) can reach different limit sets, since there is no dissipation to focus
+the global dynamics to a lower dimensional subset of its state space. As such, using several trajectories
+becomes important, allowing us to sample different limit sets of the dynamics.
+We consider a finite collection of I ∈N invariant probability measures {µi} on X with mutually disjoint
+supports, i ∈{0, . . . , I −1}, and define the invariant probability joint measure µ = PI−1
+i=0 µi/I as their
+average. By construction, the Hilbert space of observables H = L2(Ω, µ × νM) admits the decomposition
+H ≃⊕I−1
+i=0 Hi with component spaces Hi = L2(Ω, µi × νM), where the isomorphism is up to a rescaling of
+the inner products of Hi by the factor 1/I. Our data based formulation mirrors the one presented in Section
+2.5, while also taking advantage of the decomposition of H into its component subspaces.
+We generate the finite sampled trajectories {u(i)
+n }Ni−1
+n=0
+of Ni ∈N samples each, where i ∈{0, . . . , I −1}
+as above. Each trajectory gives rise to its associated empirical sampling measure µi,Ni = PNi−1
+n=0 δu(i)
+n /Ni,
+where we assume that each sampling measure µi,Ni converges to µi in the weak-∗sense as Ni →∞.
+Denoting N = PI−1
+i=0 Ni, we define the Hilbert space HN = L2(Ω, µN ×νM) with the joint sampling measure
+µN = PI−1
+i=0 µi,Ni/I. Since the individual trajectories are assumed to be mutually disjoint, we have the
+analogous decomposition HN ≃⊕I−1
+i=0 HNi.
+Leveraging the decomposition of HN, we use each individual trajectory and the approach described in
+Section 2.5 to build an eigenfunction basis for each component space HNi separately. Relying on the Li ∈N
+leading eigenfunctions, we then form the subspace HLi
+Ni ⊂HNi. Denoting L = PI−1
+i=0 Li, we define the
+combined space HL
+N = ⊕I−1
+i=0 HLi
+Ni, with the direct sum of the component bases producing a basis for the
+combined space.
+The basis of HL
+N derived in this way consists of a total of L elements, each being an eigenfunction of a
+block diagonal operator KN = KN0 ⊕. . . ⊕KNI−1 with the component kernel integral operators KNi in its
+diagonal blocks. More specifically, each component basis vector ϕ(i)
+ℓ
+represents the values of a function on N
+samples, with all of its values being zero except for the block of values that corresponds to the Ni samples
+of the ith trajectory it was derived from. This approach has lower computational cost, as it requires that
+we solve a total of I eigenvalue problems for an Ni × Ni matrix each, instead of a single eigenvalue problem
+for an N × N matrix. However, our approach also requires that each component measure µi is individually
+adequately sampled, as opposed to adequate joint sampling of measure µ.
+Having derived the basis for space HL
+N, the construction of the rest of the scheme proceeds as in Section
+2.5. The only additional difference is in the definition of the shift operator PN, where time shifts are now
+applied only within each trajectory, and the first temporal sample of each trajectory is mapped to zero.
+Namely, we make sure not to shift samples across different trajectories.
+After forming our QMCl closure model in HL
+N, our goal is to use it to predict the dynamics of a chosen
+dynamical system for out of sample initial conditions; namely, initial conditions lying outside of the basins
+of the component measures µi sampled in the training stage.
+12
+3. Application
+The shallow water equations govern the motion of an incompressible fluid when its vertical length scale
+can be considered negligible compared to its horizontal length scale. The equations are derived from the
+conservation laws for mass and momentum, with various forms finding applications in areas such as ocean
+dynamics, often incorporating additional terms modeling the effects of bottom topography and Coriolis force
+[41, 42].
+We consider the shallow water equations on a bounded one dimensional spatial domain S with periodic
+boundary conditions. The system of equations governs the evolution of the water height h and momentum
+q = hv fields, with v denoting the velocity field. The governing equations read
+∂th + ∂xq = 0
+∂tq + ∂x(q2/h + 1/2Fr−2h2) = 0
+(14)
+subject to an appropriate initial condition. In the above ∂t and ∂x denote differentiation with respect to
+time and space respectively, while Fr denotes the flow’s Froude number, which is a dimensionless ratio
+of inertial over gravitational forces. Using the state variable u = (h, q) ∈X ⊂L2(S, ν; R2) and function
+f(u) = (q, q2/h + 1/2Fr−2h2) we rewrite (14) in the compact form
+∂tu + ∂xf(u) = 0.
+(15)
+In addition to its applications in ocean dynamics, the shallow water equations problem (15) has ad-
+ditional properties that make it a good test case for our QMCl closure framework. First, the dynamics
+governed by (15) is equivariant under the actions of the spatial translation group on S. Second, forming
+a training dataset that is sufficiently representative of a range of its dynamics requires the use of multiple
+dynamical trajectories.
+Third, previous works have considered various closure schemes for variations of
+(15), demonstrating the amenability of the equations to closure problems that arise from spatial coarsening
+[43, 44]. In particular, our discretization and coarsening methodology is based on [44]. Finally, the equations
+act as a good idealized model for more complex nonlinear hyperbolic PDEs that are prevalent in fluid and
+plasma dynamics modeling.
+3.1. Discretization
+We employ a finite volume spatial discretization of (15) using a uniform fine grid of Mf ∈N cells with
+length ∆x = L/Mf each, centered at points xm ∈S, m ∈{0, . . . , Mf −1}. We use Sf = {xm}Mf −1
+m=0
+⊂M
+to denote the center points of the fine discretization cells.
+The cell averaged state variables um, m ∈
+{0, . . . , Mf −1}, are defined by taking the spatial average of the original state function u over the cell
+centered at xm.
+Without misunderstanding, we reuse the same symbol u to denote the averaged state
+variables, which can be represented by the vector u ∈R2Mf for every time t ≥0.
+The temporal evolution of the fine state variables um is governed by the system of equations
+˙um =
+1
+∆x(Fm −Fm+1)
+(16)
+using the local Lax-Friedrichs (LLF) numerical flux
+Fm = 1
+2[f(um−1) + f(um)] −λm
+2 (um −um−1)
+(17)
+with
+λm = max
+ |qm−1/hm−1| + Fr−1p
+hm−1, |qm/hm| + Fr−1p
+hm
+
+.
+(18)
+In the above, subscripts denote components of the associated vectors while Fm denotes the numerical flux
+at the left face of the cell centered at xm ∈Sf [45]. Based on (17) and (18) we introduce the notation
+Fm = FLLF (um−1, um)
+13
+which will be used later on to define the coarse grid fluxes.
+We now form a coarse grid and associated coarse state variables defined as local spatial averages of the
+fine variables um. In particular we form Mc ∈N coarse grid cells by merging every Ms ∈N fine cells; in
+this way, Mc = Mf/Ms and each coarse cell has length ∆ˆx = Ms∆x. We define the resulting coarse grid
+Sc = {ˆxm}Mc−1
+m=0
+⊂S, m ∈{0, . . . , Mc −1}, representing the center points of the coarse grid cells. Each
+coarse grid state variable ˆum is defined as the average of the fine state variables included within its associated
+coarse grid cell. The coarse variables are represented by the vector ˆu ∈R2Mc for every time t ≥0. Their
+temporal evolution is governed by the system of equations
+˙ˆum =
+1
+∆ˆx[( ˆFm + Gm) −( ˆFm+1 + Gm+1)]
+(19)
+with coarse grid fluxes
+ˆFm = FLLF (ˆum−1, ˆum)
+(20)
+and subgrid fluxes
+Gm = FMsm −ˆFm.
+(21)
+The system (19) is equivariant under the actions of the discrete group of spatial translations on Sc.
+By definition, the coarse grid fluxes (20) depend only on the coarse variables. On the contrary, the
+subgrid fluxes (21) depend on both the coarse and the original fine variables; in particular, they depend
+on the values of um in the fine cells that border the interfaces of each coarse cell. For the physical system
+considered, the subgrid fluxes act as antidiffusive corrections to the coarse grid fluxes, increasing the accuracy
+of the discretization compared to one performed entirely on the coarse grid [44].
+The temporal discretization of evolution equations (16) and (19) is carried out using the modified Euler
+method (two-stage Runge-Kutta), which has favorable structure preservation properties for the present
+problem [44]. In what follows, we consider the coarse grid variables as the resolved degrees of freedom and
+the discrete time version of (19) as the equation generating the resolved dynamics. To close the system
+of equations we need to provide a closure model that can infer the subgrid fluxes Gm from the resolved
+variables ˆum, thereby removing the explicit dependence on the original fine grid variables um.
+3.2. Closure model
+To generate our training dataset and be able to compare our surrogate model with a reference model
+acting as the ground truth, we approximate the “true” shallow water dynamics by the discrete time version
+of the fine grid dynamics (16). As such, the full state space of the dynamics is a Hilbert subspace of the set
+of L2 functions on the grid produced by our fine discretization. More specifically we set X ⊂L2(S, νf; R2),
+where νf denotes the restriction of the Lebesgue volume measure ν to the σ-algebra generated by the fine
+discretization cells.
+As mentioned in the previous section, we consider the coarse grid variables as our resolved degrees of
+freedom. Therefore, we define the resolved state space Xr = L2(S, νc; R2) ∩X and decompose the full state
+space as X = Xr ⊕Xu, with unresolved state space Xu = X⊥
+r . In the definition of Xr, the measure νc
+corresponds to the restriction of ν to the σ-algebra of sets generated by the coarse discretization cells. As
+a result, the resolved state space can be considered as a space of piecewise constant functions, each taking
+a constant value on each cell formed by the coarse discretization. With these choices in place, the full
+dynamics Φn∆t is given by the discrete time version of (16) and the resolved dynamics Φn∆ˆt
+r
+by the discrete
+time version of (19), with n ∈N and respective timesteps ∆t > 0 and ∆ˆt = Ms∆t.
+We define the product state space Ω= X × S and the Hilbert space of observables HN = L2(Ω, σN),
+with total number of samples N ∈N and measures σN = µN × νM and νM = νc. For notational consistency
+with the previous sections, from now on we denote by M = Mc the number of coarse grid cells and by
+SM = Sc ⊂S the set of gridpoints representing the coarse grid cells. We introduce two flux functions
+fj ∈HN, j ∈{0, 1}, producing the fluxes for the height and momentum variables respectively, and denote
+their collection by f = {fj}1
+j=0. For every state u ∈X the associated fluxes fj(u) are given by (21).
+Using the full dynamics (16) we generate N samples of the resolved state variables {ˆun}N−1
+n=0 and the
+fluxes {f(un, ·)}N−1
+n=0 , which will be used as our training data and may consist of one or more dynamical
+14
+trajectories. Each sample ˆun or f(un, ·) is represented by a vector in R2M holding the values corresponding
+to the height h and momentum q variables in each coarse grid cell.
+To form our closure model we define a field of quantum density operators ρ: SM →B(HN) and two
+quantum observables Aj ∈B(HN), j ∈{0, 1}.
+Each density operator ρ(xm) will be used to model in
+a statistical sense the unresolved variables in the coarse grid cell centered at xm ∈SM. From the two
+quantum observables, observable A0 will be used to produce the surrogate fluxes for the height h variables
+and is defined as multiplication by the true flux function f0; analogously, observable A1 will produce the
+surrogate fluxes for the momentum q variables and is defined as multiplication by f1. With these definitions
+in place, the surrogate fluxes are computed using the two surrogate flux functions ˜fj : SM →R with action
+˜f0(xm) = tr(ρ(xm)A0) and ˜f1(xm) = tr(ρ(xm)A1) for every xm ∈SM.
+In Appendix A we list the sequence of steps used to build the data based QMCl model and apply it to
+predict the dynamics based on a given initial condition.
+3.3. Numerical results
+We consider the shallow water equations (15) on the spatial domain S = [−25, 25] with Froude number
+Fr = 1/√2g, where g denotes the acceleration of gravity. We perform the spatial discretization using a fine
+grid of Mf = 1920 cells and the temporal discretization using the midpoint Euler method with timestep
+∆t = 0.1∆x, where ∆x is the length of each fine cell.
+Training
+We define the one-parameter family of initial conditions
+h0(x) = 1 + 0.3(1 −δ/2) sin
+ 2π
+LS
+3.5(1 −δ/2)x + π/6
+
+v0(x) = 1 + 0.2(1 −δ) sin
+ 2π
+LS
+3(1 −δ)x
+
+(22)
+with x ∈S, LS = 50, parameter δ ∈[0, 1], h0 the initial condition for height and q0 = h0v0 the initial
+condition for momentum. The solutions generated by this family of initial conditions feature a number
+of wave fronts traveling in different directions and interacting with one another. Figures 2 and 3 present
+space-time heatmaps of the solutions that will be used to test the predictive performance of our closure
+model.
+Using the assumptions and methodology introduced in Section 2.6 for dealing with training data con-
+sisting of multiple trajectories, we consider µ to be the invariant measure generated by the full dynamics
+(16) restricted to the family of initial conditions (22) for δ ∈[0, 1]. To sample this measure we use three
+trajectories generated using the values δ ∈{0, 0.5, 1}. For each trajectory we integrate the full dynamics
+(16) in time for 12,200 timesteps and then sample the next 3,260 timesteps. Each sample contains the values
+of functions h and q on the fine grid.
+To derive the resolved state samples that will be used as our training data, we spatially average the
+collected samples. By averaging the state data over every Ms = 20 fine cells we arrive at a coarse grid of
+M = 96 cells of length ∆ˆx = 20∆x each. Given that each cell is now 20 times longer, we also increase the
+sampling timestep by the same amount to set ∆ˆt = 20∆t. From the original 3,260 samples per trajectory
+generated on the fine grid, we keep every 20th sample, leading to 163 samples per trajectory. For each one
+of those samples we spatially average the solution over every 20 cells to derive our resolved state samples,
+namely the averaged values of h and q over the coarse grid. We then derive the subgrid flux training samples
+using (21).
+Using Q = 64 delays, these samples yield 100 training samples per trajectory in delay embedded form,
+adding up to N = 300 samples in total. Each resolved state sample consists of 2M = 192 values, 96 for
+each of the height and momentum variables.
+With this training dataset, the dimension of the product
+Hilbert space HN is equal to NM = 28800. Employing the approach described in Section 2.6 we build an
+orthonormal basis {ϕℓ}L−1
+ℓ=0 with a total of L = 6144 eigenfunctions and define HL
+N as their linear span. Each
+eigenfunction is represented by a vector in RNM. Finally, we set J = 5 to define the stencil map WJ that
+15
+Figure 1: Space-time heatmaps depicting two eigenfunctions ϕℓof the kernel integral operator KN from (12) for each of the
+three trajectories used as our training data. The top row shows the third eigenfunction for each of the three trajectories; the
+bottom row the fourth eigenfunction for each trajectory. From left to right, the first column corresponds to the trajectory data
+obtained for δ = 0, the second to δ = 0.5 and the third to δ = 1.
+will be used for the bayesian conditioning of the quantum density operators. The data based realization of
+the closure model developed in Section 3.2 will take place in the constructed subspace HL
+N.
+The number of delays Q was chosen by a combination of physical reasoning and trial and error to balance
+the effectiveness of the derived basis in representing the true flux samples and the cost associated with its
+computation. A useful rule of thumb is to select a delay window that is comparable to the dominant timescale
+of the physical processes of interest. In our case, we see that the traveling wave fronts interact approximately
+every 30 timesteps (≈1.5 time units) for the solution in Figure 2, and approximately every 50 timesteps
+(≈2.5 time units) for the solution in Figure 3, with similar results for additional solutions not shown here.
+Using Q = 64 timesteps is sufficient to ensure that at least one period of this interaction is captured in each
+delay embedded sample. Additionally, increasing the value of Q further did not lead to noticeable differences
+in our results. The stencil size J used for the conditioning of the quantum density operators was chosen
+empirically. Increasing the value of J further was shown to slightly improve the performance of the bayesian
+conditioning, but with an associated increase in computational cost.
+To form the orthonormal basis {ϕℓ}L−1
+ℓ=0 we must compute the eigenvectors of the NM × NM symmetric
+kernel matrix KN representing the operator (12). To reduce the computational cost of this operation we
+perform a partial Cholesky factorization of KN to approximate it by a lower rank matrix ˜
+KN = F F T with
+F ∈RNM×r and r < NM. We perform the factorization using the rank parameter r = L = 6144 and
+the randomized algorithm developed in [46]. We then use the approximate kernel matrix to perform its
+16
+bistochastic normalization and solve the eigenvalue problem with reduced cost [31].
+A selection of the resulting eigenfunctions is presented in Figure 1, where we show two eigenfunctions
+for each of the three trajectories used to build our training dataset.
+The shown eigenfunctions exhibit
+propagating fronts which resemble the main features of the true state and flux samples presented in Figures
+2 and 3. More specifically, they are approximately constant on the characteristic lines of the propagating
+wave fronts, as expected from their symmetry invariance property. Similar features are present in the rest of
+the eigenfunctions not shown here. As explained in Sections 2.3 and 2.4, the strong dynamical relevance of
+each eigenfunction is a result of its dynamical symmetry invariance and of the fact that generally it cannot
+be represented as the tensor product of a single pair of spatial and temporal modes. These properties allow
+us to compute a compressed representation of the true dynamics with a moderate number of eigenfunctions,
+enhancing the computational efficiency of the resulting closure scheme.
+Prediction
+To test the predictive performance of the surrogate model derived by QMCl we use two initial conditions
+obtained from (22) for δ ∈{0.25, 0.75}, which are trajectories not included in the training dataset. After
+integrating the true dynamics (16) for 12,200 timesteps we spatially average the found solutions to generate
+the initial conditions that will be used to initialize the resolved state in QMCl. Using those initial conditions
+we integrate in time the coarse dynamics (19) using timestep ∆ˆt and the subgrid fluxes predicted by QMCl.
+In what follows, we present results obtained after integrating for a total of 120 timesteps, while performing
+the bayesian conditioning of the quantum density operators every 10 timesteps.
+The results comparing the evolution under the true and surrogate models are grouped into four figures.
+Figures 2 and 4 include the results for the trajectory generated by the initial condition obtained from (22)
+for δ = 0.25. Figures 3 and 5 showcase the results obtained for δ = 0.75.
+Looking at the heatmaps for the height and momentum fields in Figure 2 for the trajectory with δ = 0.25
+and in Figure 3 for the one with δ = 0.75, we see that QMCl clearly captures the main features of the
+dynamics for the tested time horizon. For both trajectories, QMCl correctly predicts the main traveling
+wave features of the dynamics, including the spatial variations of the waves as they interact with one another.
+Moreover, the magnitude of the predicted fields is consistent with the true dynamics in most regions of the
+spatial domain. In addition to the results shown in these figures, we have also verified that QMCl can
+reproduce the dynamical trajectories included in its training dataset with good accuracy.
+In the present closure model, the subgrid fluxes play the role of antidiffusive corrections to the fluxes
+generated entirely on the coarse grid [44]. Their values are proportional to the spatial derivative of the
+associated field, taking large values when the height or momentum field is changing rapidly in space, and
+approximately zero value when the fields are constant in space. As a result, the contribution of the subgrid
+fluxes is critical in regions of strong spatial variation of the height and momentum fields, counterbalancing the
+increased diffusion of the solution introduced by our coarsening of the original dynamics by spatial averaging.
+The strong spatial variation of the true subgrid fluxes renders the considered dynamics challenging to resolve
+and predict accurately by any closure scheme (Section 3.4). Typically, when the exact value of the subgrid
+fluxes is not predicted correctly by the employed closure model (derived by QMCl or another method), the
+surrogate evolution will be more diffusive than the true evolution.
+The effect of diffusion can be seen in the heatmaps for the two trajectories. By comparing the true and
+predicted fields of height and momentum, we see that the surrogate dynamics involves stronger diffusion of
+the solution in areas where there is strong spatial variation. The increased diffusion is seen in the plots as
+bleeding of color between different space-time regions, with the boundaries between those regions being less
+sharp than in the true dynamics. Similarly, the same effect can be seen by comparing the subgrid flux fields
+for height and momentum. In the true dynamics, the peaks of the fluxes are sharp and clearly separated from
+the valleys, with clearly visible waves traveling in opposite directions. In the predicted dynamics, although
+the waves are still predicted correctly, their peaks are not as sharp, with their values diffusing more strongly
+to the surrounding region.
+The subgrid flux plots also clearly demonstrate the effect of the bayesian conditioning of the quantum
+density operators, which for these results is performed every 10 timesteps (≈0.5 time units). One can see the
+discontinuities that occur every 10 timesteps for the predicted fluxes over large regions of the spatial domain.
+17
+Figure 2: Space-time heatmaps for the trajectory with δ = 0.25. The top row shows the results for the resolved state variables;
+the bottom row for the subgrid fluxes. For each row, from left to right: the first two plots show the results for the height field
+h, with the true results on the left and the predicted results on the right; the next two plots show the results for the momentum
+field q, with true results on the left and predicted on the right.
+These discontinuities represent corrections introduced to the predicted flux values every time conditioning
+of the density operators is performed. We perform the bayesian conditioning every 10 timesteps to reduce
+the computational cost of the simulation, since the conditioning is one of the most expensive operations in
+our closure scheme (Section 3.4). In general, the prediction accuracy increases with increased conditioning
+frequency. Based on our numerical experiments, conditioning the density operators every 10 timesteps strikes
+a good balance between prediction accuracy and computational cost for the considered dynamics.
+Similar conclusions can be drawn from the spatial profiles shown in Figure 4 for the trajectory with
+δ = 0.25 and Figure 5 for that with δ = 0.75.
+In these plots one can see that the subgrid fluxes are
+proportional to the spatial derivative of the associated field, leading to sharp variations in space.
+The
+18
+Figure 3: Space-time heatmaps for the trajectory with δ = 0.75. The layout of the plots is as in Figure 2.
+predicted dynamics preserves the main features of the true fields, but struggles to capture the sharp peaks
+of the subgrid fluxes, leading to stronger diffusion of the height and momentum fields in regions of strong
+spatial variation.
+To further demonstrate the crucial role played by the subgrid fluxes in counterbalancing diffusion, in
+Figure 6 we compare the evolution of the QMCl surrogate dynamics with the true dynamics generated
+entirely on the coarse grid, namely with the subgrid fluxes (21) set to zero. The comparison is carried out
+for the trajectory generated from the initial condition (22) with δ = 0.25 (Figures 2 and 4), but similar
+conclusions can be drawn from other initial conditions. The comparison demonstrates that the surrogate
+fluxes predicted by QMCl successfully counteract the diffusive effect of the spatial coarsening seen in the
+coarse grid simulation for the tested time horizon. Namely, although the subgrid fluxes predicted by QMCl
+are not as accurate as the true subgrid fluxes in regions of strong spatial variation of the solution, they
+19
+Figure 4: Spatial profiles of the final solution snapshot for the trajectory with δ = 0.25. The top row shows the results for
+the resolved state and the subgrid fluxes for the height field h; the bottom row for the momentum field q. In each row, the
+true results are on the left subplot, the predicted ones on the right subplot. Within each subplot, full lines are used for the
+resolved state, with their numerical values indicated on the left axis; dashed lines are used for the subgrid fluxes, with their
+values indicated on the right axis.
+are nevertheless effective in counterbalancing diffusion and thus improving the accuracy of the predicted
+dynamics.
+3.4. Discussion
+In the following paragraphs we discuss several aspects of the presented closure scheme and how they
+inform future research directions.
+Computational aspects
+Extending the QMCl framework to spatiotemporal dynamics comes with the challenge of increased
+computational cost for its implementation, primarily due to the increased size of the training dataset required
+to capture the main features of dynamics that evolves in both space and time. One key area of focus for
+future work is reducing the cost of the numerical implementation of QMCl and improving its scaling with
+the number of temporal samples N, grid size M and spectral resolution L.
+In the offline stage, the most expensive operation is computing the leading L eigenfunctions of the
+NM × NM symmetric kernel matrix KN representing the kernel integral operator (12). Even for moderate
+size parameters N and M, solving such an eigenvalue problem can quickly become very expensive.
+As
+explained in Section 3.3, to address this we performed a partial Cholesky factorization of KN to approximate
+it by a lower rank matrix and solve the resulting eigenvalue problem with reduced cost [31, 46].
+As an alternative we also tried using the random Fourier features (RFF) method to approximate KN by
+a lower rank matrix [47]. However, we found that a relatively large number of Fourier features was required
+to obtain a satisfactory approximation of KN, compared to the rank parameter r required for the partial
+Cholesky factorization [48]. The poor approximations obtained using the RFF method led to issues in the
+downstream bistochastic normalization of the approximate kernel matrix, which is why we did not use this
+approach in the present work.
+20
+Figure 5: Spatial profiles of the final solution snapshot for the trajectory with δ = 0.75. The layout of the plots is as in Figure
+4.
+In the online stage, the most expensive operation is the bayesian conditioning of the quantum density
+operators; more specifically, building the quantum effect operator from the current resolved state. To form
+the quantum effect operators we use kernel (13) to compare the current resolved product state vector to all
+product state vectors present in our training dataset. This is the only online operation that scales with the
+size of the training dataset NM, and requires that we have the training data loaded in memory throughout
+the online stage.
+One way of alleviating this cost is to form a reduced representation of the training dataset and use it
+to build the quantum effect operators. For instance, one can employ the sampling algorithm underlying
+the partial Cholesky factorization algorithms [46] to extract a representative subset of the original training
+dataset, and rely only on that subset for the conditioning of the density operators. An alternative would
+be to use the RFF method to approximate the out of sample evaluation of kernel (13), thereby eliminating
+the dependence on the training data [47, 49]. In our case, this would require keeping in memory one L × L
+matrix for each random Fourier feature used, leading to an unsustainable memory cost.
+In QMCl the surrogate fluxes are computed as the expected value of an observable with respect to a
+density operator. As a result, to compute fluxes that vary strongly over the spatial domain one has to ensure
+that the used density operators are very sharp: obtaining a clear maximum in some regions of product space
+Ωand being close to zero elsewhere, formally similar to a sum of Dirac delta measures. Working with such
+sharp density operators poses a number of computational challenges.
+Producing accurate but very sharp density operators requires a very precise choice of the bandwidth
+parameter ϵ′ used in kernel (13) for the bayesian conditioning. Having such a selective kernel means that
+the resulting density operators lead to highly accurate fluxes when the correct part of the training dataset
+is identified as dynamically relevant. However, it can lead to inaccurate fluxes when regions of the training
+dataset are misidentified as relevant, compared to using a less selective kernel that leads to wider averaging
+of the employed observable.
+Moreover, working with a very selective kernel makes it more likely that
+no part of the training dataset is identified as dynamically relevant, leading to an approximately zero
+feature vector and posterior density operator. In such a case, attempting to normalize the posterior density
+operator to unit norm can yield unpredictable results. Working with a wider, less selective kernel makes this
+21
+Figure 6: Space-time heatmaps for the trajectory with δ = 0.25 comparing the dynamics on the coarse grid with the surrogate
+dynamics obtained by QMCl. From left to right, the first two plots show the results for the height field h, with the coarse
+grid results on the left and the QMCl results on the right; the next two plots show the results for the momentum field q, with
+coarse grid results on the left and QMCl on the right. The colorbars for each subplot are as in Figure 2.
+scenario less likely to occur, albeit with the tradeoff of less informative conditioning and thus less accurate
+predicted fluxes. Finally, even if very sharp density operators can be consistently obtained, their accurate
+representation with respect to our eigenfunction basis will likely require a large number of eigenfunctions,
+leading to more expensive simulations.
+The challenges involved in producing and working with very selective kernel functions motivate our use
+of a kernel bandwidth tuning algorithm [34] and of the introduction of variable bandwidth [37, 38]. These
+measures help us define a kernel function that is tailored to the characteristics of our training dataset, which
+in turn allows us to strike a reasonable compromise between numerical stability and sharpness of the kernel
+used for bayesian conditioning. As a result, we are able to construct a closure scheme that can predict
+the main features of the considered dynamics with reasonable computational cost and without numerical
+instabilities.
+Theoretical aspects
+One of the distinguishing features of the QMCl framework is that the classical dynamics is first embedded
+into the noncommutative setting of operator algebras used in quantum mechanics, and only then discretized
+to finite dimension. Namely, instead of directly discretizing functions on Hilbert space H to obtain functions
+on finite dimensional subspace HL, we first map functions on H to operators in B(H) and then discretize
+them to operators in B(HL). This process renders the discretization employed by QMCl positivity pre-
+serving, with positive classical observables and probability density functions mapped to positive definite
+operators.
+In addition to positivity preservation, this discretization process embeds the discretized quantities in
+a space of larger dimension than direct discretization. More specifically, direct discretization maps real
+functions on H to functions on the L-dimensional subspace HL. The QMCl discretization maps real functions
+on H to selfadjoint real operators in B(HL), which is a subspace of dimension 1
+2L(L + 1). A potential line
+of future research is exploring whether this difference in dimension, along with the noncommutative nature
+22
+of B(HL), allow QMCl to encode more statistical information about the original dynamics compared to
+closure schemes performed directly in HL.
+Another line of research concerns the out of sample performance of QMCl. In Sections 2.6 and 3.3 we
+considered training data generated from a finite collection of initial conditions, without making reference
+to an explicit process of generating these initial conditions. A natural next step is to consider an invariant
+measure µ that admits a decomposition into conditional measures µi, sampled from a probability distribution
+of initial conditions. Interesting questions in this direction are to characterize the behavior of our closure
+scheme as the number of sampled trajectories increases, and to derive associated out of sample error bounds.
+4. Conclusion
+We developed a framework for the dynamical closure of spatiotemporal dynamics which combines ele-
+ments of the quantum mechanical closure (QMCl) framework developed in [13] and the vector valued spectral
+analysis (VSA) methodology of [14]. The presented framework encodes statistical information about the
+unresolved degrees of freedom of the considered dynamics in the form of a field of quantum density operators
+on the spatial domain. This results in a flexible architecture where density operators are collocated with the
+discretization cells of the coarse model for the resolved dynamics. The density operators communicate with
+the resolved dynamics by: (1) providing the required flux terms through the expected value of quantum
+observables; (2) receiving information through kernel feature maps. Importantly, our approach inherits the
+symmetry factorization properties of VSA during the basis construction process, and can also be used with
+training data consisting of multiple dynamical trajectories. As with the original QMCl work, the process
+of embedding the original dynamics into the noncommutative setting of quantum mechanics leads to the
+positivity preserving discretization of classical observables and probability density functions.
+We applied QMCl to a closure problem for the shallow water equations on a periodic one dimensional
+domain. The numerical results demonstrate that QMCl can effectively predict the dynamics of the out
+of sample initial conditions tested in this work, generating height and momentum fields that agree both
+qualitatively and quantitatively with the true dynamics. As expected from the strong spatial variation of
+the subgrid fluxes, the QMCl surrogate dynamics is more diffusive than the true dynamics, and eventually
+struggles to fully capture the sharp spatial features of the true solution.
+Nevertheless, we believe that
+the results act as a successful proof of concept for the extension of QMCl to spatiotemporal dynamics,
+especially given the modest amount of data used for its training. Everything else kept the same, we expect
+that increasing the number of training samples or the spectral resolution will lead to improved prediction
+accuracy.
+Future research directions include improving the computational cost of QMCl and the development of
+strategies for sampling initial conditions in the training stage. In addition, we plan to explore applications
+of QMCl to systems exhibiting chaotic spatiotemporal dynamics.
+Acknowledgements
+DG and JS acknowledge support from the U.S. Department of Energy under grant DE-SC0025101.
+CV was supported as a postdoctoral researcher from this grant. DG acknowledges support from the U.S.
+Department of Defense, Basic Research Office under Vannevar Bush Faculty Fellowship grant N00014-21-1-
+2946. DCF was supported as a PhD student from this grant. We thank Ilon Joseph, Michael Montgomery
+and Ilya Timofeyev for helpful conversations on the topics of this work.
+Appendix A. Numerical implementation
+The process of building and using the developed QMCl scheme to simulate the surrogate dynamics
+consists of two stages: the offline and online stages. Below we outline the steps followed in each stage.
+23
+Offline stage
+The offline stage consists of the operations needed to build the QMCl scheme using the training samples
+for the resolved state variables {ˆun}N−1
+n=0 and the subgrid fluxes {f(un, ·)}N−1
+n=0 . This involves the following
+sequence of steps.
+1. Use the state samples {ˆun} to calibrate the bandwidth parameter ϵ for the kernel (9) and perform its
+bistochastic normalization.
+2. Use the state samples {ˆun} to compute the leading L eigenfunctions {ϕℓ} of the normalized integral
+operator (12), defining the subspace HL
+N as their linear span. The eigenfunction basis is represented
+by the NM × L matrix Φ holding one eigenfunction in each column.
+3. Form the transfer operator P L
+N and its L × L coefficients matrix P L
+N.
+4. Use the flux samples {f(un, ·)} to form the two quantum observables A0, A1 ∈B(HL
+N), computing
+their L × L coefficients matrices A0 and A1. Observable A0 is built using the flux samples {f0(xn, ·)}
+corresponding to the height h variables; observable A1 using {f1(xn, ·)} corresponding to the q vari-
+ables.
+5. Define the field of quantum density operators ρ: S →B(HL
+N), assigning one density operator to each
+coarse grid cell. For each gridpoint xm ∈SM, the associated density operator ρ(xm) is represented by
+the vector ρm in RL.
+6. Use the state samples {ˆun} to calibrate the bandwidth parameter ϵ′ of the kernel (13) and compute
+the bandwidth function needed for its variable bandwidth generalization.
+Online stage
+In the online stage we use the model built in the offline stage to timestep the surrogate dynamics. We
+denote by ˜u ∈Xr the resolved state predicted by QMCl, to distinguish it from the true resolved state ˆu.
+The online stage consists of the following steps.
+1. Initialize the resolved state ˜u.
+2. Initialize the density operators ρ representing each coarse grid cell by using an uninformative initial
+condition: set each density operator ρ(xm) to the projection along the unit function 1N ∈HL
+N that
+takes the value 1 everywhere.
+3. Condition each density operator using the initial resolved state ˜u and the training data {ˆun}.
+4. Use the density operators ρ and the observables A0 and A1 to compute the surrogate fluxes ˜f, corre-
+sponding to two flux values for each coarse grid cell.
+5. Begin the timestepping loop.
+(a) Update the resolved state ˜u using the surrogate fluxes.
+(b) Update the density operators ρ using the transfer operator.
+(c) Condition the density operators ρ using the updated resolved state ˜u and the state training
+samples {ˆun}.
+(d) Compute the updated surrogate fluxes ˜f.
+In the timestepping loop as presented above, the bayesian conditioning of the density operators is per-
+formed every timestep. In our presented numerical results, we have instead elected to condition the density
+operators every 10 timesteps (Section 3.3).
+References
+[1] P. Sagaut, Large eddy simulation for incompressible flows, Springer, Berlin, 2006.
+[2] W. E, Principles of multiscale modeling, Cambridge University Press, New York, 2011.
+[3] D. J. Stensrud, Parameterization schemes, Cambridge University Press, New York, 2013.
+24
+[4] A. Arakawa, W. H. Schubert, Interaction of a cumulus cloud ensemble with the large-scale environment,
+Part I, J. Atmos. Sci. 31 (3) (1974) 674–701. doi:10.1175/1520-0469(1974)031<0674:IOACCE>2.0.
+CO;2.
+[5] P. R. Gent, J. C. McWilliams, Isopycnal mixing in ocean circulation models, J. Phys. Oceanogr. 20 (1)
+(1990) 150–155. doi:10.1175/1520-0485(1990)020<0150:IMIOCM>2.0.CO;2.
+[6] W. E, E. Engquist, X. Li, W. Ren, E. Vanden-Eijnden, Heterogeneous multiscale methods: a review,
+Commun. Comput. Phys. 2 (2007) 367–450.
+[7] W. W. Grabowski, P. K. Smolarkiewicz, CRCP: A cloud resolving convection parameterization of the
+tropical atmosphere, Phys. D 133 (1–4) (1999) 171–178.
+[8] I. Grooms, A. J. Majda, Efficient stochastic superparameterization for geophysical turbulence, Proc.
+Natl. Acad. Sci. 110 (12) (2013) 4464–4469.
+[9] G. W. Hammett, F. W. Perkins, Fluid moment models for Landau damping with application to the
+ion-temperature-gradient instability, Phys. Rev. Lett. 64 (1990) 3019–3022.
+[10] I. Joseph, A. M. Dimits, Connecting collisionless Landau fluid closures to collisional plasma physics
+models, Contrib. Plasma Physics 56 (6–8) (2016) 504–510.
+[11] C. Ma, B. Zhu, X.-Q. Xu, W. Wang, Machine learning surrogate models for Landau fluid closure, Phys.
+Plasmas 27 (4) (2020) 042502.
+[12] B. Laperre, J. Amaya, S. Jamal, G. Lapenta, Identification of high order closure terms from fully kinetic
+simulations using machine learning, Phys. Plasmas 29 (3) (2022) 032706.
+[13] D. C. Freeman, D. Giannakis, J. Slawinska, Quantum mechanics for closure of dynamical systems,
+Multiscale Model. Simul. 22 (1) (2024) 283–333. doi:10.1137/22M1514246.
+[14] D. Giannakis, A. Ourmazd, J. Slawinska, Z. Zhao, Spatiotemporal pattern extraction by spectral
+analysis of vector-valued observables, J. Nonlinear Sci. 29 (5) (2019) 2385–2445.
+doi:10.1007/
+s00332-019-09548-1.
+[15] C. Bardos, F. Golse, D. Levermore, Fluid dynamic limits of kinetic equations I: formal derivations, J.
+Stat. Phys. 63 (1–2) (1991) 323–344. doi:10.1007/BF01026608.
+[16] S. Rasp, M. S. Pritchard, P. Gentine, Deep learning to represent subgrid processes in climate models,
+Proc. Natl. Acad. Sci. 115 (39) (2018) 9684–9689.
+[17] J. Yuval, P. A. O’Gormann, Stable machine-learning parameterization of subgrid processes for climate
+modeling at a range of resolutions, Nat. Commun. 11 (2020) 3295.
+[18] H. J. Bae, P. Koumoutsakos, Scientific multi-agent reinforcement learning for wall-models of turbulent
+flows, Nat. Commun. 13 (2022) 1443.
+[19] A. Bracco, J. Brajard, H. A. Dijkstra, P. Hassanzadeh, C. Lessig, C. Monteleoni, Machine learning for
+the physics of climate, Nat. Rev. Phys. 7 (2025) 6–20.
+[20] T. N. Palmer, A nonlinear dynamical perspective on model error: a proposal for non-local stochastic-
+dynamic parametrization in weather and climate prediction models, Quart. J. Roy. Meteorol. Soc. 127
+(2001) 279–304.
+[21] A. J. Majda, I. Timofeyev, E. Vanden Eijnden, Models for stochastic climate predicition, Proc. Natl.
+Acad. Sci. 96 (1999) 14687–14691.
+25
+[22] A. J. Chorin, F. Lu, Discrete approach to stochastic parametrization and dimension reduction in non-
+linear dynamics, Proc. Natl. Acad. Sci. USA 112 (2015) 9804–9809.
+[23] J. Berner, U. Achatz, L. Batté, L. Bengtsson, A. D. L. Cámara, H. M. Christensen, M. Colangeli,
+D. R. B. Coleman, D. Crommelin, S. I. Dolaptchiev, C. L. E. Franzke, P. Friederichs, P. Imkeller,
+H. Järvinen, S. Juricke, V. Kitsios, F. Lott, V. Lucarini, S. Mahajan, T. N. Palmer, C. Penland,
+M. Sakradzija, J.-S. Von Storch, A. Weisheimer, M. Weniger, P. D. Williams, J.-I. Yano, Stochastic
+parameterization: toward a new view of weather and climate models, Bull. Amer. Meteor. Soc. 98 (3)
+(2017) 565–588.
+[24] A. Lasota, M. C. Mackey, Chaos, fractals, and noise, 2nd Edition, Springer, New York, 1994. doi:
+10.1007/978-1-4612-4286-4.
+[25] B. C. Hall, Quantum theory for mathematicians, Springer, New York, 2013.
+[26] J. J. Sakurai, J. Napolitano, Modern quantum mechanics, 3rd Edition, Cambridge University Press,
+Cambridge, 2021.
+[27] D. Mauro, On Koopman–von Neumann waves, Int. J. Mod. Phys. A 17 (09) (2002) 1301–1325. doi:
+10.1142/S0217751X02009680.
+[28] D. I. Bondar, F. Gay-Balmaz, C. Tronci, Koopman wavefunctions and classical–quantum correlation
+dynamics, Proc. R. Soc. A. 475 (2229) (2019) 20180879. doi:10.1098/rspa.2018.0879.
+[29] I. Joseph, Koopman–von Neumann approach to quantum simulation of nonlinear classical dynamics,
+Phys. Rev. Res. 2 (4) (2020) 043102. doi:10.1103/PhysRevResearch.2.043102.
+[30] P. Busch, P. J. Lahti, P. Mittelstaedt, The quantum theory of measurement, Springer, Berlin, 1996.
+[31] C. Vales, D. Giannakis, Accelerated decomposition of bistochastic kernel matrices by low rank approx-
+imation, arXiv:2510.26574 (2025). doi:10.48550/arXiv.2510.26574.
+[32] R. Temam, Infinite-dimensional dynamical systems in mechanics and physics, 2nd Edition, Springer,
+New York, 1997.
+[33] J. C. Robinson, Infinite-dimensional dynamical systems, Cambridge University Press, Cambridge, 2001.
+[34] R. R. Coifman, Y. Shkolnisky, F. J. Sigworth, A. Singer, Graph laplacian tomography from unknown
+random projections, IEEE Trans. Image Process. 17 (10) (2008) 1891–1899.
+[35] R. R. Coifman, M. J. Hirn, Bi-stochastic kernels via asymmetric affinity functions, Appl. Comput.
+Harmon. Anal. 35 (1) (2013) 177–180.
+[36] S. Das, D. Giannakis, J. Slawinska, Reproducing kernel Hilbert space compactification of unitary evo-
+lution groups, Appl. Comput. Harmon. Anal. 54 (2021) 75–136.
+[37] T. Berry, J. Harlim, Variable bandwidth diffusion kernels, Appl. Comput. Harmon. Anal. 40 (1) (2016)
+68–96. doi:10.1016/j.acha.2015.01.001.
+[38] D. Giannakis, Data-driven spectral decomposition and forecasting of ergodic dynamical systems, Appl.
+Comput. Harmon. Anal. 47 (2) (2019) 338–396. doi:10.1016/j.acha.2017.09.001.
+[39] L.-S. Young, What are SRB measures, and which dynamical systems have them?, J. Stat. Phys.
+108 (5/6) (2002) 733–754.
+[40] M. Blank, Ergodic averaging with and without invariant measures, Nonlinearity 30 (12) (2017) 4649–
+4664.
+26
+[41] G. K. Vallis, Atmospheric and oceanic fluid dynamics, 2nd Edition, Cambridge University Press, Cam-
+bridge, 2017.
+[42] G. B. Whitham, Linear and nonlinear waves, Wiley, New York, 1999.
+[43] M. Zacharuk, S. I. Dolaptchiev, U. Achatz, I. Timofeyev, Stochastic subgrid-scale parametrization
+for one-dimensional shallow-water dynamics using stochastic mode reduction, Q. J. R. Meteorol. Soc.
+144 (715) (2018) 1975–1990. doi:10.1002/qj.3396.
+[44] I. Timofeyev, A. Schwarzmann, D. Kuzmin, Application of machine learning and convex limiting to
+subgrid flux modeling in the shallow-water equations, Math. Comput. Simul. 238 (2025) 163–178.
+doi:10.1016/j.matcom.2025.04.031.
+[45] R. J. LeVeque, Finite volume methods for hyperbolic problems, Cambridge University Press, New York,
+2002.
+[46] Y. Chen, E. N. Epperly, J. A. Tropp, R. J. Webber, Randomly pivoted Cholesky: practical approxi-
+mation of a kernel matrix with few entry evaluations, Comm. Pure Appl. Math. 78 (2024) 995–1041.
+doi:10.1002/cpa.22234.
+[47] A. Rahimi, B. Recht, Random features for large-scale kernel machines, in: Advances in Neural Infor-
+mation Processing Systems, Vol. 20, Curran Associates, 2007, pp. 1177–1184.
+[48] T. Yang, Y.-F. Li, M. Mahdavi, R. Jin, Z.-H. Zhou, Nyström method vs random Fourier features: a
+theoretical and empirical comparison, in: Advances in Neural Information Processing Systems, Vol. 25,
+Curran Associates, 2012, pp. 476–484.
+[49] D. Giannakis, A. Henriksen, J. A. Tropp, R. Ward, Learning to forecast dynamical systems from
+streaming data, SIAM J. Appl. Dyn. Syst. 22 (2) (2023) 527–558. doi:10.1137/21M144983X.
+27

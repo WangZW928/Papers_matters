@@ -1,6 +1,6 @@
-# Codex 精读推荐 — 27 篇论文排名
+# Codex 精读推荐 — 33 篇论文排名
 
-**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录，见 2026-08-03 commit 6b0ff70）） | **审查范围：** 321 篇 | **Token：** 768,000
+**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action） | **审查范围：** 321 篇 | **Token：** 768,000
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -56,7 +56,7 @@
 12. **Quantum Simulation of PDEs via Schrödingerization** — quantum-computing
     - 文件：[`quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md`](quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 
-## Tier 3 — 扩展阅读（15 篇）
+## Tier 3 — 扩展阅读（21 篇）
 
 13. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
@@ -120,6 +120,36 @@
     - 数理基础：fully strict 多线程 DAG、T1/T∞ 测度、随机化工作窃取、busy-leaves property、recycling game、时间界 T1/P+O(T∞)、空间界 S1P、通信界 O(PT∞(1+nd)Smax)
     - 为什么精读：任务并行调度理论基石（Cilk/TBB/OpenMP tasking）——动态负载均衡的最优性论证，与 AMReX SFC/knapsack 静态均衡互补，为高性能框架的并行调度层提供理论依据。关联：AMReX、WarpX GPU 移植
 
+28. **Noncanonical Hamiltonian Density Formulation of Hydrodynamics and Ideal MHD** — geometric-fluid
+    - 文件：[`geometric-fluid/noncanonical-hamiltonian-density-formulation-of-hydrodynamics-and-ideal-magnetohydrodynamics.md`](geometric-fluid/noncanonical-hamiltonian-density-formulation-of-hydrodynamics-and-ideal-magnetohydrodynamics.md)
+    - 数理基础：非正则 Poisson 括号三形式（物理变量式/守恒密度式/Fourier 系数式）、Jacobi 恒等式、∇·B=0 条件（含 Errata 修正）、Lie-Poisson 结构原型
+    - 为什么精读：Lie-Poisson 括号与 Casimir 理论的最早源头之一（1980），流体+MHD 统一非正则哈密顿表述的范式论文；与 Hamiltonian ideal fluid（1998）构成母女篇，是 LPNets、Covector Fluids 等结构保持方法的物理母体。关联：Hamiltonian ideal fluid、LPNets、Covector Fluids
+
+29. **PDE-Transformer: Efficient and Versatile Transformers for Physics Simulations** — ai-for-physics
+    - 文件：[`ai-for-physics/pde-transformer-efficient-and-versatile-transformers-for-physics-simulations.md`](ai-for-physics/pde-transformer-efficient-and-versatile-transformers-for-physics-simulations.md)
+    - 数理基础：DiT 式 Transformer 架构、物理通道独立时空 token 嵌入、通道间自注意力、16 类 PDE 联合预训练、基础模型迁移
+    - 为什么精读：物理模拟基础模型的 Transformer 骨干设计——"通道独立 token + 通道间注意力"解决多 PDE 联合学习的信息密度失衡；对 PDE 代理模型与生成式模拟（DDPM 类）的规模化有直接参考。关联：DDPM、Attention Is All You Need、Neural Operator
+
+30. **Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges** — ai-theory
+    - 文件：[`ai-theory/geometric-deep-learning-grids-groups-graphs-geodesics-and-gauges.md`](ai-theory/geometric-deep-learning-grids-groups-graphs-geodesics-and-gauges.md)
+    - 数理基础：对称群与不变性公理、G-等变/不变层、域 Ω 与信号空间 X(Ω)、群表示论、CNN/GNN/流形/规范等变统一蓝图
+    - 为什么精读：几何深度学习的统一纲领——把网格、图、流形、规范丛上的架构统一为"域对称群 + 权重共享"原理；为等变 PINN、SE(3) 等变模型、规范场学习方法提供理论框架。关联：PINN、Attention、GNN Review
+
+31. **Quantum Mechanical Closure of PDEs with Symmetries** — quantum-mechanics
+    - 文件：[`quantum-mechanics/quantum-mechanical-closure-of-partial-differential-equations-with-symmetries.md`](quantum-mechanics/quantum-mechanical-closure-of-partial-differential-equations-with-symmetries.md)
+    - 数理基础：量子力学嵌入（密度算子表示未解析自由度）、量子测量预测反馈、保正离散化、对称性不变压缩表示、核方法/延迟嵌入/迁移算子、浅水方程闭包
+    - 为什么精读：用量子密度算子语言做动力系统统计闭包的新范式——与 Schrödingerization（量子算法求解 PDE）互补，偏"量子算子语言组织统计闭包"；对湍流/大气/海洋参数化有方法论价值。关联：Schrödingerization、SINDy/Koopman、PINN
+
+32. **On the Electrodynamics of Moving Bodies (Einstein 1905)** — relativity
+    - 文件：[`relativity/on-the-electrodynamics-of-moving-bodies.md`](relativity/on-the-electrodynamics-of-moving-bodies.md)
+    - 数理基础：相对性原理 + 光速不变公设、同时性操作定义、洛伦兹变换推导（φ(v)φ(-v)=1）、速度合成、长度收缩/时间膨胀、光能变换、电子纵/横质量
+    - 为什么精读：狭义相对论奠基原文——从操作定义到全部运动学/电动力学推论的自洽推导链；为理解协变方程结构（如扩散方程的洛伦兹不变性讨论）提供第一性视角。关联：Diffusion Equation Compatible with SR、Hamiltonian ideal fluid（协变性）
+
+33. **A Geometric Derivation of the Einstein Equations from the Causal Action Principle** — differential-geometry
+    - 文件：[`differential-geometry/a-geometric-derivation-of-the-einstein-equations-from-the-causal-action-principle.md`](differential-geometry/a-geometric-derivation-of-the-einstein-equations-from-the-causal-action-principle.md)
+    - 数理基础：因果变分原理、因果费米子系统、osculating vacua、Lagrangian 诱导 Lorentz 度量、Euler-Lagrange → Einstein 方程推导链、引力常数 = 正则化长度²、修正项程序
+    - 为什么精读：从底层量子变分原理几何推导宏观引力——连接几何与物理前沿；变分原理推导场方程的完整范例，与 Hamiltonian 变分原理、Force-Free Fields 的几何方法呼应。关联：Force-Free Fields、Einstein 1905、Geometric DL（规范几何）
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
@@ -132,4 +162,4 @@
 
 ---
 
-*覆盖 10 个分类 | 每篇均关联库内至少 1 篇其他论文 | 27/27 文件已链接*
+*覆盖 12 个分类 | 每篇均关联库内至少 1 篇其他论文 | 33/33 文件已链接*

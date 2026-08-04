@@ -1,0 +1,3946 @@
+A GEOMETRIC DERIVATION OF THE EINSTEIN EQUATIONS
+FROM THE CAUSAL ACTION PRINCIPLE
+FELIX FINSTER AND CHRISTOPH KRPOUN
+JULY 2026
+Abstract. The causal action principle for causal fermion systems is analyzed for
+a minimizing measure whose support is assumed to have the structure of a smooth
+manifold ˜
+M. The concept of osculating vacua is introduced. It is shown that the La-
+grangian induces on ˜
+M a Lorentzian metric. Moreover, the Euler-Lagrange equations
+of the causal action imply that the Ricci tensor must satisfy the Einstein equations
+of general relativity for an energy momentum tensor given in terms of a power ex-
+pansion in the regularization length. The gravitational coupling constant is found
+to be the square of the regularization length. Our methods provide a systematic
+procedure for deriving corrections to the Einstein equations.
+The paper includes a self-contained introduction to causal variational principles
+and the causal action principle. Most geometric structures (connection, Riemannian
+metric and curvature) are introduced and analyzed in the general setting of causal
+variational principles for an arbitrary dimension of ˜
+M. The Lorentzian setting works
+only for causal fermion systems and is worked out only in four spacetime dimensions.
+Contents
+1.
+Introduction
+2
+2.
+Preliminaries
+4
+2.1.
+Causal Variational Principles
+4
+2.2.
+Causal Fermion Systems and the Causal Action Principle
+6
+3.
+Osculating Vacua
+7
+3.1.
+Formulation for Causal Variational Principles
+7
+3.2.
+Formulation for the Causal Action Principle
+9
+3.3.
+The Euler-Lagrange Equations for the Osculation
+10
+4.
+The L-Geometry
+12
+4.1.
+L-Induced Charts
+12
+4.2.
+The Connection ∇L
+13
+4.3.
+The Riemannian Metric g on ˜
+M
+14
+4.4.
+Description with Osculation Maps
+14
+4.5.
+The Curvature of ∇L
+17
+4.6.
+Is ∇L a Metric Connection?
+19
+4.7.
+Relation Between the Curvatures of ∇L and ∇g
+19
+5.
+Incorporating the Euler-Lagrange Equations
+20
+5.1.
+Employing the Osculation Equations in the Euler-Lagrange Equations
+21
+5.2.
+Formulation of Curvature with Alignments
+22
+5.3.
+Expansion of the Weight Function f in Powers of δ
+23
+5.4.
+Expansion of the Divergences in the Ricci Tensor
+25
+6.
+The Einstein Equations
+28
+1
+arXiv:2607.13871v1  [math-ph]  15 Jul 2026
+2
+F. FINSTER AND C. KRPOUN
+6.1.
+The Riemannian Einstein Equations
+28
+6.2.
+The Regularizing Vector Field and the Lorentzian Metric η
+29
+6.3.
+The Lorentzian Einstein Equations
+33
+7.
+Discussion of Corrections to the Einstein Equations
+34
+8.
+Outlook: The Einstein Equations in Non-Smooth and Quantum Spacetimes 34
+Appendix A.
+The L-Induced Weingarten Map
+35
+Appendix B.
+The Riemannian and Lorentzian Metrics of the Regularized
+Dirac Sea Vacuum
+37
+Appendix C.
+Construction of Almost-Optimal Osculations
+38
+Appendix D.
+Non-Optimal Osculations and Torsion
+40
+References
+42
+1. Introduction
+The theory of causal fermion systems is a recent approach to fundamental physics
+(for an introduction to the physical background and applications as well as to the math-
+ematical context, we refer the interested reader to the review [16], the textbooks [9, 25]
+or the website [1]). In this approach, spacetime and all structures therein are encoded in
+a measure ρ on a set F of linear operators on a Hilbert space H. Spacetime M := supp ρ
+is then defined as the support of this measure. The fact that the spacetime points are
+linear operators on H yields relations between the spacetime points and gives rise to
+all structures in spacetime. In this approach, the physical equations are formulated
+via a novel variational principle for the measure ρ, the causal action principle. Causal
+variational principles evolved as a mathematical generalization of the causal action
+principle [8, 26, 27] (an introduction to the causal action principle and causal vari-
+ational principles can be found for example in [25, Chapters 5 and 6]). The setting
+of causal variational principles has the advantage that it is easier and more general,
+making it clearer what the basic structures are. In this setting, the set F is a smooth
+manifold. In the causal variational principle, given a Lagrangian L : F × F →R+
+0 , one
+minimizes the action
+S(ρ) =
+ˆ
+F
+dρ(x)
+ˆ
+F
+dρ(y) L(x, y)
+under variations of the measure ρ, keeping the total volume fixed (for details see
+Section 2.1). The drawback of working in the setting of causal variational principles is
+that one has fewer structures at one’s disposal. In particular, we shall see that, in the
+setting of causal variational principles, one can only formulate the Einstein equations
+in the Riemannian setting, whereas the causal action principle for causal fermion
+system also gives rise to a Lorentzian metric and corresponding Einstein equations in
+spacetime.
+The Einstein equations of general relativity describe how energy and momentum de-
+termine the curvature of spacetime (for the general background we refer to the physics
+textbooks [48, 32, 36, 45] and the mathematical literature [39, 3]). The connection
+between the causal action principle and the Einstein equations has already been made
+in various ways: The first approach was made in [13] by introducing the structures of a
+general “quantum geometry”. However, at that time it was not possible to relate these
+geometric structures to the Euler-Lagrange equations of the causal action principle.
+The first derivation of the Einstein equations from the causal action principle was given
+DERIVATION OF THE EINSTEIN EQUATIONS
+3
+in [9, Chapter 4] using the continuum limit analysis for linearized gravity. Combined
+with the fact that the setup of causal fermion systems is diffeomorphism invariant,
+this linearized analysis gives the Einstein equations, up to higher order corrections in
+the curvature tensor. More recently, the continuum limit analysis was extended to the
+non-perturbative setting in a globally hyperbolic spacetime in [12]. Apart from giving
+a direct derivation of the Einstein equations, it was also tried to work more indirectly
+by deriving effects of the Einstein equations from the causal action principle. This ap-
+proach led to a derivation of the Einstein equations following Jacobson’s idea via the
+connection between matter flux and area change [4]. Moreover, the effects of gravity
+like positive mass and quasi-local mass were studied in the setting of causal variational
+principles in [29, 20].
+In the present paper we proceed differently, driven by the quest to formulate the
+causal action principle in geometric terms as a geometric variational principle. Thus
+our main concern is how to get a direct link between the geometry and the causal action
+principle. This entails introducing the geometric objects in such a way that they fit
+together with the analytic structures of causal fermion systems. We now explain a few
+considerations which turn out to be helpful in order to achieve this goal. We denote
+the measure describing the interacting spacetime by ˜ρ; the corresponding spacetime ˜
+M
+is then given by
+˜
+M := supp ˜ρ ⊂F .
+We assume throughout this paper that ˜
+M has a smooth manifold structure (for non-
+smooth spacetimes structures see the outlook in Section 8 and the more general con-
+structions in [23]). It is useful to regard ˜
+M ⊂F as an embedded manifold. Next, the
+concept of osculating vacua is very helpful. This concept is motivated by the notion of
+the tangent space in differential geometry. In simple terms, the idea is to “attach” to
+each spacetime point p ∈˜
+M a vacuum spacetime Mp ⊂F which, similar to the tan-
+gent space of an embedded manifold, “approximates the geometry of ˜
+M near p.” This
+intuitive notion will be made precise in Section 3 by setting up a variational principle
+(see (3.3)). This concept is illustrated in Figure 1 on page 8 (or, in its generalization to
+discrete spacetimes, in Figure 4 on page 35). Working with osculating vacua, one can
+use integrals over the Lagrangian to introduce distinguished charts, a connection ∇L
+and a Riemannian metric g (see Sections 4.1–4.3). The resulting so-called L-geometry
+is introduced and studied in Section 4.
+The core of the paper is to work out how these geometric structures can be con-
+nected to the Euler-Lagrange equations of the causal action principle. To this end,
+we work with alignment vector fields and expansions of divergences of this vector field
+(Section 5). These methods are related to similar constructions developed in [20] in
+the context of defining a positive quasi-local mass in static spacetimes. Combining
+our methods and results, we obtain the Einstein equations in the Riemannian setting
+(Theorem 6.1).
+In order to extend our results to Lorentzian signature, we need to move on the more
+specialized setting of causal fermion systems. This gives rise to a vector field u dubbed
+regularization vector field, making it possible to introduce a Lorentzian metric η (see
+Definition 6.4).
+This vector field is shown to be almost parallel (see Lemma 6.3),
+making it possible to reformulate the Einstein equations for the Lorentzian metric
+(Theorem 6.8).
+We mention one technical point which is important for the general understanding of
+our method. We assume that the Lagrangian is of short range in the sense that L(x, y)
+4
+F. FINSTER AND C. KRPOUN
+vanishes if the distance of x and y is larger than a given length scale δ (for details
+see (2.4)). The length scale δ should be thought of as being much smaller than the
+typical length scales of microscopic physics (more specifically, one can identify δ with
+the Planck scale). This justifies that we perform expansions in powers of δ (see for
+example Lemmas 4.6, 5.4, 5.5 and 5.8). It is a main result of our analysis that, using
+the EL equations of the causal action, the Einstein tensor equals a tensor which is
+of the order O(δ2) and which we define to be the energy-momentum tensor. In this
+way, our methods and results give an explanation to why the gravitational coupling
+constant is so small. Moreover, our methods have the benefit that they provide a
+systematic procedure for deriving correction terms (as is discussed in Section 8).
+The paper is organized as follows. Section 2 provides the necessary background on
+causal variational principles and the causal action principle. In Section 3 the concept of
+osculations is introduced. In Section 4 the L-geometry is developed. In Section 5 it is
+explained how the EL equations can be used in order to compute and expand the Ricci
+tensor. In Section 6 the previous methods and results are combined in order to derive
+the Einstein equations, first in the Riemannian and then in the Lorentzian setting. In
+Section 7 the different corrections are discussed. Section 8 gives an outlook and non-
+smooth and quantum spacetimes. The appendices provide supplementary material:
+In Appendix A a Weingarten-type map is introduced, and we argued why it does not
+give rise to notions of extrinsic curvature and corresponding Gauß-Codazzi equations.
+In Appendix B it is explained how the Riemannian and Lorentzian metrics introduced
+in Sections 4.3 and 6.2 can be computed in the Minkowski vacuum.
+Appendix C
+gives a construction of osculations which are almost optimal in a quantified sense. In
+Appendix D it is explained how the definition of the connection ∇L generalizes to
+non-optimal osculations, and it is shown that this connection in general has torsion.
+2. Preliminaries
+Since most of our constructions work in the general setting of causal variational
+principles, we introduce this setting first (Section 2.1). Working in this setting will
+give us the Einstein equations in Riemannian signature (Section 6.1).
+In order to
+get the Einstein equations in the physical Lorentzian signature (Section 6.3), one
+needs additional structures specific to causal fermion systems. For this reason, we
+also introduce causal fermion systems and the causal action principle (Section 2.2).
+Our presentation is intended to be brief, but self-contained. For more details and the
+general background we refer to the textbooks [25, 9].
+2.1. Causal Variational Principles. We begin with the setting of smooth causal
+variational principles in the non-compact setting (see for example [25, Chapter 6]).
+Thus we let F be a smooth (possibly non-compact) manifold. The Lagrangian L is a
+given smooth function
+L ∈C∞(F × F, R+
+0 ) .
+Moreover, we assume that L has the following properties:
+(i) L is symmetric: L(x, y) = L(y, x) for all x, y ∈F.
+(ii) L is strictly positive on the diagonal: L(x, x) > 0 for all x ∈F.
+Finally, we need to assume that the Lagrangian decays sufficiently fast if its argu-
+ments x and y are far apart. One way of doing so is to use the following notion first
+introduced in [27, Definition 3.3] (see also [25, Definition 8.1.1]):
+DERIVATION OF THE EINSTEIN EQUATIONS
+5
+(iii) L has compact range: For every compact set K ⊂F there is a compact set K′ ⊂F
+such that
+L(x, y) = 0
+for all x ∈K and y ̸∈K′ .
+This condition could be relaxed by demanding that L and all its derivatives have rapid
+decay. We will implicitly use this weaker assumption in some of the examples.
+The causal variational principle is to minimize the causal action defined by
+S(ρ) =
+ˆ
+F
+dρ(x)
+ˆ
+F
+dρ(y) L(x, y)
+(2.1)
+under variations of the measure ρ in the class of all regular Borel measures on F, under
+the constraint that the total volume is kept fixed.
+The existence of minimizers has been established in [27] (see also [25, Chapter 12]).
+It is also shown that minimizing measures are locally finite in the sense that ρ(K) < ∞
+for any compact K ⊂F. A minimizing measure satisfies the Euler-Lagrange (EL)
+equations, which state that the function ℓdefined by
+ℓ(x) =
+ˆ
+F
+L(x, y) dρ(y) −s : F →R
+(2.2)
+satisfies for a suitable parameter s > 0 the equation
+ℓ|M ≡inf
+F ℓ= 0 .
+(2.3)
+The derivation can be found in [27, Section 4] or [25, Chapter 7].
+We remark that causal variational principles can be regarded as a generalization of
+the causal action principle, being at the heart of the physical theory of causal fermion
+systems. For the purposes of the present paper, we do not need to enter the details
+of the connection to physics or to spacetime geometry. We refer the reader interested
+in the physical background to the recent text book [25]; in particular, the connection
+between the causal action principle and causal variational principles is explained in
+detail in [25, Chapter 6]). For what follows, it suffices to note that the support of the
+measure ρ denoted by
+M := supp ρ
+is considered as the underlying space or spacetime (we will use the terms ”space” or
+”spacetime” interchangeably). It is by definition a closed subset of the manifold F.
+The above assumption of compact range is suitable for proving existence and study-
+ing general properties of minimizers, but it is not strong enough for a the more quan-
+titative analysis to be performed here. In particular, we need that the range of the
+Lagrangian is much smaller than the macroscopic length scales of the system.
+To
+this end, we need that the Lagrangian is of short range in the following sense. We
+let d ∈C0(M × M, R+
+0 ) be a distance function on M. The assumption of short range
+means that L vanishes on distances larger than δ, i.e.
+d(x, y) > δ
+=⇒
+L(x, y) = 0 .
+(2.4)
+Here δ > 0 is a parameter which determines the range of the potential. In the com-
+putation of the energy-momentum tensor, we will assume that δ is very small and
+perform an expansion in powers of δ. As we shall see, the parameter δ2 will play the
+role of the gravitational coupling constant.
+In the above general setup, we did not need to specify the manifold F. Typically,
+this manifold is formed of operators acting on a Hilbert space of functions or sections
+6
+F. FINSTER AND C. KRPOUN
+on a given base space. This connection and simple examples are given in [18]. Here
+we move on to the setting of causal fermion systems.
+2.2. Causal Fermion Systems and the Causal Action Principle. We begin with
+the general definitions.
+Definition 2.1. (causal fermion systems) Given a separable complex Hilbert space H
+with scalar product ⟨.|.⟩H and a parameter n ∈N (the “spin dimension”), we let F ⊂
+L(H) be the set of all symmetric operators on H of finite rank, which (counting
+multiplicities) have at most n positive and at most n negative eigenvalues. On F we
+are given a positive measure ρ (defined on a σ-algebra of subsets of F).
+We refer
+to (H, F, ρ) as a causal fermion system.
+The dynamical equations are formulated via an action principle, which we now in-
+troduce. For brevity of the presentation, we only consider the reduced causal action
+principle where the so-called boundedness constraint has been built incorporated by a
+Lagrange multiplier term. This simplification is no loss of generality, because the re-
+sulting EL equations are the same as for the non-reduced action principle as introduced
+for example in [9, Section §1.1.1].
+For any x, y ∈F, the product xy is an operator of rank at most 2n. However,
+in general it is no longer a symmetric operator because (xy)∗= yx, and this is dif-
+ferent from xy unless x and y commute. As a consequence, the eigenvalues of the
+operator xy are in general complex. We denote the rank of xy by k ≤2n. Count-
+ing algebraic multiplicities, we choose λxy
+1 , . . . , λxy
+k ∈C as all the nonzero eigenvalues
+and set λxy
+k+1, . . . , λxy
+2n = 0.
+We refer to the resulting collection of complex num-
+bers λxy
+1 , . . . , λxy
+2n as the non-trivial eigenvalues of xy. Given a parameter κ > 0 (which
+will be kept fixed throughout this paper), we introduce the κ-Lagrangian and the
+causal action by
+κ-Lagrangian:
+L(x, y) = 1
+4n
+2n
+X
+i,j=1
+λxy
+i
+ −
+λxy
+j
+
+2
++ κ
+ 2n
+X
+j=1
+λxy
+j
+
+2
+(2.5)
+causal action:
+S(ρ) =
+¨
+F×F
+L(x, y) dρ(x) dρ(y) .
+(2.6)
+The reduced causal action principle is to minimize S by varying the measure ρ under
+the following constraints,
+volume constraint:
+ρ(F) = 1
+trace constraint:
+ˆ
+F
+tr(x) dρ(x) = 1 .
+At first sight, the setting of the causal action principle seems considerably more
+complicated than that of causal variational principles. But the settings fit together as
+follows (for more details see [25, Section 6.5]). First, let us assume that H is finite-
+dimensional (this can be justified by an ultraviolet cutoff and an exhaustion of Hilbert
+spaces; details can be found for example in [9, Section 1.2]). Moreover, we assume
+that both ρ and ˜ρ are regular in the sense that all spacetime point operators have
+maximal rank (i.e., that they have exactly n positive and n negative eigenvalues). The
+EL equations of the causal action principle yield that all the spacetime point operators
+have the same trace. This makes it possible to replace F by the set of all symmetric
+operators of fixed trace which have exactly n positive and n negative eigenvalues.
+DERIVATION OF THE EINSTEIN EQUATIONS
+7
+This set of operators has a manifold structure.
+Finally, the measures ˜ρ and ρ are
+minimizers of the causal action principle on this restricted set of operators even if the
+trace constraint is dropped. In this way, one gets back to the general setting of causal
+variational principles, but with F chosen as a specific set of linear operators and the
+specific Lagrangian (2.5).
+3. Osculating Vacua
+3.1. Formulation for Causal Variational Principles. In what follows, we assume
+that we are given two minimizing measures: The measure ρ describing the vacuum,
+and a measure ˜ρ describing the interacting measure.
+We assume that the vacuum
+spacetime M := supp ρ has the structure of a k-dimensional real vector space (with k ∈
+N arbitrary; in Section 3.2 we will specialize the setting to dimension k = 4). This
+means in particular that one point of M is distinguished as the origin; we denote it
+by 0 ∈M. In what follows, we always identify M with its tangent space T0M. Next,
+we assume that the Lagrangian is translation invariant on M, i.e.
+L(x, y) = L[y −x]
+for all x, y ∈M
+(3.1)
+with a function L : M →R+
+0 . The fact that the Lagrangian is symmetric in its two
+arguments implies that the function L is reflection symmetric, i.e.
+L[ξ] = L[−ξ]
+for all ξ ∈M .
+(3.2)
+Moreover, in order to exclude trivial situations, we assume that L is not everywhere
+zero. Finally, we we assume that, using the above vector space structure, the spacetime
+measure ρ|M is a multiple of the Lebesgue measure. For the applications, one can think
+of M as Minkowski space. However, in the constructions of this paper, we do not want
+to make use of the Minkowski metric. Instead, we only want to make use of the form
+of the measure ρ and the Lagrangian as specified above.
+The structure of the interacting spacetime ˜
+M ⊂F, however, can be very general.
+The only assumption we use throughout this paper is that ˜
+M has the structure of a
+k-dimensional smooth differential manifold. This assumption makes it possible to use
+the usual notions of differential geometry like the tangent space, local expansions in
+charts, and all that. For non-smooth spaces without manifold structure we refer to [23]
+and Section 8.
+Following [20, Definition 6.1] we introduce symmetry transformations of the La-
+grangian.
+Definition 3.1. A diffeomorphism Φ ∈C∞(F, F) describes a symmetry of the
+Lagrangian if
+L
+ Φ(x), Φ(y)
+
+= L(x, y)
+for all x, y ∈F .
+Such diffeomorphisms form a group, denoted by G, the group of symmetries of the
+Lagrangian.
+For introducing our concepts, it is best to begin with the simplest setting where we
+assume that the group of symmetries G of the Lagrangian acts transitively on ˜
+M in the
+sense that for every p ∈˜
+M there is a symmetry transformation Φ ∈G with Φ(0) = p
+(the case that G does not act transitively on
+˜
+M will be considered in Section 3.2).
+In this case, given a spacetime point p ∈
+˜
+M, we consider the set of all symmetry
+transformations which map 0 ∈M to p,
+Gp := {Φp ∈G | Φp(0) = p} .
+8
+F. FINSTER AND C. KRPOUN
+F
+p
+˜
+M
+Tp ˜
+M
+Mp
+q
+Tq ˜
+M
+Mq
+Figure 1. Osculating vacua.
+Given Φp ∈Gp, we set
+ρp := (Φp)∗ρ
+and
+Mp := supp ρp .
+We refer to Φp as the osculation and ρp as the osculating vacuum at p ∈˜
+M. These
+notions are illustrated in Figure 1.
+Intuitively speaking, the idea is to choose Φp in such a way that the spacetimes M
+and ˜
+Mp“agree as much as possible near p”. In order to make this statement mathe-
+matically precise, one can set up a variational principle at p. To this end one chooses
+a basis (ei)i=,...,k of M. Denoting the total derivative by D, i.e.
+DΦp : TxF →TΦ(x)F
+and
+DΦp|0 : M = T0F →TpF ,
+we obtain a basis of TpF by
+ei(p) := DΦp|0 ei ∈TpF
+We set
+Sp(Φp) =
+k
+X
+i=1
+D2˜ℓ|p
+ ei(p), ei(p)
+
+,
+(3.3)
+where ˜ℓis defined by (2.2) with ρ replaced by ˜ρ. Note that, in view of the EL equa-
+tions (2.3) for ˜ρ, the first derivative of ˜ℓvanishes at p. This is why second derivative
+in (3.3) is well-defined without the need to specify a connection on F. Moreover, it
+follows from (2.3) that the second derivatives in (3.3) are non-negative. Therefore, the
+action Sp is non-negative. Now one chooses Φp as a minimizer of the Sp under varia-
+tions Φp ∈Gp. More details on this variational principles will be give in the setting of
+causal fermion systems in Sections 3.2–3.3.
+We finally comment on the name “osculating vacua”.
+The notion “osculating”
+(literally “kissing”) can be found in the older literature (see for example [35, 33])
+for a Euclidean metric which approximates a Riemannian metric in a neighborhood
+of a point.
+In this setting, the Euclidean and Riemannian metrics are osculating
+if they coincide in a first order Taylor expansion about a base point.
+This is as
+good as possible, because the second derivatives of the Riemannian metric involve
+curvature, which clearly cannot be compensated by a coordinate transformation. Our
+notion of “osculating vacua” is similar in the sense that Mp should approximate ˜
+M
+near p as good as possible (as will be made precise in Section 3.2 by the variational
+principle (3.3)). But, in contrast to the setting of Riemannian geometry, the symmetry
+transformation Φp not only tries to adjust the geometry, but also tries to transform
+away the matter and fields described by ˜ρ.
+DERIVATION OF THE EINSTEIN EQUATIONS
+9
+3.2. Formulation for the Causal Action Principle. We now specify to the setting
+of causal fermion systems.
+In this setting, the symmetry transformations and the
+construction of osculations can be worked out more concretely.
+We are given two causal fermion systems (H, F, ρ) (the vacuum) and ( ˜H, ˜F, ˜ρ) (the
+interacting system). We assume that both ρ and ˜ρ are minimizers of the causal action
+principle for the same value of the Lagrange parameter s (that s has the same value
+for both measures can be arranged by a rescaling ρ →λρ with ρ > 0, as one verifies
+from (2.2)). After identifying the Hilbert spaces via a unitary transformation V : H →
+˜H, we can always work in the Hilbert space H (and correspondingly with measures
+on F). However, the non-uniqueness of the identification of the Hilbert spaces shows
+up in the freedom to perform unitary transformation of vacuum measure
+ρ 7→Uρ ,
+where Uρ is defined by
+(Uρ)(Ω) := ρ
+ U−1 ΩU
+
+for
+Ω⊂F .
+The Lagrangian is unitary invariant in the sense that
+L(UxU−1, UxU−1) = L(x, y)
+for all x, y ∈F .
+Therefore, the transformation Φ(x) = UxU−1 is a symmetry of the Lagrangian as
+introduced in Definition 3.1.
+For our purposes, it suffices to restrict attention to
+symmetry transformations of this form (in fact, in [42] it is even proven that every
+symmetry transformation which preserves the constraints in the causal action principle
+can be realized by a unitary transformation). Then the group G of symmetries of the
+Lagrangian can be identified with the unitary group U(H) of the Hilbert space.
+We choose the vacuum measure as the regularized Dirac sea vacuum in four-dimen-
+sional Minkowski space (as constructed in detail in [40]; see also the textbooks [25,
+Section 5.5] and [9, Section 1.2]). The detailed form of this measure is will not used
+here; we only need that M := supp ρ can be identified with four-dimensional Minkowski
+space. We choose such an identification, which will be kept fixed throughout our con-
+structions. In particular, on M we have a Lorentzian metric η and a distinguished
+point 0 (the origin). Moreover, the regularization distinguishes a time direction. For
+convenience, we only consider bases (ei) where e0 points in the time direction dis-
+tinguished by the regularization.
+Clearly, the Lagrangian is translation symmetric
+on M (3.1) and reflection symmetric (3.2), and the spacetime measure ρ|M is a mul-
+tiple of the Lebesgue measure. Finally, all spacetime point operators have the same
+eigenvalues (including multiplicities), implying that the symmetry group G acts tran-
+sitively on M.
+We again begin with the simplest setting that G also acts transitively on ˜
+M. This
+condition means that all spacetime point operators of ˜
+M must have the same eigen-
+values as the operator 0 ∈M (again with multiplicities). Let p ∈˜
+M. The there are
+unitary transformations U with the property that
+p = U0U−1 .
+(3.4)
+Given such an operator, we define the measure
+ρp = Uρ
+and set
+Mp := supp ρp = UMU−1 .
+(3.5)
+10
+F. FINSTER AND C. KRPOUN
+Then p is the origin of Mp and, moreover, it is a point of the interacting spacetime ˜
+M.
+In view of the EL equations (2.3) for ˜ρ, we know that the function ˜ℓdefined by
+˜ℓ: F →R ,
+˜ℓ(x) =
+ˆ
+F
+L(x, y) d˜ρ(y) −s
+is minimal at p. Therefore, it has a vanishing derivative at p, and thus
+Dei ˜ℓ(p) = 0
+for all i = 0, . . . 3
+(where for notational simplicity we set ei = ei(p)).
+Moreover, second derivatives
+are non-negative (for details see [10]). With this in mind, we set up the following
+variational principle. Restricting ˜ℓto Mp, we obtain a mapping
+˜ℓ|Mp : Mp →R .
+Being a mapping from a vector space to the reals, we can take ordinary higher deriva-
+tives. The Hessian is positive because of the EL equations. Therefore, the functional
+Sp(U) :=
+3
+X
+i=0
+D2
+ei,ei ˜ℓ
+
+Mp(p)
+(3.6)
+is non-negative. We now minimize S under variations of U.
+Definition 3.2. The unitary operator U is said to be osculating at p ∈˜
+M if it is
+a minimizer of the functional Sp(U). We also denote an osculating unitary operator
+by Up.
+We now turn to the general case that G does not act transitively on ˜
+M. In this
+case, for x ∈F we introduce the corresponding Euclidean sign operator sx as the
+unique operator which has the same eigenspaces as x, with eigenvalue one for the
+positive eigenvalues, and eigenvalue minus one for the negative eigenvalues. Then the
+operators s0 and sp are isospectral (having the non-zero eigenvalues plus and minus
+one, both of multiplicity n). We now replace (3.4) by the weaker condition
+sp = Us0U−1 .
+(3.7)
+We now minimize the functional (3.6) on the resulting class of unitary operators.
+We finally remark that, in most physical situations, the eigenvalues of all spacetime
+point operators agree, up to errors of higher order in the regularization length. With
+this in mind, it is a very good approximation to assume that G acts transitively on ˜
+M.
+3.3. The Euler-Lagrange Equations for the Osculation. In the case dim H <
+∞, the existence of minimizers of the variational principle for the osculation follows
+immediately from a compactness argument using that the integrated Lagrangian is
+continuous (as worked out in detail in [41]). We do not expect in general that the
+minimizers will be unique.
+We now work out the corresponding EL equations, referred to as the osculation
+equations. We are in a particularly simple special situation when there is a unitary
+operator U for which the functional Sp(U) vanishes.
+Definition 3.3. Mp is an optimal osculation at p if Sp(U) = 0.
+In this case, the osculation conditions are simple to state.
+DERIVATION OF THE EINSTEIN EQUATIONS
+11
+Proposition 3.4. If Mp is an optimal osculation at p, then the osculation equations
+imply that the following Hessian vanishes,
+D2˜ℓ|Mp(p) = 0
+(3.8)
+The notation for the derivatives in (3.8) is understood as follows. We first restrict ˜ℓ
+to Mp. Since Mp is a vector space, we can take second derivatives (which are directional
+derivatives tangential to Mp).
+Proof of Proposition 3.4. Since the Hessian of of ˜ℓMp is non non-negative, the vanishing
+of its trace implies that all its matrix entries are zero.
+□
+There is a simple special case when optimal osculations exist.
+Lemma 3.5. Assume that the tangent spaces of ˜
+M and Mp coincide,
+Tp ˜
+M = T0Mp .
+(3.9)
+Then Mp is an optimal osculation at p.
+Proof. According to the EL equations (2.3), the function ˜ℓis minimal and vanishes
+identically on ˜
+M. Using that Mp is tangential ˜
+M in p, second derivatives along Mp
+can be rewritten as second derivatives along ˜
+M and first derivatives transversal to ˜
+M.
+All of these derivatives vanish by the EL equations.
+□
+We cannot expect that optimal osculations exist in general. In this case, we have the
+following weaker result. Suppose that Uτ with τ ∈(−ε, ε) (and ε > 0 is an admissible
+variation in the sense that it is a smooth curve of unitary operators with U0 = U which
+(depending on whether we are in case (3.4) or (3.7)) satisfies the constraints
+Uτ0U−1
+τ
+= p
+or
+Uτs0U−1
+τ
+= sp .
+Then the infinitesimal generator of this variation is a vector field C on F given by
+DCf(x) := d
+dτ f
+ UτU−1 x UU−1
+τ
+
+τ=0
+(C is also referred to as a commutator jet; for the general context see [21] or [25,
+Section 8.2]). Since minimality implies criticality, we immediately obtain the following
+result.
+Proposition 3.6. If U is osculating, then
+3
+X
+i=0
+Dei,eiDC˜ℓ|Mp(p) = 0
+(3.10)
+for all admissible variations.
+The EL equation (3.10) does not immediately give information about the resulting
+correction to the osculation equation in the optimal case (3.8).
+To this end, the
+following result seems helpful.
+Lemma 3.7. For a general osculation Mp and any basis ˜ei of Tp ˜
+M,
+D2
+ei,ej ˜ℓ|Mp(p) = D2˜ℓ|p
+ ei −˜ei, ej −˜ej
+
+.
+(3.11)
+12
+F. FINSTER AND C. KRPOUN
+Proof. According to the El equations (2.3) for ˜ℓ, we know that D˜ℓ(x) = 0 for all x ∈˜
+M.
+Differentiating at x = p, we conclude that
+D2˜ℓ|p
+ ˜ei, u) = 0
+for all u ∈TpF .
+Using this equation after multiplying out the right side of (3.11) gives the result.
+□
+In general, one should carefully distinguish between the tangent space Tp ˜
+M and the
+osculating vacuum Mp (as is highlighted in Figure 1). On the other hand, one should
+also keep in mind that, in most physical situations, Tp ˜
+M and Mp will agree up to small
+errors (for details see the analysis in Appendix C). With this in mind, in this paper
+we will restrict attention to the case that the osculating vacua are tangential at every
+point.
+Definition 3.8. The family (Mp)p∈˜
+M forms optimal osculations if for every p ∈˜
+M
+the condition (3.9) holds.
+This assumption is a major simplification, because for optimal osculations we can
+work at every point p ∈˜
+M with the simple osculation equation (3.8). Nevertheless, the
+osculation equations in Proposition 3.6 will be important when working out corrections
+to the Einstein equations, as will be discussed in Section 7 and Appendix D.
+4. The L-Geometry
+We now specialize the setting by assuming that ˜
+M has a smooth manifold structure.
+We consider it as an embedded manifold in the Hilbert-Schmidt operators, ˜
+M ⊂S2.
+4.1. L-Induced Charts. We consider the setting of causal variational principles in-
+troduced in Section 2.1. In particular, we assume that ˜
+M the structure of a smooth
+k-dimensional manifold embedded in F. Moreover, we assume that we have chosen
+an optimal osculation Mp at every point p ∈˜
+M (see Definition 3.8). Given a base
+point p ∈˜
+M, we introduce the mapping
+ϕp : ˜
+M →Mp ,
+ϕp(˜x) :=
+ 
+Mp
+L(˜x, y) y dρp(y) ,
+(4.1)
+where the integral sign with bar means that the integral is rescaled with a factor 1/s,
+i.e.
+ 
+· · · := 1
+s
+ˆ
+· · · .
+The differential of the this map at p gives a linear mapping from the geometric tangent
+space to Mp,
+D˜xϕp(˜x)|˜x=p : Tp ˜
+M →T0Mp ≃Mp .
+(4.2)
+As explained in Section 3.3, we here restrict attention to the case that the osculations
+are optimal.
+In this case, the mappings (ϕp)∗|p are all the identity.
+Therefore, in
+the following constructions we will simply identify every tangent space Tp ˜
+M with the
+corresponding osculating vacuum Mp. This means that the origin of Mp, which we
+denote for clarity by 0p, can be identified with the base point p of the tangent space,
+i.e. 0p = p. Using these identifications, we have the following result.
+DERIVATION OF THE EINSTEIN EQUATIONS
+13
+˜
+M
+p
+˜x
+y
+Mp = Tp ˜
+M
+v
+u(˜x)
+u
+u
+Figure 2. The connection ∇L.
+Lemma 4.1. The mapping ϕp has the properties
+ϕp(p) = 0p
+(4.3)
+D˜xϕp(˜x)
+
+˜x=p = 11Mp ,
+(4.4)
+where 11Mp : Mp →Mp is the identity map.
+Proof. The relation (4.3) is an immediate consequence of the translation symmetry of
+the Lagrangian on Mp. For the proof of (4.4), we choose a tangent vector v ∈Mp.
+Then
+Dv
+ ϕp(˜x)
+
+˜x=p =
+ 
+Mp
+D1,vL(x, y) y dρp(y)
+
+x=p =
+ 
+Mp
+vj ∂
+∂xj L(x, y) y dρp(y)
+
+x=p
+(where we represent the vectors of Mp in a basis by x = xj∂j|p). Now we can use the
+translation symmetry of the Lagrangian on Mp to obtain
+Dv
+ ϕp(˜x)
+
+˜x=p = −
+ 
+Mp
+vj
+ ∂
+∂yj L(x, y)
+
+y dρp(y)
+
+x=p
+=
+ 
+Mp
+vj L(x, y) ∂y
+∂yj dρp(y)
+
+x=p = v
+ 
+Mp
+L(p, y) dρp(y) = v
+(where in the last line we integrated by parts). This concludes the proof.
+□
+In view of (4.4), the mapping ϕp is a local diffeomorphism. Therefore, there is a
+neighborhood Vp ⊂˜
+M of p such that the restriction
+ϕp|Vp : Vp →ϕp(V ) ⊂Mp
+is a diffeomorphism. Since Mp is a vector space (which we could identify with Rk), we
+can regard (Vp, ϕp|Vp) as a chart of ˜
+M.
+Definition 4.2. We refer to (Vp, ϕp|Vp) as the L-induced chart centered at p.
+4.2. The Connection ∇L. The L-induced charts immediately give rise to a connec-
+tion. To this end, given a vector field u ∈Γ( ˜
+M, T ˜
+M), we first take the directional
+derivative of ϕp,
+(uϕp) : ˜
+M →Mp ,
+(uϕp)(˜x) := Duϕp(˜x) ∈Mp .
+Acting with a tangent vector v ∈Tp ˜
+M, we can introduce the covariant derivative by
+∇L
+v u
+
+p := v
+ uϕp
+
+˜x=p ∈Mp .
+(4.5)
+This construction is illustrated in Figure 2.
+14
+F. FINSTER AND C. KRPOUN
+4.3. The Riemannian Metric g on ˜
+M. The Lagrangian also induces a Riemannian
+metric on ˜
+M, as we now explain. We denote the dual space of Mp by M∗
+p . For two
+forms ϕ, ϕ′ ∈M∗
+p we set
+g∗
+p
+ ϕ, ϕ′
+:= 1
+δ2
+ 
+Mp
+L(p, y) ϕ(y) ϕ′(y) dρp(y)
+(4.6)
+(the factor 1/δ2 is introduced in order to ensure that g∗stays finite in the limit δ ↘0
+when the range of the Lagrangian tends to zero). This defines a positive semi-definite
+bilinear form on M∗
+p ,
+g∗
+p : M∗
+p × M∗
+p →R .
+This bilinear form is even positive definite, as the following consideration shows: If g∗
+p
+had a kernel, then the function L(p, .) would be supported on a hyperplane of Mp.
+But, in this case, due to our smoothness assumption, L(p, .) would vanish everywhere.
+In view of the translational invariance (3.1), the Lagrangian would vanish on M × M,
+a contradiction.
+We conclude that g∗
+p defines a scalar product on M∗
+p . We thus obtain an identification
+of M∗
+p and Mp by
+g∗( . , ϕ) ∈(M∗
+p )∗≃Mp .
+This makes it possible to define a scalar product gp on Mp via the relation
+gp
+ u, g∗
+p( . , ϕ)
+
+= ϕ(u)
+for all u ∈Mp and ϕ ∈M∗
+p .
+Choosing a basis of Mp and a corresponding dual basis of M∗
+p , the metric gp is repre-
+sented as usual by the inverse of g∗
+p (for general background on Riemannian geometry
+see for example [34]).
+We remark that, using similar constructions, one can also introduce a Weingarten
+map on
+˜
+M.
+Since these constructions will not be used for the formulation of the
+Einstein equations, we do not give them here but refer the interested reader to Ap-
+pendix A.
+At this stage, it is unclear how the metric gp and the connection ∇L are related to
+each other. Before entering a detailed study of this question, we explain how these
+objects can be described in local charts.
+4.4. Description with Osculation Maps. It is most convenient to work with L-
+induced charts. We denote the base point by q ∈
+˜
+M. It will be fixed throughout
+our constructions. Therefore, we omit the subscripts q by writing M = Mq, V = Vq,
+ϕ = ϕq, ρ = ρq, and so on. Then the L-induced chart (ϕ, V ) gives rise to a local
+parametrization
+F := (ϕ|V )−1 : U := ϕ−1(V ) ⊂M →˜
+M .
+This parametrization makes it possible to write the interacting measure locally in a
+neighborhood of q in the usual form as
+˜ρ = F∗(fρ)
+with
+f ∈C∞(U, R+), F ∈C∞(U, F)
+(4.7)
+with a weight function f (some properties of the weight function will be derived in
+Appendix 5.3 using the EL equations). Finally, we choose a basis ei of M and denote
+the components by xi, i.e.
+x = xiei ∈M .
+DERIVATION OF THE EINSTEIN EQUATIONS
+15
+We note that, working in this chart and parametrization, for all x ∈U ⊂M,
+x =
+ 
+M
+L
+ F(x), y
+
+y dρ(y)
+(4.8)
+or, in basis components of M,
+xk =
+ 
+M
+L
+ F(x), y
+
+yk dρ(y) .
+Next consider p ∈U ⊂M. In our chart it describes a point F(p) ∈˜
+M. For ease in
+notation, we denote the osculating vacuum at F(p) by Mp (thus, for the considered
+optimal osculation, Mp = TF(p) ˜
+M). Our chart gives rise to a distinguished basis of Mp
+∂
+∂xi
+
+p ∈Mp .
+Its dual basis of M∗
+p is denoted by
+dxi
+p ∈M∗
+p ,
+so that
+dxi
+p
+ ∂
+∂xj
+
+p
+
+= δi
+j .
+We will always work with these bases in components.
+In order to illustrate this formalism, we write out the covariant derivative ∇L in
+components of Mp,
+∇L
+i uj
+p =
+∂
+∂xi
+ uϕj
+p(x)
+
+x=p =
+∂
+∂xi
+
+uk(x) ∂
+∂xk ϕj
+p(x)
+
+x=p
+= ∂iuj(p) + uk(p)
+∂2
+∂xi∂xk ϕj
+p(x)
+
+x=p
+.
+Hence we can write the L-connection with usual Christoffel symbols as
+∇L
+i uj
+p = ∂iuj
+p + Γj
+ik(p) uk
+p
+with
+Γj
+ik(p) =
+∂2
+∂xi∂xk ϕj
+p(x)
+
+x=p .
+(4.9)
+This formula shows explicitly that the ∇L-connection is torsion-free.
+Our next task is to write the integrals over Mp (as in (4.1) and (4.6)) in components.
+Here the difficulty arises that this makes it necessary to also describe the change of the
+osculation. Working with a unitary transformations (as in (3.5)) has the disadvantage
+that the resulting isometry from M to Mp may not have a simple form in our chosen
+coordinate system. For this reason, it is more convenient to describe the osculation in
+a way similar to (4.7).
+Lemma 4.3. There is a unique
+invertible affine linear map
+Fp : M →Mp
+with the following properties:
+(i) The mapping is compatible with the bases of the osculating vacua in the sense
+that
+Fp
+∂
+∂xi
+
+q =
+∂
+∂xi
+
+p .
+(ii) The base point is mapped to the origin,
+Fp(p) = 0F(p) .
+(4.10)
+16
+F. FINSTER AND C. KRPOUN
+˜
+M
+M
+q = F(q)
+0q = q
+F(p)
+p
+Mp
+x
+F(x)
+F
+Fp
+Figure 3. The osculation map Fp.
+Moreover, there is a unique number fp > 0 such that
+dρp = fp dx1|p ∧· · · ∧dxk|p .
+(4.11)
+Finally, this number is related to the weight function f in (4.7) by
+fp = f(p) .
+(4.12)
+Proof. The first part follows immediately from the fact that an affine transformation is
+uniquely determined by its action on the origin and on the basis vectors. For the proof
+of (4.11) we note that the measure ρp on Mp coincides with the Lebesgue measure
+on Mp in our basis up to a positive constant. Finally, (4.12) follows from the fact
+that Mp is tangent to ˜
+M in F(p), and therefore the weights of these measures coincide
+at this point.
+□
+We refer to Fp as the osculation map. Our notions are illustrated in Figure 3.
+We again illustrate this formalism by a few examples,
+ϕk
+p(x) =
+ 
+M
+L
+ F(x), Fp(y)
+
+(y −p)k fp dρ(y)
+(4.13)
+gjk(x) = 1
+δ2
+ 
+M
+L
+ F(x), Fx(y)
+
+(y −x)j (y −x)k fx dρ(y) .
+(4.14)
+Moreover, working in charts, it becomes possible to differentiate in a straightforward
+way with respect to p, as is illustrated in the next lemma.
+Lemma 4.4. The mapping ϕp satisfies the relation
+∂
+∂pj ϕp(x)k
+x=p = −δk
+j .
+Proof. Using the osculation map, the formulas of Lemma 4.1 can be written as
+ϕk
+p(p) = 0
+and
+∂
+∂xj ϕk
+p(x)
+
+x=p = δj
+k ,
+(4.15)
+where, for simplicity we denote the zero vector in Mp by 0 (rather than 0p). This
+is unproblematic, because all the spaces Mp are identified with M via the osculation
+maps. Differentiating the first relation in (4.15), we obtain with the product and chain
+rules
+0 =
+∂
+∂pj ϕk
+p(p) =
+ ∂
+∂xj + ∂
+∂pj
+
+ϕk
+p(x)
+
+x=p .
+Combining this with the second equation in (4.15) gives the result.
+□
+Lemma 4.5. In an L-induced chart centered at q, the Christoffel symbols vanish at q.
+DERIVATION OF THE EINSTEIN EQUATIONS
+17
+Proof. We specialize (4.13) to p = q and use (4.8),
+ϕk
+q(x) =
+ 
+M
+L
+ F(x), y
+
+(y −q)k dρ(y) = (x −q)k .
+Taking second derivatives in (4.9) gives zero.
+□
+In view of this result, the L-induced charts are the analog of Gaussian charts for the
+∇L-connection.
+In view of our assumption of optimal osculations (see Definition 3.8), the osculat-
+ing vacua are tangential to the manifold
+˜
+M. This gives rise to the following local
+expansions of the osculation maps.
+Lemma 4.6. Under the assumption of optimal osculations, in the L-induced chart
+centered at q,
+F(x) = 11 + O
+ (x −q)2
+,
+f(x) = 1 + O
+ (x −q)2
+(4.16)
+F(x) −Fp(x) = O
+ (x −p)2
+(4.17)
+ ∂
+∂xi + ∂
+∂pi
+ F(x) −Fp(x)
+
+= O
+ (x −p)2
+.
+(4.18)
+Proof. From the fact that M is tangential to
+˜
+M at q immediately implies (4.16).
+Similarly, the fact that Mp is tangential to ˜
+M at p immediately gives (4.17). Finally,
+we differentiate through (4.17) to obtain (4.18).
+□
+4.5. The Curvature of ∇L. We now compute the corresponding curvature tensor.
+Lemma 4.7. The curvature tensor takes the form
+Rk
+ijl(q) =
+ ∂
+∂pi
+∇2
+∂xj∂xl ϕk
+p(x) −∂
+∂pj
+∇2
+∂xi∂xl ϕk
+p(x)
+
+x=p=q ,
+(4.19)
+where ∇2 refers to the connection ∇L.
+Proof. Following the standard notation and conventions,
+Rk
+ijlul = ∇i∇juk −∇j∇iuk
+=
+
+∂i∂juk + (∂iΓk
+jl) ul + Γk
+jl (∂iul) + Γk
+il∂jul + Γk
+iaΓa
+jl ul
+−(i ↔j)
+=
+
+(∂iΓk
+jl) ul + Γk
+iaΓa
+jl ul
+−(i ↔j)
+and thus
+Rk
+ijl = ∂iΓk
+jl −∂jΓk
+il + Γk
+iaΓa
+jl −Γk
+jaΓa
+il .
+(4.20)
+For convenience, we compute the curvature tensor in the L-induced chart centered
+at q = p, Then the undifferentiated Christoffel symbols vanish according to Lemma 4.5.
+The derivatives of the Christoffel symbols, on the other hand, can be computed by
+differentiating (4.9) with respect to x = p; i.e., again with the product and chain rules,
+∂iΓk
+jl = ∂
+∂pi
+
+∂2
+∂xj∂xl ϕk
+p(x)
+
+x=p
+
+=
+ ∂
+∂xi + ∂
+∂pi
+
+∂2
+∂xj∂xl ϕk
+p(x)
+
+x=p
+.
+(4.21)
+A straightforward computation gives the result.
+□
+18
+F. FINSTER AND C. KRPOUN
+Lemma 4.8. The curvature tensor satisfies the usual Bianchi identities
+Rk
+[ijl] = 0
+(4.22)
+∇L
+[mRk
+ij] l = 0 .
+(4.23)
+Proof. The first Bianchi identities (4.22) are verified immediately by anti-symmetrizing
+the formula (4.19) and using that the connection ∇L is torsion-free.
+In order to
+prove (4.23), we differentiate (4.19),
+∇L
+mRk
+ijl(q) =
+ ∇
+∂xm +
+∇
+∂pm
+ ∂
+∂pi
+∇2
+∂xj∂xl ϕk
+p(x) −∂
+∂pj
+∇2
+∂xi∂xl ϕk
+p(x)
+
+x=p=q .
+Multiplying out and totally anti-symmetrizing in the indices m, i and j gives
+∇L
+[mRk
+ij] l(q) = 2
+ ∇
+∂x[m
+∂
+∂pi
+∇2
+∂xj]∂xl ϕk
+p(x)
+
+x=p=q
+= Rk
+mja
+ ∂
+∂pi
+∂
+∂xl ϕa
+p(x)
+
+x=p=q −Rk
+mia
+ ∂
+∂pj
+∂
+∂xl ϕa
+p(x)
+
+x=p=q
+−Ra
+mjl
+ ∂
+∂pi
+∂
+∂xa ϕk
+p(x)
+
+x=p=q + Ra
+mil
+ ∂
+∂pj
+∂
+∂xa ϕk
+p(x)
+
+x=p=q .
+This expression is zero, as is verified most easily as follows. Using (4.4), we know that
+ ∂
+∂xi + ∂
+∂pi
+ ∂
+∂xl ϕk
+p(x)
+
+x=p = 0 .
+Hence, using Lemma 4.5,
+∂
+∂pi
+∂
+∂xl ϕk
+p(x)
+
+x=p = −
+∂2
+∂xi∂xl ϕk
+p(x)
+
+x=p = 0 .
+This concludes the proof.
+□
+Finally, we form the Ricci tensor by contracting the first and third index,
+Ril(q) := Rk
+ikl(q) =
+ ∂
+∂pi
+∇2
+∂xl∂xk ϕk
+p(x) −
+∇2
+∂xi∂xl
+∂
+∂pk ϕk
+p(x)
+
+x=p=q .
+(4.24)
+Note that, in general this Ricci tensor is not symmetric in its two tensor indices.
+Instead, in the L-induced chart centered at p we have the relation
+Ril(q) −Rli(q) =
+ ∂
+∂pi
+∂2
+∂xk∂xl ϕk
+p(x) −∂
+∂pl
+∂2
+∂xk∂xi ϕk
+p(x)
+
+x=p=q
+.
+Moreover, contracting the Bianchi identities (4.23), we obtain
+0 = ∇mRk
+ikl + ∇iRk
+kml + ∇kRk
+mil
+= ∇mRil −∇iRml + ∇kRk
+mil .
+contracting the indices l and m (with respect to the Riemannian metric g), we obtain
+0 = ∇lRil −∇iR + ∇kRk
+mil gml .
+(4.25)
+This is quite different from the corresponding formulas in Riemannian and Lorentzian
+geometry. We will come back to this point at the beginning of Section 6.1.
+DERIVATION OF THE EINSTEIN EQUATIONS
+19
+4.6. Is ∇L a Metric Connection? Differentiating (4.14), we obtain in the L-induced
+chart centered at q,
+∂igjk(q) = 1
+δ2
+∂
+∂xi
+ 
+M
+L
+ F(x), Fx(y)
+
+ξjξk fx dρ(y)
+
+x=q
+,
+(4.26)
+where we introduced the abbreviation
+ξ := y −x
+(4.27)
+There is no reason why this expression should vanish. But, at least, it tends to zero
+in the limit δ ↘0 when the range of the Lagrangian tends to zero, as is made precise
+in the next lemma.
+Lemma 4.9. The connection ∇L is almost metric in the sense that
+∇Lg = O
+ δ2
+.
+Proof. Since the Christoffel symbols of the connection ∇L vanish at q in the L-induced
+chart centered at q, it suffices to consider the partial derivatives (4.26). We interchange
+differentiation and integration and add a y-derivative (which vanishes after integration-
+by-parts),
+∂igjk(q) = 1
+δ2
+ 
+M
+ ∂
+∂xi + ∂
+∂yi
+
+L
+ F(x), Fx(y)
+
+ξjξk
+fx dρ(y)
+
+x=q
+= 1
+δ2
+ 
+M
+ ∂
+∂xi + ∂
+∂yi
+
+L
+ F(x), Fx(y) fx
+
+ξjξk dρ(y)
+
+x=q .
+(4.28)
+We now compute the derivatives with the chain rule. The function fx and its derivative
+can be left out in view of fx = f(x) and the osculation equation (4.16). We thus obtain
+ ∂
+∂xi + ∂
+∂yi
+
+L
+ F(x), Fx(y) fx
+
+x=q
+= D1L|(q,y) ∂iF(q) + D2L|(q,y)
+ ∂
+∂xi + ∂
+∂yi
+
+Fx(y)
+
+x=q .
+Using that the unperturbed Lagrangian is translation invariant, we obtain
+ ∂
+∂xi + ∂
+∂yi
+
+L
+ F(x), Fx(y)
+
+x=q
+= D2L|(q,y)
+ ∂
+∂xi + ∂
+∂yi
+
+−F(x) + Fx(y)
+
+x=q
+.
+We now use the osculation equation (4.18) to conclude that the last expression is of
+the order O((y −q)2). Consequently, the integral in (4.28) is of the order O(δ4). This
+concludes the proof.
+□
+4.7. Relation Between the Curvatures of ∇L and ∇g. We can interpret the
+result of Lemma 4.9 by saying that the connection ∇L is approximately metric, with
+an error of order δ. Consequently, also the metric curvature of g agrees approximately
+with the curvature of ∇L. We now work out more systematically how these curvatures
+are related to each other.
+Clearly, the Riemannian metric g gives us a Levi-Civita connection ∇g. Since the
+connection ∇L is only approximately metric, we need to carefully distinguish between
+the connections ∇g and ∇L. Their difference defines a tensor field of order (1, 2), which
+we refer as the deviation tensor and denote by
+Kj
+ik := (Γg)j
+ik −Γj
+ik ,
+(4.29)
+20
+F. FINSTER AND C. KRPOUN
+where Γ denotes the Christoffel symbols of the connection ∇L. This tensor takes a
+particularly simple form in L-induced charts:
+Lemma 4.10. In an L-induced chart centered at q, the deviation tensor takes the
+form
+Kj
+ik(q) = −∇g
+ikϕj
+q(x)
+
+x=q
+(4.30)
+= −
+ 
+M
+∇g
+∂xi
+∇g
+∂xk L
+ F(x), Fq(y)
+
+(y −q)k dρ(y)
+
+x=q .
+(4.31)
+Proof. We compute the deviation tensor in a Gaussian coordinate system centered at q
+with respect to the metric g. Then the first summand in (4.29) vanishes, so that
+Kj
+ik(q) = −Γj
+ik(q) .
+Using (4.9) gives (4.30). Since both sides of this equation are tensorial, we conclude
+that (4.30) holds in any coordinate system. Choosing the L-induced chart centered
+at q, we can use (4.13) to obtain the result.
+□
+As an immediate consequence of Lemma 4.9, we conclude that the deviation tensor
+is very small in the following sense.
+Corollary 4.11. The deviation tensor is almost zero in the sense that
+Kj
+ik(q) = O
+ δ2
+.
+We finally relate the curvatures.
+Lemma 4.12. The Riemann and Ricci tensors are related to each other by
+(Rg)k
+ijl = Rk
+ijl −∇g
+i Kk
+jl + ∇g
+jKk
+il −Kk
+iaKa
+jl + Kk
+jaKa
+il
+(4.32)
+Rg
+il = Ril −∇g
+i Ka
+al + ∇g
+aKa
+il −Kb
+iaKa
+bl + Kb
+baKa
+il .
+(4.33)
+Proof. By definition of the deviation tensor,
+(Γg)i
+jk = Γi
+jk + Ki
+jk .
+A straightforward computation using (4.20) gives the result.
+□
+5. Incorporating the Euler-Lagrange Equations
+Our goal is to compute the Ricci tensor Rjl(q) in the L-induced chart centered at q.
+Using again the notation (5.1), For a compact notation, we use the abbreviations
+∂i =
+∂
+∂xi
+and
+∂i :=
+∂
+∂xi + ∂
+∂pi .
+(5.1)
+Then we can write (4.24) as
+Ril(q) =
+ ∂i∂klϕk
+p(x) −∂k∂ilϕk
+p(x)
+
+x=p=q .
+(5.2)
+The key is to employ the EL equations of the causal action principle (2.3), which hold
+for both ρ and ˜ρ. In order to explain how this can be done, we proceed step by step. We
+begin combining the osculation equations with the EL equations (Section 3.3). This
+makes it possible to rewrite the curvature using so-called alignments (Section 5.2).
+The next crucial step is to make use of the fact that the index k in (5.2) is contracted
+with a derivative to what we call a divergence term. In order to exploit this structure,
+DERIVATION OF THE EINSTEIN EQUATIONS
+21
+we develop a method for expanding divergences in powers of the microscopic length
+scale δ. This method will be introduced for an expansion of the weight function f
+(Section 5.3), and it is then used for the desired expansion of the divergences in the
+Ricci tensor (Section 5.4).
+5.1. Employing the Osculation Equations in the Euler-Lagrange Equations.
+In Lemma 4.6, the osculation equations were formulated in terms of a local expansion
+of the osculation maps. The fact that Mp is tangential to ˜
+M becomes apparent in the
+fact that the expansion terms are quadratic.
+In order to explain how to use this fact in the EL equations, we evaluate the func-
+tion ˜ℓon Mp. Thus, using the osculation maps, we consider the function
+˜ℓ
+ Fp(x)
+
+=
+ˆ
+˜
+M
+L
+ Fp(x), y
+
+d˜ρ(y) −s
+=
+ˆ
+M
+L
+ Fp(x), F(y)
+
+f(y) dρ(y) −s .
+We now expand x locally near p.
+The first order vanishes immediately in view of
+the EL equations (2.3) for ˜ρ. The point is that, due to the osculation equations, also
+the second derivatives vanish. In order to see how this comes about, we rewrite the
+Lagrangian as
+L
+ Fp(x), F(y)
+
+= L
+
+F(x) +
+ Fp(x) −F(x)
+
+, F(y)
+
+.
+Employing (4.17), we obtain
+L
+ Fp(x), F(y)
+
+= L
+ F(x), F(y)
+
++ D1L
+ F(x), F(y)
+
+O
+ ∥x −p∥2
++ O
+ ∥x −p∥4
+.
+Hence
+˜ℓ
+ Fp(x)
+
+= ˜ℓ
+ F(x)
+
++ D˜ℓ|F(x) O
+ ∥x −p∥2
++ O
+ ∥x −p∥4
+.
+The first summand vanishes for all x in view of the EL equations (2.3). In the second
+summand, the term D˜ℓ|F(x) vanishes at x = p. We thus conclude that the second
+derivatives D2˜ℓ
+ Fp(x)
+
+vanish at x = p.
+This method works similarly if we evaluate ℓp on
+˜
+M.
+Namely, considering the
+function
+ℓp
+ F(x)
+
+=
+ˆ
+Mp
+L
+ F(x), y
+
+dρp(y)
+=
+ˆ
+M
+L
+ F(x), Fp(y)
+
+fp dρ(y)
+and rewriting the Lagrangian as
+L
+ F(x), Fp(y)
+
+= L
+
+Fp(x) +
+ F(x) −Fp(x)
+
+, Fp(y)
+
+,
+we can again use (4.17) as well as the EL equations (2.3) for ρp.
+We summarize our findings as follows.
+Lemma 5.1. Assume that both ρ and ˜ρ are critical points of the causal action principle,
+Moreover, assume that the osculation equations of Lemma 4.6 hold. Then, in the L-
+induced chart centered at q, the following equations hold for all p ∈U,
+D2˜ℓ
+ Fp(x)
+
+x=p = 0 = D2ℓp
+ F(x)
+
+x=p .
+22
+F. FINSTER AND C. KRPOUN
+5.2. Formulation of Curvature with Alignments. Alignments were first intro-
+duced in [20, Section 5] in the linearized setting as objects useful for describing the
+total mass and a quasi-local mass for causal variational principles. We now introduce
+corresponding objects in the fully non-linear setting (for a comparison of the notions
+see Remark 5.6).
+Definition 5.2. Working in L-induced chart centered at q in the formulation with the
+osculation map Fp (for details see Section 4.1), the alignment vector field Ap is
+defined by
+Ak
+p(x) :=
+ 
+M
+L
+ F(x), Fp(y)
+
+ξk fp dρ(y)
+(5.3)
+(where ξ is again the difference vector defined by (4.27)).
+Note that the structure of the alignment vector field Ap is very similar to that of the
+mapping ϕp in (4.13). The only difference is that we replace the vector y −p in the
+integrand by the difference vector ξ = y −x. In particular, one sees immediately that
+Ak
+p(p) = ϕk
+p(p) .
+However, replacing y −p by y −x has major consequences. Before elaborating on
+these consequences, we point out that the alignment vector field cannot be written
+in a coordinate independent form similar to (4.1). The reason is that ˜x in (4.1) is
+a point of
+˜
+M, so that writing the difference y −˜x in (4.1) is mathematically not
+sensible. Only after choosing a chart and working with the osculation map (4.13),
+the difference vector y −x ∈M is well-defined. Keeping in mind that, having chosen
+the base point q, the corresponding the L-induced chart and the osculation maps are
+canonical (see Lemma 4.3). Consequently, the base point q also uniquely determines
+the alignment vector field Ap(x).
+We next point out that the factor ξ in the integrand in (5.3) changes the behavior
+of the integral considerably. Namely, noting that the Lagrangian has range δ, the
+factor (y −x) gives a scaling factor δ. Anticipating the results of the computations
+performed in detail in Section 5.4, one can say that alignments have a better scaling
+behavior in δ and can be used to show that certain expressions are very small in the
+sense that they vanish in the limit δ ↘0. With this in mind, it is a major step forward
+to replace the vector field ϕp in the Riemann tensor (4.19) by corresponding alignment
+vector field. This can indeed be done, making essential use of the EL equations of the
+osculation.
+Lemma 5.3. In the formula for the curvature tensor (4.19) we may replace the fac-
+tors ϕk
+p by Ak
+p. Thus, in the L-induced chart centered at q,
+Rk
+ijl(q) =
+ ∂i∂jl −∂j∂il
+
+Ak
+p(x)
+
+x=p=q .
+(5.4)
+Proof. We first note that, in our chart,
+Ak
+p(x) = ϕk
+p(x) −xk ℓp
+ F(x)
+
+.
+Therefore, we need to expand the last summand, Applying the EL equations (2.3)
+for ρp as well as Lemma 5.1, it follows that
+∂iℓp
+ F(x)
+
+x=p = 0 = ∂ijℓp
+ F(x)
+
+x=p
+for all p ∈˜
+M .
+DERIVATION OF THE EINSTEIN EQUATIONS
+23
+Since these equations hold at every spacetime point, we can also differentiate them
+and apply the product and chain rules as in (4.21).
+Thus, again using the short
+notations (5.1),
+∂l∂iℓp
+ F(x)
+
+x=p = 0 = ∂l∂ijℓp
+ F(x)
+
+x=p = 0 .
+Using the chain rule, it follows that
+0 = ∂l∂ij
+
+xkℓp
+ F(x)
+
+= ∂l∂ij
+
+ϕk
+p
+ F(x)
+
+−Ak
+p(x)
+
+.
+Therefore, in (4.19) we may replace all factors ϕp by Ap, concluding the proof.
+□
+5.3. Expansion of the Weight Function f in Powers of δ. We now derive a
+few properties of the weight function f in (4.7). To this end, we will expand f in
+powers of the regularization length δ. The reason why we present this expansion here
+is that it is a preparation for similar expansions of the Ricci tensor to be performed
+in Section 5.4. Our general method works for expressions in divergence form. In order
+to introduce and explain the method, it is easiest to begin by taking the divergence
+of the relation (4.8) which characterizes the L-induced chart centered at q. We thus
+obtain
+0 =
+∂
+∂xk
+ ˆ
+M
+L
+ F(x), y
+
+yk dρ(y) −sxk
+
+=
+∂
+∂xk
+ˆ
+M
+L
+ F(x), y
+
+ξk dρ(y) +
+∂
+∂xk
+
+xk ℓ
+ F(x)
+
+(5.5)
+(where we again set ξ = y −x; see (4.27)). In order to relate this formula to the weight
+function f, given a parameter s ∈[0, 1] we introduce the variables
+xs = ζ −(1 −s)ξ ,
+ys = ζ + sξ
+(5.6)
+and introduce the function
+φ(s, ζ) :=
+ˆ
+M
+f(xs) L
+ F(xs), ys
+
+dρ(ξ) .
+The point is that, taking the s-derivative at s = 1 with the chain rule gives precisely
+the first summand in (5.5),
+d
+dsϕ(s, ζ)
+
+s=1 =
+ˆ
+M
+ξk ∂
+∂xk
+
+f(x) L
+ F(x), x + ξ
+
+dρ(ξ)
+(5.7)
+=
+ˆ
+M
+ξk  ∂
+∂xk +
+∂
+∂yk
+
+f(x) L
+ F(x), y
+
+dρ(y)
+=
+ˆ
+M
+ ∂
+∂xk +
+∂
+∂yk
+
+f(x) L
+ F(x), y
+
+ξk
+dρ(y)
+=
+∂
+∂xk
+ˆ
+M
+f(x) L
+ F(x), y
+
+ξk dρ(y)
+(5.8)
+(in the last line, the y-derivative was integrated by parts). On the other hand, evalu-
+ating the function ϕ at s = 0 and s = 1, we obtain expressions which can be rewritten
+24
+F. FINSTER AND C. KRPOUN
+in terms of the function ℓand ˜ℓ,
+φ(1, ζ) =
+ˆ
+M
+f(ζ) L
+ F(ζ), ζ + ξ
+
+dρ(ξ)
+=
+ˆ
+M
+f(ζ) L
+ F(ζ), y
+
+dρ(y) = f(ζ)
+
+ℓ
+ F(ζ)
+
++ s
+
+(5.9)
+φ(0, ζ) =
+ˆ
+M
+f(ζ −ξ) L
+ F(ζ −ξ), ζ
+
+dρ(ξ)
+=
+ˆ
+M
+f(y) L
+ F(y), ζ
+
+dρ(y) =
+ˆ
+M
+L
+ ζ, F(y)
+
+f(y) dρ(y) = ˜ℓ(ζ) + s
+(5.10)
+(in the last line we used the symmetry of the Lagrangian). The fact that we get the
+functions ℓand ˜ℓmakes it possible to employ the EL equations. In this way, we obtain
+information on the function f(ζ) in (5.9).
+In order to complete the argument, we consider the Taylor series about s = 1,
+φ(1, x) −φ(0, x) = −
+∞
+X
+r=1
+(−1)r
+r!
+dr
+dsr φ(1, x)
+(5.11)
+The left side was computed in (5.9) and (5.10), whereas the first Taylor summand is
+the divergence term (5.8). In the next lemma, we summarize these results and show
+that the higher orders of the Taylor series give an expansion in powers of the range δ
+of the Lagrangian.
+Lemma 5.4. The weight function f in (4.7) satisfies the relation
+f(x) −1 = −1
+s
+
+f(x) ℓ
+ F(x)
+
++ ˜ℓ(x)
+
+−1
+s
+∂
+∂xk
+
+xk ℓ
+ F(x)
+
+(5.12)
+−
+∞
+X
+r=2
+(−1)r
+r!
+ˆ
+M
+
+ξk ∂
+∂xk
+r
+f(x) L
+ F(x), x + ξ
+
+dρ(ξ) .
+(5.13)
+Moreover, it has the local expansion
+f(x) = 1 + O
+ (x −q)3
++ O
+ δ2
+.
+(5.14)
+Proof. Computing the higher s-derivatives in (5.11) similar to (5.7), we obtain
+φ(1, x) −φ(0, x) = −
+∞
+X
+r=1
+(−1)r
+r!
+ˆ
+M
+
+ξk
+∂
+∂xk
+r
+f(x) L
+ F(x), x + ξ
+
+dρ(ξ)
+=
+∂
+∂xk
+ˆ
+M
+f(x) L
+ F(x), y
+
+(y −x)k dρ(y)
+−
+∞
+X
+r=2
+(−1)r
+r!
+ˆ
+M
+
+ξk
+∂
+∂xk
+r
+f(x) L
+ F(x), x + ξ
+
+dρ(ξ) .
+Now we can employ (5.5). Combining all the terms yields
+s
+ f(x) −1) + f(x) ℓ
+ F(x)
+
+−˜ℓ(x) = −∂
+∂xk
+
+xk ℓ
+ F(x)
+
+−
+∞
+X
+r=2
+(−1)r
+r!
+ˆ
+M
+
+ξk
+∂
+∂xk
+r
+f(x) L
+ F(x), x + ξ
+
+dρ(ξ) ,
+proving (5.12) and (5.13).
+DERIVATION OF THE EINSTEIN EQUATIONS
+25
+In order to derive (5.14), we Taylor expand (5.12) and (5.13) about q. The second
+derivative of ℓand ˜ℓvanish in view of Lemma 5.1 (specialized for p = q, in which
+case ℓp = ℓand Fp = F). As a consequence, the right side of (5.12) is of the or-
+der O((x −q)3). The summands in (5.13) all contain at least two factors of ξ. These
+factors of ξ remain if we differentiate with respect to x and integrate by parts in y as
+done before (5.8). Therefore, the summands in (5.13) are all of the order O(δ2). This
+concludes the proof.
+□
+5.4. Expansion of the Divergences in the Ricci Tensor. Contracting indices
+in (5.4), we obtain similar to (5.2)
+Ril(q) =
+ ∂i∂kl −∂k∂il
+
+Ak
+p(x)
+
+x=p=q .
+(5.15)
+Now we make essential use of the divergence structure of this equation. By “diver-
+gence” we mean that the index k is contracted with a derivative.
+Note that each
+summand in (5.15) is of divergence form. However, the corresponding derivative are
+different: In the first summand, it is an x-derivative, whereas in the second summand
+also p-derivatives occur (note that, according to (5.1), the derivative ∂k is a sum of
+an x- and a p-derivative). We need to treat these two types of divergences separately.
+We begin with the x-divergence.
+Lemma 5.5. (Expansion of the x-divergence) The x-divergence of the alignment vector
+field (introduced in Definition 5.2) has the expansion
+∂kAk
+p(x) = f(x) ℓp
+ F(x)
+
+−fp ˜ℓ
+ Fp(x)
+
++
+ f(x) −fp
+
+s −(∂kf)(x) Ak
+p(x)
+(5.16)
++
+∞
+X
+r=2
+(−1)r
+r!
+ 
+M
+
+ξk ∂
+∂xk
+r
+f(x) L
+ F(x), Fp(y)
+
+fp dρ(y) .
+(5.17)
+The main point of this lemma is that on the right side in (5.16) the functions ℓp and ˜ℓ
+appear; this is where we can use the EL equations. Note that the summands in (5.17)
+contain more and more factors ξ, showing that we have an expansion in powers of the
+range δ of the Lagrangian.
+Proof of Lemma 5.5. Using the symmetry of the Lagrangian, it is obvious that
+f(x)
+
+ℓp
+ F(x)
+
++ s
+
+=
+ 
+M
+f(x) L
+ F(x), Fp(y)
+
+fp dρ(y)
+(5.18)
+fp
+
+˜ℓ
+ Fp(y)
+
++ s
+
+=
+ 
+M
+f(x) L
+ F(x), Fp(y)
+
+fp dρ(x) .
+(5.19)
+In order to interpolate between these two expressions, given ζ ∈M and a parameter s ∈
+[0, 1] we again consider the variables xs and ys in (5.6) and introduce the function
+φ(s, ζ) :=
+ 
+M
+f(xs) L
+ F(xs), Fp(ys)
+
+fp dρ(ξ) .
+Evaluating this function at s = 1 and s = 0 gives (5.18) and (5.19), respectively, both
+evaluated at ζ. Denoting ζ by x, we obtain
+φ(1, x) −φ(0, x) = f(x) ℓp
+ F(x)
+
+−fp ˜ℓ
+ Fp(x)
+
++
+ f(x) −fp
+
+s .
+26
+F. FINSTER AND C. KRPOUN
+Moreover, differentiating the function φ(s, x) at s = 1 with the chain rule yields
+d
+dsφ(1, x) =
+∂
+∂ζk
+ 
+M
+f(ζ) L
+ F(ζ), Fp(ζ + ξ)
+
+ξk fp dρ(ξ)
+
+x=ζ
+(5.20)
+=
+ 
+M
+ ∂
+∂xk +
+∂
+∂yk
+ 
+f(x) L
+ F(x), Fp(y)
+
+ξk fp
+
+dρ(y)
+(5.21)
+=
+∂
+∂xk
+ 
+M
+f(x) L
+ F(x), Fp(y)
+
+ξk fp dρ(y)
+(5.22)
+= (∂kf)(x) Ak
+p(x) + f(x)
+∂
+∂xk Ak
+p(x)
+(5.23)
+(where in (5.22) we integrated by parts to eliminate the y-derivative). In this way, we
+get the desired divergence on the left side of (5.16) (as well as the last summand on
+the right of (5.16)).
+This is the motivation for taking the Taylor expansion of ϕ(s, x) about s = 1,
+φ(1, ζ) −φ(0, ζ) = −
+∞
+X
+r=1
+(−1)r
+r!
+dr
+dsr φ(1, ζ) .
+The higher expansion terms are computed in analogy to (5.22) by
+dr
+dsr φ(1, x) =
+ 
+M
+
+ξ ∂
+∂x
+r
+f(x) L
+ F(x), Fp(y)
+
+ξk fp dρ(y) .
+Collecting all the terms gives the result.
+□
+Remark 5.6. (Expansion of alignments) We remark how the expansion in this
+lemma is related to the earlier construction in [20, Theorem 5.1]. Both expansions
+are almost the same.
+The only difference is that, here, we expand about s = 1,
+whereas in [20, Theorem 5.1] the expansion was performed about s = 1/2. Expanding
+about s = 1/2 has the advantage that the resulting formulas are anti-symmetric under
+the replacement s ↔1 −s, implying that only the odd orders contribute. The present
+expansion about s = 1 harmonizes better with our definition of the alignment (5.3),
+where x is fixed and it is integrated over y (the definition of the alignment in [20],
+however, seems to work only in the linearized description).
+♢
+Taking the x-derivatives and using the EL equation gives the following result.
+Lemma 5.7. Derivatives of the x-divergence of the alignment vector field have the
+expansions
+∂l∂kAk
+p(x)
+
+x=p
+=
+∞
+X
+r=2
+(−1)r
+r!
+∂
+∂xl
+ 
+M
+
+ξk ∂
+∂xk
+r
+f(x) L
+ F(x), Fp(y)
+
+fp dρ(y)
+
+x=p
+(5.24)
+∂il∂kAk
+p(x)
+
+x=p=q
+=
+∞
+X
+r=2
+(−1)r
+r!
+∂2
+∂xi∂xl
+ 
+M
+
+ξk ∂
+∂xk
+r
+f(x) L
+ F(x), Fq(y)
+
+fq dρ(y)
+
+x=q
+.
+(5.25)
+Proof. In order to derive (5.24), we differentiate the formula in Lemma 5.5 with respect
+to x and set x = p. The contributions from (5.16) all vanish in view of the EL equations,
+Lemma 5.1 and Lemma 5.4. This gives the result.
+DERIVATION OF THE EINSTEIN EQUATIONS
+27
+For the derivation of (5.25), we differentiate the formula in Lemma 5.5 twice with
+respect to x and set x = p = q. The contributions from (5.16) again vanish in view of
+the EL equations, Lemma 5.1 and Lemma 5.4.
+□
+Our remaining task is to treat the p-divergence
+∂
+∂pk Ak(p) .
+We would like to use a similar strategy as in Lemma 5.5 and rewrite the divergence in
+terms of the functions ℓor ˜ℓ. However, it is not obvious how an interpolation between x
+and y as in (5.6) can be used. This becomes possible only after taking the x-derivatives
+and evaluating x = p = q. We first note that, differentiating through with the product
+rule,
+∂il
+∂
+∂pk Ak(p)
+
+x=p=q
+(5.3)
+=
+ 
+M
+∂
+∂pk ∂1,ilL
+ F(x), Fp(y)
+
+ξk fp dρ(y)
+
+x=p=q
+(5.26)
+−
+ 
+M
+∂
+∂pk
+ δk
+i ∂1,l + δk
+l ∂1,i
+
+L
+ F(x), Fp(y)
+
+fp dρ(y)
+
+x=p=q .
+(5.27)
+The last line involves no factor of ξ and can be rewritten in terms of ℓp,
+−
+ 
+M
+∂
+∂pk
+ δk
+i ∂1,l + δk
+l ∂1,i
+
+L
+ F(x), Fp(y)
+
+fp dρ(y)
+
+x=p=q
+= −
+ ∂
+∂pi
+∂
+∂xl ℓp
+ F(x)
+
++ ∂
+∂pl
+∂
+∂xi ℓp
+ F(x)
+
+x=p=q .
+(5.28)
+This vanishes by the osculation equations.
+The first line (5.26), on the other hand, can be written as an s-derivative,
+ 
+M
+∂
+∂pk ∂1,ilL
+ F(x), Fp(y)
+
+ξk fp dρ(y)
+
+x=p=q = d
+dsσ(s, x)
+
+s=0
+with
+σ(s, x) :=
+ 
+M
+∂1,ilL
+ F(x), Fx+sξ(y)
+
+fx+sξ dρ(y)
+
+x=q .
+(5.29)
+Moreover,
+σ(0, x) =
+ 
+M
+∂1,ilL
+ F(x), Fx(y)
+
+fx dρ(y)
+
+x=q = ∂ilℓ
+ F(x)
+
+x=p
+(5.30)
+σ(1, x) =
+ 
+M
+∂1,ilL
+ F(x), Fy(y)
+
+fy dρ(y)
+
+x=q
+=
+ 
+M
+∂1,ilL
+ F(x), F(y)
+
+f(y) dρ(y)
+
+x=q = ∂il˜ℓ
+ F(x)
+
+,
+(5.31)
+where in the last line we used Lemma 4.3 (see (4.10) and (4.12)).
+The right side
+of (5.30) vanishes in view of Lemma 5.1 (again specialized for p = q, in which case ℓp =
+ℓ). Moreover, the right side of (5.31) vanishes by the EL equations (2.3) for ˜ρ. We
+thus obtain the following result.
+28
+F. FINSTER AND C. KRPOUN
+Lemma 5.8. (Expansion of the p-divergence) The p-divergence of the alignment vector
+field (introduced in Definition 5.2) has the expansion
+∂il
+∂
+∂pk Ak(p)
+
+x=p=q
+= −
+∞
+X
+r=2
+1
+r!
+ 
+M
+
+ξk ∂
+∂pk
+r
+∂1,ilL
+ F(x), Fp(y)
+
+fp dρ(y)
+
+x=p=q
+Proof. Since (5.28), (5.30) and (5.31) vanish, it follows that
+∂il
+∂
+∂pk Ak(p)
+
+x=p=q = d
+dsσ(s, x)
+
+s=0 = σ(1, x) −σ(0, x) −
+∞
+X
+r=2
+1
+r!
+dr
+dsr σ(0, x) .
+Computing the s-derivatives of (5.29) gives the result.
+□
+6. The Einstein Equations
+6.1. The Riemannian Einstein Equations. We saw in Section 4.5 that the Ricci
+curvature of ∇L satisfies the contracted Bianchi identities (4.25), which are quite dif-
+ferent from the standard formulas known from Riemannian and Lorentzian geometry.
+This has major disadvantage that, formulating the Einstein equations with this Ricci
+tensor, the conservation laws of energy and momentum as expressed by the fact that
+the energy-momentum tensor is divergence-free would no be apparent. For this reason,
+it is preferable to work with the Ricci tensor of the metric g. This can be done because
+the difference of the connections as expressed by the deviation tensor (4.29) is qua-
+dratic in δ (see Corollary 4.11) and can therefore be associated not to the geometry, but
+to the matter fields. Combining its effects on curvature with the energy-momentum
+tensor makes it possible to formulate the Einstein equation in the familiar setting with
+a metric connection. Using that the Ricci tensor of ∇L can be written with the help
+of the EL equations as expressions quadratic in δ (see Lemmas 5.7 and 5.8), we obtain
+the following result. We note that, in the two-dimensional case, the curvature tensor is
+determined by the Gauß curvature. As a consequence, the Einstein tensor is zero, and
+the Einstein equations simply state that the energy-momentum tensor must vanish. In
+view of these results, we restrict attention to the case of dimension greater than two.
+Theorem 6.1. (The Riemannian Einstein Equations) Assume ˜
+M is of dimen-
+sion k > 2. Then the Riemannian metric g introduced in Section 4.3 satisfies the
+Einstein equations
+Rg
+il −1
+2 Rg gil = Til
+(6.1)
+with the energy-momentum tensor given by
+Til−
+1
+k −2 T gil = −∇g
+i Ka
+al + ∇g
+aKa
+il −Kb
+iaKa
+bl + Kb
+baKa
+il
+(6.2)
++
+∞
+X
+r=2
+(−1)r
+r!
+∂2
+∂pi∂xl
+ 
+M
+
+ξk ∂
+∂xk
+r
+f(x) L
+ F(x), Fp(y)
+
+fp dρ(y)
+
+x=p=q
+(6.3)
++
+∞
+X
+r=2
+1
+r!
+ 
+M
+
+ξk ∂
+∂pk
+r
+∂1,ilL
+ F(x), Fp(y)
+
+fp dρ(y)
+
+x=p=q .
+(6.4)
+DERIVATION OF THE EINSTEIN EQUATIONS
+29
+The energy-momentum tensor is symmetric and divergence-free,
+Til = Tli
+and
+∇g
+i T il = 0 .
+(6.5)
+It is very small compared to the Ricci tensor in the sense that it has the scaling behavior
+for small δ
+Tjk = O
+ δ2
+.
+(6.6)
+Proof. The relations (6.5) follows immediately from corresponding properties of the
+Ricci tensor of the metric g (we remark that the symmetry in the indices i and l is not
+apparent in (6.2)–(6.4); it comes about due to relations between the deviation tensor
+and the expression in (6.3)). The scaling (6.6) was already explained right before the
+statement of the theorem. For the derivation of the formula for the energy-momentum
+tensor, we first note that, taking the trace of the Einstein equations (6.1),
+
+1 −k
+2
+
+Rg = T .
+Therefore, the Einstein equations can be written equivalently as
+Rg
+il = Til −
+1
+k −2 T gil .
+With this in mind, on the right side in (6.2)–(6.4) we collected all the contributions to
+the Ricci tensor as computed in Lemmas 4.12, 5.7 and 5.8.
+More precisely, the contributions in (4.33) give (6.2). Thus it remains to consider
+the Ricci-tensor of the connection ∇L, which we write according to (5.15). Using (5.1),
+the derivatives ∂ik drop out,
+Ril(q) = ∂
+∂pi ∂klAk
+p(x)
+
+x=p=q −
+∂
+∂pk ∂ilAk
+p(x)
+
+x=p=q .
+(6.7)
+In order to compute the first summand, we act on (5.24) with the differential opera-
+tor ∂i and subtract (5.25). We thus obtain
+∂
+∂pi ∂klAk
+p(x)
+
+x=p=q
+=
+∞
+X
+r=2
+(−1)r
+r!
+∂2
+∂pi∂xl
+ 
+M
+
+ξk ∂
+∂xk
+r
+f(x) L
+ F(x), Fp(y)
+
+fp dρ(y)
+
+x=p=q
+.
+The second summand in (6.7), on the other hand, was computed in Lemma 5.8. Col-
+lecting all the terms gives the result.
+□
+6.2. The Regularizing Vector Field and the Lorentzian Metric η. In the anal-
+ysis so far, we worked with a Riemannian metric. In order to move on to Lorentzian
+signature, we need to introduce a canonical vector field which distinguishes time-
+like from spacelike directions. The naive idea would be to take the alignment vector
+field (5.3). But this does not work, because the alignment vector field vanishes in the
+vacuum by symmetry. Therefore, we need an additional structure which is available
+in the setting of causal fermion systems: the time direction functional C. Therefore,
+from now on we consider the setting of causal fermion systems in dimension k = 4.
+Then the time direction functional takes the form (see [9, eq. (1.1.11)])
+C : M × M →R ,
+C(x, y) := i tr
+ y x πy πx −x y πx πy
+
+,
+30
+F. FINSTER AND C. KRPOUN
+where πx : H →x(H) ⊂H denotes the orthogonal projection to the spin space.
+It is obviously anti-symmetric if x and y are interchanged. Now we can insert this
+functional into the integrand of the alignment vector field (5.3).
+Definition 6.2. The regularizing vector field u is defined for any p ∈˜
+M by
+u(p) :=
+ 
+Mp
+L(p, y) C(p, y) y dρp(y) .
+(6.8)
+The regularizing vector field was first introduced in globally hyperbolic spacetimes in
+the context of a baryogenesis mechanism in [17]; see also [31, 30]. The more abstract
+definition given here indeed generalizes the previous notion, as will be explained in
+Appendix B. Moreover, it is shown that the regularizing vector field is non-zero. One
+key is the observation that the regularizing vector field is parallel, up to a small error:
+Lemma 6.3. The regularizing vector field is almost parallel in the sense that
+∇Lu = O
+ δ2
+.
+Proof. We proceed similar as in the proof of Lemma 4.9. In L-induced chart centered
+at q, the regularizing vector field can be written as
+uk(p) :=
+ 
+M
+L
+ F(p), Fp(y)
+
+C
+ F(p), Fp(y)
+
+(y −p)k fp dρ(y) .
+Taking the first derivatives, we obtain
+∇L
+i uk(q) = ∂
+∂pi
+ 
+M
+L
+ F(p), Fp(y)
+
+C
+ F(p), Fp(y)
+
+(y −p)k fp dρ(y)
+
+p=q .
+Now we expand F, fp and Fp about q, exactly as explained in Lemma 4.9. This gives
+the result.
+□
+We now introduce a Lorentzian metric as the flip metric of g. We follow the standard
+setup and conventions; for details see for example [38]. Is convenient to normalize the
+regularizing vector field by setting
+ˆu(p) :=
+u(p)
+p
+gp(u, u)
+.
+(6.9)
+We denote the corresponding one-form by ω, i.e.
+ω(v) = gp(ˆu, v)
+for all v ∈Mp
+(thus, in components, ωi(p) = gij(p) ˆuj(p)). Given a parameter τ > 1, the Lorentzian
+flip metric η of g along ˆu is defined by
+η = τ ω ⊗ω −g
+(6.10)
+(thus, in components, ηjk = τ ωjωk −gjk). As is immediately verified, the flip met-
+ric is indeed Lorentzian with signature convention (+, −, −, −). In our context, the
+parameter τ must be chosen in such a way that the causal cones of the Lorentzian
+metric agree with the causal structure of the causal fermion system. As is worked out
+in Appendix B, the correct choice is τ = 4. In order to avoid a conflict of notation
+with the Riemannian metric, we denote this Lorentzian metric by η.
+Definition 6.4. The Lorentzian metric η of g is defined by
+η = 4 ω ⊗ω −g .
+(6.11)
+DERIVATION OF THE EINSTEIN EQUATIONS
+31
+We conclude this section by relating the Ricci curvature of g with that of η (general
+relations between the connections and curvature tensors have been studied in [38, 43]).
+In preparation, we note that the normalized regularized vector field is again almost
+parallel:
+Lemma 6.5. The vector field ˆu introduced in (6.9) is almost parallel in the sense that
+∇Lˆu = O(δ2) .
+Proof. The statement follows from Lemma 6.3 by a direct computation, working in a
+L-induced chart centered at q. Let v ∈Γ(T ˜
+M) be an arbitrary vector field. Writing
+N =
+p
+gp(u, u) > 0 and using the product rule, we get
+∇vˆu(q)
+
+q=p = ∇vu
+N
+−v(N)
+N2
+
+q=p .
+Using that v(N2) = 2Nv(N) ⇔v(N) = g(∇vu, u)/N, we obtain
+∇vˆu
+
+q=p = ∇vu
+N
+|{z}
+O(δ2)
+−g(∇vu, u)
+N3
+|
+{z
+}
+=O(δ2)
+
+q=p = O(δ2) ,
+concluding the proof.
+□
+Lemma 6.6. Let g be the Riemannian metric from equation (4.6) and η the Lorentzian
+metric from Definition 6.4. The corresponding Levi-Civita connections are related
+∇η
+i vk −∇g
+i vk = Ck
+ij vj
+(6.12)
+= 4
+3Sij ˆukvj −8
+3(aiˆuj + aj ˆui)ˆukvj −4(Ak
+i ˆuj + Ak
+j ˆui)vj .
+(6.13)
+Here v is a vector field, Sij := ∇g
+(iˆuj) and Aij := ∇g
+[iˆuj] denotes the symmetric re-
+spectively anti-symmetric part of ∇gˆu, and ai := (∇g
+ˆuˆu)i is the acceleration of the
+ˆu-congruence.
+Proof. We start by noting that Ck
+ij, defined as the difference of two Christoffel symbols,
+is a tensor. Thus, the result holds in all coordinates. We choose Gaussian coordinates
+for g, with p ∈
+˜
+M and v ∈Tp ˜
+M arbitrary.
+Since ∇g and ∇η are the associated
+Levi-Civita connections, we get
+ ∇η
+i vk −∇g
+i vk
+p = Γη,k
+ij vj = 1
+2 ηkl  ∇g
+i ηjl + ∇g
+jηil −∇g
+l ηij
+
+vj .
+Next, we use ∇gg = 0 and substitute (6.11). Decomposing ∇g
+j ˆui into its symmetric
+and antisymmetric parts, we get (6.12) with
+Ck
+ij = 4 ηkl (Sij ˆul + Ailˆuj + Ajlˆui)
+
+p .
+Next, we compute the inverse metric ηkl and obtain after a short computation
+ηkl = 4
+3 ˆukˆul −gkl .
+In a last step, we use that ˆul∇g
+l ˆui = 1
+2∇g
+ˆu(ˆulˆul) = 0 because g(ˆu, ˆu) = 1 by construction.
+Thus, we can write ˆulAli = −1
+2 ˆul∇g
+l ˆui, which gives the result.
+□
+32
+F. FINSTER AND C. KRPOUN
+Next, knowing the difference tensor of the Christoffel symbols, we can directly com-
+pute the difference of the Riemann tensors. Let ∇η = ∇g + C and using the standard
+convention for the Riemann tensor, we get
+R(η)k
+ijl
+−R(g)k
+ijl
+= ∇g
+jCk
+li −∇g
+l Ck
+ji + Ck
+jmCm
+li −Ck
+lmCm
+ji
+(6.14)
+The difference consists of terms proportional to ∇gˆu. Therefore, if ˆu is parallel, the
+corrections from changing to the Lorentzian case vanish. Additionally, these correc-
+tions, by Lemma 6.5, are at least of order O(δ2), which will make it possible to include
+them again in the energy-momentum tensor.
+Contracting indices in (6.14), we obtain the following relation between the Ricci
+tensors.
+Proposition 6.7. In the setting of Lemma 6.6, the difference of the Ricci tensors has
+the form
+Ricη
+il −Ricg
+il = ∇g
+kCk
+li −Ck
+ljCj
+ki .
+Proof. We start by taking the contraction, which yields
+Ricη
+il −Ricg
+il = ∇g
+kCk
+li −∇g
+l Ck
+ki + Ck
+kjCj
+li −Ck
+ljCj
+ki .
+In the following, we show that C is trace-free, which gives the result. To see this, we
+first note that for a general metric g,
+Γk
+kj = 1
+2gkl∂jgkl = tr(g−1∂jg) = tr(∂j ln g) = ∂j ln
+p
+| det g| .
+Thus, we get for the difference tensor C
+Ck
+kj = ∂j ln
+p
+| det η| −∂j ln
+p
+| det g| = 1
+2 ∂j ln | det(g−1η)| .
+To compute the determinant of g−1η, we determine its eigenvalues as an endomorphism
+of the tangent space,
+gklηli = 4 ˆukˆui −δk
+i .
+Since ˆukˆui is a rank-one operator on the subspace spanned by ˆu, we get the eigenvalues
+For ˆu : 4ˆuk(ˆuiˆui) −ˆuk = 3ˆuk =⇒λ1 = 3
+For v ∈ˆu⊥: 4ˆuk(ˆuivi) −vk = −vk =⇒λ2 = −1 .
+The multiplicity of λ1 is one and that of λ2 equals n −1, where n is the dimension of
+˜
+M. In the end, we get
+det(g−1η) =
+Y
+i
+λi = 3(−1)3 = −3 ,
+which is constant, and therefore Ck
+kj = 0.
+□
+We remark that the above observation that C is trace-free can be understood geomet-
+rically from the fact that volume forms of η and g differ only by an overall constant.
+DERIVATION OF THE EINSTEIN EQUATIONS
+33
+6.3. The Lorentzian Einstein Equations. We now come to our main result: the
+Einstein equations in the Lorentzian setting.
+Theorem 6.8. (The Lorentzian Einstein Equations) Assume ˜
+M is of dimension
+four. Then the Lorentzian metric η introduced in Definition 6.4 satisfies the Einstein
+equations
+Rη
+il −1
+2 Rη ηil = Til
+with the energy-momentum tensor given by
+T η
+il−1
+2 T η ηil = −∇g
+i Ka
+al + ∇g
+aKa
+il −Kb
+iaKa
+bl + Kb
+baKa
+il
+(6.15)
++
+∞
+X
+r=2
+(−1)r
+r!
+∂2
+∂pi∂xl
+ 
+M
+
+ξk ∂
+∂xk
+r
+f(x) L
+ F(x), Fp(y)
+
+fp dρ(y)
+
+x=p=q
+(6.16)
++
+∞
+X
+r=2
+1
+r!
+ 
+M
+
+ξk ∂
+∂pk
+r
+∂1,ilL
+ F(x), Fp(y)
+
+fp dρ(y)
+
+x=p=q
+(6.17)
++ ∇g
+aCa
+li −Ca
+ljCj
+ai ,
+(6.18)
+where C is the difference tensor from Lemma 6.6. The energy-momentum tensor is
+symmetric and divergence-free,
+Til = Tli
+and
+∇η
+i T il
+η = 0 .
+It is very small compared to the Ricci tensor in the sense that it has the scaling behavior
+for small δ
+Tjk = O
+ δ2
+.
+Proof. From the result of Proposition 6.7, we can express the Lorentzian Ricci tensor
+as the corresponding Riemannian tensor plus extra terms containing the unit vector
+field ˆu and its derivatives.
+Ricη
+il = Ricg
+il + Dil =: T η
+il −1
+2T ηηil .
+From Theorem 6.1, we get the result for Ricg, and from Proposition 6.7 and Lemma 6.6
+the contributions for Dil, proving the form of equation (6.15).
+Since Tjl is symmetric and one can verify directly that Dil = Dli, the Lorentzian
+energy-momentum tensor T η
+jl is symmetric as well. Furthermore, since Tjl and Dil are
+of order O(δ2), so is T η
+jl. Finally, because ∇η is the Levi-Civita connection constructed
+from η, it satisfies the usual contracted Bianchi identities, and hence T η
+jl is divergence-
+free.
+□
+We note that, using the constructions of the recent paper [12], the results of this
+theorem could be extended to any spacetime dimension greater than two. We do not
+do this here, because some of the technical results in [40, 9] so far have been worked
+out only in the four-dimensional case.
+We close with a remark on the cosmological constant. In the formulation of Theo-
+rem 6.8, the cosmological term Ληil is included in the energy-momentum tensor Til.
+Thus, in order to study the cosmological constant, one would have to analyze the
+contributions in (6.15)–(6.18) in detail. We note that this concept of associating the
+34
+F. FINSTER AND C. KRPOUN
+cosmological term to the energy-momentum tensor fits together with the recent pro-
+posal in [15] where the cosmological term is obtained as a contribution to the energy-
+momentum tensor resulting from the collective behavior of all the wave functions which
+form the Dirac sea, needed in order to arrange correlated initial and end quantum states
+of the universe.
+7. Discussion of Corrections to the Einstein Equations
+Our methods provide a systematic procedure for deriving correction terms to the
+Einstein equations. We now compile and briefly discuss different corrections.
+(a) Planck scale corrections: Here we consider the higher order terms in δ. They
+are interesting, but probably too small for being detected directly in experiments.
+(b) Corrections from the osculation: Additional corrections come about if one
+takes into account that the tangent space Tp ˜
+M may deviate from the osculat-
+ing vacuum Mp (see Figure 1). In order to take the resulting corrections into
+account, one needs to study corrections coming from the operator K in (4.2).
+Moreover, there are corrections arising from the fact that 0p ̸= p. An interesting
+feature is that, in this case, the connection ∇L will have torsion. We expect
+that the resulting corrections to the Einstein equations to be again Planck scale
+corrections.
+(c) Corrections from the regularizing vector field: It is a specific feature of the
+causal fermion system approach that there is a distinguished regularization vector
+field which is timelike and almost parallel (see Definition 6.2 and Lemma 6.3).
+Already the existence of such a vector field poses constraints on the geometry of
+spacetime. The modifications to the Dirac dynamics coming from the regular-
+izing vector field have been studied in the context of a baryogenesis mechanism
+in [17, 31, 30]. The effects on the Einstein equations remain to be analyzed.
+(d) Corrections related to modified measures: It is a specific feature of causal
+fermion system approach that the volume measure dρ in spacetime does not nec-
+essarily need to coincide with the usual Lorentzian volume measure
+p
+| det η|d4x.
+This makes a connection to modified measure theories, as was analyzed and dis-
+cussed in [14]. In the present paper, the appearance of modified measures be-
+comes apparent in the fact that the weight function f in Lemma 5.4 seems in
+general different from the weight function
+p
+| det η| coming from the Lorentzian
+metric.
+All these corrections still need to be worked out in detail. To this end, we plan to build
+the bridge between the abstract framework presented here and the analytical methods
+developed in [9, 12].
+8. Outlook: The Einstein Equations in Non-Smooth and Quantum
+Spacetimes
+With the above constructions we showed that, for smooth spacetimes ˜
+M, the Ein-
+stein equations follow from the EL equations of the causal action principle. If ˜
+M is
+not assumed to be a smooth manifold, the causal action principle is still well-defined.
+Therefore, the corresponding EL equations are mathematically well-defined equations
+which include the gravitational interaction. The only point which is not quite satisfy-
+ing is that, in the non-smooth setting, it is no longer obvious how to interpret the EL
+equations geometrically. Therefore, it is an interesting problem to explore how and to
+DERIVATION OF THE EINSTEIN EQUATIONS
+35
+F
+˜
+M
+p
+q
+Mp
+Mq
+Figure 4. Osculating vacua in a discrete space.
+which extent geometric constructions can be extended or generalized to non-smooth
+situations.
+A first step in this direction is made in the recent paper [23], where a differential
+calculus is developed in the non-smooth setting, again working with osculating vacua.
+These constructions apply in particular to discrete spacetimes, as is illustrated in
+Figure 4. Apart from providing a differential calculus, the constructions in [23] also
+explained in the examples of the Gauß divergence theorem and various versions of
+Stokes’ theorem how corresponding conservation laws can be formulated in terms of
+surface layer integrals. This gives the hope that the Einstein equations can be extended
+to the non-smooth setting in such a way that the contracted second Bianchi identities
+hold in an integral sense. But the details are not straightforward and still need to be
+worked out carefully.
+In the discussion so far, the spacetime ˜
+M was either smooth or a discrete approxi-
+mation of a smooth spacetime. However, it is expected that minimizers of the causal
+action principle in general have a more complicated structure. Intuitively speaking,
+the support of the measure should be “thickened” in order to account for additional
+“internal degrees of freedom” or “microscopic spacetime fluctuations”. Moreover, the
+measure could have discrete or non-smooth components. Figure 5 gives an impression
+of how such a “quantum spacetime” could look like. Spacetime including small-scale
+fluctuations have been studied in [19, 22, 6] for the description of bosonic quantum
+fields in Minkowski space (see also the recent survey [5]). Moreover, in [13] the general
+geometric framework for quantum spacetimes was developed. Whether and how the
+generalized Einstein equations for such quantum spacetimes will be related to common
+approaches to quantum gravity (see for example [44, 47, 2, 46]) is a challenging open
+problem.
+Appendix A. The L-Induced Weingarten Map
+in this section, we briefly explain how the Lagrangian induces a Weingarten map,
+and how it is related to the Riemannian curvature.
+Definition A.1. A tangent vector ν ∈TpF at a spacetime point p ∈˜
+M is said to be
+L-normal if
+ 
+Mp
+D1,νL(p, y) y dρp(y) = 0
+for all p ∈˜
+M .
+(A.1)
+If ν is tangential to Mp, the integral in (A.1) can be written as Dνϕp(˜x)|˜x=p. Us-
+ing (4.4) in Lemma 4.1, one sees that the only L-normal vector of Mp is zero. We thus
+obtain the direct sum decomposition
+TpF = Mp ⊕Np ,
+(A.2)
+where Np denotes all normal vectors.
+36
+F. FINSTER AND C. KRPOUN
+F
+M := supp ˜ρ
+Figure 5. A quantum spacetime.
+In the L-induced chart centered at q and using the osculation maps (as introduced
+in Section 4.4), the normality condition (A.1) can be written as
+ 
+M
+D1,νL
+ F(x), Fp(y)
+
+yk fp dρ(y)
+
+x=p = 0 .
+(A.3)
+We now introduce the Weingarten map by differentiating with respect to the base
+point of the osculation. In order to get a well-defined operation, we need to compose
+with the parallel transport ∇L
+q,p : Mp →Mq (for example along a minimal geodesic).
+Definition A.2. Let ν ∈TpF be L-normal. We then define the Weingarten map
+W (ν)
+p
+: Mp →Mp
+by
+W (ν)
+p
+(u) :=
+
+u ∂
+∂z
+  
+Mz
+D1,νL(p, y)
+ ∇L
+p,zy
+
+dρz(y)
+
+z=p .
+This definition simplifies considerably in the L-induced chart centered at q to
+(W (ν)
+p
+)k
+j =
+ 
+M
+∂
+∂pj
+
+D1,νL
+ F(x), Fp(y)
+
+fp
+
+yk dρ(y)
+
+x=p
+(note that the parallel transport ∇L
+p,z can be left out because its derivative term van-
+ishes in view of (A.3)). The Weingarten map describes the extrinsic curvature of ˜
+M
+in F.
+It gives a tensorial description of the curvature as described above by local
+expansions of the osculation maps in Lemma 4.6.
+Now let ν ∈Γ( ˜
+M, TF) be an L-normal vector field on ˜
+M (in the sense that (A.3)
+holds for all p ∈˜
+M). Then, differentiating the relation (A.3) with respect to both x
+and p, we obtain
+(W (ν)
+p
+)k
+j = −∂
+∂xj
+ 
+M
+D1,νL
+ F(x), Fp(y)
+
+yk fp dρ(y)
+
+x=p = −∂j
+ νϕk
+p(x)
+
+x=p .
+Comparing with (4.5), we can write the last expression as an L-covariant derivative,
+(W (ν)
+p
+)k
+j = −(∇L
+j ν)k .
+This formula resembles the Weingarten map for surfaces in Rn (see for example [34,
+Definition 4.17]). However, there are also major differences. We first point out that the
+derivative ∇Lν is not the derivative in Euclidean space (nor the covariant derivative
+in an ambient Riemannian manifold), but it is merely an extension of the covariant
+derivative ∇L to normal vectors. This covariant derivative is a tangent vector, which
+means that the usual “projection to the tangent space” is already included in our
+formula for ∇Lν. Next, one should keep in mind that direct sum decomposition A.2
+DERIVATION OF THE EINSTEIN EQUATIONS
+37
+does not come from a scalar product on TpF. Indeed, we have a scalar product only
+on Mp, but not on TpF. Consequently, the mapping
+TpF →Mp ,
+v 7→
+ 
+Mp
+D1,vL(p, y) y dρp(y)
+is idempotent, but it is not an orthogonal projection operator.
+In view of these differences, it seems impossible to relate the Riemannian curvature
+to the Weingarten map. In particular, it does not seem possible to formulate analogs
+of the Gauß or Codazzi-Mainardi equations. We note that these extensions become
+possible if we specialize to the setting of causal fermion systems and endow F with the
+Riemannian metric induced by the Hilbert-Schmidt scalar product (for details see [24,
+Section 4] and [28, Section 3.4]). We shall not enter these constructions here, also
+because they do not seem to be helpful for the formulation of the Einstein equations.
+Appendix B. The Riemannian and Lorentzian Metrics of the
+Regularized Dirac Sea Vacuum
+In Section 6.2 we derived a Lorentzian metric η from the regularizing vector field
+u in (6.8) and the Riemannian metric g defined in Section 4.3 (see Definition 6.4).
+A-priori, the definition of the flip metric involves a free parameter τ > 1 (see (6.10)).
+This free parameter can be fixed by the requirement that the causal structure of the
+Lorentzian metric coincides with that of the causal fermion system (H, F, ˜ρ). Since
+our argument is local, it suffices to do the computations for the causal fermion sys-
+tem (H, F, ρ) describing the Minkowski vacuum. More specifically, we consider the
+regularized Dirac sea vacuum in four-dimensional Minkowski space M = R1,3. Here
+we do not need to enter the detailed construction (as given in [40] and the text-
+books [25, Section 5.5] or [9, Section 1.2]. Instead, it suffices to state a few properties
+of the resulting causal Lagrangian. As already stated in Section 3.2, the Lagrangian
+is translation invariant (3.1) and reflection symmetric (3.2). Moreover, choosing the
+reference frame where e0 points into the direction of the regularization, the Lagrangian
+is spherically symmetric, i.e.
+L(x, y) = L
+
+ξ0, |⃗ξ|
+
+(B.1)
+(where again ξ := y −x). Next, the Lagrangian has its main contribution on the
+light cone, meaning that (up to errors which we disregard; for details see [7] and [4,
+Appendix A]),
+L
+
+ξ0, |⃗ξ|
+
+= 0
+unless |ξ0| = |⃗ξ| .
+(B.2)
+Lemma B.1. Under the assumptions (B.1) and (B.2), the causal structures of the
+Lorentzian flip metric η in (6.10) coincides with that of Minkowski space if and only
+if τ = 4.
+Proof. We begin by computing gp and use the chart expression from equation (4.14).
+Since M = R1,3, our parametrization F and osculation maps Fp are trivial everywhere.
+Thus, we end up with
+gjk
+p = 1
+δ2
+ 
+M
+L(p, y)(y −p)j(y −p)kdρ(y) ,
+38
+F. FINSTER AND C. KRPOUN
+where L is the causal Lagrangian of the regularized Minkowski space. Due to spherical
+symmetry (B.1), we can use Schur’s lemma for the spatial components to obtain
+g∗
+p =
+
+α
+01×3
+03×1
+β 113×3
+
+,
+with α, β > 0. More precisely, these numbers are defined by the integrals
+α = 1
+δ2
+ 
+M
+L(x, y) |y0|2 dρ(y)
+and
+β =
+1
+3δ2
+ 
+M
+L(x, y) |⃗y|2 dρ(y) ,
+where we can drop p because of translation invariance. Since L is supported on the
+light cone (B.2), it follows that |y0|2 = |⃗y|2, and thus α = 3β.
+Computing the regularization vector field as introduced in Definition 6.2, we obtain,
+again using spherical symmetry and Schur’s lemma that the spatial part vanishes.
+Normalizing with respect to the above Riemannian metric, we obtain
+ω = e0
+√α
+and
+ˆu = √α e0 .
+A direct computation gives
+gp =
+
+α−1
+01×3
+03×1
+3α−1 113×3
+
+,
+ω ⊗ω =
+
+α−1
+01×3
+03×1
+03×3 .
+
+Substituting into the formula for the general flip metric (6.10), we see that η is a
+multiple of the Minkowski metric if and only if τ = 4.
+□
+Appendix C. Construction of Almost-Optimal Osculations
+In this appendix, it is shown how one can satisfy the equations for an optimal
+osculation (3.8) approximately, up to error terms which are “small” in a sense to
+be quantified below. We work in the setting of causal fermion systems. The wave
+evaluation operator Ψ(x) of the vacuum spacetime (H, F, ρ) is defined by
+Ψ(x) = πx : H →SxM ,
+where πx is the orthogonal projection to the spin space SxM := x(H) ⊂H (for more
+details on the basic definitions see [9, Chapter 1] or [25, Section 5.7]). We consider the
+mappings
+Ψ(0)∗, ∂jΨ(0)∗: S0M →H .
+(C.1)
+and denote their images by
+I := Ψ(0)∗(S0M) ,
+J := span{∂jΨ(0)∗| j = 0, . . . , 3} .
+Moreover, we set K := span(I ∪J). The space I is four-dimensional. Keeping in mind
+that the Dirac equation holds, which we can write as
+i∂jΨ(0)∗γj + mΨ(0)∗= 0 ,
+(C.2)
+the space K is 16-dimensional.
+In the interacting spacetime ( ˜H, ˜F, ˜ρ) we consider
+similarly the mappings
+˜Ψ(p)∗, ∂j ˜Ψ(p)∗: Sp ˜
+M →˜H
+and introduce the subspace ˜I, ˜K ⊂˜H. Choosing Gaussian normal coordinates and a
+normal spinor frame, the Dirac equation at p takes the same form as in Minkowski
+space, so that (C.1) holds similarly at p, giving the same algebraic relations on K
+and ˜K. We identify the spin spaces S0M and Sp ˜
+M in these spinor frames and denote
+them simply by S.
+DERIVATION OF THE EINSTEIN EQUATIONS
+39
+The naive idea for getting an optimal osculation is to choose a linear mapping V :
+K →˜K such that
+V Ψ(0)∗= ˜Ψ(p)∗
+and
+V ∂jΨ(0)∗= ∂j ˜Ψ(p)∗
+for i = 0, . . . , 3 .
+Here we can leave out the index i = 0 because of the linear dependence (C.2). Then
+the existence of V is obvious, because simply map the corresponding column vectors to
+each other. Suppose for the that V can be extended unitarily to a mapping U : H →˜H.
+Then using this mapping to define ρp via (3.5), we would get an optimal osculation,
+meaning that (3.4) and (3.8) hold.
+The basic difficulty is that the linear mapping V : K →˜K does in general not
+admit a unitary extension U : H →˜H. In order to see the obstructions, we consider
+the Gram matrices of the vectors in K and ˜K,
+∂κΨ(0) ∂κ′Ψ(0)∗: S →S
+and
+∂κ ˜Ψ(p) ∂κ′ ˜Ψ(p)∗: S →S .
+(C.3)
+Here, for a compact notation, we introduced the indices κ and κ′ which can take the
+values  (corresponding to no derivative) or 1, 2, 3 (corresponding to the three spatial
+derivatives). In this formulation, we can say that a unitary extension U exists if and
+only if the Gram matrices coincide. This will of course in general not be the case.
+For example, perturbing by a single wave function ψ localized in a spatial region of
+volume ℓ3, the Gram matrices are perturbed by a relative error E with the scalings
+E = ε3
+ℓ3
+or even
+E = mε4
+ℓ3
+(C.4)
+(where ε denotes the regularization length; the second term is relevant if only the
+spatial derivatives of Ψ are perturbed, as is the case in the Dirac energy-momentum
+tensor, where first derivatives of the wave functions come into play).
+The question is how to account for the error term in Gram matrices of the form (C.4).
+Here we can makes use of the concept of wave functions of separated supports as
+introduced in [11, Section 3]. The idea is to choose a subspace ˜L ⊂˜H of Dirac wave
+functions which are located at a very large distance of the spacetime point p (for details
+on scalings and error terms we refer to [11, Section 3]; here for simplicity we leave out
+these error terms). For the operator U on K we make the ansatz
+U|K = λV + U⊥: K →˜H
+with
+λ ∈R and U⊥: K →˜L .
+(C.5)
+The choice of U⊥has no influence on ˜ℓand its derivatives (3.10), simply because
+the wave functions in ˜L are supported far away from p. The remaining question is
+whether λ and U⊥can be chosen in such a way that the mapping (C.5) is an isometric
+embedding. Considering the Gram matrix of U|K, it is the Gram matrix of λV plus
+the Gram matrix of U⊥. Since the latter Gram matrix can be chosen to be an arbitrary
+non-negative matrix, we conclude that U|K can be arranged to be isometric if and only
+if λ2 times the Gram matrix on the right side of (C.3) is smaller or equal than the
+Gram matrix on the left side of (C.3). This can be arranged by choosing λ slightly
+smaller than one, with 1 −λ scaling as the error terms in (C.4).
+Our findings can be summarized as follows.
+Proposition C.1. Perturbing the wave evaluation operator of the Dirac sea vacuum
+in Minkowski space by an error term with relative scaling E (for example as in (C.4)),
+there is a unitary operator U such that the transformed vacuum Mp has the following
+40
+F. FINSTER AND C. KRPOUN
+properties,
+p −U0U−1 ≲E ∥p∥
+(C.6)
+˜ℓ
+ U0U−1
+≲E s
+(C.7)
+D2˜ℓ|Mp
+ U0U−1
+= 0
+(C.8)
+(where ∥· ∥denotes the sup-norm on L( ˜H)).
+Proof. The estimate (C.6) follows immediately from the fact that ∥U|K −V ∥≲E. For
+the analysis of ˜ℓ, the contributions involving second derivatives of the local correlation
+operators can be left out, because they can be rewritten as a first order variation
+with δΨ(x) = ∂jkΨ(x), which vanishes due to the EL equations. Moreover,, we may
+disregard the operator U⊥. Then the local correlation operators and their derivatives
+are mapped to each other up to the factor λ, i.e.
+UΨ(0)∗= λ˜Ψ(p)∗
+and
+U ∂jΨ(0)∗= λ ∂j ˜Ψ(p)∗
+for i = 0, . . . , 3 .
+Hence also ˜ℓcan be computed simply by inserting a corresponding scaling factor,
+˜ℓ
+ U0U−1
+= λ2 ˜ℓ(p) = λ2s .
+This proves (C.7). Differentiating twice tangential to Mp gives (C.8).
+□
+We finally explain and discuss this result. Clearly, with (C.8) we have realized the
+condition for an optimal osculation in (3.8). However, the constraints (3.4) or (3.7) are
+in general violated. Instead, with (C.6) we only arranged that p and U0U−1 are close
+together. Moreover, with (C.7) we made sure that the function ˜ℓis close to its minimal
+value at U0U−1. This fact is very helpful because it gives control of the resulting errors
+in the Einstein equations. More precisely, we expect that the approximate osculations
+as in Proposition C.1 are suitable for describing the geometry of
+˜
+M, including the
+contributions to the Einstein equations of order δ2 (i.e., contributions which scale like
+the usual energy-momentum tensor). But, in order to derive the correction terms of
+order δ3 and higher systematically, one needs to study the variational principle for the
+osculation and the resulting non-optimal osculations, as will be outlined in the next
+appendix.
+Appendix D. Non-Optimal Osculations and Torsion
+In this appendix, we discuss the effects of a non-optimal osculation and show how it
+introduces torsion to the L-induced connection. As discussed in Section 7 and outlined
+in Appendix C, we expect that resulting corrections to the Einstein equations are of
+higher order in the Planck length; this is why we do not consider them in the main
+part of this paper.
+Let u, v ∈Γ( ˜
+M, T ˜
+M) be two vector fields. In general, the torsion is defined as
+T L(u, v) := ∇L
+uv −∇L
+v u −[u, v] ,
+(D.1)
+We begin by defining what we mean by an almost-optimal osculation. In contrast to an
+optimal osculation, which identifies Tp ˜
+M with Mp for every p ∈˜
+M, an almost-optimal
+osculation includes a correction to this identification.
+Definition D.1. We call U a regular osculation at p ∈˜
+M if the mapping ϕp defined
+in (4.1) is a local diffeomorphism.
+DERIVATION OF THE EINSTEIN EQUATIONS
+41
+We write the derivative of ϕp as
+Λp := (ϕp)∗: Tp ˜
+M −→Mp .
+Note that this is an invertible linear mapping.
+We want to extend the definition of the covariant derivative (4.5) to the setting of
+a regular osculation. We again consider vector field u ∈Γ( ˜
+M, T ˜
+M) and a tangent
+vector v ∈Tp ˜
+M. For any ˜x ∈˜
+M we introduce the vector
+(Λu)(˜x) := Λ˜xu(˜x) ∈M˜x .
+Taking the corresponding directional derivative of ϕp and then differentiating in the
+direction v gives the vector
+Dv
+ DΛuϕp(˜x)
+
+˜x=p ∈Mp
+(we note for clarity that all derivatives act on the variable ˜x, whereas p is fixed). In
+order to get back to Tp ˜
+M, we apply the mapping Λ−1
+p . We thus define the L-induced
+connection by
+∇L
+v u
+
+p := Λ−1
+p
+
+Dv
+ DΛuϕp(˜x)
+
+˜x=p ∈Tp ˜
+M .
+This connection has torsion, as one can understand directly from the fact that the
+v-derivative also acts on Λ(˜x).
+In order to see the role of the mapping Λ(˜x) in more detail, we now work out the
+connection in the formalism with the osculation maps as introduced in Section 4.4. We
+begin with an L-induced chart (ϕ, V ) centered at q and a local parametrization F =
+ϕ−1 : U := ϕ(V ) →V . At each p ∈U, we denote the osculating vacuum at F(p) =
+Fp(p) by Mp, where Fp is the affine linear osculation map from Lemma 4.3.
+The
+coordinates give rise to distinguished bases of the tangent spaces, denoted as usual by
+∂
+∂xj
+
+˜x ∈T˜x ˜
+M .
+Moreover, the osculation maps gives rise to bases of the osculating vacua, denoted by
+ej(˜x) := F˜x(ej) ∈M˜x
+(where ej denotes the standard basis of M = Mq and F˜x is the affine linear osculation
+map introduced in Lemma 4.3. Then the mapping Λ can be written in components as
+Λ˜x
+∂
+∂xj
+
+˜x = Λk
+j (˜x) ek(˜x) .
+We thus obtain
+DΛuϕp(˜x) = Λk
+j (˜x) uj(˜x) Dekϕp(˜x) ∈Mp
+Dv
+ DΛuϕp(˜x)
+
+= vl ∂
+∂˜xl
+
+Λk
+j (˜x) uj(˜x) Dekϕp(˜x)
+
+∈Mp
+= vl  ∂luj)
+
+Λk
+j (˜x) Dekϕp(˜x)
+
++ vluj
+∂
+∂˜xl
+
+Λk
+j (˜x) Dekϕp(˜x)
+
+.
+Evaluating at ˜x = p, we can use that
+Dekϕm
+p (˜x)
+
+˜x=p = δm
+k
+42
+F. FINSTER AND C. KRPOUN
+(this follows exactly as in the proof of Lemma 4.1, because the derivative is tangential
+to Mp. We conclude that
+∇L
+v ui
+p = vl (∂lui) + vluj
+∂
+∂˜xl
+
+Λk
+j (˜x) Dekϕa
+p(˜x)
+  Λ−1
+p
+i
+a
+|
+{z
+}
+= Γi
+lj
+
+˜x=p
+Anti-symmetrizing the Christoffel symbols gives the torsion tensor (D.1),
+(T L
+p )i
+lj =
+ Λ−1
+p
+i
+a
+ ∂
+∂˜xj
+
+(Λp)k
+l Dekϕa
+p(˜x)
+
+−∂
+∂˜xl
+
+(Λp)k
+j Dekϕa
+p(˜x)
+
+˜x=p
+.
+We finally remark that one can construct a torsion-free connection from ∇L using
+the contorsion tensor KL defined by (see for example [37, eq. (7.35)])
+KL(u, v) w = 1
+2
+
+T L(u, v) w + T L(v, w) u −T L(w, u) v
+
+.
+The contorsion tensor is anti-symmetric in its arguments u and w, and anti-symme-
+trizing in the arguments u and v gives back torsion,
+KL(u, v) w = −KL(w, u) v
+and
+KL(u, v) w −KL(v, u) w = T L(u, v) w .
+Now we can define the connection with v ∈Tp ˜
+M and u ∈Γ( ˜
+M, T ˜
+M) by
+∇vu(p) := ∇L
+v u(p) + KL(v, u) .
+This connection is indeed torsion-free, because
+T(u, v) := ∇uv −∇vu −[u, v] = T L(u, v) + KL(v, u) −KL(u, v) = 0 .
+Therefore, even in the case of an almost-optimal osculation, one can construct a torsion-
+free connection that can be used to define the Einstein equations. All the corrections
+from torsion can then again be included in the energy-momentum tensor, similar as
+done in Theorems 6.1 and 6.8 for the deviation tensor and the regularization vector
+field.
+Acknowledgments: We would like to thank Marco van den Beld Serrano, Patrick Fi-
+scher and Niky Kamran for helpful discussions. C.K. gratefully acknowledges support
+by the Heinrich-B¨oll-Stiftung.
+References
+1. Link to web platform on causal fermion systems: www.causal-fermion-system.com.
+2. J. Ambjorn, A. G¨orlich, J. Jurkiewicz, and R. Loll, Causal dynamical triangulations and the search
+for a theory of quantum gravity, arXiv:1305.6680 [gr-qc], Internat. J. Modern Phys. D 22 (2013),
+no. 9, 1330019, 18.
+3. J.K. Beem, P.E. Ehrlich, and K.L. Easley, Global Lorentzian Geometry, second ed., Monographs
+and Textbooks in Pure and Applied Mathematics, vol. 202, Marcel Dekker, Inc., New York, 1996.
+4. E. Curiel, F. Finster, and J.M. Isidro, Two-dimensional area and matter flux in the theory of causal
+fermion systems, arXiv:1910.06161 [math-ph], Internat. J. Modern Phys. D 29 (2020), 2050098.
+5. C. Dappiaggi, F. Finster, N. Kamran, and M. Reintjes, The quantum field theory limit of causal
+fermion systems, in preparation.
+6.
+, Holographic mixing and Fock space dynamics of causal fermion systems, arXiv:2410.18045
+[math-ph], Ann. Henri Poincar´e 27 (2026), no. 5, 1885–1969.
+7. F. Finster, On the regularized fermionic projector of the vacuum, arXiv:math-ph/0612003, J. Math.
+Phys. 49 (2008), no. 3, 032304, 60.
+8.
+, Causal variational principles on measure spaces, arXiv:0811.2666 [math-ph], J. Reine
+Angew. Math. 646 (2010), 141–194.
+DERIVATION OF THE EINSTEIN EQUATIONS
+43
+9.
+, The Continuum Limit of Causal Fermion Systems, arXiv:1605.04742 [math-ph], Funda-
+mental Theories of Physics, vol. 186, Springer, Cham, 2016.
+10.
+,
+Positive
+functionals
+induced
+by
+minimizers
+of
+causal
+variational
+principles,
+arXiv:1708.07817 [math-ph], Vietnam J. Math. 47 (2019), 23–37.
+11. F. Finster and P. Fischer, A canonical construction of the extended Hilbert space for causal fermion
+systems, arXiv:2504.18276 [math-ph], J. Math. Phys. 67 (2026), 032302.
+12.
+,
+The continuum limit analysis of causal fermion systems for curved spacetimes,
+arXiv:2605.30199 [math-ph] (2026).
+13. F. Finster and A. Grotz, A Lorentzian quantum geometry, arXiv:1107.2026 [math-ph], Adv. Theor.
+Math. Phys. 16 (2012), no. 4, 1197–1290.
+14. F. Finster, E. Guendelman, and C.F. Paganini, Modified measures as an effective theory for causal
+fermion systems, arXiv:2303.16566 [gr-qc], Class. Quant. Gravity 41 (2024), no. 3, 035007, 25.
+15. F. Finster and J.M. Isidro, A mechanism for dark matter and dark energy in the theory of causal
+fermion systems, arXiv:2209.02234, Class. Quant. Gravity 40 (2023), no. 1, 075017, 24.
+16. F. Finster and M. Jokel, Causal fermion systems: An elementary introduction to physical ideas
+and mathematical concepts, arXiv:1908.08451 [math-ph], Progress and Visions in Quantum Theory
+in View of Gravity (F. Finster, D. Giulini, J. Kleiner, and J. Tolksdorf, eds.), Birkh¨auser Verlag,
+Basel, 2020, pp. 63–92.
+17. F. Finster, M. Jokel, and C.F. Paganini, A mechanism of baryogenesis for causal fermion systems,
+arXiv:2111.05556 [gr-qc], Class. Quant. Gravity 39 (2022), no. 16, 165005, 50.
+18. F. Finster and N. Kamran, Spinors on singular spaces and the topology of causal fermion systems,
+arXiv:1403.7885 [math-ph], Mem. Amer. Math. Soc. 259 (2019), no. 1251, v+83 pp.
+19.
+, Fermionic Fock spaces and quantum states for causal fermion systems, arXiv:2101.10793
+[math-ph], Ann. Henri Poincar´e 23 (2022), no. 4, 1359–1398.
+20.
+, A positive quasilocal mass for causal variational principles, arXiv:2310.07544 [math-ph],
+Calc. Var. 64 (2025), no. 3, 91.
+21. F. Finster, N. Kamran, and M. Oppio, The linear dynamics of wave functions in causal fermion
+systems, arXiv:2101.08673 [math-ph], J. Differential Equations 293 (2021), 115–187.
+22. F. Finster, N. Kamran, and M. Reintjes, Entangled quantum states of causal fermion systems and
+unitary group integrals, arXiv:2207.13157 [math-ph], Adv. Theor. Math. Phys. 27 (2023), no. 5,
+1463–1589.
+23. F. Finster, N. Kamran, and F. van der Top, The L-calculus for causal variational principles: An
+exterior differential calculus on non-smooth spaces, in preparation.
+24. F.
+Finster
+and
+S.
+Kindermann,
+A
+gauge
+fixing
+procedure
+for
+causal
+fermion
+systems,
+arXiv:1908.08445 [math-ph], J. Math. Phys. 61 (2020), no. 8, 082301.
+25. F. Finster, S. Kindermann, and J.-H. Treude, Causal Fermion Systems: An Introduction to Fun-
+damental Structures, Methods and Applications, arXiv:2411.06450 [math-ph], Cambridge Mono-
+graphs on Mathematical Physics, Cambridge University Press, 2025.
+26. F.
+Finster
+and
+J.
+Kleiner,
+A Hamiltonian
+formulation of
+causal
+variational principles,
+arXiv:1612.07192 [math-ph], Calc. Var. Partial Differential Equations 56:73 (2017), no. 3, 33.
+27. F. Finster and C. Langer, Causal variational principles in the σ-locally compact setting: Existence
+of minimizers, arXiv:2002.04412 [math-ph], Adv. Calc. Var. 15 (2022), no. 3, 551–575.
+28. F. Finster and M. Lottner, Banach manifold structure and infinite-dimensional analysis for causal
+fermion systems, arXiv:2101.11908 [math-ph], Ann. Global Anal. Geom. 60 (2021), no. 2, 313–354.
+29. F. Finster and A. Platzer,
+A positive mass theorem for static causal fermion systems,
+arXiv:1912.12995 [math-ph], Adv. Theor. Math. Phys. 25 (2021), no. 7, 1735–1818.
+30. F.
+Finster
+and
+M.
+van
+den
+Beld-Serrano,
+Baryogenesis in conformally flat spacetimes,
+arXiv:2504.17434 [math-ph] (2025).
+31.
+, Baryogenesis in Minkowski spacetime, arXiv:2408.01189 [math-ph], J. Geom. Phys. 207
+(2025), no. 16, 105346, 29.
+32. S.W. Hawking and G.F.R. Ellis, The Large Scale Structure of Space-Time, Cambridge University
+Press, London, 1973.
+33. D. Laugwitz, Differential and Riemannian Geometry, Academic Press, New York-London, 1965,
+Translated by F. Steinhardt.
+34. J.M. Lee, Manifolds and Differential Geometry, Graduate Studies in Mathematics, vol. 107, Amer-
+ican Mathematical Society, Providence, RI, 2009.
+44
+F. FINSTER AND C. KRPOUN
+35. A. Lichnerowicz, Elements of Tensor Calculus, Methuen & Co Ltd, John Wiley & Sons, London-
+New York, 1962, Translated by J.W. Leech.
+36. C.W. Misner, K.S. Thorne, and J.A. Wheeler, Gravitation, W.H. Freeman and Co., San Francisco,
+Calif., 1973.
+37. M. Nakahara, Geometry, Topology and Physics, second ed., Graduate Student Series in Physics,
+Institute of Physics, Bristol, 2003.
+38. B. Olea, Canonical variation of a Lorentzian metric, arXiv:1509.00793 [math.DG], J. Math. Anal.
+Appl. 419 (2014), no. 1, 156–171.
+39. B. O’Neill, Semi-Riemannian Geometry, Pure and Applied Mathematics, vol. 103, Academic Press,
+Inc. [Harcourt Brace Jovanovich, Publishers], New York, 1983.
+40. M. Oppio, On the mathematical foundations of causal fermion systems in Minkowski space,
+arXiv:1909.09229 [math-ph], Ann. Henri Poincar´e 22 (2021), no. 3, 873–949.
+41.
+,
+H¨older
+continuity
+of
+the
+integrated
+causal
+Lagrangian
+in
+Minkowski
+space,
+arXiv:2109.04728 [math-ph], Adv. Theor. Math. Phys. 26 (2022), no. 9, 3249–3318.
+42. C.F. Paganini and S. Yadav, The preserver problem for causal fermion systems, in preparation.
+43. V.V. Reddy, R. Sharma, and S. Sivaramakrishnan, Lorentzian metric induced from a background
+Riemannian metric, Int. J. Pure Appl. Math. 47 (2008), no. 3, 343–351.
+44. C. Rovelli, Quantum Gravity, Cambridge Monographs on Mathematical Physics, Cambridge Uni-
+versity Press, Cambridge, 2004.
+45. N. Straumann, General Relativity, Texts and Monographs in Physics, Springer-Verlag, Berlin,
+2004.
+46. S. Surya, The causal set approach to quantum gravity, arXiv:1903.11544 [gr-qc], Living Rev. Rel-
+ativ. 22 (2019), no. 5, 75pp.
+47. T. Thiemann, Modern Canonical Quantum General Relativity, Cambridge Monographs on Math-
+ematical Physics, Cambridge University Press, Cambridge, 2007.
+48. R.M. Wald, General Relativity, University of Chicago Press, Chicago, IL, 1984.
+Fakult¨at f¨ur Mathematik, Universit¨at Regensburg, D-93040 Regensburg, Germany
+Email address: finster@ur.de, christoph.krpoun@ur.de

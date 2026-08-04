@@ -1,0 +1,679 @@
+VOLUME 45, NUMBER 10 
+P HYSI C AL REVIEW LE TTERS 
+8 SEPTEMBER 1980 
+ity a nonlocal potential which could fit neutron 
+elastic scattering data in the energy range from 
+0.4 to 24 MeV and where the optical-model param-
+eters were energy independent. This is, of 
+course, a remarkable result since we know that 
+the absorption, for instance, is changing quite 
+dramatically by going from 0.4 to 24 MeV inci-
+dent projectile energy. We believe that these 
+findings of Perey and Buck strongly support our 
+result that there exists a nonlocal potential, 
+which is not explicitly energy-dependent, which 
+describes elastic nucleon scattering in a wide en-
+ergy range. The theory presented in this paper 
+may serve as a convenient tool in deriving such 
+a potential. Actual calculation of an energy-inde-
+pendent optical-model potential as outlined in this 
+paper is in progress. 
+We are grateful to Professor A. Faessler, Pro-
+fessor A. Weiguny, Professor M. stingl, and Pro-
+fessor G. Vagradov for many helpful discussions. 
+One of us (T. T.S.K.) wishes to thank Professor A. 
+Faessler for his hospitality and assistance during 
+his stay at Julich. We thank Professor G. E. 
+Brown for a critical reading of the manuscript. 
+One of us (T. T.S.K.) is an Alexander von Hum-
+boldt Foundation awardee. This work was partial-
+ly supported by the U. S. Department of Energy 
+under Contract No. EY -76-S-02-3001. 
+(a Permanent address: state University of New York 
+at Stony Brook, Stony Brook, N.Y. 11794. 
+lH. Feshbach, Ann. Rev. Nucl. Sci. 8, 49 (1958). 
+2J. S. Bell and E. J. Squires, Phys.Rev. Lett. 3, 96 
+(1959); J. S. Bell, in Lectures on the Many-Eody-Prob-
+lem, edited by E. R. Caianello (Academic, New York, 
+1962) . 
+3H. Feshbach, Ann. Phys. (N.Y.) 5, 357 (1968), and 
+19, 287 (1962). 
+-
+4N. Austern, Direct Nuclear Reaction Theory (Wiley, 
+New York, 1970). 
+5F. Villars, in Fundamentals in Nuclear Theory, 
+edited by A. de Shalit and C. Villi (International Atomic 
+Energy Agency, Vienna, 1967). 
+3D. J. Rowe, Rev. Mod. Phys. 40, 153 (1968). 
+7M. Oell-Mann and F. Low, Phys. Rev. 84, 150 (1951). 
+8T. T. S. Kuo, S. Y. Lee, and K. F. Ratcliff, Nucl. 
+Phys. A176, 65 (1971). 
+9T. TTKuo and E. M. Krenciglowa, Nucl. Phys. 
+A342, 454 (1980). This reference reports a similar 
+equation-of-motion approach for the bound-state prob-
+lems. 
+lOJ. Shurpin, D. Strottman, T. T. S. Kuo, M. Conze, 
+and P. Manakos, Phys. Lett. 69B, 395 (1977). 
+llJ. P. Jeukenne, A. Lejeune, and C. Mahaux, Phys. 
+Rep. 25C, 83 (1976). 
+12N. Vinh Mau and A. Bouyssy, Nucl. Phys. A257, 
+189 (1976). 
+--
+13E. M. Krenciglowa and T. T. S. Kuo, Nucl. Phys. 
+A235, 171 (1974). 
+14M. Johnson, Ann. Phys. (N.YJ 97, 400 (1976). 
+15F. O. Perey and B. Buck, Nucl:-Fhys. 32, 353 (1962). 
+Noncanonical Hamiltonian Density Formulation of Hydrodynamics 
+and Ideal Magnetohydrodynamics 
+Philip J. Morrison and John M. Greene 
+Plasma Physics Laboratory, Princeton University, Princeton, New Jersey 08544 
+(Received 3 April 1980) 
+A new Hamiltonian density formulation of a perfect fluid with or without a magnetic field 
+is presented. Contrary to previous work the dynamical variables are the physical variables, 
+p, ~, :8, and s, which form a noncanonical set. A Poisson bracket which satisfies the 
+Jacobi identity is defined. This formulation is transformed to a Hamiltonian system where 
+the dynamical variables are the spatial Fourier coefficients of the fluid variables. 
+PACS numbers: 47.10.+g, 03.40.0c, 47.65.+a, 52.30.+r 
+Several advantages may be gained from expres-
+Hamiltonian systems are most elegant when ex-
+sing a set of equations in Hamiltonian form. In 
+pressed in canonical coordinates. Hydrodynam-
+addition to their formal elegance, Hamiltonian 
+ics is most usefully expressed in Eulerian vari-
+systems possess Poincare invariants that influ-
+abIes. These two desiderata conflict. In prac-
+ence the dispersion of an ensemble of systems 
+tice, the penalty paid for adopting noncanonical 
+with clustered initial conditions. A manifestly 
+coordinates is not severe, so that branch of the 
+Hamiltonian formulation of a given problem makes 
+dichotomy is pursued here. 
+it easier to find those approximations that pre-
+Previously, the equations of hydrodynamics1 
+serve the Hamiltonian character. Here we pre-
+and magnetohydrodynamics,2 in both Eulerian and 
+sent such a formulation of hydrodynamics and 
+Lagrangian form, have been shown to arise from 
+magnetohydrodynamics. 
+a suitable Hamilton's principle. Such a Lagrang-
+790 
+© 1980 The American Physical Society 
+VOLUME 45, NUMBER 10 
+PHYSICAL REVIEW LETTERS 
+8 SEPTEMBER 1980 
+ian density formulation is the natural starting 
+place for derivation of a Hamiltonian density de-
+scription.3 Typically, the Euler-Lagrange equa-
+tion is the fluid equation of motion; the remain-
+ing fluid equations have the role of constraints. 
+A Hamiltonian density formulation obtained by 
+Legendre transformation necessarily embodies 
+this division of roles. Alternatively, Hamilton-
+ian-type equations have been given directly for a 
+fluid4 and for ideal magnetohydrodynamics.5 In 
+these formulations, Clebsch or other nonphysical 
+variables are necessary and entropy convection 
+is not included. Our formulation departs from 
+previous work in that all of the fluid equations 
+are, in principle, placed on equal footing; fur-
+ther, the dynamical variables are the physical 
+variables. The fluid equations, including entropy 
+convection and (but not necessarily) the Maxwell 
+induction equation, are obtained in Poisson-brack-
+et form; the Hamiltonian density is the energy 
+density of the fluid. The physical variables are 
+noncanonical; this results in alteration of the 
+usual Poisson bracket. The use of noncanonical 
+variables has proven to be fruitful for Hamilton-
+ian systems6 and a Poisson bracket similar to 
+ours has been used to express the Korteweg-
+de Vries equation as a Hamiltonian system/·a 
+In the following, we obtain three essentially 
+equivalent forms for the Poisson bracket. The 
+first, Eq. (6), is expressed in terms of the usual 
+physical variables. The second, Eq. (9), use 
+conserved densities as variables. This form 
+possesses greater symmetry, and facilitates 
+Fourier transformation. In the last form, Eq. 
+(14), the dynamical variables are spatial Fourier 
+coefficients. 
+We wish to cast the following set of equations 
+into Hamiltonian form: 
+vt =- V (v 2/2) +VX (v xv) 
+_p- 1V(P2U p)+p-l(VXB)XB, (1) 
+Pt =- V· (pv), 
+13t=vx(vxB), 
+(2) 
+(3) 
+(4) 
+Equation (1) is the hydrodynamic force balance 
+equation for a fluid with denSity p and velocity v, 
+with the addition of the magnetic body force term 
+JxB. We have eliminated J by making use of 
+Ampere's law: J=VXB. The internal energy per 
+unit mass, U(P,s), is a prescribed function of p 
+and the entropy per unit mass,9 s. The intensive 
+variables, pressure p and temperature T, are 
+obtained from this functionp =p2U p and T =Us• 
+Equation (2) is mass conservation. Equation (3) 
+is the Maxwell induction equation with the electric 
+field eliminated by Ohm's law: E +vxB =0. Here 
+infinite conductivity is assumed. Equation (4) ex-
+presses entropy convection;. heat flow is assumed 
+to vanish. The equation V· B =0 enters our for-
+mulation only as an initial condition. 
+The energy density of a fluid described by Eqs. 
+(1)-(4) iSH=~PV2+PU(P,s)+~B2, where ~pV2 is 
+the kinetic-energy denSity and the remaining two 
+terms are the internal- and magnetic-energy den-
+sities. We take this as our Hamiltonian denSity 
+and construct the Hamiltonian if[ P, s , v, 13] = f v H(P , 
+s,v,B)dT, where the square brackets are used 
+to indicate that if is a functional of the enclosed 
+functions. The integration is over a fixed spatial 
+region V. We desire a Poisson bracket, such 
+that Eqs. (1)-(4) can be represented in the form 
+x,·=[x·,H], i=0,1,2, ••. 7, 
+where the X I are suitable functional dynamical 
+variables. 
+(5) 
+Before writing this bracket [Eq. (6) below], we 
+briefly discuss the structure of our formulation. 
+Quite generally consider the vector space V, over 
+the real numbers R, whose elements are function-
+als of the form 
+where X is an n-uple of C\V) functions X·(X,t). [In 
+part~ular, XO=p, Xl =s, (x2,X3 ,X4)=v, and (X5 ,X6 , 
+X7 ) =B. The notation ax/ax~ is used to indicate that 
+F depends on the derivatives of Xi with respect 
+to each of the three spatial variables x~, a =1-3. 
+We assume F has a finite number of arguments 
+and is a COO function in each of them. The bracket 
+we obtain is a bilinear function which maps V x V 
+to V. In addition, the bracket possesses the fol-
+lOWing two important properties: (i) [F ,F] =0 
+for every FE V. For V over R, this is equivalent 
+to [F,C]=-[C,F] forF,GEV; (ii) the Jacobi 
+identitiO [E, [;, e]] +[F, [e,E]] +[ e, [E,F] =0 
+for every E ,F , G E V. A vector space together 
+with a bracket which has the above properties de-
+fines a Lie algebra. l1 
+791 
+VOLUME 45, NUMBER 10 
+PHYSICAL REVIEW LETTERS 
+8 SEPTEMBER 1980 
+Now we introduce the following bracket12 : 
+[ A A] i ([OF 
+o{; 
+of 
+OGJ [OF (V XV) OG)J 
+F G =-
+-v,-"",+-"",v-
++ ~. ---x~ 
+, 
+v 
+op 
+OV 
+6v 
+op 
+ov 
+P 
+ov 
+[ 
+-1 
+(OF 06 6eOF)] 
++ p 
+Vso 
+-~---.",. 
+as ov 
+Os ov 
+{
+OF [- ( 
+oe)J of [ 
+(-
+-
+OG),l}~ f of 
+oe 
++ p- 1 6V' BX V x 6B 
++ 6B 0 
+v x B xp 16V 'J :)dT == v 61 oj} OXi dT. 
+(6) 
+Here the notation of/OX I means the functional de-
+rivative with respect to Xl. Suppose each Xl con-
+tains an additional parameter dependence X / (X, 
+a/,t). We define the functional derivative bys 
+aft f of al 
+-
+= 
+-;;:-- -, dT (not summed). 
+aat 
+v vXi aa/ 
+(7) 
+This functional derivative has the role, in fi-
+nite-dimensional Hamiltonian systems, of the 
+derivatives with respect to phase coordinates 
+(aF /aq I, aF lap I)' In systems with finite degrees 
+of freedom the Poisson bracket is written 
+where the Zl are the phase-space coordinates, 
+Zl E{ql>'" ,qN, Pi>'" ,PN}' In canonical coordi-
+nates the cosymplectic form, J I}, is 
+where I is the unit N XN matrix. In a canonical 
+system this matrix may be full and depend on the 
+dynamical variables. Clearly, this is the case 
+for our bracket, Eq. (6). The cosymplectic form 
+here, is the operator OiJ which, in addition to be-
+ing dependent on the dynamical variables, con-
+tains derivatives. 
+Now we complete the description of our formu-
+lation and demonstrate the relationship between 
+this bracket and Eqs. (1)-(4). We define a set 
+,D C V whose elements are of the form 
+XI[Xi] =fvfl(x)xl(x,t)dT, 
+i = 0,1,2, ... ,7 (not summed), 
+where Xl E C~(V) and thefl are arbitrary func-
+tions13 of x alone, which vanish on avo D is thus 
+the set of dynamical variables. Substituting X 0 
+and H into Eq. (5) yields 
+(8) 
+792 
+I Sincefo(x) is an arbitrary function, by the Du 
+Bois-Reymond14 lemma, Eq. (8) implies Eq. (2). 
+Equations (1), (3), and (4) follow, from the re-
+maining dynamical variables of the set D, in a 
+similar manner. 
+Several features of the bracket defined in Eq. 
+(6) deserve comment. First, the denSity, p, 
+appears in the denominator of several terms. 
+This makes it awkward to evaluate the bracket 
+exactly when polynomial or Fourier representa-
+tions are used for the dynamical variables. This 
+is easily rectified through a nonlinear transfor-
+mation described below, and the resulting brack-
+et, in terms of the new variables, has a pleaSing 
+form. Second, gradients appear throughout the 
+bracket. This is reminiscent of the bracket used 
+in Hamiltonian theories of the Korteweg-de Vries 
+equation7.8 
+[F G]=JdXOF(~ aG). 
+, 
+au ax au 
+Two methods have been used to reduce the Korte-
+weg-de Vries bracket to canonical form. Gard-
+ners used a Fourier transform to convert the de-
+rivatives to numbers, and then scaled the coeffi-
+cients to achieve canonical form. Similarly moti-
+vated, we also consider Fourier transforms be-
+low. In another approach to the Korteweg-de 
+Vries equation, Zakharov and Faddeev7 used a 
+spectral transform to achieve canonical form. 
+This method may be applicable here. 
+Our new set of Eulerian variables, which yields 
+an improved Poisson barcket is {p, a , M, 13}, 
+where a =ps and M =pv; a is the specific entropy 
+and M is the momentum denSity. Substitution of 
+these variables into Eqs. (1)-(4) results in eight 
+conservation equations. The pressure is now 
+determined by P =p2{6p+ ap- 1Ua), where (j(p,a) 
+=U(p,s). As a result of the transformation 
+~I =~I 
++P-1M·~+ap-l~ 
+op v,s 
+op M. a 
+oM 
+oa' 
+together with similar transformations for the re-
+VOLUME 45, NUMBER 10 
+PHYSICAL REVIEW LETTERS 
+8 SEPTEMBER 1980 
+1-
+-
+-
+-
+-
+-
+-
+--, 
+o 
+0 
+1 
+-Pi "k 
+1 0 
+0 
+0 
+I _____ +~ ___ .J 
+o 
+0 
+-ai+kk 
+1 0 
+0 
+0 
+1 
+1 
+- - - - r - - -1- -
+-
+-
+-
+-
+-
+-
+--i -
+-
+-
+-
+-
+-
+-
+-
+-
+-+1 
+-+1 
+-+ 
+-+::+1 
+-+ 
+-+ 
+I' 
+Pi+k1 1 "i+k:1 1 i Mi+k -
+Mi+kk I! B!+k - i.Bi+k!. 
+1 
+1 
+1 
+-
+-
+-
+-
+~ -
+-
+_1- _______ ~ ________ _ 
+1 
+1 
+0 
+0 
+1 0 
+0 
+0 
+1 
+0 
+0 
+1 ". ..,. 
+" s 
+' 1 
+-k Bi ->- + k· i ".r 
+1 
++k 
++k- 1 0 
+0 
+0 
+1 
+1 
+0 
+0 
+1 ________ ...J 
+0 
+0 
+0 
+FIG. 1. The cosympletic form £1< • i. 
+maining variables, Eq. (6) becomes 
+~ 
+A 
+r f (OF 
+08 
+08 
+of) ... (oF 
+08 
+08 
+of) 
+[F,G]=-:Jvdr\f\6M'V:OP -6M' v oP 
++M· 6M.v6M-6M'v~ 
+(OF 
+OG 
+oG 
+of) - {(OF 
+oe 08 
+of) ~( OF) oG (08) of J}) 
++(J -...- ,v- ---- ,v- + B' __ ·v~ - ___ ·v~ + V---'-'" -
+v~·-..,.. . 
+oM 
+O(J 
+oM 
+O(J 
+oM 
+o.Jj 
+oM 
+o.Jj 
+oB 
+oM 
+o.Jj 
+oM 
+(9) 
+Notice that each term .contains one Eulerian vari-
+able in the numerator; the terms in the denomi-
+nator have been eliminated. 
+Now consider a transformation of the Hamilton-
+ian coordinates from Eulerian variables to the 
+coefficients of the Fourier transform of these 
+variables. For convenience, we take V to be a 
+unit cube and adopt periodic boundary conditions. 
+Then 
+P =6tP'k(t) exp(21Tk .x), 
+'I 
+where kE ZXZXZ (Z, the integers). 
+from Eq. (7) that 
+aF laF 
+~ 
+-= -
+exp(21TzK' X) dr. 
+apt ·vap 
+Inverting Eq. (11), we obtain 
+aF 
+aF 
+..... ~ 
+-
+= ~- exp(- 21TZk' X,. 
+op 
+K apt 
+(10) 
+We observe 
+(11) 
+(12) 
+Inserting Eqs. (10) and (12), and the analogous 
+expressions for the other variables in our set, 
+into Eq. (9) yields 
+[ A A] '" aF 
+aG 
+F G = LL -=- '0'" .... -..,--
+, 
+t,1 aZ j{ _k,1 azt' 
+(13) 
+where Zt is the octuple (Pt,(Jt, M t, 13t), and the 
+matrix Ok t is shown in Fig. 1. Here I is the 3 
+x 3 unit m~trix appropriate to the box in which 
+it is contained. The matrix has the important 
+property Qt, r=-Qt. t, where the tilde indicates 
+I transpose. Equation (13) can be written as fol-
+lows: 
+[ 
+] _8F ijaG 
+.. 
+F, G -azrJ 8z i ' 
+Z,JE.Z, 
+(14) 
+where ZiE{Pt,(Jt, Mt,BtikEZXZXZ}. The ma-
+trix J has the property Jii = - Jii and its elements 
+can be obtained by a suitable map15 of the indices 
+of Qt. r onto Z. Clearly Eq. (14) is of the same 
+form as finite Hamiltonian systems, but here J 
+is of infinite order. Approximation techniques, 
+along with the proof of the Jacobi identity, inte-
+gral invariants, and commutation relations, will 
+be the subject of a future publication. 
+One of us (J.M.G.) would like to acknowledge 
+useful conversations with Dr. R. Littlejohn and 
+Dr. E. Levich. This work was supported by the 
+U. S. Department of Energy under Contract No. 
+DE-AC02-76-CH03073. 
+lJ. Serrin, in Handbuch der Physik. edited by 
+S. Flugge (Springer-Verlag. Berlin. 1959). Vol. 8, p. 
+124; C. Eckart, Phys. Fluids:l. 421 (1960); P. Pen-
+field. Phys. Fluids j!, 1184 (1966) .. 
+2W. Newcomb. in Proceedings of the Conference on 
+Plasma Physics and Controlled Nuclear Fusion Re-
+search. 1961, Salsburg. Austria (IAEA Nucl. Fusion 
+Suppl.. Vienna, 1962); N. Van Kampen and B. Felder-
+hof. Theoretical Methods in Plasma Physics (Wiley. 
+New York, 1967). p. 69; P. Penfield and H. Haus. Phys. 
+793 
+VOLUME 45, NUMBER 10 
+PHYSICAL REVIEW LETTERS 
+8 SEPTEMBER 1980 
+Fluids 9, 1195 (1966). 
+3G. W~ntzel, Introduction to Quantum Field Theory 
+(Interscience, New York, 1949). 
+4B. Davydov, Dokl. Akad. Nauk SSSR 69, 165 (1949). 
+5 
+-
+V. Zakharov and E. Kuznetsov, Dokl. Akad. Nauk 
+SSSR 195, 1288 (1970) [Sov. Phys. Dokl. 15, 913 (1971)l. 
+GR. Littlejohn, J. Math. Phys. 20, 2445 (1979). 
+1 
+-
+V. Zakharov and L. Faddeev, Functional Anal. App!. 
+5, 280 (1972). 
+-
+8C . Gardner, J. Math. Phys. 12, 1548 (1971). 
+~ 
+-
+J. Greene and E. Karlson, Phys. Fluids 12, 561 
+(1969). 
+-
+lOWe have proved the Jacobi identity for functionals 
+F, (J,E with corresponding F,G,E which are functions 
+ofi, t, and X. This is sufficient for our purposes here. 
+The more general case is of interest; e.g., the dynam-
+ical variable with the integrand \7X~ yields, when sub-
+stituted into Eq. (5), the vorticity equation. 
+l1V. Arnold, Mathematical Methods of Classical 
+Mechanics «Springer-Verlag, New York, 1978), p. 208; 
+R. Bishop and R. Crittendon, Geometry of Manifolds 
+(Academic, New York, 1964), p.26. 
+794 
+12The hydrodynamic bracket is obtained by setting B 
+= 0, isentropic hydrodynamics by further setting s = 0, 
+and irrotational isentropic hydrodynamics by finally 
+setting \7X~=O. The Jacobi identity, as proved, is 
+satisfied for these cases. (We use repeated index no-
+tation in the second equality here and henceforth, ex-
+cept where noted.) Also note that in order to see that 
+this expression is antisymmetric, integrations by parts 
+must be performed. The surface terms obtained are 
+assumed to vanish; this is an added restriction on the 
+elements of the vector space V. For V composed of ii 
+and {Xi}, the terms vanish by virtue of the arbitrary 
+functions f i (i). This imposes no restrictions on bound-
+ary conditions. 
+13Conventionally, the functional derivative of a func-
+tion with respect to itself is seen to be the Dirac 6 
+function. For f i (i) == 6 (i - i /), this is obtained. 
+14D . Smith, Variational Methods in Optimi:mtion (Pren-
+tice-Hall, Englewood Cliffs, N. J., 1974), p. 357. 
+15A bijectionf: sxzxzxZ-Z, where S={0,1,2,3,4, 
+5,6, 7} is needed for this purpose. A useful example 
+will be given in another paper. 
+VOLUME 48, NUMBER 8 
+P-HYSICAL REVIEW LETTERS 
+22 FEBRUARY 1982 
+ERRATA 
+NONCANONICAL HAMILTONIAN DENSITY FOR-
+MULA TION OF HYDRODYNAMICS AND IDEAL 
+MAGNETOHYDRODYNAMICS. Philip J. Morri-
+sori(a) and JOM M. Greene lPhys. Rev. Lett. 45, 
+790 (1980)]. 
+-
+We wish to point out that the magnetic field 
+portions of the Poisson brackets presented in 
+Eqs. (6) and (9) require the initial condition V • 13 
+= 0 for the validity of the Jacobi condition. This 
+requirement is easily removed by adding a term, 
+proportional to V· 13, to these equations. The 
+last term of Eq. (6) (within the curly braces) be-
+comes 
+-f{13' (! il! ·v~- !~'V~) 
+" 
+P ilv 
+ilB 
+p ilv 
+il.tS 
+-
+[( 1 ilF) ilG 
+(1 OG) OF]-} 
++B' Vp ilv . ffi -
+Vp ilv 
+0 ffi 
+dT. 
+Similarly, the lasf term of Eq. (9) becomes 
+I{ (ilF 
+.OG 
+OG 
+OF) 
+-
+B 
+i ilM al ilB - ilM 31 ilB . 
+v , 
+Iii 
+1 
++Bi [( ai il~);1 - (Oi :~J;J}dT, 
+where repeated index notation is used. We em-
+phasize that the Jacobi condition is satisfied in 
+complete generality for these brackets,t inde-
+pendent of V 0 13 = O. The dynamical equations of 
+motion, 
+vt = - V 
+(~V2)+VX (v xv) - p·1V (P2Up ) 
+~ p-1V 0 (~B21 - 1313), 
+13t=-13Vov+13ovv-voV13, 
+that are obtained from the Poisson bracket in 
+this form manifestly have the symmetries of the 
+ten-parameter Galilean group. Elsewhere one of 
+us (P.J .M.) has shown how our brackets together 
+with dynamical constants of magnetohydrodynam-
+ics generate the infinitesmal transformations of 
+this group. 2 
+We would like to thank Dr. B. Kupershmidt for 
+prompting this analysis with V • 13 '" o. 
+(a)Present address: The University of Texas, Depart-
+ment of Physics/I.F.S. RLM 11.222, Austin, Tex. 
+78712. 
+lFor example, they can be obtained by first modifying 
+the canonical form given by V. E. Zakharov and E. A. 
+Kuznetsov {Dokl. Akad. Nauk SSSR 15, 1288 (1971) [Sov. 
+Phys. Dokl. 15, 913 (1971)]} by letting M = (VT)' B-B 
+• VT- TV' B+pV(/I + CTV1/J, where T, (/I, and 1/J are 
+Clebsch-like potentials conjugate to B, p, and CT, re-
+spectively, and then transforming to physical variables. 
+2p. J. Morrison, in Proceedings of the La Jolla In-
+stitute Workshop on Mathematical Methods in Hydro-
+dynamics and Integrability in Related Dynamical Sys-
+tems, La Jolla, California, 7 December 1981, edited 
+by M. Tabor (American Institute of Physics, New York, 
+to be published). 
+EFFECTIVE HARMONIC-FLUID APPROACH TO 
+LOW-ENERGY PROPERTIES OF ONE-DIMEN-
+SIONAL QUANTUM FLUIDS. F. D. M. Haldane 
+[Phys. Rev. Lett. 47, 1840 (1981)]. 
+The condition for stability of the quantum fluid 
+state against pinning by a substrate potential com-
+mensurate with the mean particle separation (p. 
+1842, top of column 2) should read:. "The fluid 
+state is only stable if the sine-Gordon coupling 
+parameter10 satisfies {32 = 21Tn21/ > 81T, i.e., 1/- 1 
+< in2 , or 1/ > 4/ n2 ." (This replaces the opposite 
+condition 132 < 81T in the printed text.) The condi-
+tion (:32> 81T means that the zero-point density fluc-
+tuations of the fluid are sufficiently strong to re-
+sist pinning by the substrate. 
+Note also that the phase field qJ (x) [intended as 
+cp(x), as in Refs. 1 and 2] should not be confused 
+with the Bogoliubov-transformation parameter 
+qJ(q) introduced in Eq. (5); its boundary condi-
+tions are cp(x+L)=CP(x)+1TJ, [not qJ(x)+ITJ, as 
+printed]. 
+569 
