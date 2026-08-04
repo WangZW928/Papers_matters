@@ -1,0 +1,1384 @@
+1
+Quantifying performance bottlenecks of stencil
+computations using the Execution-Cache-Memory
+model
+Holger Stengel, Jan Treibig, Georg Hager, Gerhard Wellein
+Erlangen Regional Computing Center, University of Erlangen–Nuremberg, Erlangen, Germany
+{holger.stengel,jan.treibig,georg.hager,gerhard.wellein}@fau.de
+Abstract—Stencil algorithms on regular lattices appear in
+many ﬁelds of computational science, and much effort has been
+put into optimized implementations. Such activities are usually
+not guided by performance models that provide estimates of
+expected speedup. Understanding the performance properties
+and bottlenecks by performance modeling enables a clear view
+on promising optimization opportunities. In this work we reﬁne
+the recently developed Execution-Cache-Memory (ECM) model
+and use it to quantify the performance bottlenecks of stencil
+algorithms on a contemporary Intel processor. This includes
+applying the model to arrive at single-core performance and
+scalability predictions for typical “corner case” stencil loop
+kernels. Guided by the ECM model we accurately quantify
+the signiﬁcance of “layer conditions,” which are required to
+estimate the data trafﬁc through the memory hierarchy, and
+study the impact of typical optimization approaches such as
+spatial blocking, strength reduction, and temporal blocking for
+their expected beneﬁts.
+Keywords-stencils; performance model; optimization; multicore
+I. INTRODUCTION AND RELATED WORK
+Stencil computations on regular lattices are important in
+many computational science applications operating on regular
+lattices. The combination of low computational intensity and
+their iterative nature have made them a popular target for loop
+optimizations. Beyond established cache blocking techniques,
+leveraging SIMD capabilities [1] and an efﬁcient shared
+memory parallelization [2] are subject to recent research. An
+overview about the state of the art in stencil optimizations can
+be found in a review by Datta et al. [3].
+In the compiler community modeling approaches based on
+cache usage have been employed for stencil optimizations
+more than a decade ago [4]. Modeling was also used to
+estimate the optimal performance of stencil codes and to
+validate the effectiveness of applied optimizations. One can
+roughly separate those efforts into two categories: “black box”
+modeling, which relies on statistical methods and machine
+learning to describe and predict performance behavior based
+on observed data such as hardware performance metrics [5],
+and “white box” modeling, which uses simpliﬁed machine
+models to describe the interaction of code with the hardware
+from “ﬁrst principles.” Simple bottleneck-centric approaches
+based on memory bandwidth vs. computational peak perfor-
+mance have been in use for a long time [6], [7], [8]. This line
+of thinking was popularized and reﬁned by Williams et al.
+[9], and is now known as the “Roofline model.” The Roofline
+model is tremendously useful in getting ﬁrst estimates of the
+“light speed” of a loop on a given architecture. Its central
+assumption is that data transfers through the memory hierarchy
+overlap with code execution on the core(s). This implies that
+data access latencies are assumed to be hidden by prefetching
+mechanisms. However, the Roofline model cannot describe
+relevant bottlenecks beyond memory bandwidth and peak per-
+formance. Especially in long-range stencils common in seismic
+imaging there is no single dominating bottleneck anymore
+and the inﬂuence of in-cache transfers on performance is
+signiﬁcant. The recently introduced ECM model provides an
+accurate single-core performance and scaling prediction. It
+can be seen as an extension and reﬁnement of the Roofline
+model for multicore processors. Like the Roofline model it
+focuses on resource utilization but considers contributions
+from the complete memory hierarchy. The ECM model was
+ﬁrst introduced in [2] and later reﬁned and combined with
+a multicore power model in [10]. It provides clear insights
+into the relevant contributions of the hardware model to
+the performance of a given loop code and therefore allows
+a clear identiﬁcation of optimization opportunities. Based
+on the single-core performance estimate it also predicts a
+performance saturation point. This paper reﬁnes the ECM
+model with clear rules for overlapping execution and data
+transfers and introduces an accessible nomenclature to ease
+the usage and description of the model. The power of the
+model to validate and guide performance engineering efforts
+is demonstrated on the example of three relevant stencil code
+patterns.
+The paper is structured as follows. In Sect. II we describe
+the architecture of the test machine used for measurements.
+Section III introduces and reﬁnes the ECM model on the ex-
+ample of simple streaming loop kernels. In Sections IV, V, and
+VI we apply the model to successively more complex stencils
+to show how it can identify bottlenecks, reveal optimization
+opportunities, and prevent misleading conclusions. The paper
+concludes in Sect. VII.
+II. EXPERIMENTAL TESTBED
+A
+standard
+two-socket
+server
+based
+on
+eight-core
+SandyBridge-EP (SNB) CPUs was used for the measurements.
+The core supports SSE and AVX SIMD instruction set exten-
+sions. Using ﬂoating-point arithmetic, each core can execute
+arXiv:1410.5010v1  [cs.PF]  18 Oct 2014
+2
+Microarchitecture
+Intel SandyBridge-EP [11]
+Model
+Xeon E5-2680
+Clock speed (ﬁxed)
+2.7 GHz
+Cores/Threads
+8/16
+SIMD Support
+SSE (128 bit), AVX (256 bit)
+L1/L2/L3 Cache
+8×32 kB/8×256 kB/20 MB
+Main Memory Conﬁguration
+4 channels DDR3-1600
+Update Benchmark Bandwidth
+40 GB/s
+TABLE I
+TEST MACHINE SPECIFICATIONS. ALL INFORMATION IS SHOWN FOR ONE
+SOCKET. “UPDATE” IS A MULTI-THREADED STREAMING BENCHMARK
+THAT MODIFIES AN ARRAY IN MEMORY.
+one multiply and one add instruction per cycle, leading to
+a peak performance of eight double precision (DP) or 16
+single precision (SP) ﬂops per cycle. Memory is connected
+via four DDR3-1600 memory channels per socket. The SNB
+core can sustain one full-width AVX load and one half-
+width AVX store per cycle. With SSE or scalar execution,
+these limits are changed: In both cases the core can sustain
+either one load and one store, or two loads per cycle, to the
+effect that many loops do not show a 4× speedup of core
+execution when going from scalar mode to AVX. The L2
+cache sustains reﬁlls and evicts to and from L1 at 256 bits per
+cycle (half-duplex). A full 64-B cache line transfer thus takes
+two cycles. The L3 cache is segmented, with one segment
+per core. All segments are connected by a ring bus. Each
+segment has the same bandwidth capabilities as the L2 cache,
+i.e., it can sustain 256 bits per cycle (half-duplex) to and from
+L2. This means that the L3 cache is usually not a bandwidth
+bottleneck, which is an improvement compared to previous
+Intel processors. An overview of the speciﬁcations is given in
+Table I. Measurements for the vector summation example were
+performed with LIKWID-bench [12], and the Intel C Compiler
+(version 13.1.3) was used to compile the stencil codes. The
+clock frequency was ﬁxed to 2.7 GHz.
+III. THE ECM PERFORMANCE MODEL
+The ECM model delivers a prediction of the number of CPU
+cycles required to execute a certain number of iterations nit of a
+given loop on a single core. Since the smallest amount of data
+that can be transferred between adjacent cache levels is usually
+a cache line (CL), nit is typically chosen to be “one cache line’s
+worth of work.” With a 64-B CL, this amounts to nit = 8 for
+a streaming kernel with double precision data and stride-one
+data access to all arrays (such as the STREAM benchmarks).
+Depending on the data types and access characteristics this
+number may vary, however.
+A. Model input, construction, and assumptions
+Some input data is required to construct the ECM model for
+a loop code on a given architecture. We consider two parts of
+the input separately: The time to execute the instructions on
+the processor core, assuming that there are no cache misses,
+and the time to transfer data between its initial location and
+the L1 cache. For the sake of clarity we review and reﬁne the
+model, which was ﬁrst introduced in [2], [10], using simple
+MOV/MASK
+Memory control
+DIV
+L1 Dcache
+ADD
+ADRS
+Data flow
+Control flow
+ADRS
+ALU
+ALU
+ALU
+Port 0
+Port 5
+MULT
+Execution
+LOAD
+units
+LOAD
+Port 4
+STORE
+Port 3
+JMP
+Port 2
+Port 1
+Fig. 1.
+Simpliﬁed view of execution resources on a modern out-of-order
+CPU core.
+streaming loops such as DAXPY (A(:)=A(:)+s*B(:))
+before turning to more complex cases.
+1) In-core execution time: To determine the in-core execu-
+tion time a simple model for instruction throughput capabilities
+of a microarchitecture is required. On Intel processors the port
+scheduler model can be used for this purpose. Figure 1 shows
+the port model for the Intel Sandy Bridge microarchitecture.
+We assume that all instructions in a loop are independently
+scheduled to the ports and executed out of program order
+within the execution units ui. The execution time is then set by
+the unit that takes the most cycles to execute the instructions:
+Tcore = max
+i
+Tui .
+(1)
+An additional limitation that may be relevant is the overall
+maximum instruction throughput of four instructions per cycle
+on Intel microarchitectures.1 For example, the loop body of the
+DAXPY operation
+for(i=0; i<N; ++i)
+a[i] = a[i] + s * b[i];
+consists of two loads, one store, one add, and one multiply
+instruction regardless of SIMD vectorization. In addition there
+is typically one integer add, one integer compare, and one
+conditional branch in the body to implement the “loop me-
+chanics.” If the loop is unrolled, the relative share of these
+instructions is smaller and can usually be neglected. With AVX
+vectorization, one work unit (eight iterations) comprises four
+load, two store, two add, and two multiply instructions, which
+require four cycles to execute on the SNB core. In this case the
+load (and store) pipeline throughput is the bottleneck. In Fig. 2
+we visualize this situation in a timeline diagram (cycles 1 to 4).
+Since there are no loop-carried dependencies in the code, the
+four-cycle prediction holds if the loop is sufﬁciently unrolled.
+In complex cases one can employ the Intel Architecture Code
+Analyzer (IACA) [13] to get an estimate of the loop body
+execution time under the throughput assumption.
+2) Data transfers through the memory hierarchy: Data not
+present in the L1 cache must be fetched from lower levels
+of the memory hierarchy before it can be processed in CPU
+registers, and modiﬁed data must be evicted to make room for
+new cache lines. We call the time needed for these transfers
+1The term “instruction” is used in a microarchitectural context; on Intel
+architectures these are called “µops.”
+3
+the “transfer time.” Again we assume the best possible case of
+perfect streaming, i.e., there are no latency effects and the cost
+for transferring one CL can be computed using the maximum
+bandwidth. For the SNB architecture, one CL transfer takes
+two cycles between adjacent cache levels. Getting a 64-B CL
+from memory to L3 or back takes 64B · f/bS cycles, where
+f is the CPU clock speed and bS is the achievable memory
+bandwidth as measured by a suitable streaming benchmark.
+Calculating the transfer times through the memory hierarchy
+requires an accurate account of the data volumes between all
+cache levels. For the DAXPY loop kernel discussed above
+this means that, due to the cache hierarchy being inclusive,
+three CLs must be transferred between each pair of adjacent
+memory levels: two for loading the data for a and b, and one
+for evicting modiﬁed data of a. This leads to transfer times of
+six cycles each between cache levels, and 13 cycles between
+memory and L3 cache (at a maximum socket bandwidth of
+40 GB/s and a clock frequency of 2.7 GHz). If the “uncore”
+part of the chip, especially the L3 cache, has a clock speed that
+is set independently from the core clock, a correction factor
+can be applied to the L3-L2 cycle count.
+3) Single-core prediction and examples: The in-core exe-
+cution and transfer times described above must be put together
+to arrive at a prediction of single-thread execution time.
+Therefore we must specify which of the runtime contributions
+can overlap with each other. If Tdata is the transfer time (L1
+downward, as described above), TOL is the part of the core
+execution that overlaps with the transfer time, and TnOL is the
+part that does not, then
+Tcore
+=
+max(TnOL,TOL)
+(2)
+TECM
+=
+max(TnOL +Tdata,TOL) .
+(3)
+There are two open questions here: (i) Which components
+of Tcore in (1) are overlapping? (ii) How is Tdata composed
+of the different data transfer contributions along the memory
+hierarchy?
+The ECM model makes the following fundamental as-
+sumptions for single-core performance prediction: (1) All
+instructions in the loop are independently scheduled to the
+execution ports and executed out of program order within
+the execution units. The unit that takes the longest time
+executing its instructions is the bottleneck on the core level
+(see Sect. III-A1). The maximum throughput capabilities of
+the microarchitecture are a further limitation. (2) Loads (more
+speciﬁcally, cycles in which loads are retired) do not overlap
+with any other data transfer in the memory hierarchy. All other
+instructions, and also pipeline bubbles, overlap perfectly with
+data transfers. This means that only the time needed for the
+loads to the L1 cache contributes to TnOL (store-bound loop
+kernels show signiﬁcant overlap). (3) The transfer times up to
+the L1 cache are mutually non-overlapping, i.e., all cache line
+transfers across the memory hierarchy are serialized.
+The non-overlapping assumptions seem very pessimistic;
+they were motivated by the observation that the L1 cache on
+Intel processors can either communicate with the L2 cache
+or the registers, but not both in the same cycle. We will show
+below that they lead to the most accurate description of perfor-
+mance behavior. Due to this non-overlap assumption the ECM
+TOL
+16
+10
+4
+t
+29
+[cy]
+nOL
+T
+data
+T
+ST
+MULT
+ADD
+LD
+L2−L3
+L3−Mem
+L1−L2
+Fig. 2.
+Single-core ECM model for the DAXPY loop kernel on Intel SNB.
+The predicted number of cycles per CL is 29 if the data is in memory, 16 for
+the L3 cache, 10 for the L2 cache, and 4 in L1 (using AVX).
+model does not provide an absolute upper performance bound.
+In contrast to the Roofline model it allows for performance
+measurements to exceed the model prediction.
+In case of the DAXPY example on the Intel SNB core,
+these rules lead to the timeline diagram shown in Fig. 2. In
+this particular case the overall execution time is dominated by
+data transfers, even if the data comes from the L1 cache.
+In order to be able to discuss the ECM model more
+efﬁciently we introduce a shorthand notation that summarizes
+the most relevant information from timeline diagrams such
+as Fig. 2. We write the predicted cycle counts for TOL and
+TnOL, separated by “∥”. After TnOL we attach the individual
+contributions for the different memory hierarchy levels (which
+make up Tdata), separated by “|”:
+{TOL ∥TnOL |TL1L2 |TL2L3 |TL3Mem}
+(4)
+For example, the ECM model for DAXPY would be written as
+{4∥4|6|6|13} cy. Cycle predictions for data sets ﬁtting into
+any particular cache level can then be easily calculated from
+this representation by adding up the appropriate contributions
+from Tdata and TnOL, and ﬁnding the maximum of that number
+and TOL according to (3). For instance, the prediction for
+data in L2 will be max(4,4+6) cy = 10cy. As a shorthand
+notation for these predictions we use a similar format but
+with “⌉” as the delimiter. For DAXPY this would read as
+TECM = {4⌉10⌉16⌉29} cy.
+As a further example that does not exhibit the strong data
+transfer dominance of DAXPY we pick a double precision
+vector summation:
+for(i=0; i<N; ++i)
+s = s + a[i];
+We construct the ECM model for this kernel in four cases:
+naive, scalar, SSE, and AVX vectorization on a SNB core. In
+all but the “naive” case we assume that appropriate modulo
+unrolling has been applied (at least 3-way due to the 3-cycle
+ADD latency) on top of SIMD vectorization to allow for ﬁlling
+the ADD pipeline despite the register dependency. The “naive”
+code is scalar and does not use modulo unrolling, so the full
+latency must be paid for every ADD instruction. The results
+are shown in Table II. One can immediately see that the naive
+code is executing so slowly that it does not “feel” the memory
+4
+case
+ECM model [cy]
+prediction [cy]
+measurement [cy]
+naive
+{24∥4|2|2|4.3}
+{24⌉24⌉24⌉24}
+24⌉24⌉24⌉27
+scalar
+{8∥4|2|2|4.3}
+{8⌉8⌉8⌉12}
+8.1⌉8.9⌉11⌉18
+SSE
+{4∥2|2|2|4.3}
+{4⌉4⌉6⌉10}
+4.1⌉5⌉7.2⌉15
+AVX
+{2∥2|2|2|4.3}
+{2⌉4⌉6⌉10}
+2.1⌉4.9⌉7.2⌉14
+TABLE II
+ECM MODEL AND CYCLE PREDICTIONS ON A SNB CORE FOR THE
+VECTOR SUMMATION LOOP IN DOUBLE PRECISION.
+hierarchy even if the data is in memory. The scalar code is
+dominated by core execution down to the L3 cache and starts
+to degrade in performance only when the data comes from
+memory. Furthermore, although SSE vectorization yields a
+signiﬁcant speedup in L1 and L2 cache, the gain is only about
+20% in memory. Finally, going from SSE to AVX pays off only
+if the data is in the L1 cache. These predictions are in line
+with the general observation that the performance of “slow,”
+i.e., unoptimized code is largely independent of the position
+of data in the memory hierarchy.
+4) Conclusions from the ECM model: The ECM model
+explains accurately why the theoretical bandwidth limits of
+all memory hierarchy levels except the L1 cache cannot be hit
+with a single thread. Even with a highly efﬁcient, bandwidth-
+demanding loop kernel the non-overlapping contributions to
+Tdata from the higher memory levels prevent full bandwidth
+utilization. If multiple threads are used, bandwidth saturation
+is possible. See Sect. III-A5 for scalability predictions.
+With a small adaption the ECM model also allows to model
+the consequences of changing CPU clock speed. The cycle
+counts and predictions change neither for Tcore nor for the parts
+of Tdata that apply to hardware running at full clock speed. All
+other contributions must be scaled accordingly. In case of the
+Intel CPU, the frequency-corrected ECM model reads
+{TOL ∥TnOL |TL1L2 |TL2L3 |TL3Mem f/f0} ,
+(5)
+where f0 is the base frequency and f is the actual frequency.
+The performance impact of frequency changes can thus be
+studied precisely. If the memory bandwidth depends on the
+core clock speed, the correction factor f/ f0 may be modiﬁed.
+Once the execution time for the basic work unit is known
+from the ECM model, one can calculate the single-core
+performance by dividing work by time: PECM = W/T. Any
+appropriate unit of “work” will do, be it ﬂops, iterations,
+“lattice site updates,” etc. In case of the scalar summation,
+the performance in ﬂop/s on a SNB core is
+P =
+8ﬂops· f
+{8⌉8⌉8⌉8+4.3f/ f0} cy .
+(6)
+At the nominal clock speed of
+f0 = 2.7GHz we get
+P(f0) = {2.7⌉2.7⌉2.7⌉1.8} Gﬂop/s.
+The
+model
+shows
+clearly that the single-core performance changes with the
+clock frequency even for data in memory: P(1.6GHz) =
+{1.6⌉1.6⌉1.6⌉1.2} Gﬂop/s. The larger the relative share of
+TL3Mem versus the other contributions, the weaker this depen-
+dence will be.
+LC
+ECM model [cy]
+prediction [cy]
+Pmem
+ECM
+[MLUP/s]
+Ni <
+nS
+L1
+{6∥8|6|6|13}
+{8⌉14⌉20⌉33}
+659
+683
+3
+L2
+{6∥8|10|6|13}
+{8⌉18⌉24⌉37}
+587
+5461
+3
+L3
+{6∥8|10|10|13}
+{8⌉18⌉28⌉41}
+529
+436900
+4
+—
+{6∥8|10|10|22}
+{8⌉18⌉28⌉50}
+438
+N/A
+3
+TABLE III
+ECM MODEL, MAIN MEMORY CODE BALANCE, PREDICTED
+PERFORMANCE, REQUIRED LEADING DIMENSION, AND SATURATION
+POINT FOR THE 2D JACOBI KERNEL WHEN THE LAYER CONDITION (LC) IS
+FULFILLED IN DIFFERENT MEMORY HIERARCHY LEVELS, FROM L1 DOWN
+TO MAIN MEMORY ON ONE SNB CORE.
+5) Chip-level bottleneck and saturation: For describing the
+chip-level performance scaling we assume that the single-core
+performance scales linear with the number of cores until a
+bottleneck is hit [14]. In case of the modern Intel processors
+the only bottleneck is the memory bandwidth, which means
+that an upper performance limit is given by the Roofline
+prediction for memory-bound execution: PBW = bS/BC, where
+BC is the code balance (inverse computational intensity) of
+the loop code and bS is the memory bandwidth (one may
+certainly consider other bottlenecks, such as a non-scalable L3
+cache like on the Intel Westmere processors). The performance
+scaling for n cores is thus described by
+P(n) = min
+
+nPmem
+ECM, bS
+BC
+
+(7)
+if Pmem
+ECM is the ECM model prediction if the data is in
+main memory. This expression shows clearly the connection
+between the ECM model and the Roofline model: In the
+Roofline model, which reads P = min(nPcore
+max ,bS/BC), the role
+of the scaled single-core ECM prediction is assumed by the
+scaled maximum in-core performance (which is usually the
+theoretical, purely computational peak performance of the
+loop). Whenever Pcore
+max deviates strongly from Pmem
+ECM, the two
+models may yield diverging predictions.
+According to (7), the performance will saturate at nS cores:
+nS =
+bS/BC
+Pmem
+ECM
+
+=
+ T mem
+ECM
+TL3Mem
+
+.
+(8)
+The model conﬁrms the well-known effect that “slow” loop
+code needs more cores to reach saturation. For example, the
+AVX summation code has a predicted single-core performance
+of Pmem
+ECM = 2.1Gﬂop/s at nominal clock speed and it will
+saturate at three cores, while the naive, non-pipelined code
+with Pmem
+ECM = 0.9Gﬂop/s will require six. Hence, in this case
+a low code quality can be “healed” by using more resources.2
+This would not be possible at a clock speed of 1.6 GHz, since
+the slow code would then need ten cores to saturate, but the
+CPU only has eight.
+IV. CASE STUDY: 5-POINT STENCIL
+We use the arguably most simple non-trivial stencil variant
+to employ the ECM model in a setting that is more complex
+2If time to solution is the only relevant metric, this attitude may be justiﬁed.
+However, it is not acceptable in view of energy consumption. See [10], and
+references therein.
+5
+than the pure streaming kernels shown earlier. All concepts,
+however, are generalizable to other stencils. One sweep (com-
+plete update of all points) of the 2D ﬁve-point Jacobi stencil
+looks as follows (double precision assumed):
+for(j=1; j<Nj-1; ++j)
+for(i=1; i<Ni-1; ++i)
+b[j][i] = ( a[j][i-1] + a[j][i+1]
++ a[j-1][i] + a[j+1][i] ) * s;
+Unless otherwise noted we assume that the array dimensions
+are large so that the arrays a and b do not ﬁt in any cache.
+We adopt “lattice site updates per second” (LUP/s), i.e., scalar
+inner kernel iterations, as an appropriate performance metric.
+A. Basic analysis
+With AVX vectorization, one unit of work (eight LUPs)
+comprises eight loads, two stores, six adds, and two multiply
+instructions (note that there will be no beneﬁt from inner
+loop unrolling to enable re-use of data along the leading
+dimension). Hence, TnOL = 8cy and TOL = 6cy. The code is
+thus limited by the LOAD pipeline throughput at the core
+level.
+The data transfer properties of the loop nest depend on
+the problem size in relation to the available cache sizes. The
+target array b causes a trafﬁc of two CLs across the complete
+memory hierarchy due to the write-allocate transfer on every
+store miss. The right hand side element a[j][i-1] can
+always be obtained from the L1 cache since it was loaded
+two inner iterations before as a[j][i+1], and a[j+1][i]
+must be loaded from memory since it was not used before
+within the sweep. Whether a[j-1][i] and a[j][i+1]
+cause cache misses in a certain cache level depends on whether
+three successive rows of the array a ﬁt into the cache [3]. We
+call this the layer condition (LC). If the size of cache k is Ck,
+it can be formulated as
+3·Ni ·8B < Ck
+2 .
+(9)
+The factor of 1/2 is a rule of thumb: we assume that half the
+cache size is available for storing layers. The number of layers
+is connected to the stencil radius in the outer dimension. If r
+is the radius, (2r +1) layers have to ﬁt.
+If the layer condition is fulﬁlled for cache level k, only
+a[j+1][i] causes a cache miss in this level, and is sub-
+sequently used three times from the cache. The code balance
+is then 24B/LUP as seen from the next memory hierarchy
+level (cache k +1, or main memory), because only three data
+streams must be sustained. If the condition is violated, only
+a[j][i-1] comes from the cache and all other elements
+cause misses, leading to ﬁve data streams and a code balance
+of 40B/LUP. Columns 2–4 in Table III show a summary of
+the ECM model timing and performance predictions on a SNB
+core. In column 5 we give the leading dimension below which
+the respective layer condition is satisﬁed. This number was
+obtained by solving (9) for Ni and using the cache sizes of
+the SNB processor in Table I.
+B. Single-core performance vs. problem size
+Figure 3 shows the measured performance and the ECM
+model prediction for a large range of memory-bound problem
+10
+3
+10
+4
+10
+5
+10
+6
+10
+7
+Leading dimension (Ni)
+0
+200
+400
+600
+800
+Performance [MLUP/s]
+Ni x Nj = 4 x 10
+8
+Ni = Nj
+L3 limit
+no LC
+LC in L3
+LC in L2
+BC
+mem = 40 B/LUP
+BC
+L3 = 40 B/LUP
+BC
+mem = 24 B/LUP
+BC
+mem = 24 B/LUP
+BC
+L3 = 24 B/LUP
+BC
+L2 = 40 B/LUP
+Fig. 3.
+In-memory performance vs. leading array dimension of the 2D Jacobi
+sweep on a SNB core. Up to a leading dimension of 2 ×104 the domain is
+quadratic. Beyond that, the overall problem size is kept constant. The dashed
+line is the prediction from the ECM model.
+sizes. After the problem drops out to main memory at Ni ≈
+1145 (quadratic domain), three phases can be distinguished.
+These can be attributed to the layer condition being satisﬁed
+in the L2 cache, the L3 cache, and not at all, corresponding
+to rows 2–4 in Table III. An L1 layer condition would require
+a leading dimension of less than 683, which leads to an in-
+cache problem size if Ni = Nj. For each phase we also show
+the predicted code balance for different levels of the memory
+hierarchy. These results indicate that the Roofline model is not
+a reliable model for the single core, because the performance
+changes considerably when the leading dimension grows be-
+yond Ni = 5461 although Bmem
+C
+stays the same.
+The dashed line in Fig. 3 shows the ECM model prediction,
+which is in good agreement with the measurement in all three
+phases. The model ﬁts well within a 10% margin, and it is
+even slightly below the measurement if the layer condition is
+fulﬁlled in L2 cache. We have observed this effect in many
+situations where the pressure on the memory hierarchy gets
+smaller when moving towards main memory (i.e., when the
+number of streams goes down). One may speculate that the
+non-overlapping assumption of the model is inaccurate in these
+cases; the deviation is generally small, however.
+Despite the performance ﬂuctuations (especially in the
+phase with BC = 40B/LUP), the actual memory code bal-
+ance obtained by measuring the data volume with hardware
+performance events is within 5% of the predicted value.
+C. Spatial blocking optimization
+Spatial blocking (also called “loop tiling”) is a well-known
+optimization for loop nests that aims at improving temporal
+data access locality. In the context of stencil solvers it amounts
+to rearranging the order of the stencil updates so that some
+layer condition is met, leading to a decrease in code balance.
+We can predict the expected gain of spatial blocking on the
+single core by setting up an ECM model for different blocking
+strategies. This is especially simple for the 2D Jacobi stencil as
+the layer condition (9) only depends on the leading dimension.
+One must conclude that it is sufﬁcient to block the inner loop:
+6
+10
+3
+10
+4
+10
+5
+10
+6
+10
+7
+Leading dimension (Ni)
+0
+200
+400
+600
+800
+Performance [MLUP/s]
+no blocking
+bi = 2.3 x 10
+5 (L3 blocking)
+bi = 4.3 x 10
+3 (L2 blocking)
+bi = 800, bj = 300 (L1 blocking)
+ECM predictions
+Ni x Nj = 4 x 10
+8
+Ni = Nj
+Fig. 4.
+Performance vs. problem size for the 2D Jacobi stencil as in Fig. 3
+but with spatial blocking of the leading dimension with block size bi. The
+four ECM model predictions correspond to the rows of Table III. In case of
+the L1 layer condition (squares) blocking in j direction is required. See also
+Fig. 5.
+// inner block size = b_i
+for(is=1; is<Ni-1; is += bi)
+for(j=1; j<Nj-1; ++j)
+for(i=is; i<min(Ni-1,is+bi-1; ++i)
+b[j][i] = ( a[j][i-1] + a[j][i+1]
++ a[j-1][i] + a[j+1][i] ) * s;
+The layer condition (9) now takes a modiﬁed form:
+3·bi ·8B < Ck
+2 .
+(10)
+Hence, the block size bi determines whether the layer con-
+dition will be satisﬁed in cache level k, and column 5 in
+Table III again provides the relevant thresholds. Choosing bi
+appropriately is called “blocking for cache level k.” Figure 4
+shows performance vs. leading dimension for three block sizes
+and no blocking. These four cases (squares, circles, triangles,
+gray line) correspond to the four possible layer conditions in
+Table III, and the ECM models given there apply. The solid
+lines denote the performance predictions.
+The data shows that the ECM model is able to describe
+the performance impact of spatial blocking quite accurately,
+and that the gain from moving a layer condition up in the
+memory hierarchy (i.e., satisfying it in a higher cache level)
+can be leveraged also for larger leading dimensions. In case
+of pure L1 blocking, however, the observed performance was
+at ﬁrst lower than expected. A measurement of the memory
+data trafﬁc revealed that the actual code balance was much
+higher than 24B/LUP, which was caused by the hardware
+prefetcher: If the inner block size bi is small, the leading
+array dimension is only traversed partially, but the hardware
+prefetcher cannot foresee when the loop ends. It fetches cache
+lines from beyond the actual end of the short inner loop block.
+Those cannot be used before the next inner block is updated,
+they are thus evicted prematurely and cause excess memory
+trafﬁc. Additional blocking in the outer dimension was added
+to correct this problem:
+for(js=1; js<Nj-1; js += b j)
+for(is=1; is<Ni-1; is += bi)
+for(j=js; j<min(Nj-1,js+b j-1; ++j)
+for(i=is; i<min(Ni-1,is+bi-1; ++i)
+1000
+2000
+outer block size bj
+550
+600
+650
+Performance [MLUP/s]
+(a)
+1000
+2000
+outer block size bj
+24
+25
+26
+27
+28
+BC
+mem [B/LUP]
+(b)
+minimum
+Fig. 5. Inﬂuence of outer loop blocking on the 2D Jacobi stencil at a constant
+inner loop block size of bi = 800 and a constant problem size of Ni = 3.5×104
+and Nj = 1.2×104. (a) Performance vs. outer loop block size. (b) Measured
+in-memory code balance vs. outer loop block size.
+b[j][i] = ( a[j][i-1] + a[j][i+1]
++ a[j-1][i] + a[j+1][i] ) * s;
+In Fig. 5 we show the effect of the outer loop blocking
+with block size bj on the performance and on the measured
+in-memory code balance at a constant inner block size of
+bi = 800. It turns out that bj ≈300 alleviates the prefetcher
+problem: blocks of size bi×bj are updated consecutively along
+the leading dimension, and all excess cache lines can be used.
+Note that one can determine the excess trafﬁc, and hence the
+prefetch distance, from the measured data volume at large bj.
+We have calculated the prefetch distance to be about 33 CL in
+our case, but this result is probably not generic since the details
+of the prefetch mechanism are unknown. Data overheads at
+block boundaries (of which eager prefetching is just the most
+striking example) may be incorporated into the model if the
+corresponding data volumes are known.
+Although all considered problem sizes are bigger than the
+L3 cache, the execution is far from memory bound. Even when
+blocking for the L1 cache (squares in Fig. 4), the memory
+bandwidth as calculated from the product of performance and
+code balance is barely 17GB/s out of a maximum of over
+40GB/s. Note that 17GB/s is also the single-core STREAM
+bandwidth of the processor. The Roofline model is thus
+accurate by accident in this case; it is, however, too optimistic
+for L2 and L3 blocking, although the in-memory code balance
+is the same in all three cases.
+Since the code balance is already at its possible minimum
+of 24B/LUP across all cache levels, spatial blocking cannot
+improve the single-core performance any further. The ECM
+model prediction in the ﬁrst row of Table III shows that if one
+were able to reduce the core time by a factor of two (from 8
+to 4 cycles) by some advanced optimization technique such as
+register blocking, single-core performance would improve by
+a factor of 33/(33−4) = 1.14.
+D. Multi-core scaling
+When going from single-threaded to multi-threaded execu-
+tion on a multicore chip, two architectural features impact the
+performance behavior: (i) the memory bandwidth bottleneck
+and (ii) the shared outer-level cache (if present). In Fig. 6 we
+7
+1
+2
+3
+4
+5
+6
+7
+8
+# cores
+0
+200
+400
+600
+800
+1000
+1200
+1400
+1600
+1800
+Performance [MLUP/s]
+no blocking
+bi = 800, bj = 300
+ECM model (L1 blocking)
+ECM model (no blocking)
+(a)
+1
+2
+3
+4
+5
+6
+7
+8
+# cores
+0
+200
+400
+600
+800
+1000
+1200
+1400
+1600
+1800
+Performance [MLUP/s]
+40B/LUP
+24B/LUP
+no blocking
+bi = 2.3 x 10
+5
+bi = 1.1 x 10
+5
+bi = 2.3 x 10
+5 / nthreads
+(b)
+1
+2
+3
+4
+5
+6
+7
+8
+# cores
+0
+200
+400
+600
+800
+1000
+1200
+1400
+1600
+1800
+Performance [MLUP/s]
+bi = 800, bj = 300
+bi = 4.3 x 10
+3
+bi = 2.3 x 10
+5 / nthreads
+(c)
+Fig. 6.
+Scaling of the Jacobi 2D kernel across the cores of a SNB chip at Ni = 1.2×106. (a) Comparison of ECM model and measurement for L1 blocking
+and no blocking. (b) Choosing the right block size bi for the L3 layer condition. (c) Comparison of saturation behavior for L1, L2, and L3 blocking.
+show performance scaling across the cores of a SNB socket at
+Ni = 1.2 ×106. Two-dimensional L1 blocking was only used
+where necessary. In all cases (blocked or not), the j loop
+was parallelized with OpenMP and static loop scheduling.
+This ensures that the prefetcher problem described in the
+previous section remains solved, since each thread works on
+a consecutive string of blocks in the leading dimension.
+Figure 6a compares the ECM model and scaling predictions
+with measurements for the two extreme cases of no blocking
+(circles) and L1 blocking (stars). The general scaling behavior
+is described well, although there is a deviation in the vicinity
+of the saturation point, which we attribute to changes in the
+prefetching strategy when the memory interface is almost fully
+utilized [11]: For instance, cache lines are only prefetched
+into L3 and the prefetch distance is smaller. This leads to an
+additional latency penalty, which is not part of the ECM model
+(but could be included). The saturation level is slightly smaller
+than predicted by the code balance, but the deviation is well
+below 10%.
+In Fig. 6b we study the inﬂuence of the block size on the
+scalability when blocking for the L3 cache. At bi = 2.3×105
+(squares) the single-core speedup versus the non-blocked
+version (circles) is as expected, but performance saturates at
+a level that indicates a code balance of 40B/LUP. Reducing
+the block size to bi = 1.1×105 shows no improvement on the
+single core but leads to much higher performance up to four
+cores. Beyond four cores, however, performance degrades and
+settles again at the same level as before. The reason for this
+behavior is the shared L3 cache, which requires a modiﬁed
+layer condition:
+3·bi ·n·8B < C3
+2 .
+(11)
+The n-dependent block size ensures that three layers per thread
+ﬁt into the cache, and leads to the saturation performance
+expected from a code balance of 24B/LUP (triangles). Note
+that block size adaptivity is not required when blocking for
+core-private caches, since their aggregate size scales with the
+number of cores.
+Finally we need to comment on the inﬂuence of the chosen
+blocking strategy (L1, L2, or L3) on the scalability. Tech-
+nically the ECM model predicts different saturation points
+for L3 blocking (4 cores) and L1 or L2 blocking (3 cores),
+as shown in the last column of Table III. In reality they
+display very similar saturation behavior for the Jacobi 2D
+kernel (see Fig. 6c), although the general trend to saturate
+earlier with faster single-core code can certainly be observed.
+If maximum performance is the only signiﬁcant metric, it is
+irrelevant in practice which blocking strategy is chosen as
+long as the in-memory code balance is at its minimum of
+24B/LUP. Saturating earlier, however, has some advantages:
+“expendable” cores can be put into a low-power mode, saving
+energy (“concurrency throttling”), or they can be used for other
+tasks such as asynchronous communication.
+Note that the use of non-temporal stores (also called
+“streaming stores”) may reduce the in-memory code balance
+from 24B/LUP to 16B/LUP by ignoring the cache hierarchy
+on a store miss, saving the write-allocate transfers. However,
+their implementation on Intel processors cannot be described
+by a simple throughput assumption. Therefore it is unclear as
+yet how to incorporate the non-temporal store instructions in
+the ECM model.
+V. CASE STUDY: UXX STENCIL
+The “uxx” stencil [15] is a part of a simulation code for
+dynamic rupture and earthquake wave propagation. The basic
+loop nest without any blocking optimizations looks as follows:
+#pragma omp parallel for schedule(static) private(d)
+for(int k=2; k<=N-1; k++){
+for (int j=2; j<=N-1; j++){
+for (int i=2; i<=N-1; i++){
+d = 0.25*(d1[ k ][j][i] + d1[ k ][j-1][i]
++ d1[k-1][j][i] + d1[k-1][j-1][i]);
+u1[k][j][i] = u1[k][j][i] + (dth/d)
+* ( c1*(xx[ k ][ j ][ i ] - xx[ k ][ j ][i-1])
++ c2*(xx[ k ][ j ][i+1] - xx[ k ][ j ][i-2])
++ c1*(xy[ k ][ j ][ i ] - xy[ k ][j-1][ i ])
++ c2*(xy[ k ][j+1][ i ] - xy[ k ][j-2][ i ])
++ c1*(xz[ k ][ j ][ i ] - xz[k-1][ j ][ i ])
++ c2*(xz[k+1][ j ][ i ] - xz[k-2][ j ][ i ]));
+}}}}
+8
+version
+ECM model [cy]
+prediction [cy]
+DP
+{84∥38|20|20|26}
+{84⌉84⌉84⌉104}
+SP
+{45∥38|20|20|26}
+{45⌉58⌉78⌉104}
+DP noDIV
+{41∥38|20|20|26}
+{41⌉58⌉78⌉104}
+TABLE IV
+ECM MODEL AND CYCLE PREDICTIONS FOR THE UXX STENCIL CODE IN
+DOUBLE PRECISION (DP) AND SINGLE PRECISION (SP), RESPECTIVELY,
+WITH L3 BLOCKING. THE UNIT OF WORK IS 8LUPS FOR DP AND 16LUPS
+FOR SP. THE “NODIV” VERSION PERFORMS A MULTIPLY INSTEAD OF A
+DIVIDE IN THE INNER LOOP.
+The code is used with either single or double precision, and
+it contains a divide operation in the inner loop. Without any
+guidance by performance modeling one would probably try
+to eliminate the divide (which is non-trivial) because “divides
+are expensive.”
+A. Analysis and ECM model
+The loop code as generated by the compiler is quite com-
+plex, so we employ the IACA tool. At double precision (DP)
+the throughput analysis reports the divider to be the bottleneck
+on the core, causing a core time of Tcore = TOL = 84cy per CL
+(eight iterations) due to the very slow 42-cycle throughput for
+the divide instruction (vdivpd). The non-overlapping part is
+TnOL = 38cy, caused by the loads to the arrays xx, xy, xz,
+d1, and u1. With single precision (SP) the machine code does
+not contain any divide at all: the compiler uses the vrcpps
+instruction instead, which provides a low-precision (11bits)
+but fully vectorized and pipelined reciprocal, and employs a
+subsequent Newton-Raphson step and a multiply to perform
+a 22-bit divide [11]. This results again in TnOL = 38cy as the
+load instructions are the same as with DP. The overlapping
+part is TOL = 35cy, caused by add, multiply, and 16-byte move
+instructions. The code is close to the limit of four micro-ops
+per cycle on the SNB, which is why IACA reports a front-
+end bottleneck and an overall throughput of Tcore = 45cy.
+Since front-end stalls overlap with the transfer time, the seven
+extra cycles have no signiﬁcance and will be ignored in the
+following.
+Calculating the transfer time requires an analysis of relevant
+layer conditions. There are two types of layers in a 3D stencil
+code: one-dimensional layers along the leading dimension
+(rows along i of size N) and layers that span the extent of the
+inner two-level loop nest (size N × N). At relevant problem
+sizes only the latter will matter, and we can safely ignore
+the “row conditions” since they will be automatically fulﬁlled
+in the L1 cache. The only data structures which are subject
+to layer conditions are thus xz and d1, because their stencil
+radius is larger than zero in the outer (k) dimension. The cache
+must hold as many layers as there are distinct outer index
+references, i.e., two for d1 (which is accessed in layers k and
+k −1) and four for xz (which is accessed in layers k −2 to
+k +1). Hence, the layer condition for n threads in the shared
+L3 cache and blocking in the j dimension is
+(4+2)·N ·bj ·n·
+
+4B (SP)
+8B (DP)
+
+< C3
+2 .
+(12)
+1
+2
+3
+4
+5
+6
+7
+8
+#cores
+0
+200
+400
+600
+800
+1000
+1200
+1400
+1600
+1800
+Performance [MLUP/s]
+ECM Model SP
+single precision
+ECM Model DP
+double precision noDIV
+double precision
+Fig. 7.
+Performance scaling and ECM model predictions of the uxx stencil
+benchmark with L3 blocking at a problem size of 2763 grid points across the
+cores of one SNB socket in single and double precision.
+One may certainly consider higher cache levels or block the
+inner dimension as well, but we omit this discussion here since
+it would not provide new insights.
+With L3 blocking, the transfer time will be independent
+of the precision. Six consecutive data streams hit the memory
+interface per thread: one each for xx, xy, xz, and d1, and two
+for u1. The code balance in memory is thus Bmem
+C
+= 24B/LUP
+in SP and 48B/LUP in DP. Assuming that the higher caches
+are too small to hold the layers, the L3 cache will be hit by
+ten streams per thread.
+The analysis in the previous sections now enables us to
+construct the ECM model for the uxx stencil. The ﬁrst two
+rows in Table IV show the model and the cycle predictions
+for SP and DP. For comparison we also include a special DP
+version (“noDIV”) in which the divide as substituted by a
+multiplication.
+The ECM model yields the same cycle prediction per unit
+of work in main memory for all versions (104cy), hence we
+expect a factor of two in performance between SP and DP.
+Also, all versions should saturate at four cores. Probably the
+most striking result is that the presence or absence of the divide
+does not make a difference as
+Tdata +TnOL > TOL
+(13)
+despite the low-throughput divide. Going to great lengths in
+trying to eliminate it from the code will thus not be rewarded
+with performance improvements. These predictions are con-
+ﬁrmed by the performance data shown for one SNB socket
+in Fig. 7. There is actually a slight speedup for the “noDIV”
+version below saturation. Using the latency analysis in the
+IACA tool revealed that the critical code path through the loop
+body has a worst case execution time of 192cy. Usually the
+throughput prediction is much closer to the measured runtime
+since the out of order logic can ﬁll a lot of pipeline bubbles
+across the independent loop iterations. In this case, however,
+the critical path is so long that (13) is just barely satisﬁed (in
+fact there is a 10% deviation from the model on the single
+core). Removing the divide shortens the critical path so much
+that (13) can be easily met, and the ECM model prediction is
+very precise.
+9
+B. Optimization opportunities
+One typical stencil optimization that goes beyond spatial
+blocking is temporal blocking, which can dramatically reduce
+the in-memory code balance by performing multiple updates
+on each grid point in cache before it gets evicted. The ECM
+model can provide upper limits to the expected beneﬁt of
+temporal blocking. In case of uxx, optimal temporal blocking
+for the L3 cache would completely remove the memory
+transfer time of TL3Mem = 26cy, resulting in a 24% (DP) or
+33% (SP) speedup on the single core. The next bottleneck
+will then be the divide for DP (84cy) and the L3 transfer
+time for SP (78cy), respectively, but both of these are purely
+core-local. The true potential of temporal blocking is thus
+not in the speedup on the single core but in the removal
+of the memory bandwidth bottleneck, allowing for scalable
+performance with an upper limit of over 2000MLUP/s even
+for DP and still including the divide. Even in this case the
+beneﬁt from temporal blocking would by far outweigh the
+speedup gained from removing the divide.
+See [16] for a case study of temporal blocking with a 3D
+Jacobi smoother supported by an ECM model analysis.
+VI. CASE STUDY: 3D LONG-RANGE STENCIL
+A large stencil radius in the outer grid dimension leads to
+a high pressure on the cache levels since they have to hold a
+large number of layers. As an example we consider a constant
+coefﬁcient long-range stencil code in single precision with a
+radius of four in each dimension:
+#pragma omp parallel for
+for(int k=4; k < N-4; k++) {
+for(int j=4; j < N-4; j++) {
+for(int i=4; i < N-4; i++) {
+float lap = c0 * V[k][j][i]
++ c1 * ( V[ k ][ j ][i+1]+ V[ k ][ j ][i-1])
++ c1 * ( V[ k ][j+1][ i ]+ V[ k ][j-1][ i ])
++ c1 * ( V[k+1][ j ][ i ]+ V[k-1][ j ][ i ])
++ c2 * ( V[ k ][ j ][i+2]+ V[ k ][ j ][i-2])
++ c2 * ( V[ k ][j+2][ i ]+ V[ k ][j-2][ i ])
++ c2 * ( V[k+2][ j ][ i ]+ V[k-2][ j ][ i ])
++ c3 * ( V[ k ][ j ][i+3]+ V[ k ][ j ][i-3])
++ c3 * ( V[ k ][j+3][ i ]+ V[ k ][j-3][ i ])
++ c3 * ( V[k+3][ j ][ i ]+ V[k-3][ j ][ i ])
++ c4 * ( V[ k ][ j ][i+4]+ V[ k ][ j ][i-4])
++ c4 * ( V[ k ][j+4][ i ]+ V[ k ][j-4][ i ])
++ c4 * ( V[k+4][ j ][ i ]+ V[k-4][ j ][ i ]);
+U[k][j][i] = 2.f * V[k][j][i]- U[k][j][i]
++ ROC[k][j][i] * lap;
+}}}
+The only array that is relevant for layer conditions here is V;
+the others (U and ROC) are accessed in linear order without
+potential for cache re-use.
+A. Analysis and ECM model
+The IACA tool reports an overlapping core time of TOL =
+68cy, which is mainly due to adds and frontend stalls, while
+the load port limitation is at TnOL = 64cy. Since the stencil
+radius is 4 in all directions, the block size in the j direction
+must be chosen so that the cache can hold nine layers. The
+n-thread layer condition is
+9·N ·bj ·n·4B < C3
+2 .
+(14)
+1
+2
+3
+4
+5
+6
+7
+8
+#cores
+0
+500
+1000
+1500
+2000
+2500
+Performance [MLUP/s]
+ECM Model L3 blocking
+L3 blocking
+ECM Model no blocking
+no blocking
+BC
+mem = 16 B/LUP
+BC
+mem = 48 B/LUP
+Fig. 8.
+Performance scaling and ECM model predictions of the 3D long-
+range stencil benchmark with (circles) and without (triangles) L3 blocking at
+a problem size of 4803 grid points across the cores of one SNB socket in
+single precision.
+In this case, four data streams per thread will hit the memory
+and the code balance will be Bmem
+c
+= 16B/LUP. If the layer
+condition is only satisﬁed in L3, this cache will be hit by
+twelve streams per thread, which already indicates that the
+transfer time is signiﬁcant for this kernel and that the main
+contribution to it does not come from main memory. Indeed the
+ECM model is {68∥64|24|24|17} cy, which leads to a cycle
+prediction of {68⌉88⌉112⌉129} cy. Hence, only 17/129 ≈
+13% of the execution time is attributed to TL3Mem, and the code
+will just barely saturate at eight cores. If the layer condition
+is not satisﬁed at all, the memory code balance will rise to
+Bmem
+c
+= 48B/LUP. In Fig. 8 we show performance data on a
+SNB socket with and without blocking. At the chosen problem
+size of 4803, the layer condition is fulﬁlled without blocking
+for a single thread, which is why the single-core performance
+and prediction is the same in both cases. At two cores and
+above, however, blocking is required. The blocked code scales
+well almost up to the full socket, as predicted by the ECM
+model.
+B. Optimization opportunities
+The blocking optimization has almost removed the memory
+bottleneck, and the ECM model predicts that temporal block-
+ing, which would eliminate TL3Mem altogether, would only
+have a minor effect on the single core and the full socket. In
+order to get any performance improvement one would have
+to reduce the major contribution in T ECM
+mem , which is TnOL.
+If all core contributions including TnOL could be shrunk by
+50%, the ECM model would be {34∥32|24|24|17} cy and
+the prediction would be {34⌉56⌉80⌉97} cy. The single-core
+code would be accelerated by 33% and saturation would set in
+at six cores, making temporal blocking a viable optimization.
+Possible code transformations leading to a substantial improve-
+ment of Tcore would have to save on arithmetic operations as
+well as on loads. The semi-stencil algorithm [17] is one recent
+example.
+10
+VII. SUMMARY
+In this work we have reviewed the ECM performance model
+using simple streaming kernels and reﬁned it to clearly state
+its assumptions regarding the overlap of different contributions
+to the single-core runtime of a loop kernel across the memory
+hierarchy. By introducing a short-hand nomenclature we could
+ease the presentation of the model results and their application
+for performance predictions. We have then applied the model
+to three stencil algorithms with different code characteristics
+on an Intel SandyBridge processor. Using a 2D Jacobi stencil
+as the initial example we were able to explain the single-
+core performance vs. problem size by accurately calculating
+the runtime contributions. The performance and scalability
+impact of spatial blocking for establishing “layer conditions”
+in different cache levels was quantiﬁed using the ECM model,
+and it was shown why outer loop blocking is required although
+the layer condition does not depend on the outer problem
+dimension. The performance of a more complex 3D stencil
+with an expensive divide operation in the inner loop was
+shown to be independent of the presence of the divide because
+of the dominance of transfer times. Temporal blocking was
+predicted to show a minor speedup on the single core but a
+major performance boost on the full chip even if the divide
+operation is left untouched. Finally we have used the model to
+show that a 3D long-range stencil cannot saturate the memory
+bandwidth of the CPU at minimum in-memory code balance
+because of in-cache contributions to the single-core runtime.
+Any optimization attempt would thus have to aim at reducing
+the in-cache runtime before more advanced techniques such
+as temporal blocking are applied. It must be stressed that we
+have barely scratched the surface of the vast range of known
+stencil optimizations, but the basic line of thinking in applying
+the model has been clearly demonstrated.
+The ECM model is to our knowledge the only model
+that can usefully estimate the contributions to the single-core
+execution time of streaming loop kernels, of which stencil
+codes are just one example. It leads to a clear understanding
+of relevant bottlenecks and potential optimization approaches.
+Work is ongoing to build a simple tool that can construct
+the model from a high-level description of the code and the
+architecture, making it simpler to apply for the non-expert.
+One basic limitation of the ECM model is its “streaming
+assumption:” The model is over-optimistic if the data transfers
+through the memory hierarchy are latency-bound, which is the
+case, e.g., in “pointer chasing” scenarios, or on processors for
+which hardware and/or software prefetch mechanisms cannot
+hide the latency cost. In addition, we do not know yet how
+to incorporate the cost of non-temporal stores. Finally we
+have observed the model to be too optimistic for the memory
+data transfer time on processors with high-frequency memory
+interfaces. These shortcomings may be “ﬁxed” by introducing
+additional latency penalties, but we consider such an approach
+undesirable, since it would introduce additional parameters just
+for making the predictions more accurate. The main goal of the
+model is, however, to understand trends and bottlenecks, for
+which a precise performance prediction is often not required.
+ACKNOWLEDGMENT
+We thank Andrey Semin and Michael Klemm (Intel Ger-
+many) for useful discussions, Olaf Schenk (USI Lugano)
+for providing the “uxx” benchmark case, and Tareq Malas
+(KAUST) for providing the 3D long-range stencil case. Part
+of this work was supported by the DFG priority programme
+1648 “SPPEXA” under the project “EXASTEEL.”
+REFERENCES
+[1] T. Henretty, K. Stock, L.-N. Pouchet, F. Franchetti, J. Ramanujam, and
+P. Sadayappan, “Data layout transformation for stencil computations on
+short-vector simd architectures,” in Proceedings of the 20th International
+Conference on Compiler Construction: Part of the Joint European
+Conferences on Theory and Practice of Software, ser. CC’11/ETAPS’11.
+Berlin, Heidelberg: Springer-Verlag, 2011, pp. 225–245.
+[2] J. Treibig and G. Hager, “Introducing a performance model for
+bandwidth-limited loop kernels,” in Parallel Processing and Applied
+Mathematics, ser. Lecture Notes in Computer Science, R. Wyrzykowski,
+J. Dongarra, K. Karczewski, and J. Wasniewski, Eds.
+Springer Berlin
+/ Heidelberg, 2010, vol. 6067, pp. 615–624.
+[3] K. Datta, S. Kamil, S. Williams, L. Oliker, J. Shalf, and K. Yelick,
+“Optimization and performance modeling of stencil computations on
+modern microprocessors,” SIAM Review, vol. 51, no. 1, pp. 129–159,
+2009.
+[4] C. Leopold, “Tight bounds on capacity misses for 3d stencil codes,” in
+Proceedings of the International Conference on Computational Science-
+Part I, ser. ICCS ’02.
+London, UK, UK: Springer-Verlag, 2002, pp.
+843–852.
+[5] S. M. F. Rahman, Q. Yi, and A. Qasem, “Understanding stencil code
+performance on multicore architectures,” in Proceedings of the 8th ACM
+International Conference on Computing Frontiers, ser. CF ’11.
+New
+York, NY, USA: ACM, 2011, pp. 30:1–30:10.
+[6] D. Callahan, J. Cocke, and K. Kennedy, “Estimating interlock and
+improving balance for pipelined architectures,” Journal of Parallel and
+Distributed Computing, vol. 5, no. 4, pp. 334 – 358, 1988.
+[7] R. W. Hockney and I. J. Curington, “f1/2: A parameter to characterize
+memory and communication bottlenecks,” Parallel Computing, vol. 10,
+no. 3, pp. 277–286, 1989.
+[8] W. Sch¨onauer, Scientiﬁc Supercomputing: Architecture and Use of
+Shared and Distributed Memory Parallel Computers.
+Self-edition,
+2000. [Online]. Available: http://www.rz.uni-karlsruhe.de/∼rx03/book
+[9] S. Williams, A. Waterman, and D. Patterson, “Rooﬂine: An insightful
+visual performance model for multicore architectures,” Commun. ACM,
+vol. 52, no. 4, pp. 65–76, 2009.
+[10] G. Hager, J. Treibig, J. Habich, and G. Wellein, “Exploring performance
+and power properties of modern multicore chips via simple machine
+models,” Concurrency Computat.: Pract. Exper., 2013.
+[11] “Intel 64 and IA-32 architectures optimization reference manual,”
+September 2014.
+[12] J. Treibig, G. Hager, and G. Wellein, “LIKWID: A lightweight
+performance-oriented tool suite for x86 multicore environments,” in
+PSTI2010, the First International Workshop on Parallel Software
+Tools and Tool Infrastructures.
+Los Alamitos, CA, USA: IEEE
+Computer Society, 2010, pp. 207–216. [Online]. Available: http:
+//dx.doi.org/10.1109/ICPPW.2010.38
+[13] “Intel architecture code analyzer.” [Online]. Available: http://software.
+intel.com/en-us/articles/intel-architecture-code-analyzer/
+[14] M. A. Suleman, M. K. Qureshi, and Y. N. Patt, “Feedback-driven thread-
+ing: power-efﬁcient and high-performance execution of multi-threaded
+workloads on CMPs,” SIGARCH Comput. Archit. News, vol. 36, no. 1,
+pp. 277–286, Mar. 2008.
+[15] M. Christen and O. Schenk, “A performance study of an anelastic wave
+propagation code using auto-tuned stencil computations,” in Proc. ICCS
+2012, Omaha, Nebraska, USA, 4-6 June, 2012, ser. Procedia Computer
+Science, H. H. Ali, Y. Shi, D. Khazanchi, M. Lees, G. D. van Albada,
+J. Dongarra, and P. M. A. Sloot, Eds., vol. 9.
+Elsevier, 2012, pp.
+956–965.
+[16] S. Kronawitter, H. Stengel, G. Hager, and C. Lengauer, “Domain-speciﬁc
+optimization of two Jacobi smoother kernels and their evaluation in the
+ECM performance model,” Parallel Processing Letters, vol. 24, no. 03,
+p. 1441004, 2014.
+[17] R. de la Cruz and M. Araya-Polo, “Algorithm 942: Semi-Stencil,” ACM
+Trans. Math. Softw., vol. 40, no. 3, pp. 23:1–23:39, Apr. 2014.

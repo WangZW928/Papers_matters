@@ -1,6 +1,6 @@
 # Codex 精读推荐 — 20 篇论文排名
 
-**日期：** 2026-08-03（2026-08-04 追加 Berger-Colella AMR 精读 +70,977、WarpX GPU 移植精读 +81,317 tokens） | **审查范围：** 321 篇 | **Token：** 447,000
+**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens） | **审查范围：** 321 篇 | **Token：** 768,000
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -56,7 +56,7 @@
 12. **Quantum Simulation of PDEs via Schrödingerization** — quantum-computing
     - 文件：[`quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md`](quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 
-## Tier 3 — 扩展阅读（10 篇）
+## Tier 3 — 扩展阅读（14 篇）
 
 13. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
@@ -96,15 +96,36 @@
     - 数理基础：电磁 PIC 的 GPU 移植——AMReX ParallelFor 性能可移植层（CUDA/HIP/DPC++）、MultiFab/ParticleContainer 数据布局、gather+push kernel 融合（footprint 1.6×、+25%）、memory arena、粒子排序、SFC/knapsack 动态负载均衡、KPP-1 FOM 基准（2.2e10 → 2.5e12）
     - 为什么精读：AMReX 生态应用落地的样板——单代码库性能可移植如何实现、GPU 内存足迹优先的优化方法论、以整机 FOM 为准的调优观；对高性能框架设计有直接工程价值。关联：AMReX、BoxLib with Tiling、Berger-Colella AMR
 
+23. **Roofline: An Insightful Visual Performance Model for Multicore Architectures** — HPC
+    - 文件：[`HPC/roofline-an-insightful-visual-performance-model-for-multicore-architectures.md`](HPC/roofline-an-insightful-visual-performance-model-for-multicore-architectures.md)
+    - 数理基础：操作强度 I（flops/byte DRAM 流量）、roofline 不等式 P ≤ min(P_peak, B·I)、ridge point、3C 缓存模型对接、SpMV 带宽受限分析、实测 STREAM/LINPACK 屋顶
+    - 为什么精读：HPC 性能分析事实标准——一张图回答“计算受限 vs 带宽受限”，为 WarpX/ECM/AMR 内核优化提供统一判断框架。关联：WarpX GPU 移植、ECM 模型、Berger-Colella AMR
+
+24. **Quantifying Performance Bottlenecks of Stencil Computations Using the ECM Model** — HPC
+    - 文件：[`HPC/quantifying-performance-bottlenecks-of-stencil-computations-using-the-execution-cache-memory-model.md`](HPC/quantifying-performance-bottlenecks-of-stencil-computations-using-the-execution-cache-memory-model.md)
+    - 数理基础：ECM 可加性预测模型（执行部分 + L1/L2/L3/DRAM 数据部分）、layer condition 流量判定、空间/时间分块与强度削减的收益预测、多核扩展外推
+    - 为什么精读：从“上界图”（Roofline）到“可加预测”的进阶——stencil/AMR 内核优化前先建模，避免试错；layer condition 思想对数据流量分析有通用价值。关联：Roofline、AMReX、Berger-Colella AMR
+
+25. **I/O Complexity: The Red-Blue Pebble Game** — HPC
+    - 文件：[`HPC/io-complexity-the-red-blue-pebble-game.md`](HPC/io-complexity-the-red-blue-pebble-game.md)
+    - 数理基础：红蓝鹅卵石博弈形式化、S-partitioning 下界技术、FFT Ω(n log n/log S)、矩阵乘法 Ω(n³/√S)、下界可达性；I/O 复杂度理论奠基
+    - 为什么精读：memory wall 的理论根基——分块/循环变换为何最优的严格答案；与 Aggarwal-Vitter I/O 模型、communication-avoiding 算法一脉相承，是性能模型主线的理论底座。关联：Roofline、ECM 模型、JFNK Survey
+
+26. **Scheduling Multithreaded Computations by Work Stealing** — HPC
+    - 文件：[`HPC/scheduling-multithreaded-computations-by-work-stealing.md`](HPC/scheduling-multithreaded-computations-by-work-stealing.md)
+    - 数理基础：fully strict 多线程 DAG、T1/T∞ 测度、随机化工作窃取、busy-leaves property、recycling game、时间界 T1/P+O(T∞)、空间界 S1P、通信界 O(PT∞(1+nd)Smax)
+    - 为什么精读：任务并行调度理论基石（Cilk/TBB/OpenMP tasking）——动态负载均衡的最优性论证，与 AMReX SFC/knapsack 静态均衡互补，为高性能框架的并行调度层提供理论依据。关联：AMReX、WarpX GPU 移植
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
 2. **结构保持与涡方法** → Covector Fluids → Vortex Segment Clouds → Lie-Poisson Neural Networks
 3. **PDE 学习主线** → PINN → Neural Operator → SINDy → DMD/Koopman → DDPM
 4. **HPC 求解器主线** → JFNK Survey → Matrix-Free High-Order FEM Multigrid → Berger-Colella AMR (1989) → AMReX → WarpX GPU 移植 → AmgX → GPU GMRES
+    - 支撑：Roofline（性能上界）→ ECM 模型（可加预测）→ Hong-Kung I/O 复杂度（理论底座）→ Work-Stealing 调度（任务并行）
 5. **前沿交叉补强** → Schrödingerization PDE → Force-Free Fields → Extended Lagrangian → Log-conformation viscoelastic
 6. **几何耗散系统** → Double-Bracket Dissipation（刚体 → 未来理想流体推广）
 
 ---
 
-*覆盖 11 个 topic | 每篇均关联库内至少 1 篇其他论文 | 21/21 文件已链接*
+*覆盖 11 个 topic | 每篇均关联库内至少 1 篇其他论文 | 25/25 文件已链接*

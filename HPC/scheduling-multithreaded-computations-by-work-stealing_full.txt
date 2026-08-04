@@ -1,0 +1,1547 @@
+Scheduling Multithreaded Computations by Work
+Stealing
+ROBERT D. BLUMOFE
+The University of Texas at Austin, Austin, Texas
+AND
+CHARLES E. LEISERSON
+MIT Laboratory for Computer Science, Cambridge, Massachusetts
+Abstract. This paper studies the problem of efficiently scheduling fully strict (i.e., well-structured)
+multithreaded computations on parallel computers. A popular and practical method of scheduling
+this kind of dynamic MIMD-style computation is “work stealing,” in which processors needing work
+steal computational threads from other processors. In this paper, we give the first provably good
+work-stealing scheduler for multithreaded computations with dependencies.
+Specifically, our analysis shows that the expected time to execute a fully strict computation on P
+processors using our work-stealing scheduler is T1/P 1 O(T`), where T1 is the minimum serial
+execution time of the multithreaded computation and T` is the minimum execution time with an
+infinite number of processors. Moreover, the space required by the execution is at most S1P, where
+S1 is the minimum serial space requirement. We also show that the expected total communication of
+the algorithm is at most O(PT`(1 1 nd)Smax), where Smax is the size of the largest activation record
+of any thread and nd is the maximum number of times that any thread synchronizes with its parent.
+This communication bound justifies the folk wisdom that work-stealing schedulers are more
+communication efficient than their work-sharing counterparts. All three of these bounds are
+existentially optimal to within a constant factor.
+Categories and Subject Descriptors: D.4.1 [Process Management]: Threads—Thread scheduling
+General Terms: Algorithms, Performance, Theory
+This research was supported in part by the Advanced Research Projects Agency under Contract
+N00014-94-1-0985. This research was done while Robert D. Blumofe was at the MIT Laboratory for
+Computer Science and was supported in part by an ARPA High-Performance Computing Graduate
+Fellowship.
+An earlier version of this paper appeared in the Proceedings of the 35th Annual Symposium on
+Foundations of Computer Science (November 20–22). IEEE Computer Society Press, Los Alamitos,
+Calif., 1994, pp. 356–368.
+Authors’ addresses: R. D. Blumofe, Department of Computer Sciences, Taylor Hall 2.124, The
+University of Texas at Austin, Austin, TX 78712; C. E. Leiserson, 545 Technology Square,
+Cambridge, MA 02139.
+Permission to make digital/hard copy of part or all of this work for personal or classroom use is
+granted without fee provided that the copies are not made or distributed for profit or commercial
+advantage, the copyright notice, the title of the publication, and its date appear, and notice is given
+that copying is by permission of the Association for Computing Machinery (ACM), Inc. To copy
+otherwise, to republish, to post on servers, or to redistribute to lists, requires prior specific permission
+and/or a fee.
+© 1999 ACM 0004-5411/99/0900-0720 $05.00
+Journal of the ACM, Vol. 46, No. 5, September 1999, pp. 720–748.
+Additional Key Words and Phrases: Critical-path length, Multithreading, Multiprocessor, Random-
+ized algorithm, Thread scheduling, Work stealing
+1. Introduction
+For efficient execution of a dynamically growing “multithreaded” computation
+on a MIMD-style parallel computer, a scheduling algorithm must ensure that
+enough threads are active concurrently to keep the processors busy. Simulta-
+neously, it should ensure that the number of concurrently active threads remains
+within reasonable limits so that memory requirements are not unduly large.
+Moreover, the scheduler should also try to maintain related threads on the same
+processor, if possible, so that communication between them can be minimized.
+Needless to say, achieving all these goals simultaneously can be difficult.
+Two scheduling paradigms have arisen to address the problem of scheduling
+multithreaded computations: work sharing and work stealing. In work sharing,
+whenever a processor generates new threads, the scheduler attempts to migrate
+some of them to other processors in hopes of distributing the work to underuti-
+lized processors. In work stealing, however, underutilized processors take the
+initiative: they attempt to “steal” threads from other processors. Intuitively, the
+migration of threads occurs less frequently with work stealing than with work
+sharing, since when all processors have work to do, no threads are migrated by a
+work-stealing scheduler, but threads are always migrated by a work-sharing
+scheduler.
+The work-stealing idea dates back at least as far as Burton and Sleep’s [1981]
+research on parallel execution of functional programs and Halstead’s [1984]
+implementation of Multilisp. These authors point out the heuristic benefits of
+work stealing with regards to space and communication. Since then, many
+researchers have implemented variants on this strategy.1 Rudolph et al. [1991]
+analyzed a randomized work-stealing strategy for load balancing independent
+jobs on a parallel computer, and Karp and Zhang [1993] analyzed a randomized
+work-stealing strategy for parallel backtrack search. Zhang and Ortynski [1994]
+have obtained good bounds on the communication requirements of this algo-
+rithm.
+In this paper, we present and analyze a work-stealing algorithm for scheduling
+“fully strict” (well-structured) multithreaded computations. This class of compu-
+tations encompasses both backtrack search computations [Karp and Zhang 1993;
+Zhang and Ortynski 1994] and divide-and-conquer computations [Wu and Kung
+1991], as well as dataflow computations [Arvind et al. 1989] in which threads may
+stall due to a data dependency. We analyze our algorithms in a stringent
+atomic-access model similar to the atomic message-passing model of Liu et al.
+[1993] in which concurrent accesses to the same data structure are serially
+queued by an adversary.
+Our main contribution is a randomized work-stealing scheduling algorithm for
+fully strict multithreaded computations which is provably efficient in terms of
+time, space, and communication. We prove that the expected time to execute a
+fully strict computation on P processors using our work-stealing scheduler is
+1 See, for example, Blumofe and Lisiecki [1997], Feldmann et al. [1993], Finkel and Manber [1987],
+Halbherr et al. [1994], Kuszmaul [1994], Mohr et al. [1991], and Vandevoorde and Roberts [1988].
+721
+Scheduling Multithreaded Computations by Work Stealing
+T1/P 1 O(T`), where T1 is the minimum serial execution time of the
+multithreaded computation and T` is the minimum execution time with an
+infinite number of processors. In addition, the space required by the execution is
+at most S1P, where S1 is the minimum serial space requirement. These bounds
+are better than previous bounds for work-sharing schedulers [Blumofe and
+Leiserson 1998], and the work-stealing scheduler is much simpler and eminently
+practical. Part of this improvement is due to our focusing on fully strict
+computations, as compared to the (general) strict computations studied in
+Blumofe and Leiserson [1998]. We also prove that the expected total communi-
+cation of the execution is at most O(PT`(1 1 nd)Smax), where Smax is the size of
+the largest activation record of any thread and nd is the maximum number of
+times that any thread synchronizes with its parent. This bound is existentially
+tight to within a constant factor, meeting the lower bound of Wu and Kung
+[1991] for communication in parallel divide-and-conquer. In contrast, work-
+sharing schedulers have nearly worst-case behavior for communication. Thus, our
+results bolster the folk wisdom that work stealing is superior to work sharing.
+Others have studied and continue to study the problem of efficiently managing
+the space requirements of parallel computations. Culler and Arvind [1988] and
+Ruggiero and Sargeant [1987] give heuristics for limiting the space required by
+dataflow programs. Burton [1988] shows how to limit space in certain parallel
+computations without causing deadlock. More recently, Burton [1996] has devel-
+oped and analyzed a scheduling algorithm with provably good time and space
+bounds. Blelloch et al. [1995; 1997] have also recently developed and analyzed
+scheduling algorithms with provably good time and space bounds. It is not yet
+clear whether any of these algorithms are as practical as work stealing.
+The remainder of this paper is organized as follows: In Section 2, we review
+the graph-theoretic model of multithreaded computations introduced in Blumofe
+and Leiserson [1998], which provides a theoretical basis for analyzing schedulers.
+Section 3 gives a simple scheduling algorithm which uses a central queue. This
+“busy-leaves” algorithm forms the basis for our randomized work-stealing algo-
+rithm, which we present in Section 4. In Section 5, we introduce the atomic-
+access model that we use to analyze execution time and communication costs for
+the work-stealing algorithm, and we present and analyze a combinatorial “balls
+and bins” game that we use to derive a bound on the contention that arises in
+random work stealing. We then use this bound along with a delay-sequence
+argument [Ranade 1987] in Section 6 to analyze the execution time and
+communication cost of the work-stealing algorithm. To conclude, in Section 7, we
+briefly discuss how the theoretical ideas in this paper have been applied to the
+Cilk programming language and runtime system [Blumofe et al. 1996c; Frigo et
+al. 1998], as well as make some concluding remarks.
+2. A Model of Multithreaded Computation
+This section reprises the graph-theoretic model of multithreaded computation
+introduced in Blumofe and Leiserson [1998]. We also define what it means for
+computations to be “fully strict.” We conclude with a statement of the greedy-
+scheduling theorem, which is an adaptation of theorems by Brent [1974] and
+Graham [1966; 1969] on dag scheduling.
+722
+R. D. BLUMOFE AND C. E. LEISERSON
+A multithreaded computation is composed of a set of threads, each of which is
+a sequential ordering of unit-time instructions. The instructions are connected by
+dependency edges, which provide a partial ordering on which instructions must
+execute before which other instructions. In Figure 1, for example, each shaded
+block is a thread with circles representing instructions and the horizontal edges,
+called continue edges, representing the sequential ordering. Thread G5 of this
+example contains 3 instructions: v10, v11, and v12. The instructions of a thread
+must execute in this sequential order from the first (leftmost) instruction to the
+last (rightmost) instruction. In order to execute a thread, we allocate for it a
+chunk of memory, called an activation frame, that the instructions of the thread
+can use to store the values on which they compute.
+A P-processor execution schedule for a multithreaded computation determines
+which processors of a P-processor parallel computer execute which instructions
+at each step. An execution schedule depends on the particular multithreaded
+computation and the number P of processors. In any given step of an execution
+schedule, each processor executes at most one instruction.
+During the course of its execution, a thread may create, or spawn, other
+threads. Spawning a thread is like a subroutine call, except that the spawning
+thread can operate concurrently with the spawned thread. We consider spawned
+threads to be children of the thread that did the spawning, and a thread may
+spawn as many children as it desires. In this way, threads are organized into a
+spawn tree as indicated in Figure 1 by the downward-pointing, shaded depen-
+dency edges, called spawn edges, that connect threads to their spawned children.
+The spawn tree is the parallel analog of a call tree. In our example computation,
+the spawn tree’s root thread G1 has two children, G2 and G6, and thread G2 has
+three children, G3, G4, and G5. Threads G3, G4, G5, and G6, which have no children,
+are leaf threads.
+Each spawn edge goes from a specific instruction—the instruction that actually
+does the spawn operation—in the parent thread to the first instruction of the
+child thread. An execution schedule must obey this edge in that no processor may
+execute an instruction in a spawned child thread until after the spawning
+instruction in the parent thread has been executed. In our example computation
+(Figure 1), due to the spawn edge (v6, v7), instruction v7 cannot be executed
+until after the spawning instruction v6. Consistent with our unit-time model of
+instructions, a single instruction may spawn at most one child. When the
+spawning instruction executes, it allocates an activation frame for the new child
+FIG. 1.
+A multithreaded computation. This computation contains 23 instructions v1, v2, . . . , v23
+and 6 threads G1, G2, . . . , G6.
+723
+Scheduling Multithreaded Computations by Work Stealing
+thread. Once a thread has been spawned and its frame has been allocated, we say
+the thread is alive or living. When the last instruction of a thread executes, it
+deallocates its frame and the thread dies.
+An execution schedule generally respects other dependencies besides those
+represented by continue and spawn edges. Consider an instruction that produces
+a data value to be consumed by another instruction. Such a producer/consumer
+relationship precludes the consuming instruction from executing until after the
+producing instruction. To enforce such orderings, other dependency edges, called
+join edges, may be required, as shown in Figure 1 by the curved edges. If the
+execution of a thread arrives at a consuming instruction before the producing
+instruction has executed, execution of the consuming thread cannot continue—
+the thread stalls. Once the producing instruction executes, the join dependency is
+resolved, which enables the consuming thread to resume its execution—the thread
+becomes ready. A multithreaded computation does not model the means by
+which join dependencies get resolved or by which unresolved join dependencies
+get detected. In implementation, resolution and detection can be accomplished
+using mechanisms such as join counters [Blumofe et al. 1996c], futures [Halstead
+1984], or I-structures [Arvind et al. 1989].
+We make two technical assumptions regarding join edges. We first assume that
+each instruction has at most a constant number of join edges incident on it. This
+assumption is consistent with our unit-time model of instructions. The second
+assumption is that no join edges enter the instruction immediately following a
+spawn. This assumption means that when a parent thread spawns a child thread,
+the parent cannot immediately stall. It continues to be ready to execute for at
+least one more instruction.
+An execution schedule must obey the constraints given by the spawn, continue,
+and join edges of the computation. These dependency edges form a directed
+graph of instructions, and no processor may execute an instruction until after all
+of the instruction’s predecessors in this graph have been executed. So that
+execution schedules exist, this graph must be acyclic. That is, it must be a
+directed acyclic graph, or dag. At any given step of an execution schedule, an
+instruction is ready if all of its predecessors in the dag have been executed.
+We make the simplifying assumption that a parent thread remains alive until
+all its children die, and thus, a thread does not deallocate its activation frame
+until all its children’s frames have been deallocated. Although this assumption is
+not absolutely necessary, it gives the execution a natural structure, and it will
+simplify our analyses of space utilization. In accounting for space utilization, we
+also assume that the frames hold all the values used by the computation; there is
+no global storage available to the computation outside the frames (or if such
+storage is available, then we do not account for it). Therefore, the space used at
+a given time in executing a computation is the total size of all frames used by all
+living threads at that time, and the total space used in executing a computation is
+the maximum such value over the course of the execution.
+To summarize, a multithreaded computation can be viewed as a dag of
+instructions connected by dependency edges. The instructions are connected by
+continue edges into threads, and the threads form a spawn tree with the spawn
+edges. When a thread is spawned, an activation frame is allocated and this frame
+remains allocated as long as the thread remains alive. A living thread may be
+either ready or stalled due to an unresolved dependency.
+724
+R. D. BLUMOFE AND C. E. LEISERSON
+A given multithreaded program when run on a given input can sometimes
+generate more than one multithreaded computation. In that case, we say the
+program is nondeterministic. If the same multithreaded computation is generated
+by the program on the input no matter how the computation is scheduled, then
+the program is deterministic. In this paper, we shall analyze multithreaded
+computations, not multithreaded programs. Specifically, we shall not worry about
+how the multithreaded computation is generated. Instead, we shall study its
+properties in an a posteriori fashion.
+Because multithreaded computations with arbitrary dependencies can be
+impossible to schedule efficiently [Blumofe and Leiserson 1998], we study
+subclasses of general multithreaded computations in which the kinds of synchro-
+nizations that can occur are restricted. A strict multithreaded computation is one
+in which all join edges from a thread go to an ancestor of the thread in the
+activation tree. In a strict computation, the only edge into a subtree (emanating
+from outside the subtree) is the spawn edge that spawns the subtree’s root
+thread. For example, the computation of Figure 1 is strict, and the only edge into
+the subtree rooted at G2 is the spawn edge (v2, v3). Thus, strictness means that a
+thread cannot be invoked before all of its arguments are available, although the
+arguments can be garnered in parallel. A fully strict computation is one in which
+all join edges from a thread go to the thread’s parent. A fully strict computation
+is, in a sense, a “well-structured” computation, in that all join edges from a
+subtree (of the spawn tree) emanate from the subtree’s root. The example
+computation of Figure 1 is fully strict. Any multithreaded computation that can
+be executed in a depth-first manner on a single processor can be made either
+strict or fully strict by altering the dependency structure, possibly affecting the
+achievable parallelism, but not affecting the semantics of the computation
+[Blumofe 1995].
+We quantify and bound the execution time of a computation on a P-processor
+parallel computer in terms of the computation’s “work” and “critical-path
+length.” We define the work of the computation to be the total number of
+instructions and the critical-path length to be the length of a longest directed path
+in the dag. Our example computation (Figure 1) has work 23 and critical-path
+length 10. For a given computation, let T(-) denote the time to execute the
+computation using P-processor execution schedule -, and let
+TP 5 min
+-
+T~-!
+denote the minimum execution time with P processors—the minimum being
+taken over all P-processor execution schedules for the computation. Then T1 is
+the work of the computation, since a 1-processor computer can only execute one
+instruction at each step, and T` is the critical-path length, since even with
+arbitrarily many processors, each instruction on a path must execute serially.
+Notice that we must have TP $ T1/P, because P processors can execute only P
+instructions per time step, and of course, we must have TP $ T`.
+Early work on dag scheduling by Brent [1974] and Graham [1966; 1969] shows
+that there exist P-processor execution schedules - with T(-) # T1/P 1 T`. As
+the sum of two lower bounds, this upper bound is universally optimal to within a
+factor of 2. The following theorem, proved in Blumofe and Leiserson [1998] and
+Eager et al. [1989], extends these results minimally to show that this upper bound
+725
+Scheduling Multithreaded Computations by Work Stealing
+on TP can be obtained by greedy schedules: those in which at each step of the
+execution, if at least P instructions are ready, then P instructions execute, and if
+fewer than P instructions are ready, then all execute.
+THEOREM 1. THE GREEDY-SCHEDULING THEOREM.
+For any multithreaded
+computation with work T1 and critical-path length T`, and for any number P of
+processors, any greedy P-processor execution schedule - achieves T(-) # T1/P 1
+T`.
+Generally, we are interested in schedules that achieve linear speedup, that is
+T(-) 5 O(T1/P). For a greedy schedule, linear speedup occurs when the
+parallelism, which we define to be T1/T`, satisfies T1/T` 5 V(P).
+To quantify the space used by a given execution schedule of a computation, we
+define the stack depth of a thread to be the sum of the sizes of the activation
+frames of all its ancestors, including itself. The stack depth of a multithreaded
+computation is the maximum stack depth of any of its threads. We shall denote
+by S1 the minimum amount of space possible for any 1-processor execution of a
+multithreaded computation, which is equal to the stack depth of the computa-
+tion. Let S(-) denote the space used by a P-processor execution schedule - of a
+multithreaded computation. We shall be interested in those execution schedules
+that exhibit at most linear expansion of space, that is, S(-) 5 O(S1P), which is
+existentially optimal to within a constant factor [Blumofe and Leiserson 1998].
+3. The Busy-Leaves Property
+Once a thread G has been spawned in a strict computation, a single processor can
+complete the execution of the entire subcomputation rooted at G even if no other
+progress is made on other parts of the computation. In other words, from the
+time the thread G is spawned until the time G dies, there is always at least one
+thread from the subcomputation rooted at G that is ready. In particular, no leaf
+thread in a strict multithreaded computation can stall. As we shall see, this
+property allows an execution schedule to keep the leaves “busy.” By combining
+this “busy-leaves” property with the greedy property, we derive execution
+schedules that simultaneously exhibit linear speedup and linear expansion of
+space.
+In this section, we show that for any number P of processors and any strict
+multithreaded computation with work T1, critical-path length T`, and stack
+depth S1, there exists a P-processor execution schedule - that achieves time
+T(-) # T1/P 1 T` and space S(-) # S1P simultaneously. We give a simple
+online P-processor parallel algorithm—the Busy-Leaves Algorithm—to compute
+such a schedule. This simple algorithm will form the basis for the randomized
+work-stealing algorithm presented in Section 4.
+The Busy-Leaves Algorithm operates online in the following sense: Before the
+tth step, the algorithm has computed and executed the first t 2 1 steps of the
+execution schedule. At the tth step, the algorithm uses only information from the
+portion of the computation revealed so far in the execution to compute and
+execute the tth step of the schedule. In particular, it does not use any informa-
+tion from instructions not yet executed or threads not yet spawned.
+The Busy-Leaves Algorithm maintains all living threads in a single thread pool
+which is uniformly available to all P processors. When spawns occur, new threads
+726
+R. D. BLUMOFE AND C. E. LEISERSON
+are added to this global pool, and when a processor needs work, it removes a
+ready thread from the pool. Although we describe the algorithm as a P-processor
+parallel algorithm, we shall not analyze it as such. Specifically, in computing the
+tth step of the schedule, we allow each processor to add threads to the thread
+pool and delete threads from it. Thus, we ignore the effects of processors
+contending for access to the pool. In fact, we shall only analyze properties of the
+schedule itself and ignore the cost incurred by the algorithm in computing the
+schedule. (Scheduling overheads will be analyzed for the randomized work-
+stealing algorithm, however.)
+The Busy-Leaves Algorithm operates as follows: The algorithm begins with the
+root thread in the global thread pool and all processors idle. At the beginning of
+each step, each processor either is idle or has a thread to work on. Those
+processors that are idle begin the step by attempting to remove any ready thread
+from the pool. If there are sufficiently many ready threads in the pool to satisfy
+all of the idle processors, then every idle processor gets a ready thread to work
+on. Otherwise, some processors remain idle. Then, each processor that has a
+thread to work on executes the next instruction from that thread. In general,
+once a processor has a thread, call it Ga, to work on, it executes an instruction
+from Ga at each step until the thread either spawns, stalls, or dies, in which case,
+it performs according to the following rules.
+(1) Spawns. If the thread Ga spawns a child Gb, then the processor finishes the
+current step by returning Ga to the thread pool. The processor begins the
+next step working on Gb.
+(2) Stalls. If the thread Ga stalls, then the processor finishes the current step by
+returning Ga to the thread pool. The processor begins the next step idle.
+(3) Dies. If the thread Ga dies, then the processor finishes the current step by
+checking to see if Ga’s parent thread Gb currently has any living children. If
+Gb has no live children and no other processor is working on Gb, then the
+processor takes Gb from the pool and begins the next step working on Gb.
+Otherwise, the processor begins the next step idle.
+Figure 2 illustrates these three rules in a 2-processor execution schedule
+computed by the Busy-Leaves Algorithm on the computation of Figure 1. Rule
+(1): At step 2, processor p1 working on thread G1 executes v2 which spawns the
+child G2, so p1 places G1 back in the pool (to be picked up at the beginning of the
+next step by the idle p2) and begins the next step working on G2. Rule (2): At
+step 8, processor p2 working on thread G1 executes v21 and G1 stalls, so p2 returns
+G1 to the pool and begins the next step idle (and remains idle since the thread
+pool contains no ready threads). Rule (3): At step 13, processor p1 working on G2
+executes v15 and G2 dies, so p1 retrieves the parent G1 from the pool and begins
+the next step working on G1.
+Besides being greedy, for any strict computation, the schedule computed by the
+Busy-Leaves Algorithm maintains the busy-leaves property: at every time step
+during the execution, every leaf in the “spawn subtree” has a processor working
+on it. We define the spawn subtree at any time step t to be the portion of the
+spawn tree consisting of just those threads that are alive at step t. To restate the
+busy-leaves property, at every time step, every living thread that has no living
+descendants has a processor working on it. We shall now prove this fact and show
+727
+Scheduling Multithreaded Computations by Work Stealing
+that it implies linear expansion of space. It is worth noting that not every
+multithreaded computation has a schedule that maintains the busy-leaves prop-
+erty, but every strict multithreaded computation does. We begin by showing that
+any schedule that maintains the busy-leaves property exhibits linear expansion of
+space.
+LEMMA 2.
+For any multithreaded computation with stack depth S1, any P-
+processor execution schedule - that maintains the busy-leaves property uses space
+bounded by S(-) # S1P.
+PROOF.
+The busy-leaves property implies that at all time steps t, the spawn
+subtree has at most P leaves. For each such leaf, the space used by it and all of its
+ancestors is at most S1, and therefore, the space in use at any time step t is at
+most S1P.
+e
+For schedules that maintain the busy-leaves property, the upper bound S1P is
+conservative. By charging S1 space for each busy leaf, we may be overcharging.
+For some computations, by knowing that the schedule preserves the busy-leaves
+property, we can appeal directly to the fact that the spawn subtree never has
+more than P leaves to obtain tight bounds on space usage [Blumofe et al. 1996a].
+We finish this section by showing that for strict computations, the Busy-Leaves
+Algorithm computes a schedule that is both greedy and maintains the busy-leaves
+property.
+THEOREM 3.
+For any number P of processors and any strict multithreaded
+computation with work T1, critical-path length T`, and stack depth S1, the Busy-
+Leaves Algorithm computes a P-processor execution schedule - whose execution
+time satisfies T(-) # T1/P 1 T` and whose space satisfies S(-) # S1P.
+PROOF.
+The time bound follows directly from the greedy-scheduling theorem
+(Theorem 1), since the Busy-Leaves Algorithm computes a greedy schedule. The
+space bound follows from Lemma 2 if we can show that the Busy-Leaves
+FIG. 2.
+A 2-processor execution schedule computed by the Busy-Leaves Algorithm for the compu-
+tation of Figure 1. This schedule lists the living threads in the global thread pool at each step just
+after each idle processor has removed a ready thread. It also lists the ready thread being worked on
+and the instruction executed by each of the 2 processors, p1 and p2, at each step. Living threads that
+are ready are listed in bold. The other living threads are stalled.
+728
+R. D. BLUMOFE AND C. E. LEISERSON
+Algorithm maintains the busy-leaves property. We prove this fact by induction on
+the number of steps. At the first step of the algorithm, the spawn subtree
+contains just the root thread that is a leaf, and some processor is working on it.
+We must show that all of the algorithm rules preserve the busy-leaves property.
+When a processor has a thread Ga to work on, it executes instructions from that
+thread until it either spawns, stalls, or dies. Rule (1): If Ga spawns a child Gb,
+then Ga is not a leaf (even if it was before) and Gb is a leaf. In this case, the
+processor works on Gb, so the new leaf is busy. Rule (2): If Ga stalls, then Ga
+cannot be a leaf since in a strict computation, the unresolved dependency must
+come from a descendant. Rule (3): If Ga dies, then its parent thread Gb may turn
+into a leaf. In this case, the processor works on Gb unless some other processor
+already is, so the new leaf is guaranteed to be busy.
+e
+We now know that every strict multithreaded computation has an efficient
+execution schedule, and we know how to find it. But these facts take us only so
+far. Execution schedules must be computed efficiently online, and though the
+Busy-Leaves Algorithm does compute efficient execution schedules and does
+operate online, it surely does not do so efficiently, except possibly in the case of
+small-scale symmetric multiprocessors. This lack of scalability is a consequence
+of employing a single centralized thread pool at which all processors must
+contend for access. In the next section, we present a distributed online schedul-
+ing algorithm, and in the following sections, we prove that it is both efficient and
+scalable.
+4. A Randomized Work-Stealing Algorithm
+In this section, we present an online, randomized work-stealing algorithm for
+scheduling multithreaded computations on a parallel computer. Also, we present
+an important structural lemma that is used at the end of this section to show that
+for fully strict computations, this algorithm causes at most a linear expansion of
+space. This lemma reappears in Section 6 to show that, for fully strict computa-
+tions, this algorithm achieves linear speedup and generates existentially optimal
+amounts of communication.
+In the Work-Stealing Algorithm, the centralized thread pool of the Busy-Leaves
+Algorithm is distributed across the processors. Specifically, each processor
+maintains a ready deque data structure of threads. The ready deque has two ends:
+a top and a bottom. Threads can be inserted on the bottom and removed from
+either end. A processor treats its ready deque like a call stack, pushing and
+popping from the bottom. Threads that are migrated to other processors are
+removed from the top.
+In general, a processor obtains work by removing the thread at the bottom of
+its ready deque. It starts working on the thread, call it Ga, and continues
+executing Ga’s instructions until Ga spawns, stalls, dies, or enables a stalled
+thread, in which case, it performs according to the following rules:
+(1) Spawns. If the thread Ga spawns a child Gb, then Ga is placed on the bottom
+of the ready deque, and the processor commences work on Gb.
+(2) Stalls. If the thread Ga stalls, its processor checks the ready deque. If the
+deque contains any threads, then the processor removes and begins work on
+the bottommost thread. If the ready deque is empty, however, the processor
+729
+Scheduling Multithreaded Computations by Work Stealing
+begins work stealing: it steals the topmost thread from the ready deque of a
+randomly chosen processor and begins work on it. (This work-stealing
+strategy is elaborated below.)
+(3) Dies. If the thread Ga dies, then the processor follows rule (2) as in the case
+of Ga stalling.
+(4) Enables. If the thread Ga enables a stalled thread Gb, the now-ready thread
+Gb is placed on the bottom of the ready deque of Ga’s processor.
+A thread can simultaneously enable a stalled thread and stall or die, in which
+case we first perform rule (4) for enabling and then rule (2) for stalling or rule
+(3) for dying. Except for rule (4) for the case when a thread enables a stalled
+thread, these rules are analogous to the rules of the Busy-Leaves Algorithm, and
+as we shall see, rule (4) is needed to ensure that the algorithm maintains
+important structural properties, including the busy-leaves property.
+The Work-Stealing Algorithm begins with all ready deques empty. The root
+thread of the multithreaded computation is placed in the ready deque of one
+processor, while the other processors start work stealing.
+When a processor begins work stealing, it operates as follows. The processor
+becomes a thief and attempts to steal work from a victim processor chosen
+uniformly at random. The thief queries the ready deque of the victim, and if it is
+nonempty, the thief removes and begins work on the top thread. If the victim’s
+ready deque is empty, however, the thief tries again, picking another victim at
+random.
+We now state and prove an important lemma on the structure of threads in the
+ready deque of any processor during the execution of a fully strict computation.
+This lemma is used later in this section to analyze execution space and in Section
+6 to analyze execution time and communication. Figure 3 illustrates the lemma.
+LEMMA 4.
+In the execution of any fully strict multithreaded computation by the
+Work-Stealing Algorithm, consider any processor p and any given time step at which
+p is working on a thread. Let G0 be the thread that p is working on, let k be the
+number of threads in p’s ready deque, and let G1, G2, . . . , Gk denote the threads in
+p’s ready deque ordered from bottom to top, so that G1 is the bottommost and Gk is
+the topmost. If we have k . 0, then the threads in p’s ready deque satisfy the
+following properties:
+FIG. 3.
+The structure of a processor’s ready deque. The black instruction in each thread indicates
+the thread’s currently ready instruction. Only thread Gk may have been worked on since it last
+spawned a child. The dashed edges are the “deque edges” introduced in Section 6.
+730
+R. D. BLUMOFE AND C. E. LEISERSON
+(1) For i 5 1, 2, . . . , k, thread Gi is the parent of Gi21.
+(2) If we have k . 1, then for i 5 1, 2, . . . , k 2 1, thread Gi has not been
+worked on since it spawned Gi21.
+PROOF.
+The proof is a straightforward induction on execution time. Execu-
+tion begins with the root thread in some processor’s ready deque and all other
+ready deques empty, so the lemma vacuously holds at the outset. Now, consider
+any step of the algorithm at which processor p executes an instruction from
+thread G0. Let G1, G2, . . . , Gk denote the k threads in p’s ready deque before the
+step, and suppose that either k 5 0 or both properties hold. Let G90 denote the
+thread (if any) being worked on by p after the step, and let G91, G92, . . . , G9k9
+denote the k9 threads in p’s ready deque after the step. We now look at the rules
+of the algorithm and show that they all preserve the lemma. That is, either k9 5
+0 or both properties hold after the step.
+Rule (1): If G0 spawns a child, then p pushes G0 onto the bottom of the ready
+deque and commences work on the child. Thus, G90 is the child, we have k9 5
+k 1 1 . 0, and for j 5 1, 2, . . . , k9, we have G9j 5 Gj21. See Figure 4. Now,
+we can check both properties. Property (1): If k9 . 1, then for j 5 2, 3, . . . , k9,
+thread G9j is the parent of G9j21, since before the spawn we have k . 0, which
+means that for i 5 1, 2, . . . , k, thread Gi is the parent of Gi21. Moreover, G91 is
+obviously the parent of G90. Property (2): If k9 . 2, then for j 5 2, 3, . . . , k9 2
+1, thread G9j has not been worked on since it spawned G9j21, because before the
+spawn we have k . 1, which means that for i 5 1, 2, . . . , k 2 1, thread Gi has
+not been worked on since it spawned Gi21. Finally, thread G91 has not been
+worked on since it spawned G90, because the spawn only just occurred.
+Rules (2) and (3): If G0 stalls or dies, then we have two cases to consider. If
+k 5 0, the ready deque is empty, so the processor commences work stealing, and
+when the processor steals and begins work on a thread, we have k9 5 0. If k .
+0, the ready deque is not empty, so the processor pops the bottommost thread off
+the deque and commences work on it. Thus, we have G90 5 G1 (the popped
+thread) and k9 5 k 2 1, and for j 5 1, 2, . . . , k9, we have G9j 5 Gj11. See
+Figure 5. Now, if k9 . 0, we can check both properties. Property (1): For j 5 1,
+2, . . . , k9, thread G9j is the parent of G9j21, since for i 5 1, 2, . . . , k, thread Gi
+is the parent of Gi21. Property (2): If k9 . 1, then for j 5 1, 2, . . . , k9 2 1,
+thread G9j has not been worked on since it spawned G9j21, because before the stall
+FIG. 4.
+The ready deque of a processor before and after the thread G0 that it is working on spawns
+a child. (Note that the threads G0 and G90 are not actually in the deque; they are the threads being
+worked on before and after the spawn.)
+731
+Scheduling Multithreaded Computations by Work Stealing
+or death we have k . 2, which means that for i 5 2, 3, . . . , k 2 1, thread Gi
+has not been worked on since it spawned Gi21.
+Rule (4): If G0 enables a stalled thread, then due to the fully strict condition,
+that previously stalled thread must be G0’s parent. First, we observe that we must
+have k 5 0. If we have k . 0, then the processor’s ready deque is not empty,
+and this parent thread must be bottommost in the ready deque. Thus, this parent
+thread is ready and Rule (4) does not apply. With k 5 0, the ready deque is
+empty and the processor places the parent thread on the bottom of the ready
+deque. We have G90 5 G0 and k9 5 k 1 1 5 1 with G91 denoting the newly
+enabled parent. We only have to check the first property. Property (1): Thread G91
+is obviously the parent of G90.
+If some other processor steals a thread from processor p, then we must have
+k . 0, and after the steal we have k9 5 k 2 1. If k9 . 0 holds, then both
+properties are clearly preserved. All other actions by processor p—such as work
+stealing or executing an instruction that does not invoke any of the above
+rules—clearly preserve the lemma.
+e
+Before moving on, it is worth pointing out how it may happen that thread Gk
+has been worked on since it spawned Gk21, since Property (2) excludes Gk. This
+situation arises when Gk is stolen from processor p and then stalls on its new
+processor. Later, Gk is reenabled by Gk21 and brought back to processor p’s
+ready deque. The key observation is that when Gk is reenabled, processor
+p’s ready deque is empty and p is working on Gk21. The other threads Gk22,
+Gk23, . . . , G0 shown in Figure 3 were spawned after Gk was reenabled.
+We conclude this section by bounding the space used by the Work-Stealing
+Algorithm executing a fully strict computation.
+THEOREM 5.
+For any fully strict multithreaded computation with stack depth S1,
+the Work-Stealing Algorithm run on a computer with P processors uses at most S1P
+space.
+PROOF.
+Like the Busy-Leaves Algorithm, the Work-Stealing Algorithm main-
+tains the busy-leaves property: at every time step of the execution, every leaf in
+the current spawn subtree has a processor working on it. If we can establish this
+fact, then Lemma 2 completes the proof.
+That the Work-Stealing Algorithm maintains the busy-leaves property is a
+simple consequence of Lemma 4. At every time step, every leaf in the current
+spawn subtree must be ready and therefore must either have a processor working
+FIG. 5.
+The ready deque of a processor before and after the thread G0 that it is working on dies.
+(Note that the threads G0 and G90 are not actually in the deque; they are the threads being worked on
+before and after the death.)
+732
+R. D. BLUMOFE AND C. E. LEISERSON
+on it or be in the ready deque of some processor. But Lemma 4 guarantees that
+no leaf thread sits in a processor’s ready deque while the processor works on
+some other thread.
+e
+With the space bound in hand, we now turn attention to analyzing the time and
+communication bounds for the Work-Stealing Algorithm. Before we can proceed
+with this analysis, however, we must take care to define a model for coping with
+the contention that may arise when multiple thief processors simultaneously
+attempt to steal from the same victim.
+5. Atomic Accesses and the Recycling Game
+This section presents the “atomic-access” model that we use to analyze conten-
+tion during the execution of a multithreaded computation by the Work-Stealing
+Algorithm. We introduce a combinatorial “balls and bins” game, which we use to
+bound the total amount of delay incurred by random, asynchronous accesses in
+this model. We shall use the results of this section in Section 6, where we analyze
+the Work-Stealing Algorithm.
+The atomic-access model is the machine model we use to analyze the Work-
+Stealing Algorithm. We assume that the machine is an asynchronous parallel
+computer with P processors, and its memory can be either distributed or shared.
+Our analysis assumes that concurrent accesses to the same data structure are
+serially queued by an adversary, as in the atomic message-passing model of Liu et
+al. [1993]. This assumption is more stringent than that in the model of Karp and
+Zhang [1993]. They assume that if concurrent steal requests are made to a deque,
+in one time step, one request is satisfied and all the others are denied. In the
+atomic-access model, we also assume that one request is satisfied, but the others
+are queued by an adversary, rather than being denied. Moreover, from the
+collection of waiting requests for a given deque, the adversary may choose which
+is serviced and which continue to wait. The only constraint on the adversary is
+that if there is at least one request for a deque, then the adversary may not
+choose that none be serviced.
+The main result of this section is to show that if requests are made randomly
+by P processors to P deques with each processor allowed at most one outstanding
+request, then the total amount of time that the processors spend waiting for their
+requests to be satisfied is likely to be proportional to the total number M of
+requests, no matter which processors make the requests and no matter how the
+requests are distributed over time. In order to prove this result, we introduce a
+“balls and bins” game that models the effects of queueing by the adversary.
+The (P, M)-recycling game is a combinatorial game played by the adversary, in
+which balls are tossed at random into bins. The parameter P is the number of
+balls in the game, which is equal to the number of bins. The parameter M is the
+total number of ball tosses executed by the adversary. Initially, all P balls are in a
+reservoir separate from the P bins. At each step of the game, the adversary
+executes the following two operations in sequence:
+(1) The adversary chooses some of the balls in the reservoir (possibly all and
+possibly none), and then for each of these balls, the adversary removes it
+from the reservoir, selects one of the P bins uniformly and independently at
+random, and tosses the ball into it.
+733
+Scheduling Multithreaded Computations by Work Stealing
+(2) The adversary inspects each of the P bins in turn, and for each bin that
+contains at least one ball, the adversary removes any one of the balls in the
+bin and returns it to the reservoir.
+The adversary is permitted to make a total of M ball tosses. The game ends when
+M ball tosses have been made and all balls have been removed from the bins and
+placed back in the reservoir.
+The recycling game models the servicing of steal requests by the Work-Stealing
+Algorithm. We can view each ball and each bin as being owned by a distinct
+processor. If a ball is in the reservoir, it means that the ball’s owner is not making
+a steal request. If a ball is in a bin, it means that the ball’s owner has made a steal
+request to the deque of the bin’s owner, but that the request has not yet been
+satisfied. When a ball is removed from a bin and returned to the reservoir, it
+means that the request has been serviced.
+After each step t of the game, there are some number nt of balls left in the
+bins, which correspond to steal requests that have not been satisfied. We shall be
+interested in the total delay D 5 (t51
+T
+nt, where T is the total number of steps in
+the game. The goal of the adversary is to make the total delay as large as
+possible. The next lemma shows that despite the choices that the adversary
+makes about which balls to toss into bins and which to return to the reservoir, the
+total delay is unlikely to be large.
+LEMMA 6.
+For any e . 0, with probability at least 1 2 e, the total delay in the
+(P, M)-recycling game is O(M 1 P lg P 1 P lg(1/e)).2 The expected total delay is at
+most M. In other words, the total delay incurred by M random requests made by P
+processors in the atomic-access model is O(M 1 P lg P 1 P lg(1/e)) with probability
+at least 1 2 e, and the expected total delay is at most M.
+PROOF.
+We first make the observation that the strategy by which the adver-
+sary chooses a ball from each bin is immaterial, and thus, we can assume that
+balls are queued in their bins in a first-in-first-out (FIFO) order. The adversary
+removes balls from the front of the queue, and when the adversary tosses a ball,
+it is placed on the back of the queue. If several balls are tossed into the same bin
+at the same step, they can be placed on the back of the queue in any order. The
+reason that assuming a FIFO discipline for queueing balls in a bin does not affect
+the total delay is that the number of balls in a given bin at a given step is the
+same no matter which ball is removed, and where balls are tossed has nothing to
+do with which ball is tossed.
+For any given ball and any given step, the step either finishes with the ball in a
+bin or in the reservoir. Define the delay of ball r to be the random variable dr
+denoting the total number of steps that finish with ball r in a bin. Then, we have
+D 5 O
+r51
+P
+dr.
+(1)
+2 Greg Plaxton of the University of Texas, Austin has improved this bound to O(M) for the case when
+1/e is at most polynomial in M and P [Plaxton 1994].
+734
+R. D. BLUMOFE AND C. E. LEISERSON
+Define the ith cycle of a ball to be those steps in which the ball remains in a bin
+from the ith time it is tossed until it is returned to the reservoir. Define also the
+ith delay of a ball to be the number of steps in its ith cycle.
+We shall analyze the total delay by focusing, without loss of generality, on the
+delay d 5 d1 of ball 1. If we let m denote the number of times that ball 1 is tossed
+by the adversary, and for i 5 1, 2, . . . , m, let di be the random variable
+denoting the ith delay of ball 1, then we have d 5 (i51
+m
+di.
+We say that the ith cycle of ball 1 is delayed by another ball r if the ith toss of
+ball 1 places it in some bin k and ball r is removed from bin k during the ith cycle
+of ball 1. Since the adversary follows the FIFO rule, it follows that the ith cycle
+of ball 1 can be delayed by another ball r either once or not at all. Consequently,
+we can decompose each random variable di into a sum di 5 xi2 1 xi3 1 . . . 1
+xim of indicator random variables, where
+xir 5H
+1
+if
+the ith cycle of ball 1 is delayed by ball r;
+0
+otherwise.
+Thus, we have
+d 5 O
+i51
+m O
+r52
+P
+xir.
+(2)
+We now prove an important property of these indicator random variables.
+Consider any set S of pairs (i, r), each of which corresponds to the event that the
+ith cycle of ball 1 is delayed by ball r. For any such set S, we claim that
+Pr$
+`
+(i, r)[S
+~ xir 5 1!% # P2uSu.
+(3)
+The crux of proving the claim is to show that
+PrH xir 5 1u
+`
+(i9, r9)[S9
+~ xi9r9 5 1!J #
+1
+P ,
+(4)
+where S9 5 S 2 {(i, r)}, whence the claim (3) follows from Bayes’s Theorem.
+We can derive Inequality (4) from a careful analysis of dependencies. Because
+the adversary follows the FIFO rule, we have that xir 5 1 only if, when the
+adversary executes the ith toss of ball 1, it falls into whatever bin contains ball r,
+if any. A priori, this event happens with probability either 1/P or 0, and hence,
+with probability at most 1/P. Conditioning on any collection of events relating
+which balls delay this or other cycles of ball 1 cannot increase this probability, as
+we now argue in two cases. In the first case, the indicator random variables xi9r9,
+where i9 Þ i, tell whether other cycles of ball 1 are delayed. This information
+tells nothing about where the ith toss of ball 1 goes. Therefore, these random
+variables are independent of xir, and thus, the probability 1/P upper bound is not
+affected. In the second case, the indicator random variables xir9 tell whether the
+ith toss of ball 1 goes to the bin containing ball r9, but this information tells us
+nothing about whether it goes to the bin containing ball r, because the indicator
+random variables tell us nothing to relate where ball r and ball r9 are located.
+735
+Scheduling Multithreaded Computations by Work Stealing
+Moreover, no “collusion” among the indicator random variables provides any
+more information, and thus Inequality (4) holds.
+Equation (2) shows that the delay d encountered by ball 1 throughout all of its
+cycles can be expresses as a sum of m(P 2 1) indicator random variables. In
+order for d to equal or exceed a given value D, there must be some set containing
+D of these indicator random variables, each of which must be 1. For any specific
+such set, Inequality (3) says that the probability is at most P2D that all random
+variables in the set are 1. Since there are (D
+m(P21)) # (emP/D)D such sets, where
+e is the base of the natural logarithm, we have
+Pr$d $ D% #S
+emP
+D D
+D
+P2D
+5S
+em
+D D
+D
+#
+e
+P ,
+whenever D $ max{2em, lg P 1 lg(1/e)}.
+Although our analysis was performed for ball 1, it applies to any other ball as
+well. Consequently, for any given ball r which is tossed mr times, the probability
+that its delay dr exceeds max{2emr, lg P 1 lg(1/e)} is at most e/P. By Boole’s
+inequality and Eq. (1), it follows that with probability at least 1 2 e, the total
+delay D is at most
+D # O
+r51
+P
+maxH 2emr, lg P 1 lgS
+1
+eDJ
+5 QS M 1 P lg P 1 P lgS
+1
+eDD ,
+since M 5 (r51
+P
+mr.
+The upper bound E[D] # M can be obtained as follows: Recall that each dr is
+the sum of (P 2 1)mr indicator random variables, each of which has expectation
+at most 1/P. Therefore, by linearity of expectation, E[dr] # mr. Using Eq. (1)
+and again using linearity of expectation, we obtain E[D] # M.
+e
+With this bound on the total delay incurred by M random requests now in
+hand, we turn back to the Work-Stealing Algorithm.
+6. Analysis of the Work-Stealing Algorithm
+In this section, we analyze the time and communication cost of executing a fully
+strict multithreaded computation with the Work-Stealing Algorithm. For any
+fully strict computation with work T1 and critical-path length T`, we show that
+the expected running time with P processors, including scheduling overhead, is
+T1/P 1 O(T`). Moreover, for any e . 0, the execution time on P processors is
+T1/P 1 O(T` 1 lg P 1 lg(1/e)), with probability at least 1 2 e. We also show
+736
+R. D. BLUMOFE AND C. E. LEISERSON
+that the expected total communication during the execution of a fully strict
+computation is O(PT`(1 1 nd)Smax), where nd is the maximum number of join
+edges from a thread to its parent and Smax is the largest size of any activation
+frame.
+Unlike in the Busy-Leaves Algorithm, the “ready pool” in the Work-Stealing
+Algorithm is distributed, and so there is no contention at a centralized data
+structure. Nevertheless, it is still possible for contention to arise when several
+thieves happen to descend on the same victim simultaneously. In this case, as we
+have indicated in the previous section, we make the conservative assumption that
+an adversary serially queues the work-stealing requests. We further assume that
+it takes unit time for a processor to respond to a work-stealing request. This
+assumption can be relaxed without materially affecting the results so that a
+work-stealing response takes any constant amount of time.
+To analyze the running time of the Work-Stealing Algorithm executing a fully
+strict multithreaded computation with work T1 and critical-path length T` on a
+computer with P processors, we use an accounting argument. At each step of the
+algorithm, we collect P dollars, one from each processor. At each step, each
+processor places its dollar in one of three buckets according to its actions at that
+step. If the processor executes an instruction at the step, then it places its dollar
+into the WORK bucket. If the processor initiates a steal attempt at the step, then
+it places its dollar into the STEAL bucket. And, if the processor merely waits for a
+queued steal request at the step, then it places its dollar into the WAIT bucket.
+We shall derive the running-time bound by bounding the number of dollars in
+each bucket at the end of the execution, summing these three bounds, and then
+dividing by P.
+We first bound the total number of dollars in the WORK bucket.
+LEMMA 7.
+The execution of a fully strict multithreaded computation with work
+T1 by the Work-Stealing Algorithm on a computer with P processors terminates with
+exactly T1 dollars in the WORK bucket.
+PROOF.
+A processor places a dollar in the WORK bucket only when it executes
+an instruction. Thus, since there are T1 instructions in the computation, the
+execution ends with exactly T1 dollars in the WORK bucket.
+e
+Bounding the total dollars in the STEAL bucket requires a significantly more
+involved “delay-sequence” argument. We first introduce the notion of a “round”
+of work-steal attempts, and we must also define an augmented dag that we then
+use to define “critical” instructions. The idea is as follows: If, during the course
+of the execution, a large number of steals are attempted, then we can identify a
+sequence of instructions—the delay sequence—in the augmented dag such that
+each of these steal attempts was initiated while some instruction from the
+sequence was critical. We then show that a critical instruction is unlikely to
+remain critical across a modest number of steal attempts. We can then conclude
+that such a delay sequence is unlikely to occur, and therefore, an execution is
+unlikely to suffer a large number of steal attempts.
+A round of steal attempts is a set of at least 3P but fewer than 4P consecutive
+steal attempts such that if a steal attempt that is initiated at time step t occurs in
+a particular round, then all other steal attempts initiated at time step t are also in
+the same round. We can partition all of the steal attempts that occur during an
+737
+Scheduling Multithreaded Computations by Work Stealing
+execution into rounds as follows: The first round contains all steal attempts
+initiated at time steps 1, 2, . . . , t1, where t1 is the earliest time such that at least
+3P steal attempts were initiated at or before t1. We say that the first round starts
+at time step 1 and ends at time step t1. In general, if the ith round ends at time
+step ti, then the (i 1 1)st round begins at time step ti 1 1 and ends at the
+earliest time step ti11 . ti 1 1 such that at least 3P steal attempts were initiated
+at time steps between ti 1 1 and ti11, inclusive. These steal attempts belong to
+round i 1 1. By definition, each round contains at least 3P consecutive steal
+attempts. Moreover, since at most P 2 1 steal attempts can be initiated in a
+single time step, each round contains fewer than 4P 2 1 steal attempts, and each
+round takes at least four steps.
+The sequence of instructions that make up the delay sequence is defined with
+respect to an augmented dag obtained by modifying the original dag slightly. Let
+G denote the original dag, that is, the dag consisting of the computation’s
+instructions as vertices and its continue, spawn, and join edges as edges. The
+augmented dag G9 is the original dag G together with some new edges, as
+follows. For every set of instructions u, v, and w such that (u, v) is a spawn edge
+and (u, w) is a continue edge, the deque edge (w, v) is placed in G9. These
+deque edges are shown dashed in Figure 3. In Section 2, we made the technical
+assumption that instruction w has no incoming join edges, and so G9 is a dag. If
+T` is the length of a longest path in G, then the longest path in G9 has length at
+most 2T`. It is worth pointing out that G9 is only an analytical tool. The deque
+edges have no effect on the scheduling and execution of the computation by the
+Work-Stealing Algorithm.
+The deque edges are the key to defining critical instructions. At any time step
+during the execution, we say that an unexecuted instruction v is critical if every
+instruction that precedes v (either directly or indirectly) in G9 has been executed,
+that is, if for every instruction w such that there is a directed path from w to v in
+G9, instruction w has been executed. A critical instruction must be ready, since
+G9 contains every edge of G, but a ready instruction may or may not be critical.
+Intuitively, the structural properties of a ready deque enumerated in Lemma 4
+guarantee that if a thread is deep in a ready deque, then its current instruction
+cannot be critical, because the predecessor of the thread’s current instruction
+across the deque edge has not yet been executed.
+We now formalize our definition of a delay sequence.
+Definition 8.
+A delay sequence is a 3-tuple (U, R, P) satisfying the following
+conditions:
+—U 5 (u1, u2, . . . , uL) is a maximal directed path in G9. Specifically, for i 5
+1, 2, . . . , L 2 1, the edge (ui, ui11) belongs to G9, instruction u1 has no
+incoming edges in G9 (instruction u1 must be the first instruction of the root
+thread), and instruction uL has no outgoing edges in G9 (instruction uL must
+be the last instruction of the root thread).
+—R is a positive integer number of steal-attempt rounds.
+—P 5 (p1, p91, p2, p92, . . . , pL, p9L) is a partition of R (that is, R 5 (i51
+L
+(pi 1 p9i)), such that p9i [ {0, 1} for each i 5 1, 2, . . . , L.
+The partition P induces a partition of a sequence of R rounds as follows. The
+first piece of the partition corresponds to the first p1 rounds. The second piece
+738
+R. D. BLUMOFE AND C. E. LEISERSON
+corresponds to the next p91 consecutive rounds after the first p1 rounds. The third
+piece corresponds to the next p2 consecutive rounds after the first (p1 1 p91)
+rounds, and so on. We are interested primarily in the pieces corresponding to the
+pi, not the p9i, and so we define the ith group of rounds to be the pi consecutive
+rounds starting after the rith round, where ri 5 (j51
+i21 (pj 1 p9j). Because P is a
+partition of R and p9i [ {0, 1}, for i 5 1, 2, . . . , L, we have
+O
+i51
+L
+pi $ R 2 L.
+(5)
+We say that a given round of steal attempts occurs while instruction v is critical
+if all of the steal attempts that comprise the round are initiated at time steps
+when v is critical. In other words, v must be critical throughout the entire round.
+A delay sequence (U, R, P) is said to occur during an execution if for each i 5
+1, 2, . . . , L, all pi rounds in the ith group occur while instruction ui is critical.
+In other words, ui must be critical throughout all pi rounds.
+The following lemma states that if at least R rounds take place during an
+execution, then some delay sequence (U, R, P) must occur. In particular, if we
+look at any execution in which at least R rounds occur, then we can identify a
+path U 5 (u1, u2, . . . , uL) in the dag G9 and a partition P 5 (p1, p91, p2,
+p92, . . . , pL, p9L) of the first R rounds, such that for each i 5 1, 2, . . . , L, all
+of the pi rounds in the ith group occur while ui is critical. Each p9i indicates
+whether ui is critical at the beginning of a round but gets executed before the
+round ends. Such a round cannot be part of any group, because no instruction is
+critical throughout.
+LEMMA 9.
+Consider the execution of a fully strict multithreaded computation
+with critical-path length T` by the Work-Stealing Algorithm on a computer with P
+processors. If at least 4PR steal attempts occur during the execution, then some delay
+sequence (U, R, P) must occur.
+PROOF.
+For a given execution in which at least 4PR steal attempts take place,
+we construct a delay sequence (U, R, P) and show that it occurs. With at least
+4PR steal attempts, there must be at least R rounds. We construct the delay
+sequence by first identifying a set of instructions on a directed path in G9 such
+that for every time step during the execution, one of these instructions is critical.
+Then, we partition the first R rounds according to when each round occurs
+relative to when each instruction on the path is critical.
+To construct the path U, we work backwards from the last instruction of the
+root thread, which we denote by v1. Let vl1 denote a (not necessarily immediate)
+predecessor instruction of v1 in G9 with the latest execution time. Let (vl1, . . . ,
+v2, v1) denote a directed path from vl1 to v1 in G9. We extend this path back to
+the first instruction of the root thread by iterating this construction as follows: At
+the ith iteration we have an instruction vli and a directed path in G9 from vli to
+v1. We let vli11 denote a predecessor of vli in G9 with the latest execution time,
+and let (vli11, . . . , vli11, vli) denote a directed path from vli11 to vli in G9. We
+finish iterating the construction when we get to an iteration k in which vlk is the
+first instruction of the root thread. Our desired sequence is then U 5 (u1, u2,
+739
+Scheduling Multithreaded Computations by Work Stealing
+. . . , uL), where L 5 lk and ui 5 vL2i11 for i 5 1, 2, . . . , L. One can verify
+that at every time step of the execution, one of the vli is critical.
+Now, to construct the partition P 5 (p1, p91, p2, p92, . . . , pL, p9L), we
+partition the sequence of the first R rounds according to when each round
+occurs. We would like our partition to be such that for each round (among the
+first R rounds), we have the property that if the round occurs while some
+instruction ui is critical, then the round belongs to the ith group. Start with p1,
+and let p1 equal the number of rounds that occur while u1 is critical. All of these
+rounds are consecutive at the beginning of the sequence, so these rounds
+comprise the 1st group—that is, they are the p1 consecutive rounds starting after
+the r1 5 0 first rounds. Next, if the round that immediately follows those first p1
+rounds begins after u1 has been executed, then we set p91 5 0, and we go on to
+p2. Otherwise, that round begins while u1 is critical and ends after u1 is executed
+(for otherwise, it would be part of the first group), so we set p91 5 1, and we go
+on to p2. For p2, we let p2 equal the number of rounds that occur while u2 is
+critical. Note that all of these rounds are consecutive beginning after the first
+r2 5 p1 1 p91 rounds, so these rounds comprise the 2nd group. We continue in
+this fashion, letting each pi be the number of rounds that occur while ui is
+critical and letting each p9i be the number of rounds that begin while ui is critical
+but do not end until after ui is executed. As an example, we may have a round
+that begins while ui is critical and then ends while ui12 is critical, and in this
+case, we set p9i 5 1 and p9i11 5 0. In this example, the (i 1 1)st group is empty,
+so we also set pi11 5 0.
+We conclude the proof by verifying that the (U, R, P) as just constructed is a
+delay sequence and that it occurs. By construction, U is a maximal path in G9.
+Now considering P, we observe that each round among the first R rounds is
+counted exactly once in either a pi or a p9i, so P is indeed a partition of R.
+Moreover, for i 5 1, 2, . . . , L, at most one round can begin while the
+instruction ui is critical and end after ui is executed, so we have p9i [ {0, 1}.
+Thus, (U, R, P) is a delay sequence. Finally, we observe that, by construction,
+for i 5 1, 2, . . . , L, the pi rounds that comprise the ith group all occur while
+the instruction ui is critical. Therefore, the delay sequence (U, R, P) occurs.
+e
+We now establish that a critical instruction is unlikely to remain critical across
+a modest number of rounds. Specifically, we first show that a critical instruction
+must be the ready instruction of a thread that is near the top of its processor’s
+ready deque. We then use this fact to show that after O(1) rounds, a critical
+instruction is very likely to be executed.
+LEMMA 10.
+At every time step during the execution of a fully strict multithreaded
+computation by the Work-Stealing Algorithm, each critical instruction is the ready
+instruction of a thread that has at most 1 thread above it in its processor’s ready
+deque.
+PROOF.
+Consider any time step, and let u0 be the critical instruction of a
+thread G0. Since u0 is critical, G0 is ready. Hence, for some processor p, either G0
+is in p’s ready deque or G0 is being worked on by p. If G0 has more than 1 thread
+above it in p’s ready deque, then Lemma 4 guarantees that each of the at least 2
+threads above G0 in p’s ready deque is an ancestor of G0. Let G1, G2, . . . , Gk
+740
+R. D. BLUMOFE AND C. E. LEISERSON
+denote G0’s ancestor threads, where G1 is the parent of G0 and Gk is the root
+thread. Further, for i 5 1, 2, . . . , k, let ui denote the instruction of thread Gi
+that spawned thread Gi21, and let wi denote ui’s successor instruction in thread
+Gi. Because of the deque edges, each instruction wi is a predecessor of u0 in G9,
+and consequently, since u0 is critical, each instruction wi has been executed.
+Moreover, because each wi is the successor of the spawn instruction ui in thread
+Gi, each thread Gi for i 5 1, 2, . . . , k has been worked on since the time step at
+which it spawned thread Gi21. But Lemma 4 guarantees that only the topmost
+thread in p’s ready deque can have this property. Thus, G1 is the only thread that
+can possibly be above G0 in p’s ready deque.
+e
+LEMMA 11.
+Consider the execution of any fully strict multithreaded computation
+by the Work-Stealing Algorithm on a parallel computer with P $ 2 processors. For
+any instruction v and any number r $ 2 of steal-attempt rounds, the probability that
+any particular set of r rounds occur while the instruction v is critical is at most the
+probability that only 0 or 1 of the steal attempts initiated in the first r 2 1 of these
+rounds choose v’s processor, which is at most e22r13.
+PROOF.
+Let ta denote the first time step at which instruction v is critical, and
+let p denote the processor in whose ready deque v’s thread resides at time step
+ta. Consider any particular set of r rounds, and suppose that they all occur while
+instruction v is critical. Now, consider the steal attempts that comprise the first
+r 2 1 of these rounds, of which there must be at least 3P(r 2 1). Let tb denote
+the time step just after the time step at which the last of these steal attempts is
+initiated. Note that because the last round, like every round, must take at least
+two (in fact, four) steps, the time step tb must occur before the time step at which
+instruction v is executed.
+We shall first show that of these 3P(r 2 1) steal attempts initiated while
+instruction v is critical and at least 2 time steps before v is executed, at most 1 of
+them can choose processor p as its target, for otherwise, v would be executed at
+or before tb. Recall from Lemma 10 that instruction v is the ready instruction of
+a thread G, which has at most 1 thread above it in p’s ready deque as long as v is
+critical.
+If G has no threads above it, then another thread cannot be placed above it
+until after instruction v is executed, since only by processor p executing
+instructions from G can another thread be placed above it in its ready deque.
+Consequently, if a steal attempt targeting processor p is initiated at some time
+step t $ ta, we are guaranteed that instruction v is executed at a time step no
+later than t, either by thread G being stolen and executed or by p executing the
+thread itself.
+Now, suppose G has one thread G9 above it in p’s ready deque. In this case, if
+a steal attempt targeting processor p is initiated at time step t $ ta, then thread
+G9 gets stolen from p’s ready deque no later than time step t. Suppose further
+that another steal attempt targeting processor p is initiated at time step t9, where
+ta # t # t9 , tb. Then, we know that a second steal will be serviced by p at or
+before time step t9 1 1. If this second steal gets thread G, then instruction v
+must get executed at or before time step t9 1 1 # tb, which is impossible, since
+741
+Scheduling Multithreaded Computations by Work Stealing
+v is executed after time step tb. Consequently, this second steal must get thread
+G9—the same thread that the first steal got. But this scenario can only occur if in
+the intervening time period, thread G9 stalls and is subsequently reenabled by the
+execution of some instruction from thread G, in which case instruction v must be
+executed before time step t9 1 1 # tb, which is once again impossible.
+Thus, we must have 3P(r 2 1) steal attempts, each initiated at a time step t
+such that ta # t , tb, and at most 1 of which targets processor p. The probability
+that either 0 or 1 of 3P(r 2 1) steal attempts chooses processor p is
+S 1 2
+1
+PD
+3P(r21)
+1 3P~r 2 1!S
+1
+PDS 1 2
+1
+PD
+3P(r21)21
+5S 1 1 3~r 2 1!
+P
+P 2 1DS 1 2
+1
+PD
+3P(r21)
+#~6r 2 5!S 1 2
+1
+PD
+3P(r21)
+# ~6r 2 5!e23(r21)
+#e22r13
+for r $ 2.
+e
+We now complete the delay-sequence argument and bound the total dollars in
+the STEAL bucket.
+LEMMA 12.
+Consider the execution of any fully strict multithreaded computation
+with critical-path length T` by the Work-Stealing Algorithm on a parallel computer
+with P processors. For any e . 0, with probability at least 1 2 e, at most O(P(T` 1
+lg(1/e))) work-steal attempts occur. The expected number of steal attempts is
+O(PT`). In other words, with probability at least 1 2 e, the execution terminates with
+at most O(P(T` 1 lg(1/e))) dollars in the STEAL bucket, and the expected number of
+dollars in this bucket is O(PT`).
+PROOF.
+From Lemma 9, we know that if at least 4PR steal attempts occur,
+then some delay sequence (U, R, P) must occur. Consider a particular delay
+sequence (U, R, P) having U 5 (u1, u2, . . . , uL) and P 5 (p1, p91, p2,
+p92, . . . , pL, p9L), with L # 2T`. We shall compute the probability that (U, R,
+P) occurs.
+Such a sequence occurs if for i 5 1, 2, . . . , L, each instruction ui is critical
+throughout all pi rounds in the ith group. From Lemma 11, we know that the
+probability of the pi rounds in the ith group all occurring while a given
+instruction ui is critical is at most the probability that only 0 or 1 of the steal
+attempts initiated in the first pi 2 1 of these rounds choose v’s processor, which
+is at most e22pi13, provided pi $ 2. (For those values of i with pi , 2, we shall
+use 1 as an upper bound on this probability.) Moreover, since the targets of the
+work-steal attempts in the pi rounds of the ith group are chosen independently
+from the targets chosen in other rounds, we can bound the probability of the
+742
+R. D. BLUMOFE AND C. E. LEISERSON
+particular delay sequence (U, R, P) occurring as follows:
+Pr$~U, R, P! occurs%
+5 P
+1#i#L
+Pr$the pi rounds of the ith group occur while ui is critical%
+# P
+1#i#L
+pi$2
+e22pi13
+#expF 22S O
+1#i#L
+pi$2
+piD 1 3LG
+5expF 22S O
+1#i#L
+pi 2 O
+1#i#L
+pi,2
+piD 1 3LG
+#e22((R2L)2L)13L
+5e22 R17L,
+where the second-to-last line follows from Inequality (5).
+To bound the probability of some delay sequence (U, R, P) occurring, we
+need to count the number of such delay sequences and multiply by the
+probability that a particular such sequence occurs. The directed path U in the
+modified dag G9 starts at the first instruction of the root thread and ends at the
+last instruction of the root thread. If the original dag has degree d, then G9 has
+degree at most d 1 1. Consistent with our unit-time assumption for instructions,
+we assume that the degree d is a constant. Since the length of a longest path in
+G9 is at most 2T`, there are at most (d 1 1)2T` ways of choosing the path U 5
+(u1, u2, . . . , uL). There are at most (
+R
+2L1R) # (
+R
+4T`1R) ways to choose P, since
+P partitions R into 2L pieces. As we have just shown, a given delay sequence has
+at most an e22 R17L # e22 R114T` chance of occurring. Multiplying these three
+factors together bounds the probability that any delay sequence (U, R, P)
+occurs by
+~d 1 1!2T`S
+4T` 1 R
+R D e22 R114T`,
+(6)
+which is at most e for R 5 cT` lg d 1 lg(1/e), where c is a sufficiently large
+constant. Thus, the probability that at least 4PR 5 Q(P(T` lg d 1 lg(1/e))) 5
+Q(P(T` 1 lg(1/e))) steal attempts occur is at most e. The expectation bound
+follows, because the tail of the distribution decreases exponentially.
+e
+With bounds on the number of dollars in the WORK and STEAL buckets, we
+now state the theorem that bounds the total execution time for a fully strict
+multithreaded computation by the Work-Stealing Algorithm, and we complete
+the proof by bounding the number of dollars in the WAIT bucket.
+THEOREM 13.
+Consider the execution of any fully strict multithreaded computa-
+tion with work T1 and critical-path length T` by the Work-Stealing Algorithm on a
+parallel computer with P processors. The expected running time, including schedul-
+743
+Scheduling Multithreaded Computations by Work Stealing
+ing overhead, is T1/P 1 O(T`). Moreover, for any e . 0, with probability at least
+1 2 e, the execution time on P processors is T1/P 1 O(T` 1 lg P 1 lg(1/e)).3
+PROOF.
+Lemmas 7 and 12 bound the dollars in the WORK and STEAL buckets,
+so we now must bound the dollars in the WAIT bucket. This bound is given by
+Lemma 6 which bounds the total delay—that is, the total dollars in the WAIT
+bucket—as a function of the number M of steal attempts—that is, the total
+dollars in the STEAL bucket. This lemma says that for any e . 0, with probability
+at least 1 2 e, the number of dollars in the WAIT bucket is at most a constant
+times the number of dollars in the STEAL bucket plus O(P lg P 1 P lg(1/e)), and
+the expected number of dollars in the WAIT bucket is at most the number in the
+STEAL bucket.
+We now add up the dollars in the three buckets and divide by P to complete
+this proof.
+e
+The next theorem bounds the total amount of communication that a mul-
+tithreaded computation executed by the Work-Stealing Algorithm performs in a
+distributed model. The analysis makes the assumption that at most a constant
+number of bytes need be communicated along a join edge to resolve the
+dependency.
+THEOREM 14.
+Consider the execution of any fully strict multithreaded computa-
+tion with critical-path length T` by the Work-Stealing Algorithm on a parallel
+computer with P processors. Then, the total number of bytes communicated has
+expectation O(PT`(1 1 nd)Smax) where nd is the maximum number of join edges
+from a thread to its parent and Smax is the size in bytes of the largest activation frame
+in the computation. Moreover, for any e . 0, the probability is at least 1 2 e that the
+total communication incurred is O(P(T` 1 lg(1/e))(1 1 nd)Smax).
+PROOF.
+We prove the bound for the expectation. The high-probability bound
+is analogous. By our bucketing argument, the expected number of steal attempts
+is at most O(PT`). When a thread is stolen, the communication incurred is at
+most Smax. Communication also occurs whenever a join edge enters a parent
+thread from one of its children and the parent has been stolen, but since each
+join edge accounts for at most a constant number of bytes, the communication
+incurred is at most O(nd) per steal. Finally, we can have communication when a
+child thread enables its parent and puts the parent into the child’s processor’s
+ready deque. This event can happen at most nd times for each time the parent is
+stolen, so the communication incurred is at most ndSmax per steal. Thus, the
+expected total communication cost is O(PT`(1 1 nd)Smax).
+e
+The communication bounds in this theorem are existentially tight, in that there
+exist fully strict computations that require V(PT`(1 1 nd)Smax) total communi-
+cation for any execution schedule that achieves linear speedup. This result
+follows directly from a theorem of Wu and Kung [1991], who showed that
+divide-and-conquer computations—a special case of fully strict computations
+with nd 5 1—require this much communication.
+3 With Plaxton’s bound (C. G. Plaxton, private communication, 1984) for Lemma 6, this bound
+becomes T1/P 1 O(T`), whenever 1/e is at most polynomial in M and P.
+744
+R. D. BLUMOFE AND C. E. LEISERSON
+In the case, when we have nd 5 O(1) and the algorithm achieves linear
+expected speedup—that is, when P 5 O(T1/T`)—the total communication is at
+most O(T1Smax). Moreover, if P ,, T1/T`, the total communication is much less
+than T1Smax, which confirms the folk wisdom that work-stealing algorithms
+require much less communication than the possibly Q(T1Smax) communication of
+work-sharing algorithms.
+7. Conclusion
+How practical are the methods analyzed in this paper? We have been actively
+engaged in building a C-based language called Cilk (pronounced “silk”) for
+programming multithreaded computations.4 Cilk is derived from the PCM
+“Parallel Continuation Machine” system [Halbherr et al. 1994], which was itself
+partly inspired by the research reported here. The Cilk runtime system employs
+the Work-Stealing Algorithm described in this paper. Because Cilk employs a
+provably efficient scheduling algorithm, Cilk delivers guaranteed performance to
+user applications. Specifically, we have found empirically that the P-processor
+performance of an application written in the Cilk language can be predicted
+accurately using the model T1/P 1 T`.
+The Cilk system currently runs on contemporary shared-memory multiproces-
+sors, such as the Sun Enterprise, the Silicon Graphics Origin, the Intel Quad
+Pentium, and the DEC Alphaserver. (Earlier versions of Cilk ran on the
+Thinking Machines CM-5 MPP, the Intel Paragon MPP, and the IBM SP-2.) To
+date, applications written in Cilk include protein folding [Pande et al. 1994],
+graphic rendering [Stark 1998], backtrack search, and the ,Socrates chess
+program [Joerg and Kuszmaul 1994], which won second prize in the 1995 ICCA
+World Computer Chess Championship running on a 1824-node Paragon at
+Sandia National Laboratories. Our more recent chess program, Cilkchess, won
+the 1996 Dutch Open Computer Chess Tournament. A team programming in
+Cilk won First Prize (undefeated) in the ICFP’98 Programming Contest spon-
+sored by the International Conference on Functional Programming.
+As part of our research, we have implemented a prototype runtime system for
+Cilk on networks of workstations. This runtime system, called Cilk-NOW [Blu-
+mofe 1995; Blumofe and Lisiecki 1997; Lisiecki 1996], supports adaptive paral-
+lelism, where processors in a workstation environment can join a user’s compu-
+tation if they would be otherwise idle and yet be available immediately to leave
+the computation when needed again by their owners. Cilk-NOW also supports
+transparent fault tolerance, meaning that the user’s computation can proceed
+even in the face of processors crashing, and yet the programmer writes the code
+in a completely fault-oblivious fashion. A more recent distributed implementa-
+tion for clusters of SMP’s is described in Randall [1998].
+We have also investigated other topics related to Cilk, including distributed
+shared memory and debugging tools.5 Up-to-date information, papers, and
+4 See, for example, Blumofe [1995], Blumofe et al. [1996], Frigo et al. [1998], Joerg [1996], and
+Randall [1998].
+5 For examples of distributed shared memory, see Blumofe et al. [1996a; 1996b], Frigo [1998], and
+Frigo and Luchangco [1998]. For examples of debugging tools, see Cheng [1998], Cheng et al. [1998],
+Feng and Leiserson [1997], and Stark [1998].
+745
+Scheduling Multithreaded Computations by Work Stealing
+software releases can be found on the World Wide Web at
+http://supertech.lcs.mit.edu/cilk.
+For the case of shared-memory multiprocessors, we have recently generalized
+the time bound (but not the space or communication bounds) along two
+dimensions [Arora et al. 1998]. First, we have shown that for arbitrary (not
+necessarily fully strict or even strict) multithreaded computations, the expected
+execution time is O(T1/P 1 T`). This bound is based on a new structural lemma
+and an amortized analysis using a potential function. Second, we have developed
+a nonblocking implementation of the work-stealing algorithm, and we have
+analyzed its execution time for a multiprogrammed environment in which the
+computation executes on a set of processors that grows and shrinks over time.
+This growing and shrinking is controlled by an adversary. In case the adversary
+chooses not to grow or shrink the set of processors, the bound specializes to
+match our previous bound. The nonblocking work stealer has been implemented
+in the Hood user-level threads library [Blumofe and Papadopoulos 1998; Papado-
+poulos 1998]. Up-to-date information, papers, and software releases can be
+found on the World Wide Web at
+http://www.cs.utexas.edu/users/hood.
+ACKNOWLEDGMENTS.
+Thanks to Bruce Maggs of Carnegie-Mellon, who outlined
+the strategy in Section 6 for using a delay-sequence argument to prove the time
+bounds on the Work-Stealing Algorithm, which improved our previous bounds.
+Thanks to Greg Plaxton of University of Texas, Austin for technical comments
+on our probabilistic analyses. Thanks to the anonymous referees, Yanjun Zhang
+of Southern Methodist University, and Warren Burton of Simon Fraser Univer-
+sity for comments that improved the clarity of our paper. Thanks also to Arvind,
+Michael Halbherr, Chris Joerg, Bradley Kuszmaul, Keith Randall, and Yuli Zhou
+of MIT for helpful discussions.
+REFERENCES
+ARORA, N. S., BLUMOFE, R. D., AND PLAXTON, C. G.
+1998.
+Thread scheduling for multipro-
+grammed multiprocessors. In Proceedings of the 10th Annual ACM Symposium on Parallel Algo-
+rithms and Architectures (SPAA’98) (Puerto Vallarta, Mexico, June 28–July 2). ACM, New York,
+pp. 119–129.
+ARVIND, NIKHIL, R. S.,
+AND PINGALI, K. K.
+1989.
+I-structures: Data structures for parallel
+computing. ACM Trans. Program. Lang. Syst. 11, 4 (Oct.), 598–632.
+BLELLOCH, G. E., GIBBONS, P. B.,
+AND MATIAS, Y.
+1995.
+Provably efficient scheduling for
+languages with fine-grained parallelism. In Proceedings of the 7th Annual ACM Symposium on
+Parallel Algorithms and Architectures (SPAA’95) (Santa Barbara, Calif., July 17–19). ACM, New
+York, pp. 1–12.
+BLELLOCH, G. E., GIBBONS, P. B., MATIAS, Y.,
+AND NARLIKAR, G. J.
+1997.
+Space-efficient
+scheduling of parallelism with synchronization variables. In Proceedings of the 9th Annual ACM
+Symposium on Parallel Algorithms and Architectures (SPAA’97) (Newport, R.I., June 22–25). ACM,
+New York, pp. 12–23.
+BLUMOFE, R. D.
+1995.
+Executing multithreaded programs efficiently. Ph.D. thesis, Department of
+Electrical Engineering and Computer Science, Massachusetts Institute of Technology. Also avail-
+able as MIT Laboratory for Computer Science Technical Report MIT/LCS/TR-677.
+BLUMOFE, R. D., FRIGO, M., JOERG, C. F., LEISERSON, C. E., AND RANDALL, K. H.
+1996a.
+An
+analysis of dag-consistent distributed shared-memory algorithms. In Proceedings of the 8th Annual
+ACM Symposium on Parallel Algorithms and Architectures (SPAA’96) (Padua, Italy, June 24–26).
+ACM, New York, pp. 297–308.
+746
+R. D. BLUMOFE AND C. E. LEISERSON
+BLUMOFE, R. D., FRIGO, M., JOERG, C. F., LEISERSON, C. E.,
+AND RANDALL, K. H.
+1996b.
+Dag-consistent distributed shared memory. In Proceedings of the 10th International Parallel Process-
+ing Symposium (IPPS) (Honolulu, Hawaii, April). IEEE Computer Society Press, Los Alamitos,
+Calif., pp. 132–141.
+BLUMOFE, R. D., JOERG, C. F., KUSZMAUL, B. C., LEISERSON, C. E., RANDALL, K. H., AND ZHOU, Y.
+1996c.
+Cilk: An efficient multithreaded runtime system. J. Paral. Dist. Comput. 37, 1 (Aug.),
+55–69.
+BLUMOFE, R. D., AND LEISERSON, C. E.
+1998.
+Space-efficient scheduling of multithreaded compu-
+tations. SIAM J. Comput. 27, 1 (Feb.), 202–229.
+BLUMOFE, R. D., AND LISIECKI, P. A.
+1997.
+Adaptive and reliable parallel computing on networks
+of workstations. In Proceedings of the USENIX 1997 Annual Technical Conference on UNIX and
+Advanced Computing Systems (Anaheim, Calif., Jan.). USENIX Associates, Berkeley, Calif., pp.
+133–147.
+BLUMOFE, R. D., AND PAPADOPOULOS, D.
+1998.
+The performance of work stealing in multipro-
+grammed environments. Tech. Rep. TR-98-13 (May). Dept. Computer Sciences, The University of
+Texas at Austin, Austin, Tex.
+BRENT, R. P.
+1974.
+The parallel evaluation of general arithmetic expressions. J. ACM 21, 2 (Apr.),
+201–206.
+BURTON, F. W.
+1988.
+Storage management in virtual tree machines. IEEE Trans. Comput. 37, 3
+(Mar.), 321–328.
+BURTON, F. W.
+1996.
+Guaranteeing good memory bounds for parallel programs. IEEE Trans.
+Softw. Eng. 22, 10 (Oct.), 762–773.
+BURTON, F. W., AND SLEEP, M. R.
+1981.
+Executing functional programs on a virtual tree of
+processors. In Proceedings of the 1981 Conference on Functional Programming Languages and
+Computer Architecture (Portsmouth, N.H., Oct.). ACM, New York, N.Y., pp. 187–194.
+CHENG, G.-I.
+1998.
+Algorithms for data-race detection in multithreaded programs. Master’s thesis,
+Department of Electrical Engineering and Computer Science, Massachusetts Institute of Technol-
+ogy.
+CHENG, G.-I., FENG, M., LEISERSON, C. E., RANDALL, K. H., AND STARK, A. F.
+1998.
+Detecting
+data races in Cilk programs that use locks. In Proceedings of the 10th ACM Symposium on Parallel
+Algorithms and Architectures (SPAA’98) (Puerto Vallarta, Mexico, June 28–July 2). ACM, New
+York, pp. 298–309.
+CULLER, D. E., AND ARVIND.
+1988.
+Resource requirements of dataflow programs. In Proceedings of
+the 15th Annual International Symposium on Computer Architecture (ISCA) (Honolulu, Hawaii,
+May). IEEE Computer Society Press, Los Alamitos, Calif., pp. 141–150. Also available as MIT
+Laboratory for Computer Science, Computation Structures Group Memo 280.
+EAGER, D. L., ZAHORJAN, J., AND LAZOWSKA, E. D.
+1989.
+Speedup versus efficiency in parallel
+systems. IEEE Trans. Comput. 38, 3 (Mar.), 408–423.
+FELDMANN, R., MYSLIWIETZ, P., AND MONIEN, B.
+1993.
+Game tree search on a massively parallel
+system. Adv. Comput. Chess 7, 203–219.
+FENG, M., AND LEISERSON, C. E.
+1997.
+Efficient detection of determinacy races in Cilk programs.
+In Proceedings of the 9th Annual ACM Symposium on Parallel Algorithms and Architectures
+(SPAA’97) (Newport, R.I., June 22–25). ACM, New York, pp. 1–11.
+FINKEL, R., AND MANBER, U.
+1987.
+DIB—A distributed implementation of backtracking. ACM
+Trans. Program. Lang. Syst. 9, 2 (Apr.), 235–256.
+FRIGO, M.
+1998.
+The weakest reasonable memory model. Master’s thesis, Dept. Electrical Engi-
+neering and Computer Science, Massachusetts Institute of Technology, Cambridge, Mass.
+FRIGO, M., LEISERSON, C. E., AND RANDALL, K. H.
+1998.
+The implementation of the Cilk-5
+multithreaded language. In Proceedings of the 1998 ACM SIGPLAN Conference on Programming
+Language Design and Implementation (PLDI’98) (Montreal, Canada, June 17–19). ACM, New
+York.
+FRIGO, M., AND LUCHANGCO, V.
+1998.
+Computation-centric memory models. In Proceedings of the
+10th Annual ACM Symposium on Parallel Algorithms and Architectures (SPAA’98) (Puerto Vallarta,
+Mexico, June 28–July 2). ACM, New York, pp. 240–249.
+GRAHAM, R. L.
+1966.
+Bounds for certain multiprocessing anomalies. Bell Syst. Tech. J. 45,
+1563–1581.
+GRAHAM, R. L.
+1969.
+Bounds on multiprocessing timing anomalies. SIAM J. Appl. Math. 17, 2
+(Mar.), 416–429.
+747
+Scheduling Multithreaded Computations by Work Stealing
+HALBHERR, M., ZHOU, Y.,
+AND JOERG, C. F.
+1994.
+MIMD-style parallel programming with
+continuation-passing threads. In Proceedings of the 2nd International Workshop on Massive Parallel-
+ism: Hardware, Software, and Applications (Capri, Italy, Sept.). World Scientific, Singapore. (Also
+available as MIT Laboratory for Computer Science Computation Structures, Group Memo 355,
+March 1994. MIT, Cambridge, Mass.
+HALSTEAD, R. H., JR.
+1984.
+Implementation of Multilisp: Lisp on a multiprocessor. In Conference
+Record of the 1984 ACM Symposium on LISP and Functional Programming (Austin, Tex., Aug.)
+ACM, New York, pp. 9–17.
+JOERG, C. F.
+1996.
+The Cilk System for Parallel Multithreaded Computing. Ph.D. dissertation.
+Dept. Electrical Engineering and Computer Science, Massachusetts Institute of Technology,
+Cambridge, Mass.
+JOERG, C., AND KUSZMAUL, B. C.
+1994.
+Massively parallel chess. In Proceedings of the 3rd DIMACS
+Parallel Implementation Challenge (Rutgers University, New Jersey, Oct. 1994).
+KARP, R. M., AND ZHANG, Y.
+1993.
+Randomized parallel algorithms for backtrack search and
+branch-and-bound computation. J. ACM 40, 3 (July), 765–789.
+KUSZMAUL, B. C.
+1994.
+Synchronized MIMD computing. Ph.D. thesis, Dept. Electrical Engineer-
+ing and Computer Science, Massachusetts Institute of Technology, Cambridge, Mass. Also
+available as MIT Laboratory for Computer Science Technical Report MIT/LCS/TR-645.
+LISIECKI, P.
+1996.
+Macroscheduling in the Cilk network of workstations environment. Master’s
+thesis, Dept. Electrical Engineering and Computer Science, Massachusetts Institute of Technology,
+Cambridge, Mass.
+LIU, P., AIELLO, W., AND BHATT, S.
+1993.
+An atomic model for message-passing. In Proceedings of
+the 5th Annual ACM Symposium on Parallel Algorithms and Architectures (SPAA’93) (Velen,
+Germany, June 30–July 2). ACM, New York, pp. 154–163.
+MOHR, E., KRANZ, D. A., AND HALSTEAD, R. H., JR.
+1991.
+Lazy task creation: A technique for
+increasing the granularity of parallel programs. IEEE Trans. Parall. Dist. Syst. 2, 3 (July), 264–280.
+PANDE, V. S., JOERG, C. F., GROSBERG, A. Y., AND TANAKA, T.
+1994.
+Enumerations of the
+Hamiltonian walks on a cubic sublattice. J. Phys. A 27.
+PAPADOPOULOS, D. P.
+1998.
+Hood: A user-level thread library for multiprogramming multiproces-
+sors. Master’s thesis, Dept. Computer Sciences, The University of Texas at Austin, Austin, Tex.
+RANADE, A.
+1987.
+How to emulate shared memory. In Proceedings of the 28th Annual Symposium
+on Foundations of Computer Science (FOCS) (Los Angeles, Calif., Oct.). IEEE Computer Society
+Press, Los Alamitos, Calif., pp. 185–194.
+RANDALL, K. H.
+1998.
+Cilk: Efficient multithreaded computing. Ph.D. dissertation. Dept. Electri-
+cal Engineering and Computer Science, Massachusetts Institute of Technology, Cambridge, Mass.
+RUDOLPH, L., SLIVKIN-ALLALOUF, M., AND UPFAL, E.
+1991.
+A simple load balancing scheme for
+task allocation in parallel machines. In Proceedings of the 3rd Annual ACM Symposium on Parallel
+Algorithms and Architectures (SPAA’91) (Hilton Head, S.C., July 21–24). ACM, New York, pp.
+237–245.
+RUGGIERO, C. A., AND SARGEANT, J.
+1987.
+Control of parallelism in the Manchester dataflow
+machine. In Functional Programming Languages and Computer Architecture, Number 274 in Lecture
+Notes in Computer Science. Springer-Verlag, New York, pp. 1–15.
+STARK, A. F.
+1998.
+Debugging multithreaded programs that incorporate user-level locking. Mas-
+ter’s thesis, Department of Electrical Engineering and Computer Science, Massachusetts Institute
+of Technology, Cambridge, Mass.
+VANDEVOORDE, M. T., AND ROBERTS, E. S.
+1988.
+WorkCrews: An abstraction for controlling
+parallelism. International Journal of Parallel Programming 17, 4 (Aug.), 347–366.
+WU, I.-C., AND KUNG, H. T.
+1991.
+Communication complexity for parallel divide-and-conquer. In
+Proceedings of the 32nd Annual Symposium on Foundations of Computer Science (FOCS) (San Juan,
+Puerto Rico, Oct. 1991). IEEE Computer Society Press, Los Alamitos, Calif., pp. 151–162.
+ZHANG, Y., AND ORTYNSKI, A.
+1994.
+The efficiency of randomized parallel backtrack search. In
+Proceedings of the 6th IEEE Symposium on Parallel and Distributed Processing (Dallas, Texas, Oct.
+1994). IEEE Computer Society Press, Los Alamitos, Calif.
+RECEIVED SEPTEMBER 1997; REVISED JANUARY 1999; ACCEPTED MARCH 1999
+Journal of the ACM, Vol. 46, No. 5, September 1999.
+748
+R. D. BLUMOFE AND C. E. LEISERSON
