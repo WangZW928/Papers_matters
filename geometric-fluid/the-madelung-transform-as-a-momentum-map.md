@@ -7,7 +7,7 @@
 **DOI：** [https://doi.org/10.3934/jgm.2017006](https://doi.org/10.3934/jgm.2017006)
 **arXiv：** [https://arxiv.org/abs/1512.04611](https://arxiv.org/abs/1512.04611)（v2, 2016, math.SG / math-ph；本文库以 arXiv v2 与 JGM 版为准）
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ⏳
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ✓
 
 ---
 

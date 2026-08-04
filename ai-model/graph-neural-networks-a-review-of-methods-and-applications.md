@@ -7,7 +7,7 @@
 **DOI：** [https://doi.org/10.1016/j.aiopen.2021.01.001](https://doi.org/10.1016/j.aiopen.2021.01.001)（CC-BY 4.0 开放获取）
 **arXiv：** [https://arxiv.org/abs/1812.08434](https://arxiv.org/abs/1812.08434)（v6, 2021-10-06；标注 "Published at AI Open 2021"）
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ⏳
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ✓
 
 ---
 

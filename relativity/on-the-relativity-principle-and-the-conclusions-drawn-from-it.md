@@ -7,7 +7,7 @@
 **DOI：** 无（1907 年期刊文章，无 DOI/arXiv）
 **原文依据：** 德文原文扫描件（Internet Archive: jahrbuch-der-radioaktivitat-und-elektronik-4.1907, pp. 411-462；本库 `_full.txt` 为该扫描件的 OCR 文本）；英文参考 *The Collected Papers of Albert Einstein* Vol. 2（Beck 英译, Doc. 47）
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ⏳
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ✓
 
 ---
 

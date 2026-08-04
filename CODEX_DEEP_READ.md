@@ -1,6 +1,6 @@
-# Codex 精读推荐 — 33 篇论文排名
+# Codex 精读推荐 — 38 篇论文排名
 
-**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action） | **审查范围：** 321 篇 | **Token：** 768,000
+**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action；2026-08-04 学习路线规划精读批次 5 篇：Madelung Transform as a Momentum Map / Neural Tangent Kernel / Deep Equilibrium Models / GNN Review (Zhou et al.) / Einstein 1907 相对性原理与推论） | **审查范围：** 321 篇 | **Token：** 768,000
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -56,7 +56,7 @@
 12. **Quantum Simulation of PDEs via Schrödingerization** — quantum-computing
     - 文件：[`quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md`](quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 
-## Tier 3 — 扩展阅读（21 篇）
+## Tier 3 — 扩展阅读（26 篇）
 
 13. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)

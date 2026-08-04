@@ -8,7 +8,7 @@
 **arXiv：** [https://arxiv.org/abs/1909.01377](https://arxiv.org/abs/1909.01377)（v2, 2019-10-28）
 **代码：** https://github.com/locuslab/deq
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ⏳
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ✓
 
 ---
 

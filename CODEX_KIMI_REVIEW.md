@@ -27,3 +27,23 @@
 - 18 篇文档均包含 `## Review Questions`，每篇 3 个深度问题，共 54 个问题。
 - 18 篇目标文档均未发现 `$$...$$` display math；现有 display math 使用 `\[...\]`。
 - 数学公式、变量名、作者、DOI 和技术专有名词均按要求保留。
+
+---
+
+# Kimi Code Review 报告 — 2026-08-04（学习路线规划精读批次 #4/#23/#24/#26/#29）
+
+> ⚠️ **本批次 Kimi review 未完成（上游故障）**：2026-08-04 23:57 起 zxcs99.cn 全模型不可用（gpt-5.4-mini 返回 `Service temporarily unavailable`，gpt-5.4/gpt-5.6 返回 `Upstream request failed`），跨多轮探测持续至 00:45 仍未恢复；每篇重试 1 次仍失败。按 skill 失败预案，3 个深度问题由 JARVIS 自行补充并已在各文档注明；`$$...$$` 检查由 JARVIS 完成（5 篇均无 `$$`，display math 均为 `\[...\]`）。
+
+| # | 论文 | 公式修复 | 中文化 | 问题数 | 备注 |
+|---|------|---------|--------|--------|------|
+| 1 | The Madelung Transform as a Momentum Map | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
+| 2 | Neural Tangent Kernel: Convergence and Generalization in Neural Networks | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
+| 3 | Deep Equilibrium Models | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
+| 4 | Graph Neural Networks: A Review of Methods and Applications | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
+| 5 | On the Relativity Principle and the Conclusions Drawn from It | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
+
+## 统一检查（JARVIS 代行）
+
+- 5 篇文档均包含 `## Review Questions`，每篇 3 个深度问题（JARVIS 补充，注明"Kimi review 未完成（上游故障）"）。
+- 5 篇目标文档均未发现 `$$...$$` display math；display math 均使用 `\[...\]`。
+- 数学公式、变量名、作者、DOI 和技术专有名词均按库内格式保留。
