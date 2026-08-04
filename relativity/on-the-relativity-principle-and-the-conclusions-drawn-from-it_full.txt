@@ -1,0 +1,3290 @@
+Über das Relativitätsprinzip und die aus 
+demselben gezogenen Folgerungen. 
+
+
+Von A. Einstein. 
+
+
+Die Newtonschen Bewegungsgleichungen behalten ihre Form, 
+wenn man auf ein neues, relativ zu dem ursprünglich benutzten in 
+gleichformiger Translationsbewegung begriffenes Koordinatensystem 
+transformiert nach den Gleichungen 
+
+297 
+
+
+412 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+r =xr— vi 
+y =y 
+% =x% 
+
+Solange man an der Meinung festhielt, daß auf die New ton schen 
+Bewegungsgleichungen die ganze Physik aufgebaut werden könne, konnte 
+man also nicht daran zweifeln, daß die Naturgesetze gleich ausfallen, 
+auf welches von relativ zucinander gleichförmig bewegten (beschleuni- 
+gungsfreien) Koordinatensystemen sie auch bezogen werden mögen. 
+Jene Unabhängigkeit vom Bewegungszustande des benutzten Koordi- 
+natensystems, im folgenden „Relativitätsprinzip“ genannt, schien aber 
+mit einem Male in Frage gestellt durch die glänzenden Bestätigungen, 
+welche die H. A. Lorentzsche Elektrodynamik bewegter Körper er- 
+fahren hat.!) Jene Theorie ist nämlich auf die Voraussetzung eines 
+ruhenden, unbeweglichen Lichtäthers gegründet; ihre Grundgleichungen 
+sind nicht so beschaffen, daß sie bei Anwendung der obigen Trans- 
+formationsgleichungen in Gleichungen von der gleichen Form übergehen. 
+
+Seit dem Durchdringen jener Theorie mußte man erwarten, daß 
+es gelingen werde, einen Einfluß der Bewegung der Erde relativ zum 
+Lichtäther auf die optischen Erscheinungen nachzuweisen. Lorentz 
+bewies allerdings bekanntlich in jener Arbeit, daß nach seinen Grund- 
+annahmen eine Beeinflussung des Strahlenganges bei optischen Ver- 
+suchen durch jene Relativbewegung nicht zu erwarten sei, sofern man 
+sich bei der Rechnung auf die Glieder beschränkt, in denen das Ver- 
+
+
+hältnis = jener Relativgeschwindigkeit zur Lichtgeschwindigkeit im 
+
+
+Vakuum in der ersten Potenz auftritt. Aber das negative Resultat 
+des Experimentes von Michelson und Morley?) zeigte, daß in einem 
+2 
+bestimmten Falle auch ein Effekt zweiter Ordnung (proportional =) 
+c 
+nicht vorhanden war, trotzdem er nach den Grundlagen der Lorentz- 
+schen Theorie bei dem Versuche sich hätte bemerkbar machen müssen. 
+Es ist bekannt, daß jener Widerspruch zwischen Theorie und 
+Experiment durch die Annahme von H. A. Lorentz und Fitzgerald, 
+nach welcher bewegte Körper in der Richtung ihrer Bewegung eine 
+bestimmte Kontraktion erfahren, formell beseitigt wurde. Diese ad 
+
+
+1) H. A. Lorentz, Versuch einer Theorie der elektrischen und op- 
+tischen Erscheinungen in bewegten Körpern. Leiden 189%. Neudruck 
+Leipzig 1906. 
+
+2: A. A. Michelson und E. W. Morley, Amer. Journ. ot Science (3) 
+34, S. 333, 1887. 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 418 
+
+
+hoc eingeführte Annahme erschien aber doch nur als ein künstliches 
+Mittel, um die Theorie zu retten; der Versuch von Michelson und 
+Morley hatte eben gezeigt, daß Erscheinungen auch da dem Relativitäts- 
+prinzip entsprechen, wo dies nach der Lorentzschen Theorie nicht 
+einzusehen war. Es hatte daher den Anschein, als ob die Lorentzsche 
+Theorie wieder verlassen und durch eine Theorie ersetzt werden müsse, 
+deren Grundlagen dem Relativitätsprinzip entsprechen, denn eine solche 
+Theorie ließe das negative Ergebnis des Versuches von Michelson 
+und Morley ohne weiteres voraussehen. 
+
+
+Es zeigte sich aber überraschenderweise, daß es nur nötig war, 
+den Begriff der Zeit genügend scharf zu fassen, um über die soeben 
+dargelegte Schwierigkeit hinweg zu kommen. Es bedurfte nur der 
+Erkenntnis, daß man eine von H. A. Lorentz eingeführte Hilfsgröße, 
+welche er „Ortszeit“ nannte, als „Zeit“ schlechthin definieren kann. 
+Hält man an der angedeuteten Definition der Zeit fest, so entsprechen 
+die Grundgleichungen der Lorentzschen Theorie dem Relativitäts- 
+prinzip, wenn man nur die obigen Transformationsgleichungen durch 
+solche ersetzt, welche dem neuen Zeitbegriff entsprechen. Die Hypo- 
+these von H. A. Lorentz und Fitzgerald erscheint dann als eine 
+zwingende Konsequenz der Theorie. Nur die Vorstellung eines Licht- 
+äthers als des Trägers der elektrischen und magnetischen Kräfte paßt 
+nicht in die hier dargelegte Theorie hinein; elektromagnetische Felder 
+erscheinen nämlich hier nicht als Zustände irgendeiner Materie, 
+sondern als selbständig existierende Dinge, die der ponderabeln Materie 
+gleichartig sind und mit ihr das Merkmal der Triigheit gemeinsam haben. 
+
+Im folgenden ist nun der Versuch gemacht, die Arbeiten zu 
+einem Ganzen zusammenzufassen, welche bisher aus der Vereinigung 
+von H. A. Lorentzscher Theorie und Relativitätsprinzip hervorge- 
+gangen sind. 
+
+In den ersten beiden Teilen der Arbeit sind die kinematischen 
+Grundlagen sowie deren Anwendung .auf die Grundgleichungen der 
+Maxwell-Lorentzschen Theorie behandelt; dabei hielt ich mich an 
+Arbeiten!) von H. A. Lorentz (Versl. Kon. Akad. v. Wet., Amsterdam 
+1904) und A. Einstein (Ann. d. Phys. 16, 1905). 
+
+
+In dem ersten Abschnitt, in dem ausschließlich die kinematischen 
+Grundlagen der Theorie angewendet worden sind, habe ich auch einige 
+optische Probleme (Dopplersches Prinzip, Aberration, Mitführung des 
+
+
+1) Es kommen auch noch die einschlägigen Arbeiten von E. Cohn 
+in Betracht, von welchen ich aber hier keinen Gebrauch gemacht habe. 
+
+
+U 
+
+
+414 Einstein, Relativitätsprinzip u. dic aus demselben gezog. Folgerungen. 
+
+
+Lichtes durch bewegte Körper) behandelt; auf die Möglichkeit einer 
+derartigen Behandlungsweise wurde ich durch eine mündliche Mitteilung 
+und eine Arbeit (Ann. d. Phys. 23, 989, 1907) von Herrn M. Laue, 
+und durch eine (allerdings korrekturbedürftige) Arbeit von Herrn J. Laub 
+(Ann. d. Phys. 32, 1907) aufmerksam. 
+
+
+Im dritten Teil ist die Dynamik des materiellen Punktes (Elektrons) 
+entwickelt. Zur Ableitung der Bewegungsgleichungen benutzte ich die- 
+selbe Methode wie in meiner oben genannten Arbeit. Die Kraft ist 
+definiert wie in der Planckschen Arbeit. Auch die Umformungen der 
+Bewegungsgleichungen des materiellen Punktes, welche die Analogie der 
+Bewegungsgleichungen mit denen der klassischen Mechanik so deutlich 
+hervortreten lassen, sind dieser Arbeit entnommen. 
+
+
+Der vierte Teil befaßt sich mit den allgemeinen Folgerungen, be- 
+treffend die Energie und die Bewegungsgröße physikalischer Systeme, 
+zu welchen die Relativitätstheorie führt. Dieselben sind in den 
+Originalabhandlungen: 
+
+
+A. Einsltein, Ann. d. Phys. 18, 639, 1905 und Ann. d. Phys. 
+23, 371, 1907, sowie M. Planck, Sitzungsber. d. Kgl. Preuß. 
+Akad. d. Wissensch. XXIX, 1907 
+
+
+entwickelt worden, hier aber auf einem neuen Wege abgeleitet, der 
+— wie mir scheint — den Zusammenhang jener Anwendungen mit 
+den Grundlagen der Theorie besonders klar erkennen läßt. Auch die 
+Abhängigkeit der Entropie und Temperatur vom Bewegungszustande 
+ist hier behandelt; bezüglich der Entropie hielt ich mich ganz an 
+die zuletzt zitierte Plancksche Abhandlung, die Temperatur bewegter 
+Körper definierte ich wie Herr Mosengeil in seiner Arbeit über die 
+bewegte Hohlraumstrahlung.!) 
+
+
+Das wichtigste Ergebnis des vierten Teiles ist das von der trägen 
+Masse der Energie. Dies Resultat legt die Frage nahe, ob die Energie 
+auch schwere (gravitierende) Masse besitze. Ferner drängt sich die 
+Frage auf, ob das Relativitätsprinzip auf beschleunigungfrei be- 
+wegte Systeme beschränkt sei. Um diese Fragen nicht ganz unerörtert 
+zu lassen, habe ich dieser Abhandlung einen fünften Teil hinzugefügt, 
+welcher eine neue relativitätstheoretische Betrachtung über Beschleuni- 
+gung und Gravitation enthält. 
+
+
+1) Kurd von Mosengeil, Ann. d. Phys, 22, 867, 197. 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 415 
+
+
+I. Kinematischer Teil. 
+
+
+§ 1. Prinzip von der Konstanz der Lichtgeschwindigkeit. 
+Definition der Zeit. Relativitätsprinzip. 
+
+
+Um irgendeinen physikalischen Vorgang beschreiben zu können, 
+müssen wir imstande sein, die in den einzelnen Punkten des Raumes 
+_ stattfindenden Veränderungen örtlich und zeitlich zu werten. 
+
+Zur örtlichen Wertung eines in einem Raumelement stattfindenden 
+Vorganges von unendlich kurzer Dauer (Punktereignis) bedürfen wir 
+eines Cartesischen Koordinatensystems, d. h. dreier aufeinander senk- 
+recht stehender, starr miteinander verbundener, starrer Stäbe, sowie 
+eines starren Einheitsmaßstabes.!) Die Geometrie gestattet, die Lage 
+eines Punktes bezw. den Ort eines Punktereignisses durch drei Maß- 
+zahlen (Koordinaten z, y, x) zu bestimmen.?) Für die zeitliche Wertung 
+eines Punktereignisses bedienen wir uns einer Uhr, die relativ zum 
+Koordinatensystem ruht und in deren unmittelbarer Nähe das Punkt- 
+ereignis stattfindet. Die Zeit des Punktereignisses ist definiert durch 
+die gleichzeitige Angabe der Uhr. 
+
+Wir denken uns in vielen Punkten relativ zum Koordinatensystem 
+ruhende Uhren angeordnet. Dieselben seien sämtlich gleichwertig, d. h. 
+die Differenz der Angaben zweier solcher Uhren soll ungeändert bleiben, 
+falls sie nebeneinander angeordnet werden. Denkt man sich diese Uhren 
+irgendwie eingestellt, so erlaubt die Gesamtheit der Uhren, falls letztere 
+in genügend kleinen Abständen angeordnet sind, ein beliebiges Punkt- 
+ereignis — etwa mittels der nächstgelegenen Uhr — zeitlich zu werten. 
+
+Der Inbegriff dieser Uhrangaben liefert uns aber gleichwohl noch 
+keine „Zeit“, wie wir sie für physikalische Zwecke nötig haben. Wir 
+bedürfen vielmehr hierzu noch einer Vorschrift, nach welcher diese 
+Uhren relativ zueinander eingestellt werden sollen. 
+
+Wir nehmen nun an, die Uhren können so gerichtet werden, 
+daß die Fortpflanzungsgeschwindigkeit eines jeden Licht- 
+strahles im Vakuum — mit Hilfe dieser Uhren gemessen — 
+allenthalben gleich einer universellen Konstante c wird, 
+vorausgesetzt, daß das Koordinatensystem nicht beschleunigt ist. Sind 
+A und B zwei relativ zum Koordinatensystem ruhende, mit Uhren 
+ausgestattete Punkte, deren Entfernung r beträgt, und ist t4 die An- 
+
+
+1) Statt von „starren“ Körpern, könnte hier sowie im folgenden ebenso 
+gut von deformierenden Kräften nicht unterworfenen festen Körpern ge- 
+sprochen werden. 
+
+2) Hierzu braucht man noch Hilfsstäbe (Lineale, Zirke)). 
+
+
+416 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+gabe der Uhr in A, wenn ein durch das Vakuum in der Richtung AB 
+sich fortpflanzender Lichtstrahl den Punkt A erreicht, ¿g die Angabe 
+der Uhr in B beim Eintreffen des Lichtstrahles in B, so soll also, 
+wie auch die den Lichtstrahl emittierende Lichtquelle, sowie andere 
+Körper bewegt sein mögen, stets 
+roo 
+
+tB — t4 a 
+sein. 
+
+DaB die hier gemachte Annahme, welche wir „Prinzip von der Kon- 
+stanz der Lichtgeschwindigkeit“ nennen wollen, in der Natur wirklich 
+erfüllt sei, ist keineswegs selbstverständlich, doch wird dies — wenigstens 
+für ein Koordinatensystem von bestimmtem Bewegungszustande — wahr- 
+scheinlich gemacht durch die Bestätigungen, welche die, auf die Voraus- 
+setzung eines absolut ruhenden Äthers gegründete Lorentzsche Theorie !) 
+durch das Experiment erfahren hat.?) 
+
+Den Inbegriff der Angaben aller gemäß dem vorhergehenden ge- 
+richteter Uhren, welche man sich in den einzelnen Raumpunkten relativ 
+zum Koordinatensystem ruhend angeordnet denken kann, nennen wir 
+die zu dem benutzten Koordinatensystem gehörige Zeit oder kurz die 
+Zeit dieses Systems. 
+
+Das benutzte Koordinatensystem samt Einheitsmaßstab und den 
+zur Ermittlung der Zeit des Systems dienenden Uhren, nennen wir 
+„Bezugssystem S“. Wir denken uns die Naturgesetze in bezug auf 
+das Bezugssystem S ermittelt, welches etwa zunächst relativ zur 
+Sonne ruhe. Hierauf werde das Bezugssystem S durch irgendeine 
+äußere Ursache eine Zeitlang beschleunigt und gelange schließlich 
+wieder in einen beschleunigungsfreien Zustand. Wie werden die 
+Naturgesetze ausfallen, wenn man die Vorgänge auf das nunmehr in 
+einem anderen Bewegungszustande befindliche Bezugssystem S bezieht? 
+
+In bezug hierauf machen wir nun die denkbar einfachste und 
+durch das Experiment von Michelson und Morley nahe gelegte 
+Annahme: Die Naturgesetze sind unabhängig vom Bewegungs- 
+zustande des Bezugssystems, wenigstens falls letzterer ein 
+beschleunigungsfreier ist. 
+
+Auf diese Annahme, welche wir „Relativitätsprinzip* nennen, 
+
+
+Fe an u 
+
+
+1) H. A. Lorentz, Versuch einer Theorie der elektrischen und 
+optischen Erscheinungen in bewegten Körpern. Leiden 1895. 
+
+2) Insbesondere kommt in Betracht, daß diese Theorie den Mit- 
+führungskoeffizienten (Fizeauscher Versuch) im Einklang mit der Er- 
+fahrung Jieferte. 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 417 
+
+
+sowie auf das oben angegebene Prinzip von der Konstanz der Licht- 
+geschwindigkeit werden wir uns im folgenden stützen. 
+
+
+S 2. Allgemeine Bemerkungen, Raum und Zeit betreffend. 
+
+
+1. Wir betrachten eine Anzalıl beschleunigungsfrei und gleich 
+bewegter (d. h. relativ zueinander ruhender) starrer Körper. Nach 
+dem Relativitätsprinzip schließen wir, daß die Gesetze, nach denen 
+sich diese Körper relativ zueinander räumlich gruppieren lassen, bei 
+Änderung des gemeinsamen Bewegungszustandes dieser Körper sich 
+nicht ändern. Daraus folgt, daß die Gesetze der Geometrie die 
+Lagerungsmöglichkeiten starrer Körper stets in der gleichen Weise 
+bestimmen, unabhängig von deren gemeinsamem Bewegungszustande. 
+Aussagen über die Gestalt eines beschleunigungsfrei bewegten Körpers 
+haben daher unmittelbar einen Sinn. Wir wollen die Gestalt eines 
+Körpers im dargelegten Sinn, die „Geometrische Gestalt“ desselben ~ 
+nennen. Letztere ist offenbar nicht vom Bewegungszustande eines 
+Bezugssystems abhängig. 
+
+2. Eine Zeitangabe hat gemäß der in $ 1 gegebenen Definition 
+der Zeit nur mit Bezug auf ein Bezugssystem von bestimmtem Be- 
+wegungszustande einen Sinn. Es ist daher zu vermuten (und wird 
+sich im folgenden zeigen), daß zwei räumlich distante Punktereignisse, 
+welche in bezug auf ein Bezugssystem S gleichzeitig sind, in bezug 
+auf ein Bezugssystem S von anderem Bewegungszustande im all- 
+gemeinen nicht gleichzeitig sind. 
+
+3. Ein aus den materiellen Punkten P bestehender Körper 
+bewege sich irgendwie relativ zu einem Bezugssystem S. Zur Zeit £ 
+von S besitzt jeder materielle Punkt P eine bestimmte Lage in S 
+.d. h. er koinzidiert mit einem bestimmten, relativ zu © ruhendem 
+Punkte IL. Den Inbegriff der Lagen der Punkte ZH relativ zum 
+Koordinatensystem von S nennen wir die Lage, den Inbegriff der 
+Lagenbeziehungen der Punkte JJ untereinander die kinematische Gestalt 
+des Körpers in bezug auf S für die Zeit 4 Ruht der Körper relativ 
+zu S, so ist seine kinematische Gestalt in bezug auf S mit seiner 
+geometrischen Gestalt identisch. 
+
+Es ist klar, daß relativ zu einem Bezugssystem S ruhende Be- 
+obachter nur die auf S bezogene kinematische Gestalt eines relativ 
+zu S bewegten Körpers zu ermitteln vermögen, nicht aber dessen 
+geometrische Gestalt. 
+
+Im folgenden werden wir gewöhnlich nicht explizite zwischen 
+
+
+418 Einstein, Relativitatsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+geometrischer und kinematischer Gestalt unterscheiden; eine Aussage 
+geometrischen Inhaltes betrifft die kinematische bezw. geometrische 
+Gestalt, je nachdem dieselbe auf ein Bezugssystem S bezogen ist 
+oder nicht. 
+
+
+§ 3. Koordinaten-Zeit-Transformation. 
+
+
+S und S seien gleichwertige Bezugssysteme, d. h. diese Systeme 
+mögen gleichlange Einheitsmaßstäbe und gleichlaufende Uhren besitzen, 
+falls diese Gegenstände im Zustande relativer Ruhe miteinander ver- 
+glichen werden. Es ist dann einleuchtend, daß jedes Naturgesetz, 
+das in bezug auf S gilt, in genau gleicher Form auch in bezug auf 
+S’ gilt, falls S und S’ relativ zueinander ruhen. Das Relativitäts- 
+prinzip verlangt jene vollkommene Übereinstimmung auch für den 
+Fall, daß S’ relativ zu S in gleichförmiger Translationsbewegung be- 
+griffen ist. Im speziellen muß sich also für die Lichtgeschwindigkcit 
+im Vakuum in bezug auf beide Bezugssysteme dieselbe Zahl ergeben. 
+
+Ein Punktereignis sei relativ zu S durch die Variabeln x, y, x, t 
+relativ zu S’ durch die Variabeln x’, y, x, ť, bestimmt, wobei S 
+und S beschleunigungsfrei und relativ zueinander bewegt seien. Wir 
+fragen nach den Gleichungen, welche zwischen den erstgenannten und 
+den letztgenannten Variabeln bestehen. 
+
+
+Von diesen Gleichungen können wir sofort aussagen, daß sie in 
+bezug auf die genannten Variabeln linear sein müssen, weil die Homo- 
+genitätseigenschaften des Raumes und der Zeit dies erfordern. Daraus 
+folgt im speziellen, daß die Koordinatenebenen von S’ — auf das 
+Bezugssystem S bezogen — gleichförmig bewegte Ebenen sind; doch 
+werden diese Ebenen im allgemeinen nicht aufeinander senkrecht 
+stehen. Wählen wir jedoch die Lage der x-Achse so, daß letztere 
+— auf S bezogen — die gleiche Richtung hat, wie die auf S be- 
+zogene Translationsbewegung von S, so folgt aus Symmetriegründen, 
+daß die auf S bezogenen Koordinatenebenen von S’ aufeinander senk- 
+recht stehen müssen. Wir können und wollen die Lagen der beiden 
+Koordinatensysteme im speziellen so wählen, daß die x-Achse von S 
+und die z-Achse von S’ dauernd zusammenfallen und daß die auf S 
+bezogene y-Achse von S” parallel der y-Achse von S ist. Ferner 
+wollen wir als Anfangspunkt der Zeit in beiden Systemen den Augen- 
+blick wählen, in welchem die Koordinatenanfangspunkte koinzidieren; 
+dann sind die gesuchten linearen Transformationsgleichungen homogen. 
+
+
+„ . [4 . 
+Aus der nun bekannten Lage der Koordinatenebenen von S relativ 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 419 
+
+
+zu S schließen wir unmittelbar, daß je zwei der folgenden Gleichungen 
+gleichbedeutend sind: 
+
+—=o und z—vt=o 
+
+y=o und y=o 
+
+z =0 und z=o 
+
+Drei der gesuchten Transformationsgleichungen sind also von 
+der Form: 
+
+x =a(r—vi) 
+y = by 
+x =c. 
+
+Da die Ausbreitungsgeschwindigkeit des Lichtes im leeren Raume 
+in bezug auf beide Bezugssysteme gleich c ist, so müssen die beiden 
+Gleichungen: 
+
+r2 + y? + x? e272 
+und 
+
+22 +y?2 +22 62/2 
+gleichbedeutend sein. Hieraus und aus den soeben für x, y, x ge- 
+fundenen Ausdrücken schließt man nach einfacher Rechnung, daß die 
+gesuchten Transformationsgleichungen von der Form sein müssen: 
+
+
+(= 9(0)-8-(t—52) 
+x = g(t) B (@— vi) 
+
+
+y = g (v) -y 
+gz =p (vjz. 
+Dabei ist 
+1 
+Bama a, 
+Vv 
+V:-: 
+e? 
+gesetzt. 
+
+
+Die noch unbestimmt gebliebene Funktion von v wollen wir nun 
+bestimmen. Führen wir ein drittes mit S und S’ gleichwertiges 
+Bezugssystem S” ein, welches relativ zu S’ mit der Geschwindigkeit 
+— v bewegt und ebenso relativ zu S’ orientiert ist, wie S’ relativ zu 
+S, so erhalten wir durch zweimalige Anwendung der eben erlangten 
+Gleichungen 
+
+"—=gl)-p(—v)-t 
+x’ —=p()-p(— v): x 
+y =g) p(— r): y 
+x =g) p(— v): z. 
+Da die Koordinatenanfangspunkte von S und S” dauernd zu- 
+
+
+420 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+sammenfallen, die Achsen gleich orientiert und die Systeme „gleich- 
+wertige“ sind, so ist diese Substitution die identische !), so daß 
+ge) ICE Bu 
+Da ferner die Beziehung zwischen y und y vom Vorzeichen von 2: 
+nicht abhängen kann, ist, 
+o0)=9(—2). 
+Es ist also?) p(r)=1, und die Transformationsgleichungen lauten 
+
+
+{ = (1; r) | 
+B(a— vt) pok toe He KL) 
+Kj 
+
+
+Ae 
+
+
+Li 
+
+
+wobei 
+1 
+
+
+Löst man die Gleichungen (1) nach x, y, x, t auf, so erhält man 
+die nämlichen Gleichungen, nur daß die „gestrichenen“ durch die 
+gleichnamigen „ungestrichenen“ Größen und umgekehrt ersetzt sind, 
+und v durch —v ersetzt ist. Es folgt dies auch unmittelbar aus 
+© dem Relativitätsprinzip und aus der Erwägung, daß S relativ zu S’ 
+eine Paralleltranslation in Richtung der .X’- Achse mit der Geschwindig- 
+keit —v ausführt. 
+
+Allgemein erhält man gemäß dem Relativitätsprinzip aus jeder 
+richtigen Beziehung zwischen „sestrichenen“ (mit Bezug auf Ss’ 
+definierten) und „ungestrichenen“ (mit Bezug auf S definierten) Größen 
+oder zwischen Größen nur einer dieser Gattungen wieder eine richtige 
+Beziehung, wenn man die unvestrichenen durch die entsprechenden 
+gestrichenen Zeichen und umgekehrt sowie v durch — v ersetzt. 
+
+
+p = 
+
+
+S 4. Folgerungen aus den Transformationsgleichungen, 
+starre Körper und Uhren betreffend. 
+
+. ’ . ey ? ’ ? ’ v i ? N 
+
+1. Relativ zu S rule ein Körper. x, , 4) ,%, und rg Yo Zə scien 
+
+die auf S bezogenen Koordinaten zweier materieller Punkte desselben. 
+
+Zwischen den Koordinaten xi, y,, X, und a, Yo, xg dieser Punkte in 
+
+
+1) Dieser Schluß ist auf die physikalische Voraussetzung gegründet, 
+daß die Länge eines Maßstabes, sowie die Ganggeschwindigkeit einer Uhr 
+dadurch keine dauernde Änderung erleiden, daß diese Gegenstände in Be- 
+wegung gesetzt und wieder zur Ruhe gebracht werden. 
+
+2) g(r) =—1 kommt offenbar nicht in Betracht. 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 421 
+
+
+bezug auf das Bezugssystem S bestehen zu jeder Zeit ¢ von S nach 
+den soeben abgeleiteten Transformationsgleichungen die Beziehungen 
+
+
+y? 
+9-4, = V: zur (z3 — z ) 
+
+
+Y2 — Yı =y — h, 
+
+za — %y =t y 
+
+Die kinematische Gestalt eines in gleichförmiger Translations- 
+bewegung begriffenen Körpers hängt also ab von dessen Geschwindig- 
+keit relativ zum Bezugssystem, und zwar unterscheidet sich die kine- 
+matische Gestalt des Körpers von seiner geometrischen Gestalt lediglich 
+durch eine one in Richtung der Relativbewegung im Verhältnis 
+
+
+(2) 
+
+
+1: ı - — T Eine Relativbewegung von Bezugssystemen mit Über- 
+
+
+lichtgeschwindigkeit ist mit unseren Prinzipien nicht vereinbar. 
+
+
+2. Im Koordinatenanfangspunkt von S’ sei eine Uhr ruhend an- 
+geordnet, welche 2) mal schneller laufe als die zur Zeitmessung in den 
+Systemen S und S’ benutzten Uhren, d. h. diese Uhr führe »,-Perioden 
+aus in einer Zeit, in welcher die Angabe einer relativ zu ihr 
+ruhenden Uhr von der Art der in S und S’ zur Zeitmessung be- 
+nutzten Uhren um eine Einheit zunimmt. Wie schnell geht die erst- 
+genannte Uhr vom System S aus betrachtet? 
+
+Die betrachtete Uhr beendet jeweilen eine Periode in den Zeit- 
+
+
+epochen "=, wobei n die ganzen Zahlen durchläuft, und für die 
+0 
+
+
+Uhr dauernd z’ = 0 ist. Hieraus erhält man mit Hilfe der beiden 
+ersten Transformationsgleichungen für die Zeitepochen 4, in denen 
+die Uhr, von © aus betrachtet, jeweilen eine Periode beendet 
+
+
+, B 
+In = t = — nn. 
+n B ln pa 
+
+
+Vom System S aus betrachtet führt die Uhr also, pro Zeiteinheit 
+
+
+pa vV ı-? 0" Perioden aus; oder: eine relativ zu einem 
+
+
+e mit i Geschwindigkeit v gleichförmig bewegte Uhr 
+
+
+42 
+geht von diesem Bezugssystem aus beurteilt im Verhältnis 1 V1- — m 
+
+
+langsamer als die nämliche Uhr, falls sie relativ zu jenem Bezugs- 
+system ruht. 
+
+
+u 
+ve 
+Die Formel v = vo V: — — gestattet eine sehr interessante 
+Cs 
+
+
+422 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+Anwendung. Herr J. Stark hat im vorigen Jahre gezeigt!), daß die 
+die Kanalstrahlen bildenden Ionen Linienspektra emittieren, indem er 
+eine als Dopplereffekt zu deutende Verschiebung von Spektrallinien 
+beobachtete. 
+
+Da der einer Spektrallinie entsprechende Schwingungsvorgang 
+wohl als ein intraatomischer Vorgang zu betrachten ist, dessen Frequenz 
+durch das Ion allein bestimmt ist, so können wir ein solches Ion als 
+eine Uhr von bestimmter Frequenzzahl vo ansehen, welch letztere man 
+z. B. erhält, wenn man das von gleich beschaffenen, relativ zum Be- 
+obachter ruhenden Ionen ausgesandte Licht untersucht. Die obige 
+Betrachtung zeigt nun, daß der Einfluß der Bewegung auf die von 
+dem Beobachter zu ermittelnde Lichtfrequenz durch den Dopplereffekt 
+noch nicht vollständig gegeben ist. Die Bewegung verringert vielmehr 
+außerdem die (scheinbare) Eigenfrequenz der emittierenden Ionen 
+gemäß obiger Beziehung. ?) 
+
+
+§ 5. Additionstheorem der Geschwindigkeiten, 
+
+
+Relativ zum System S’ bewege sich ein Punkt gleichförmig gemäß 
+den Gleichungen f y 
+| £ = rt 
+
+
+[4 [ar 
+yzul 
+Ld [Zr 
+z =Url. 
+
+
+Ersetzt man x, y, x, ¢ durch ihre Ausdrücke in z, y, x, t ver- 
+mittels der Transformationsgleichungen (1), so erhält man z, y, x in 
+Funktion von 4, also auch die Geschwindigkeitskomponenten wz, wy, wz 
+des Punktes in bezug auf ©. Es ergibt sich so 
+
+
+ur Hvr 
+
+
+Ur= = >, 
+U Ur 
+
+
+ee 
+
+
+SP er; 
+
+
+1) J. Stark, Ann. d. Phys. 21, 401, 1906. 
+2) Vgl. hierzu $ 6 Gleich. (4a). 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 423 
+
+
+Das Gesetz vom Parallelogramm der Geschwindigkeiten gilt also 
+nur in erster Annäherung. Setzen wir 
+wu tu? + uz? 
+u ?= ur ? + uy + uz? 
+und bezeichnen wir mit æ den Winkel zwischen der x-Achse (v) und 
+der Bewegungsrichtung des Punktes in bezug auf S’ (w), so ist 
+
+
+Vet +u? Gi 2vu cosa) -( ay 
+
+
+SSS 
+
+
+
+
+
+i au S 
+Sind beide Geschwindigkeiten (v und w) gleichgerichtet, so 
+hat man: 
+
+
+v -+ u 
+
+vu 
+1+ o 
+
+Aus dieser Gleichung folgt, daß aus der Zusammensetzung zweier 
+Geschwindigkeiten, welche kleiner sind als c, stets eine Geschwindig- 
+keit resultiert, die kleiner als c ist. Setzt man nämlich v = c¢— k, 
+
+
+u’==c—A, wobei k und A positiv und kleiner als ¢ seien, so ist: 
+2e—k—2 
+
+
+2e—k— 2 + 
+
+
+uU = 
+
+
+u == Cc 
+
+
+en 
+
+
+Es folgt ferner, daß die erben: der Lichtgeschwindigkeit c 
+und einer „Unterlichtgeschwindigkeit“ wieder die Lichtgeschwindig- 
+keit c ergibt. 
+
+Aus dem Additionstheorem der Geschwindigkeiten ergibt sich 
+ferner noch die interessante Folgerung, daß es keine Wirkung geben 
+kann, welche zur willkürlichen Signalgebung verwendet werden kann, 
+und die sich schneller fortpflanzt als das Licht im Vakuum. Es 
+erstrecke sich nämlich lings der xz-Achse von S ein Materialstreifen, 
+relativ zu welchem sich eine gewisse Wirkung (vom Materialstreifen 
+aus beurteilt) mit der Geschwindigkeit W fortzupflanzen vermöge, und 
+es befinde sich sowohl im Punkte x==0 (Punkt A) als auch im Punkte 
+z= à (Punkt B) der z-Achse ein relativ zu S ruhender Beobachter. 
+Der Beobachter in A sende vermittels der oben genannten Wirkung 
+Zeichen zu dem Beobachter in B durch den Materialstreifen, welch 
+letzterer nicht ruhe, sondern mit der Geschwindigkeit v(< c) sich in 
+der negativen z-Richtung bewege. Das Zeichen wird dann, wie aus 
+der ersten der Gleichungen (3) hervorgeht, mit der Geschwindigkeit 
+
+
+424 Einstein, Relativitätspriuzip u. die aus demselben gezog. Folgerungen. 
+
+
+“ee von A nach B übertragen. Die hierzu nötige Zeit T ist also 
+1— o2 
+11 ie v 
+A me 
+
+
+Die Geschwindigkeit v kann jeglichen Wert unter c annehmen. Wenn 
+also W >e ist, wie wir angenommen haben, so kann man v stets so 
+wählen, daß T<“O. Dies Resultat besagt, daß wir einen Über- 
+tragungsmechanismus für möglich halten müßten, bei dessen Benutzung 
+die erzielte Wirkung der Ursache vorangeht. Wenn dies Resultat 
+auch, meiner Ansicht nach, rein logisch genommen, keinen Wider- 
+spruch enthält, so widerstreitet es doch derart dem Charakter unserer 
+gesamten Erfahrung, daß durch dasselbe die Unmöglichkeit der An- 
+nahme W>>c zur Genüge erwiesen erscheint. 
+
+
+§ 6. Anwendungen der Transformationsgleichungen auf 
+einige Probleme der Optik. 
+Der Lichtvektor einer im Vakuum sich fortpflanzenden ebenen 
+Lichtwelle sei, auf das System S bezogen, proportional zu 
+l ) 
+in teten), 
+auf S bezogen sei der Lichtvektor des nämlichen Vorganges proportional zu 
+: , £ a z: [2 on 
+sin @ (1 tet me). 
+Die im § 3 entwickelten Transformationsgleichungen verlangen, daß 
+zwischen den Größen œ, l, m, n und ow, l, m’, n die folgenden Be- 
+ziehungen bestehen: 
+
+
+
+
+
+0) ‘=o 1-1) 
+a 
+
+1—1- 
+
+ee a A 
+
+, mM | 
+m = 
+
+pia y 
+"=a 3 
+
+(1-12) | 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 425 
+
+
+Die Formel für œ wollen wir in zwei verschiedenen Weisen deuten, 
+je nachdem wir uns den Beobachter als bewegt und die (unendlich 
+ferne) Lichtquelle als ruhend, oder umgekehrt ersteren als ruhend und 
+letztere als bewegt betrachten. 
+
+1. Ist ein Beobachter relativ zu einer unendlich fernen Licht- 
+quelle von der Frequenz » mit der Geschwindigkeit » derart bewegt, 
+daß die Verbindungslinie „Lichtquelle-Beobachter* mit der auf ein 
+relativ zur Lichtquelle ruhendes Koordinatensystem bezogenen Ge- 
+schwindigkeit des Beobachters den Winkel @ bildet, so ist die von 
+dem Beobachter wahrgenommene Frequenz » des Lichtes gegeben 
+durch die Gleichung 
+
+
+
+
+
+2. Ist eine Lichtquelle, welche bezogen auf ein mit ihr bewegtes 
+System die Frequenz », besitzt, derart bewegt, daß die Verbindungs- 
+linie „Lichtquelle-Beobachter* mit der auf ein relativ zum Beobachter 
+ruhendes System bezogenen Geschwindigkeit der Lichtquelle den 
+Winkel ø bildet, so ist die vom Beobachter wahrgenommene Frequenz v 
+durch die Gleichung gegeben 
+
+ar 
+1— 3 
+c 
+u Ve ek. de re 8 (4a) 
+1 — coso 2 
+
+
+Die beiden letzten Gleichungen drücken das Dopplersche Prinzip. | 
+
+
+in seiner allgemeinen Fassung aus; die letzte Gleichung läßt erkennen, 
+wie die beobachtbare Frequenz des von Kanalstrahlen emittierten (bezw. 
+absorbierten) Lichtes von der Bewegungsgeschwindigkeit der die Strahlen 
+bildenden Ionen und von der Richtung des Visierens abhängt. 
+
+Nennt man ferner @ bezw. @ den Winkel zwischen der Wellen- 
+normale (Strahlrichtung) und der Richtung der Relativbewegung von 
+S gegen S (d. h. mit der z- bezw. x’-Achse), so nimmt die Gleichung 
+für 7 die Form an 
+
+
+
+
+
+Diese Gleichung zeigt den Einfluß der Relativbewegung des Beobachters 
+auf den scheinbaren Ort einer unendlich fernen Lichtquelle (Aberration). 
+Jahrb. d. Radioaktivität u. Elektronik. IV. 29 
+
+
+426 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+Wir wollen noch untersuchen, wie rasch sich das Licht in einem 
+in Richtung des Lichtstrahles bewegten Medium fortpflanzt. Das Medium 
+ruhe relativ zum System S’, und der Lichtvektor sei proportional zu 
+
+
+a 
+
+
+sin @ (¢ = ) 
+y 
+
+
+EN x 
+sino (t—5,), 
+je nachdem der Vorgang auf S’ oder auf S bezogen wird. 
+Die Transformationsgleichungen ergeben 
+
+
+v = Ba’ (1 + y) 
+
+
+@ ao’ Viv 
+Pah pli ta): 
+Hierbei ist V’ als aus der Optik ruhender Körper bekannte Funktion 
+von @ zu betrachten. Durch Division dieser Gleichungen erhält man 
+y= Vi+y 
+
+
+Bez ? 
+1+ a 
+
+welche Gleichung man auch unmittelbar durch Anwendung des Addi- 
+tionstheorems der Geschwindigkeiten hätte erhalten können.!) Falls V” 
+als bekannt anzusehen ist, löst die letzte Gleichung die Aufgabe voll- 
+ständig. Falls aber nur die auf das ,ruhende“ System © bezogene 
+Frequenz (œw) als bekannt anzusehen ist, wie z. B. bei dem bekannten 
+Experiment von Fizeau, sind die beiden obigen Gleichungen in Ver- 
+bindung mit der Beziehung zwischen © und V’ zu verwenden zur 
+Bestimmung der drei Unbekannten ow’, V’ und F. 
+
+Ist ferner G bezw. @ die auf S bezw. S’ bezogene Gruppen- 
+geschwindigkeit, so ist nach dem Additionstheorem der Geschwindig- 
+keiten 
+
+
+bezw. zu 
+
+
+A a 
+
+
+(ee 
+Da die Beziehung zwischen G und œ aus der Optik ruhender 
+
+
+Körper zu entnehmen ist?), und @ nach dem Obigen aus œ berechen- 
+bar ist, so ist die Gruppengeschwindigkeit @ auch dann VETSEHENNET, 
+
+
+1) Vgl. M. Laue, Ann. d. Phys. 23, 989, 1907. 
+
+
+- . Ps BI v 
+2) Es ist nämlich G’ == — 1 av 
+
+
+It yp Vi dw’ 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 427 
+
+
+wenn lediglich die auf S bezogene Frequenz des Lichtes sowie die 
+Natur und die Bewegungsgeschwindigkeit des Körpers gegeben ist. - 
+
+
+II. Elektrodynamischer Teil. 
+§ 7. Transformation der Maxwell-Lorentzschen Gleichungen. 
+
+
+Wir gehen aus von den Gleichungen 
+
+
+[u + = oN òM 
+7OT ae] oy dz 
+ey oY) ƏL ƏN % 
+c wor ots 9% dz (5) 
+1s ðZ) ƏM dL 
+ler Zum be by 
+
+Job =| 
+
+c àt u Y | 
+
+10M _ X| 
+
+a =- 3% (6) 
+
+
+
+
+
+10N òX oY 
+Be 
+In diesen Gleichungen bedeutet 
+(X, Y, Z) den Vektor der elektrischen Feldstärke, 
+(L, M, N) den Vektor der magnetischen Feldstärke, 
+0= es a = die 42-fache Dichte der Elektrizität, 
+Ox y 0% 
+(wr, ty, us) den Geschwindigkeitsvektor der Elektrizität. 
+
+Diese Gleichungen in Verbindung mit der Annahme, daß die 
+elektrischen Massen unveränderlich an kleine starre Körper (Ionen, 
+Elektronen) gebunden seien, bilden die Grundlage der Lorentzschen 
+Elektrodynamik und Optik bewegter Körper. 
+
+Transformiert man diese Gleichungen, welche in bezug auf das 
+System S gelten mögen, mit Hilfe der Transformationsgleichungen (1) 
+auf das relativ zu S wie bei den bisherigen Betrachtungen bewegte 
+System S’, so erhält man die Gleichungen 
+
+
+lif , OX") u oN òM 
+
+C hax if ot J dy ör | 
+
+ESP oY’) ƏL oN | , 
+Ce = Ox EEE 
+Ei ZIM aL’ | 
+
+Pet ae of ar əx 
+
+
+2y* 
+
+
+428 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+10h ƏY 82") 
+
+e òl òr OOH | 
+
+10M ƏZ OX’ | 
+10N’ ax’ dy’ | 
+
+re u 
+
+wobei gesetzt ist: 
+
+
+een. (7b) 
+
+
+N Cur o 
+= a e . . (8) 
+or + d oT x B e? ). ( , 
+’ Ur — 
+u ud. 
+Ur 
+1— 
+C 
+, Uy 
+Us Rus Ä , 
+Y a(1 =. a e e . . . . . (9) 
+cz | 
+’ Ux 
+Ux = rs 
+
+
+lu) | 
+
+
+Die erlangten Gleichungen sind von derselben Gestalt wie die 
+Gleichungen (5) und (6). Aus dem Relativitätsprinzip folgt anderer- 
+seits, daß die elektrodynamischen Vorgänge, auf S” bezogen, nach den 
+gleichen Gesetzen verlaufen wie die auf S bezogenen. Wir schließen 
+hieraus zunächst, daß X’, Y’, Z’ bezw. L’, Af’, N’ nichts anderes 
+sind als die Komponenten der auf S° bezogenen elektrischen bezw. 
+magnetischen Feldstärke.!) ‚Da ferner gemäß den Umkehrungen der 
+
+1) Die Übereinstimmung der gefundenen Gleichungen mit den Glei- 
+chungen (5) und (6) Jäßt zwar die Möglichkeit offen, daß sich die Größen X 
+usw. von den auf 5° bezogenen Feldstärken um einen konstanten Faktor 
+unterscheiden. Daß dieser Faktor gleich 1 sein muß, läßt sich aber Jeicht 
+auf ganz ähnliche Weise zeigen wie in $ 3 bei der Funktion g(?). 
+
+
+e 
+
+
+e- 
+
+
+Py 
+¢ 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 429 
+
+
+Gleichungen (8) die in den Gleichungen (9) auftretenden Größen ur, ty, 
+ux gleich sind den Geschwindigkeitskomponenten der Elektrizität in 
+bezug auf s’, so ist @ die auf S’ bezogene Dichte der Elektrizität. 
+Die elektrodynamische Grundlage der Maxwell-Lorentzschen Theorie 
+entspricht also dem Prinzip der Relativität. 
+
+Zur Interpretation der Gleichungen (7a) bemerken wir folgendes. 
+Es liege eine punktformige Elektrizitätsmenge vor, welche relativ zu 
+S ruhend in bezug auf S von der Größe „eins“ sei, d. h. auf eine 
+gleiche, ebenfalls in bezug auf S ruhende Elektrizitätsmenge im Ab- 
+stand 1 cm die Kraft 1 Dyn ausübe. Nach dem Relativitätsprinzip 
+ist diese elektrische Masse auch dann gleich „eins“, wenn sie relativ 
+zu S ruht und von S’ aus untersucht wird.!) Ruht diese Elek- 
+trizitätsmenge relativ zu S, so ist (X, Y, Z) definitionsgemäß gleich 
+der auf sie wirkenden Kraft, wie sie z. B. mittels einer relativ zu S 
+rubenden Federwage gemessen werden könnte. Die analoge Bedeutung 
+hat der Vektor (X, Y’, Z’) mit Bezug auf S’. 
+
+Gemäß den Gleichungen (7a) und (7b) kommt einer elektrischen 
+bezw. magnetischen Feldstärke an und für sich keine Existenz zu, 
+indem es von der Wahl des Koordinatensystems abhängen kann, ob 
+an einer Stelle (genauer: in der örtlich-zeitlichen Umgebung eines 
+Punktereignisses) eine elektrische bezw. magnetische Feldstärke vor- 
+handen ist oder nicht. Man ersicht ferner, daß die bisher eingeführten 
+„elektromotorischen“ Kräfte, welche auf eine in einem Magnetfelde 
+bewegte elektrische Masse wirken, nichts anderes sind als „elektrische“ 
+Kräfte, falls man ein zu der betrachteten elektrischen Masse ruhendes 
+Bezugssystem einführt. Die Fragen über den Sitz jener elektro- 
+motorischen Kräfte (bei Unipolarmaschinen) werden daher gegenstands- 
+los; die Antwort fällt nämlich verschieden aus, je nach der Wahl des 
+Bewegungszustandes des benutzten Bezugssystems. 
+
+Die Bedeutung der Gleichung (8) erkennt man aus folgendem. 
+Ein elektrisch geladener Körper ruhe relativ zu S’. Seine auf S’ 
+
+
+bezogene Gesamtladung ¢ ist dann IR dx dy dx’. Wie groß ist seine 
+
+
+Gesamtladung € zu einer bestimmten Zeit ¢ von S? 
+Aus den drei letzten der Gleichungen (1) folgt, daß für kon- 
+stantes ¢ die Beziehung gilt: 
+
+
+dx dy dx = Bdrdydx. 
+
+
+1) Dieser Schluß gründet sich ferner auf die Annahme, daß die Größe 
+einer elektrischen Masse von deren Bewegungsvorgeschichte unabhängig ist. 
+
+
+430 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+Gleichung (8) lautet in unserem Falle: 
+
+
+1 
+
+Be 
+Aus diesen beiden Gleichungen folgt, daß 
+
+Ee =E 
+
+sein muß. Gleichung (8) sagt also aus, daß die elektrische Masse eine 
+vom Bewegungszustand des Bezugssystems unabhängige Größe ist. 
+Bleibt also die Ladung eines beliebig bewegten Körpers vom Stand- 
+punkt eines mitbewegten Bezugssystems konstant, so bleibt sie auch 
+in bezug auf jedes andere Bezugssystem konstant. 
+
+Mit Hilfe der Gleichungen (1), (7), (8) und (9) läßt sich jedes 
+Problem der Elektrodynamik und Optik bewegter Körper, in welchem 
+nur Geschwindigkeiten, nicht aber Beschleunigungen eine wesentliche 
+Rolle spielen, auf eine Reihe von Problemen der Elektrodynamik bezw. 
+Optik ruhender Körper zurückführen. 
+
+Wir behandeln noch ein einfaches *Anwendungsbeispiel für die 
+hier entwickelten Beziehungen. Eine ebene, im Vakuum sich fort- 
+pflanzende Lichtwelle sei relativ zu S dargestellt durch die Gleichungen 
+X = X, sin ® L = Ly sin ® 
+
+
+Y=Y,sinð M=Msin® B=ul! er a =) 
+Z=Z, sin ® N= N sin ® 
+
+
+Wir fragen nach der Beschaffenheit dieser Welle, wenn dieselbe auf 
+das System S’ bezogen wird. 
+
+Durch Anwendung der Transformationsgleichungen (1) und (7) 
+erhält man | 
+
+NX’ == X, sin Ø L = Ly sin d 
+
+
+Y'= a( Yy— - N) sin P M=3 (ar + = Zs) sind 
+
+r v . ’ e U qr i , 
+
+Z —a(Z, T My )sin p N =A, ur ee sin B 
+Bull — Sen er) 
+
+
+c 
+Daraus, daß die Funktionen X’ usw. den Gleichungen (5’) und (6) 
+genügen müssen, folgt, daß auch in bezug auf S° Wellennormale, 
+elektrische Kraft und magnetische Kraft aufeinander senkrecht stehen, 
+und daß die beiden letzteren einander gleich sind. Die Beziehungen, 
+die aus der Identität ?= P fließen, haben wir schon in § 6 be- 
+handelt; wir haben hier nur noch Amplitude und Polarisationszustand 
+der Welle in bezug auf S’ zu ermitteln. 
+
+
+dl 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 431 
+
+
+Wir wählen die X-Y-Ebene parallel zur Wellennormale und be- 
+handeln zunächst den Fall, daß die elektrische Schwingung parallel 
+zur Z-Achse erfolgt. Dann haben wir zu setzen: 
+
+
+X, = 0 Ly) =— Asin g 
+Y,=0 My =— 4 cos p 
+Žo =A N =O, 
+
+
+wobei @ den Winkel zwischen Wellennormale und X-Achse bezeichnet. 
+Es folgt nach dem Obigen 
+
+
+X=0 LĽ' = — Asin ọ sin ® 
+Y= 0 Mt’ = B(—cosp + 2) Asing 
+z= B(1— = cos) A sin g’ N =O. 
+
+
+Bedeutet also A’ die Amplitude der Welle in bezug auf S’, so ist 
+
+
+v 
+1 — — coso 
+
+
+A=A— =: (10) 
+
+
+y? 
+e? 
+
+
+Für den Spezialfall, daß die magnetische Kraft senkrecht auf der 
+Richtung der Relativbewegung und der Wellennormale steht, gilt 
+offenbar die gleiche Beziehung. Da man aus diesen beiden Spezial- 
+fällen den allgemeinen Fall durch Superposition konstruieren kann, so 
+folgt, daß bei der Einführung eines neuen Bezugssystems S’ die 
+Beziehung (10) allgemein gilt, und daß der Winkel zwischen der 
+Polarisationsebene und einer zur Wellennormale und zur Richtung der 
+Relativbewegung parallelen Ebene in den beiden Bezugssystemen der- 
+selbe ist, | 
+
+
+-. 
+
+
+III. Mechanik des materiellen Punktes (Elektrons). 
+
+
+§ 8 Ableitung der Bewegungsgleichungen des (langsam 
+beschleunigten) materiellen Punktes bezw. Elektrons. 
+
+
+In einem elektromagnetischen Felde bewege sich ein mit einer 
+elektrischen Ladung € versehenes Teilchen (im folgenden „Elektron“ 
+genannt), über dessen Bewegungsgesetz wir folgendes annehmen: 
+
+Ruht das Elektron in einem bestimmten Zeitpunkt in bezug auf 
+ein (beschleunigungsfreies) System S’, so erfolgt dessen Bewegung 
+im nächsten Zeitteilchen in bezug auf S’ nach den Gleichungen 
+
+
+432 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+d?r ’ N 
+Mag =X 
+d?y - 
+u Fo =e} 
+d>xy í 
+
+
+wobei 2), Yo, žzọ die Koordinaten des Elektrons in bezug auf S’ 
+bezeichnen, und u eine Konstante bedeutet, welche wir die Masse des 
+Elektrons nennen. 
+
+
+Wir führen ein System S ein, relativ zu welchem S’ wie bei 
+unseren bisherigen Untersuchungen bewegt sei, und transformieren 
+unsere Bewegungsgleichungen mittels der Transformationsgleichungen 
+(1) und (7a). 
+
+
+Erstere lauten in unserem Falle 
+
+
+’ V 
+(ln) 
+
+
+un — ri) 
+
+
+
+
+
+y= 
+Ay = žo. F 
+Aus diesen Gleichungen erhalten wir, indem wir mh usw. setzen: 
+da, Ly = 
+o -Blo a usw. 
+dt V To 
+
+B\1— e? 
+
+d a x v 
+af mal (E a- f ar _ 
+dt? tiy\ æ vito \ u 
+
+B\l——, ae: 
+
+
+Setzt man diese Ausdrücke, nachdem man in ihnen to =t, Yo = 0, 
+zo = 0 gesetzt hat, in die obigen Gleichungen ein, so erhält man, 
+indem man gleichzeitig X’, Y’, Z’ mittels der Gleichungen (7a) ersetzt 
+
+
+uP ray =X 
+ee En 
+udn = e( Y — = N) 
+
+
+ne ® 
+Upry = E (z + — 2) ° 
+Diese Gleichungen sind die Bew egungsgleichungen des Elektrons für den 
+
+
+Fall, daß in dem betreffenden Augenblick z} =v, Yo = 0, Zy = 0 ist. 
+Man kann also auf den linken Seiten statt v die durch die Gleichung 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 433 
+
+
+g=V ap? + yy? + io? 
+
+definierte Geschwindigkeit q einsetzen und auf den rechten Seiten © 
+durch z, ersetzen. Außerdem fügen wir die durch zyklische Ver- 
+tauschung aus “2M -und —“ y zu gewinnenden Glieder, welche in 
+dem betrachteten Spezialfalle verschwinden, an den entsprechenden 
+Stellen hinzu. Indem wir den Index bei x, usw. weglassen, erhalten 
+wir so die für den betrachteten Spezialfall mit den obigen gleich- 
+bedeutenden Gleichungen: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+d 
+A Vie |= 5 
+Iy 1— a 
+d y - 
+uy e | (11) 
+1— °; | 
+a2 
+aly = 
+1 — | | pee 
+c? an ArT As 
+wobei gesetzt ist: 
+- ply L y= yy 
+= | X + LN = 
+K, =e] Yy+21-2 ea Bei. a (10) 
+Ku =l Z+M ŽL) 
+
+
+Diese Gleichungen ändern ihre Form nicht, wenn man ein neues, 
+relativ ruhendes Koordinatensystem mit anders gerichteten Achsen 
+einführt. Sie gelten daher allgemein, nicht nur, wenn z= z = Q ist. 
+
+
+Den Vektor (Kr, Ky, Az) nennen wir die auf den materiellen 
+Punkt wirkende Kraft. In dem Falle, daß q? gegen c? verschwindet, 
+gehen K;, Ky, Kx nach Gleichungen (11) in die Kraftkomponenten 
+gemäß Newtons Definition über. Im nächsten Paragraphen ist ferner 
+dargelegt, daß in der Relativitätsmechanik jener Vektor auch im übrigen 
+dieselbe Rolle spielt wie die Kraft in der klassischen Mechanik. 
+
+Wir wollen an den Gleichungen (11) auch in dem Falle fest- 
+halten, daß die auf den Massenpunkt ausgeübte Kraftwirkung nicht 
+elektromagnetischer Natur ist. In diesem Falle haben die Gleichungen 
+
+
+434 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+(11) keinen physikalischen Inhalt, sondern sie sind dann als Definitions- 
+gleichungen der Kraft aufzufassen. 
+
+
+$ 9. Bewegung des Massenpunktes und mechanische 
+Prinzipien. 
+
+
+Multipliziert man die Gleichungen (5) und (6) der Reihe nach mit 
+X Y 
+ee = und integriert über einen Raum, an dessen Grenzen 
+4x 4x 4x i 
+die Feldstärken verschwinden, so erhält man 
+
+
+| SextwF+ uxZ)deo+ — ae -=0, .. . (18) 
+wobei 
+1 7 2 1 72 
+b= [|g + Y? + ZJ + 5% (L? + M? + x9] do 
+die elektromagnetische Energie des betrachteten Raumes ist. Das erste 
+Glied der Gleichung (13) ist nach dem Energieprinzip gleich der Energie, 
+welche vom elektromagnetischen Felde pro Zeiteinheit an die Träger 
+der elektrischen Massen abgegeben wird. Sind elektrische Massen mit 
+einem materiellen Punkte starr verbunden (Elektron), so ist der auf 
+sie entfallende Anteil jenes Gliedes gleich dem Ausdruck 
+eXx+ Yy+ Zz), 
+wenn (X, Y, Z) die äußere elektrische Feldstärke bezeichnet, d. h. 
+die Feldstärke abzüglich derjenigen, welche von der Ladung des 
+Elektrons selbst herrührt. Dieser Ausdruck geht vermöge der Glei- 
+chungen (12) über in 
+se Kra + Kyy + Kız. 
+
+Der im vorigen Paragraph als „Kraft“ bezeichnete Vektor (Kr, Ay, Kz) 
+steht also zu der geleisteten Arbeit in derselben Beziehung wie bei 
+der Newtonschen Mechanik. 
+
+Multipliziert man also die Gleichungen (11) der Reihe nach mit 
+x, Y, x, addiert und integriert über die Zeit, so muß sich die kinetische 
+Energie des materiellen Punktes (Elektrons) ergeben. Man erhält 
+
+
+iia: + Kyy + Kxx)dt= el a const. 2 . (14) 
+
+
+Daß die Bewegungsgleichungen (11) mit dem Energieprinzip im Ein- 
+
+klang sind, ist damit gezeigt. Wir wollen nun dartun, daß sie auch 
+
+dem Prinzip von der Erhaltung der Bewegungsgröße entsprechen. 
+Multipliziert man die zweite und dritte der Gleichungen (5) und 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 435 
+
+
+die zweite und dritte der Gleichungen (6) der Reihe nach mit An? 
+m -Z Y 
+an’ 42° 42 
+Grenzen die Feldstärken verschwinden, so erhält man 
+f?r zudo | + f £,( +uNn—! M) do 0 (15) 
+oder gemäß den Gleichungen (12) 
+la (YN— Zi) de] + ZK:—0 Sip ar KA) 
+
+
+Sind die elektrischen Massen an frei bewegliche materielle Punkte 
+(Elektronen) gebunden, so geht diese Gleichung vermöge (11) über in 
+
+
+li i er —0 . . (15b) 
+
+
+, addiert und integriert über einen Raum, an dessen 
+
+
+ie 
+
+
+Diese Gleichung drückt in Verbindung mit den durch zyklische Ver- 
+tauschung zu gewinnenden den Satz von der Erhaltung der Bewegungs- 
+
+
+größe in dem hier betrachteten Falle aus. Die Größe = Va- 3 
+v 
+1 
+
+
+spielt also die Rolle der Bewegungsgröße des materiellen Punktes, und 
+es ist gemäß Gleichungen (11) wie in der klassischen Mechanik 
+dë 
+dt T o 
+Die Möglichkeit, eine Bewegungsgröße des materiellen Punktes ein- 
+zuführen, beruht darauf, daß in den Bewegungsgleichungen die Kraft 
+bezw. das zweite Glied der Gleichung (15) als Differentialquotient 
+nach der Zeit dargestellt werden kann. 
+Man sieht ferner unmittelbar, daß unseren Bewegungsgleichungen 
+des materiellen Punktes die Form der Bewegungsgleichungen von 
+Lagrange gegeben werden kann; denn es ist gemäß Gleichungen (11) 
+
+
+d [ò H a 
+| USW., 
+
+
+wobei 
+
+
+H=— way t —- > ae const 
+
+
+gesetzt ist. Die ere nee: lassen sich auch darstellen in 
+der Form des Hamiltonschen Prinzips 
+
+
+436 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+fems A)di=0, 
+
+
+wobei die Zeit ¢ sowie die Anfangs- und Endlage unvariiert bleibt und 
+A die virtuelle Arbeit bezeichnet: 
+
+A= Krox + Kyðy + Krdz. 
+Endlich stellen wir noch die Hamiltonschen kanonischen Bewegungs- 
+gleichungen auf. Hierzu dient die Einführung der „Impulskoordinaten“ 
+(Komponenten der Bewegungsgröße) &, 7, &, wobei wie oben gesetzt ist 
+
+
+=, = —__0rz: USW, 
+5 Ox 
+
+
+Betrachtet man die kinetische Energie Z als Funktion von &, 7, & 
+und setzt §7-+ 72+ 0? ọ?, so = a 
+
+
+L == uce? Vi BIER: = const 
+
+
+und die Hamiltonschen TEEN E DENN werden: 
+
+
+dë č dn č p dè 
+
+T a oe Tien 
+dr _BL dy OL dy L, 
+dt 05 de on dt òX 
+
+
+$ 10. Über die Möglichkeit einer experimentellen Prüfung 
+der Theorie der Bewegung des materiellen Punktes. Kauf- 
+mannsche Untersuchung. 
+
+
+Eine Aussicht auf Vergleichung der im letzten Paragraphen ab- 
+geleiteten Resultate mit der Erfahrung ist nur da vorhanden, wo 
+bewegte, mit einer elektrischen Ladung versehene Massenpunkte Ge- 
+schwindigkeiten besitzen, deren Quadrat gegenüber c? nicht zu ver- 
+nachlässigen ist. Diese Bedingung ist bei den rascheren Kathoden- 
+strahlen und bei den von radioaktiven Substanzen ausgesandten Elektronen- 
+strahlen (8-Strahlen) erfüllt. 
+
+Es gibt drei Größen bei Elektronenstrahlen, deren gegenseitige 
+Beziehungen Gegenstand einer genaueren experimentellen Untersuchung 
+sein können, nämlich das Erzeugungspotential bezw. die kinetische 
+Energie der Strahlen, die Ablenkbarkeit durch ein elektrisches Feld 
+und die Ablenkbarkeit durch ein magnetisches Feld. 
+
+Das Erzeugungspotential JJ ist gemäß (14) gegeben durch die 
+Formel 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 437 
+
+
+2 
+| | 
+yi- | 
+Kr 
+Zur Berechnung der andern beiden Größen schreiben wir die letzte 
+der Gleichungen (11) hin für den Fall, daß die Bewegung momentan 
+
+
+parallel zur X-Achse ist; man erhält, falls man mit & den absoluten 
+Betrag der Ladung des Elektrons bezeichnet, 
+
+
+d?x € y g? q 
+-gap V 1-4(4+ 4u). 
+Falls Z und Af die einzigen ablenkenden Feldkomponenten sind, die 
+Krümmung also in der XZ-Ebene erfolgt, ist der Krümmungsradius R 
+
+
+2 2y 
+der Bahn gegeben durch [eal Definiert man als elektrische 
+bezw. magnetische Ablenkbarkeit die Größe A, =p bzw. Am =<: M 
+
+
+für den Fall, daß nur eine elektrische bezw. nur eine magnetische 
+ablenkende Feldkomponente vorhanden ist, so hat man also 
+
+
+y i= 
+ni 
+
+
+
+
+
+
+
+
+E 
+A=- y 
+(4 u g? 
+Via 
+An = — : 
+cq 
+
+
+Bei Kathodenstrahlen kommen alle drei Größen, M, A, und A 
+für die Messung in Betracht; es liegen jedoch noch keine Unter- 
+suchungen bei genügend raschen Kathodenstrahlen vor. Bei ß-Strahlen 
+sind (praktisch) nur die Größen As und Am der Beobachtung zugäng- 
+lich. Herr W. Kaufmann hat mit bewunderungswürdiger Sorgfalt 
+die Beziehung zwischen Am und As für die von einem Radium-Bromid- 
+Körnchen ausgesandten -Strahlen ermittelt.!) 
+
+
+Sein Apparat, dessen hauptsächliche Teile in Fig. 1 in natürlicher 
+Größe dargestellt sind, bestand im wesentlichen in einem lichtdichten, 
+im Innern eines evakuierten Glasgefäßes befindlichen Messingzehause H, 
+auf dessen Boden A in einer kleinen Vertiefung O sich das Radium- 
+körnchen befand. Die von ihm ausgehenden ß-Strahlen durchlaufen 
+
+
+1) W. Kaufmann, Über die. Konstitution des Elektrons. Ann. d. 
+Phys. 19, 1916. Die beiden Figuren sind der Kaufmannschen Arbeit 
+entnommen. 
+
+
+438 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+den Zwischenraum zwischen zwei Kondensatorplatten P, und P,, treten 
+durch das Diaphragma D von 0,2 mm Durchmesser und fallen dann 
+auf die photographische Platte. Die Strahlen wurden durch ein zwischen 
+den Kondensatorplatten P, und P, gebildetes elektrisches Feld sowie 
+
+
+B 
+TE LO GD 
+i > 
+a 
+-æ x = = 
+= ’ 
+a Rotug~ Flal 
+
+
+IIIIIISISIITIIHIITERTT | Ober 
+
+
+I 
+Y 
+
+
+
+
+
+
+
+
+
+a 
+HN 5; ; Ar 
+j f 
+| 
+re 
+
+
+Fig. 1 (nat. Gr.). 
+
+
+durch ein von einem großen permanenten Magneten erzeugtes, | in 
+gleicher Richtung verlaufendes magnetisches Feld senkrecht dazu ab- 
+gelenkt, so daß durch die Wirkung der Strahlen einer bestimmten 
+Geschwindigkeit ein Punkt, durch die Wirkung der Teilchen von den 
+verschiedenen Geschwindigkeiten zusammen eine Kurve auf der Platte 
+markiert wurde. 
+
+Fig. 2 zeigt diese Kurve!), welche bis auf den Maßstab für Ab- 
+
+
+1) Die in der Figur angegebenen Maßzahlen bedeuten Millimeter auf 
+der photographischen Platte. Die gezeichnete Kurve ist nicht genau die 
+beobachtete, sondern die „auf unendlich kleine Ablenkung reduzierte“ Kurve. 
+
+
+. Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 439 
+
+
+szisse und Ordinate die Beziehung zwischen Am (Abszisse) und Ae 
+(Ordinate) darstellt. Uber der Kurve sind durch Kreuzchen der nach 
+
+
+der Relativitätstheorie berechneten Kurve angegeben, wobei für z der 
+
+
+Wert 1,878-10° angenommen ist. 
+
+In Anbetracht der Schwierigkeit der Untersuchung möchte man 
+geneigt sein, die Übereinstimmung als eine genügende anzusehen. 
+Die vorhandenen Abweichungen sind jedoch systematisch und erheblich 
+
+
+| 
+
+
+
+
+
+Fig. 2. 
+
+
+außerhalb der Fehlergrenze der Kaufmannschen Untersuchung. Daß 
+die Berechnungen von Herrn Kaufmann fehlerfrei sind, geht daraus 
+hervor, daß Herr Planck bei Benutzung einer anderen Berechnungs- 
+methode zu Resultaten geführt wurde, die mit denen von Herrn Kauf- 
+mann durchaus übereinstimmen. !) 
+
+Ob die systematischen Abweichungen in einer noch nicht ge- 
+würdigten Fehlerquelle oder darin ihren Grund haben, daß die Grund- 
+lagen der Relativitätstheorie nicht den Tatsachen entsprechen, kann 
+wohl erst dann mit Sicherheit entschieden werden, wenn ein manniz- 
+faltigeres Beobachtungsmaterial vorliegen wird. . 
+
+Es ist noch zu erwähnen, daß die Theorien der Elektronen- 
+bewegung von Abraham?) und von Bucherer?) Kurven liefern, die 
+sich der beobachteten Kurve erheblich besser anschließen als die aus 
+der Relativitätstheorie ermittelte Kurve. Jenen Theorien kommt aber 
+nach meiner Meinung eine ziemlich geringe Wahrscheinlichkeit zu, 
+weil ihre die Maße des bewegten Elektrons betreffenden Grund- 
+annahmen nicht nahe gelegt werden durch theoretische Systeme, welche 
+erößere Komplexe von Erscheinungen umfassen. 
+
+1) Vergl. M. Planck, Verhandl. d. Deutschen Phys. Ges. VIII. Jahre. 
+Nr. 20, 1906; IX. Jahrg. Nr. 14, 1907. 
+
+2) M. Abraham, Gott. Nachr. 1902. 
+
+3) A. H. Bucherer, Math. Einführung in die Elektronentheorie, S. 5S, 
+Leipzig 1904. 
+
+
+440 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+IV. Zur Mechanik und Thermodynamik der Systeme. 
+
+
+$ 11. Über die Abhängigkeit der Masse von der Energie. 
+
+
+Wir betrachten ein von einer für Strahlung nicht durchlässigen 
+Hülle umgebenes physikalisches System. Dies System schwebe frei im 
+Raume und sei keinen andern Kräften unterworfen, als den Einwir- 
+kungen elektrischer und magnetischer Kräfte des umgebenden Raumes. 
+Durch letztere kann auf das System Energie in Form von Arbeit und 
+Wärme übertragen werden, welche Energie im Innern des Systems 
+irgendwelche Verwandlungen erfahren kann. Die von dem System auf- 
+genommene Energie ist, auf das System S bezogen, gemäß (18) ge- 
+geben durch den Ausdruck 
+
+
+farm fuf 2 Xow + Your + Za Ux) do, 
+
+
+wobei (Xa, Ya, Za) den Feldvektor des äußern, nicht zum System ge- 
+
+
+rechneten Feldes und E die Elektrizitätsdichte in der Hülle bedeutet. 
+
+
+Diesen Ausdruck transformieren wir mittels der Umkehrungen der 
+Gleichungen (7a), (8) und (9), indem wir berücksichtigen, daB gemäß 
+den Gleichungen (1) die Funktionaldeterminante 
+DÆ, y, t) 
+D (2, 4; x, t) 
+gleich eins ist. Wir erhalten so 
+
+
+pre + ur Zajda dt’ 
++2 f fe (Xe + tiy Na at) de’ dt, 
+
+
+oder, da auch in bezug auf S’ das eee gelten muß, in leicht 
+verständlicher Schreibweise 
+dk =ßd E 4+ 8rS[EKr]dť. (16) 
+Wir wollen diese Gleichung auf den Fall anwenden, daß sich das 
+betrachtete System derart gleichförmig bewegt, daß es als Ganzes 
+relativ zu dem Bezugssystem S’ ruht. Dann dürfen wir, falls die Teile 
+des Systems relativ zu S’ so langsam bewegt sind, daß die Quadrate 
+der Geschwindigkeiten relativ zu S’ gegenüber c? zu vernachlässigen 
+sind, in bezug auf S’ die Sätze der Newtonschen Mechanik anwenden, 
+Es kann also nach dem Schwerpunktsatz das betrachtete System (ge- 
+nauer gesagt, dessen Schwerpunkt) nur dann dauernd in Ruhe bleiben, 
+wenn für jedes ¢ 
+
+
+
+
+
+NK, == 0 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 441 
+
+
+ist. Trotzdem braucht das zweite Glied auf der rechten Seite der 
+Gleichung (16) nicht zu verschwinden, weil die zeitliche Integration 
+nicht zwischen zwei bestimmten Werten von ?’, sondern zwischen zwei 
+bestimmten Werten von ¢ auszuführen ist. | 
+
+Wenn aber am Anfang und am Ende der betrachteten Zeitspanne 
+keine äußeren Kräfte auf das Körpersystem wirken, so verschwindet 
+jenes Glied, so daß wir einfach erhalten 
+
+dE=ß.dE. 
+
+Aus dieser Gleichung schließen wir zunächst, daß die Energie 
+eines (gleichformig) bewegten Systems, das nicht unter dem Einfluß 
+äußerer Kräfte steht, eine Funktion zweier Variabeln ist, nämlich der 
+Energie E, des Systems relativ zu einem mitbewegten Bezugssystem!), 
+und der Translationsgeschwindigkeit q des Systems, und wir erhalten 
+
+
+oE a S 
+2 
+Daraus folgt 
+i 1 y f 
+Bea B+), 
+
+
+j 
+V a ce 
+
+
+wobei ọ (q) eine vorläufig unbekannte Funktion von q ist. Den Fall, 
+daß Fo gleich O ist, d. h. daß die Energie des bewegten Sytems Funk- 
+tion der Geschwindigkeit q allein ist, haben wir bereits in den 
+S 8 und 9 untersucht. Aus Gleichung (14) folgt unmittelbar, daß wir 
+zu setzen haben 
+
+
+
+
+
+g (q) = e „ + const. 
+Vi eel 
+e? 
+Wir erhalten also 
+i E c? 
+E = (u + > ) - a5 (16a) 
+c y q? 
+l— `. 
+as 
+
+
+wobei die Integrationskonstante weggelassen ist. Vergleicht man diesen 
+Ausdruck für X mit dem in Gleichung (14) enthaltenen Ausdruck für 
+die kinetische Energie des materiellen Punktes, so erkennt man, dat 
+
+
+1) Hier so wie im folgenden versehen wir ein Zeichen mit dem unteren 
+Index „0“, um anzudeuten, daß die betreffende Größe sich auf cin relativ 
+zu dem betrachteten physikalischen System ruhendes Bezugssystem bezieht. 
+Da das betrachtete System relativ zu S’ ruht, können wir also hier E’ 
+durch E, ersetzen. 
+
+Jalırb. d. Radioaktivität u. Elektronik. IV. 39 
+
+
+442 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+beide Ausdrücke von derselben Form sind; bezüglich der Abhängigkeit 
+der Energie von der Translationsgeschwindigkeit verhält sich das be- 
+trachtete physikalische System wie ein materieller Punkt von der 
+Masse M, wobei M von dem Energieinhalt Æọ des Systems abhängt 
+nach der Formel 
+
+
+E 
+
+
+Dies Resultat ist von außerordentlicher theoretischer Wichtigkeit, 
+weil in demselben die träge Masse und die Energie eines physikalischen 
+Systems als gleichartige Dinge auftreten. Eine Masse u ist in bezug 
+auf Trägheit äquivalent mit einem Energieinhalt von der Größe wc?. 
+Da wir über den Nullpunkt von Æ willkürlich verfügen können, sind 
+wir nicht einmal imstande, ohne Willkür zwischen einer „wahren“ und 
+einer „scheinbaren“ Masse des Systems zu unterscheiden. Weit natür- 
+licher erscheint es, jegliche träge Masse als einen Vorrat von Energie 
+aufzufassen. 
+
+Der Satz von der Konstanz der Masse ist nach unserem Resultat 
+für ein einzelnes physikalisches System nur dann zutreffend, wenn 
+dessen Energie konstant bleibt; er ist dann gleichbedeutend mit dem 
+Energieprinzip. Allerdings sind die Änderungen, welche die Masse 
+physikalischer Systeme bei den bekannten physikalischen Vorgängen 
+erfährt, stets unmeßbar klein. Die Abnahme der Masse eines Systems, 
+welches 1000 Gramm-Kalorien abgibt, beträgt z. B. 4,6-10-!1 gr. 
+
+Beim radioaktiven Zerfall eines Stoffes werden ungeheure Energie- 
+mengen frei; ist die bei einem derartigen Prozeß auftretende Vermin- 
+derung der Masse nicht groß genug, um konstatiert zu werden? 
+
+Herr Planck schreibt hierüber: „Nach J. Precht!) entwickelt 
+ein Grammatom Radium, wenn es von einer hinreichend dicken Blei- 
+schicht umgeben ist, pro Stunde 134,4 ><225—=30240 gr-cal. Dies 
+ergibt nach (17) für die Stunde eine Verminderung der Masse um 
+
+
+ee eo gr = 1,41-10—-® mgr 
+oder in einem Jahre eine Verminderung der Masse um 0,012 mer. 
+Dieser Betrag ist allerdings, besonders mit Rücksicht auf das hohe 
+Atomgewicht des Radiums, immer noch so winzig, daß er wohl zunächst 
+außer dem Bereich der möglichen Erfahrung liegt“. Es liegt nahe, 
+sich zu fragen, ob man nicht durch Anwendung einer indirekten Me- 
+thode zum Ziele kommen könnte Es sei JM das Atomgewicht des 
+
+
+1) J. Precht, Ann. d. Phys. 21, 599, 1906. 
+
+
+
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen 443 
+
+
+zerfallenden Atoms, m;, my etc. seien die Atomgewichte der Endpro- 
+dukte des radioaktiven Zerfalls, dann muß sein 
+
+
+M— Zm= A 
+
+c? 
+wobei Æ die beim Zerfall eines Grammatoms entwickelte Energie be- 
+deutet; diese kann berechnet werden, wenn man die bei stationärem 
+Zerfall pro Zeiteinheit entwickelte Energie und die mittlere Zerfall- 
+dauer des Atoms kennt. Ob die Methode mit Erfolg angewendet 
+werden kann, hängt in erster Linie davon ab, ob es radioaktive Reak- 
+
+
+tionen gibt, für welche I” nicht allzu klein gegen 1 ist. Für 
+den oben erwähnten Fall des Radiums ist — wenn man die Lebens- 
+dauer desselben zu 2600 Jahren annimmt — ungefähr 
+
+M — Xm 12. 10-6.2600 
+
+Zah -—--- = 0,00012. 
+
+
+Wenn also die Lebensdauer des Radiums einigermaßen richtig bestimmt 
+ist, müßte man die in Betracht kommenden Atomgewichte auf fünf 
+Stellen genau kennen, um unsere Beziehung prüfen zu können. Dies 
+ist natürlich ausgeschlossen. Es ist indessen möglich, daß radioaktive 
+Vorgänge bekannt werden, bei welchen ein bedeutend größerer Prozent- 
+satz der Masse des ursprünglichen Atoms sich in Energie diverser 
+Strahlungen verwandelt als beim Radium. Es liegt wenigstens nahe, 
+sich vorzustellen, daß die Energieentwickelung beim Zerfall eines Atoms 
+bei verschiedenen Stoffen nicht minder verschieden sei als die Raschheit 
+des Zerfalls. 
+
+
+Im vorhergehenden ist stillschweigend vorausgesetzt, daß eine der- 
+artige Massenänderung mit dem zur Messung von Massen gewöhn- 
+lich benutzten Instrument, der Wage, gemessen werden könne, daß 
+also die Beziehung 
+
+M=u+- a 
+nicht nur für die träge Masse, sondern auch für die gravitierende 
+Masse gelte, oder mit anderen Worten, daß Trägheit und Schwere 
+eines Systems unter allen Umständen genau proportional seien. Wir 
+hätten also auch z. B. anzunehmen, daß in einem Hohlraum einge- 
+schlossene Strahlung nicht nur Trägheit, sondern auch Gewicht besitze. 
+Jene Proportionalität zwischen träger und schwerer Masse gilt.aber 
+ausnahmslos für alle Körper mit der bisher erreichten Genauigkeit, 
+so daß wir bis zum Beweise des Gegenteils die Allgemeingültigkeit 
+
+307 
+
+
+444 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+annehmen müssen. Wir werden ferner im letzten Abschnitt dieser 
+Abhandlung ein neucs, die Annahme stützendes Argument finden. 
+
+
+$ 12. Energie und Bewegungsgröße eines bewegten 
+Systems. 
+
+Wir betrachten wieder wie im vorigen Paragraphen ein frei im 
+Raume schwebendes System, welches von einer für Strahlung nicht 
+durchlässigen Hülle umgeben ist. Mit Aa, Ya, Za etc. bezeichnen wir 
+wieder die Feldstärken des äußeren elektromagnetischen Feldes, welches 
+den Energieaustausch des Systems mit anderen Systemen vermittle. Auf 
+dies äußere Feld können wir die Betrachtungen anwenden, welche uns 
+zu Formel A geführt haben, so daß wir erhalten 
+
+
+d 
+Ya Na goaza Li Ma d 
+di ips , o] 
+2 3 Uy ny U: fe) —_ 
++, Xa + i Na E Ma \do=0. 
+
+
+Wir wollen nun annehmen, daß der Satz von der Erhaltung der 
+Bewegungsgröße allgemein gelte. Dann muß der über die Systemhülle 
+erstreckte Teil des zweiten Gliedes dieser Gleichung, als Differential- 
+quotient nach der Zeit einer durch den Momentanzustand des Systems 
+vollkommen bestimmten Größe Gr darstellbar sein, welche wir als 
+die X-Komponente der Bewegungsgröße des Systems bezeichnen. Wir 
+wollen nun das Transformationsgesetz der Größe Gr aufsuchen. Durch 
+Anwendung der Transformationsgleichungen (1), (7), (8) und (9) er- 
+halten wir auf ganz analogem Wege wie im vorigen Paragraphen die 
+Beziehung 
+
+
+fa cef fEl (xe + ty A m o Ma) dos’ vat’ 
+2: o (Naur + Ya ty + Zu ux) do. dt’ 
+
+
+oder 
+dG:=3B- „dh + 8 J { 2K dt. (18) 
+
+
+Der Körper bewege sich ak beschleunigungstrei, derart, daß er 
+. ’ . . 
+dauernd in bezug auf S ruht, dann ist wieder 
+-P 
+2 kz == 
+
+Trotzdem die Grenzen der Zeitintegration von x abhängen, ver- 
+schwindet wieder das zweite Glied auf der rechten Seite der Gleichung, 
+wenn der Körper vor und nach der betrachteten Veränderung äußeren 
+Kräften nicht ausgesetzt ist; es ist dann 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 445 
+
+
+d Gs = B z d E A 
+
+
+Hieraus folgt, daß die Bewegungsgröße eines äußeren Kräften nicht 
+ausgesetzten Systems eine Funktion nur zweier Variabeln ist, nämlich 
+der Energie E, des Systems in bezug auf ein mitbewegtes Bezugs- 
+system und der Translationsgeschwindigkeit q desselben. Es ist 
+
+
+
+
+
+q 
+a Ky V TE 
+C* 
+Hieraus folgt 
+( E 
+0, (eHO), 
+
+
+‘ e? 
+yı- 1> 
+C 
+
+
+wobei W% (q) eine vorläufig unbekannte Funktion von q ist. Da w(q) 
+nichts anderes ist als die Bewegungsgröße für den Fall, daß letztere 
+durch die Geschwindigkeit allein bestimmt ist, schließen wir aus Formel 
+
+
+(15b), daß 
+y (4) e ze eG 
+= 
+c? 
+
+
+== Ge fu + T \ (18a) 
+
+
+ist. Wir erhalten also 
+
+
+Dieser Ausdruck unterscheidet sich von dem für die Bewegungsgröße 
+des materiellen Punktes nur dadurch, daß an Stelle von u die Größe 
+(u+ 3) tritt, im Einklang mit dem Resultat des vorigen Para- 
+graphen. 
+
+Wir wollen nun Energie und Bewegungsgröße eines in bezug auf 
+S ruhenden Körpers aufsuchen für den Fall, daß der Körper dauern- 
+den äußeren Kräften unterworfen ist. In diesem Falle ist zwar auch 
+für jedes z 
+
+
+YK’ = 0, 
+aber das in den Gleichungen (16) und (18) auftretende Integral 
+SIE Kz]dt 
+
+
+verschwindet nicht, weil dasselbe nicht zwischen zwei bestimmten 
+[4 . . X 
+Werten von ¢, sondern von zwei bestimmten Werten von ¿ zu cr- 
+
+
+446 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+strecken ist. Da nach der Umkehrung der ersten der Gleichungen (1) 
+t= p(t + = x“), 
+so sind die Grenzen für die Integration nach ¢ gegeben durch 
+h ory P 
+Be B ct? 
+wobei ¢ und ¢ von x, y, x unabhängig sind. Die Grenzen der 
+Zeitintegration in bezug auf S’ sind also von der Lage der Angriffs- 
+punkte der Kräfte abhängig. Wir zerlegen das obige Integral in drei 
+
+
+Integrale: 
+t t, t, vr 
+3 wO ar 
+
+fızKzar =f + J + J. 
+
+t, Woe ua ti h 
+T Fj F. 
+Das zweite dieser Integrale verschwindet, weil es konstante Zeit- 
+grenzen hat. Wenn ferner die Kräfte Kr beliebig rasch veränderlich sind, 
+können wir die beiden anderen Integrale nicht auswerten; dann können 
+wir bei Anwendung der hier benutzten Grundlagen von einer Energie 
+bzw. Bewegungsgröße des Systems überhaupt nicht reden.) Falls 
+
+
+Ld 
+
+: i š ; y , C2 
+sich aber jene Kräfte in Zeiten von der Größenordnung - „ sehr we- 
+
+C~“ 
+
+
+nig ändern; so können wir setzen: 
+t, t 
+
+
+G s 
+’ ’ 5 ? v ty? 
+VELS => K, fw=t, Dx K, è 
+in vr t, vr 
+c” Sr cË 
+
+
+Nachdem das dritte Integral entsprechend ausgewertet ist, erhält man 
+>? r Vv ’ ’ 
+fe p) dt = — df g Ba! Kr}. 
+
+
+Nun ist die Berechnung der Energie und der Bewegungsgröße aus den 
+Gleichungen (16) und (18) ohne Schwierigkeit auszuführen. Man 
+erhält 
+
+a 
+
+X 
+
+
+E, 2 : 
+E — (u + =) FE EN Kae en 7T — = (dy Kos) (16 b) 
+Vist Vii 
+1 e , 1 — ) 
+C C~ 
+
+
+1) Vergl A. Einstein, Ann. d. Phys. 23, $ 2, 1907. 
+
+
+I= w 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 447 
+
+
+— E (bn Ko) 
+
+
+E 
+== — ala z (u + ? > es 
+q : 
+Vi nn 
+C 
+
+
+wobei Kos die in die Bewegungsrichtung fallende Komponente einer 
+auf ein mitbewegtes Bezugssystem bezogenen Kraft, d, den in dem- 
+selben System gemessenen Abstand des Angriffspunktes jener Kraft 
+von einer zur Bewegungsrichtung senkrechten Ebene bedeutet. 
+
+Besteht, wie wir im folgenden annehmen wollen, die äußere Kraft 
+in einem von der Richtung unabhängigen, überall auf die Oberfläche 
+des Systems senkrecht wirkenden Druck pọ, so ist im speziellen 
+
+
+2 (do Kos) = — Po Vo, (19) 
+wobei V, das auf ein mitbewegtes Bezugssystem bezogene Volumen des 
+
+
+Systems ist. Die Gleichungen (16b) und (18b) nehmen dann die 
+Form an 
+
+
+
+
+
+(18b) 
+
+
+
+
+
+
+
+
+q? 
+ce 
+=(u+ + 2 ) = = : ~z Po Fo (16c) 
+Vie = pe 2 
+c? 
+EEE 2 z (u a Arm) | (180) 
+1 — - 
+
+
+e? 
+
+
+§ 13. Volumen und Druck eines bewegten Systems. 
+Bewegungsgleichungen. 
+
+
+Wir haben uns zur Bestimmung des Zustandes des betrachteten 
+Systems der Größen Z,, Po, Vo bedient, welche mit Bezug auf ein mit 
+dem physikalischen System bewegtes Bezugssystem definiert sind. 
+Wir können uns aber statt der genannten auch der entsprechenden 
+Größen bedienen, welche mit Bezug auf dasselbe Bezugssystem defi- 
+niert sind, wie die Bewegungsgröße @. Zu diesem Zweck müssen wir 
+untersuchen, wie sich Volumen und Druck bei Einführung eines neuen 
+Bezugssystems ändern. 
+
+
+Ein Körper ruhe in bezug auf das Bezugssystem S’. V’ sei sein 
+Volumen in bezug auf S’, V sein Volumen in bezug auf S. Aus 
+Gleichungen (2) folgt unmittelbar 
+
+
+[o-ara=yı-' für -dy -dx 
+
+
+oder 
+
+
+448 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen 
+
+
+a 
+v- ’ 
+
+y=) 1 u, 
+c 
+
+
+Ersetzt man gemäß der von uns benutzten Bezeichnungsweise 7’ 
+durch V® und v durch q, so hat man 
+
+
+ae i 
+Vy = 1 — ce? Fo- (20) 
+
+
+Um ferner die Transformationsgleichung für die Druckkräfte zu er- 
+‘mitteln, müssen wir von den Transformationsgleichungen ausgehen, 
+welche fir Kräfte überhaupt gelten. Da wir ferner in § 8 die bewegenden 
+Kräfte so definiert haben, daß sie durch die Kraftwirkungen elektro- 
+magnetischer Felder auf elektrische Massen ersetzt werden können, 
+können wir uns hier darauf beschränken, die Transformationsgleichungen 
+für letztere aufzusuchen.!) 
+
+Die Elektrizitätsmenge e ruhe in bezug auf S’. Die auf dieselbe 
+wirkende Kraft ist gemäß den Gleichungen (12) gegeben durch die 
+Gleichungen: 
+
+
+Ay =e X Kr =€ X’ 
+z r v v >? 79 
+K, =e(¥— N) ne 
+
+
+07 
+[4 
+
+
+K—e(Z+ j ar) Kx =€ Z’. 
+
+
+Aus diesen Gleichungen und den Gleichungen (7a) folgt: 
+
+
+Ky == Kr 
+v=ß-K, (21) 
+Ky =8- Kx | 
+
+
+Nach diesen Gleichungen lassen sich Kräfte berechnen, wenn sie in 
+bezug auf ein mitbewegtes Bezugssystem bekannt sind. 
+
+Wir betrachten nun eine auf das relativ zu S’ ruhende Flächen- 
+element s wirkende Druckkraft 
+
+[4 2t p [4 [4 [4 
+Kr =p s-cosl =p -sr 
+
+-? [4 ’ , Ld ’ 
+Ky =p -s -cosm =p - Sy 
+
+»? LG ’ o , [4 
+Ay =p -Ss -coSn =p sz, 
+
+. [4 . . . ”. 
+wobei l’, m, n die Richtungscosinus der (nach dem Innern des Kör- 
+pers gerichteten) Normale, sy, sy, sx die Projektionen von s bedeuten. 
+Aus den Gleichungen (2) folgt, daß 
+
+
+1) Durch diesen Umstand wird auch das in den vorhergehenden 
+Untersuchungen benutzte Verfahren gerechtfertigt, welches darin bestand, 
+daß wir einzig Wechselwirkung rein elektromagnetischer Art zwischen 
+dem betrachteten System und sciner Umgebung einführten. Die Resultate 
+gelten ganz allıremein. 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 449 
+
+
+Sr = Sr 
+
+Sy = 8 Sy 
+
+Sx = B- Sx , 
+wobei sz. sy, Sx die Projektionen des Flächenelements in bezug auf S 
+sind. Für die Komponenten Az, Ky, Kx der betrachteten Druckkraft 
+in bezug auf S erhält man also aus den letzten drei Gleichungs- 
+systemen 
+
+K: = Kr; =p +s; =p +sr=p -s cosl 
+1 
+
+
+2 1 
+
+K; = B Ky = B p Sy == p . Sy ——— p $> COS mM 
+- 1 =- 2 [4 r ? [2 
+
+u: Hee p Sx =p -$= p -s-cosn, 
+
+
+wobei s die Größe des Flächenelements, 7, m, n die Richtungscosinus 
+von dessen Normale in bezug auf S bezeichnen. Wir erhalten also 
+das Resultat, daß der Druck p in bezug auf das mitbewegte System 
+sich in bezug auf ein anderes Bezugssystem durch einen ebenfalls 
+senkrecht auf das Flächenelement wirkenden Druck von gleicher Grüße 
+ersetzen läßt. In der von uns benutzten Bezeichnungweise ist also 
+P= Po- (22) 
+
+Die Gleichungen (16c), (20) und (22) setzen uns in den Stand, 
+den Zustand eines physikalischen Systems statt durch die in bezug auf 
+ein mitbewegtes Bezugssystem definierten Größen Fo, Vo, py durch die 
+Größen E, V, p zu bestimmen, welche in bezug auf dasselbe System 
+definiert sind wie die Bewegungsgröße G und die Geschwindigkeit q 
+des Systems. Falls z. B. der Zustand des betrachteten Systems für 
+einen mitbewegten Beobachter durch zwei Variable (F und Z,) voll- 
+kommen bestimmt ist, dessen Zustandsgleichung also als eine Beziehung 
+zwischen py, Vy und Fy aufgefaßt werden kann, kann man mittels 
+der genannten Gleichungen die Zustandsgleichung auf die Form 
+
+P (q, P, V, I) =0 
+
+bringen. 
+
+Formt man die Gleichung (18c) in entsprechender Weise um, so 
+erhält man 
+
+
+G=y\u+ nen (18d) 
+welche Gleichung in Verbindung mit den das Prinzip von der Erhaltung 
+der Bewegungsgröße ausdrückenden Gleichungen 
+
+d Gx 
+dl 
+
+
+die Translationsbewegung des Systems als Ganzes vollkommen be- 
+
+
+=% “rete. 
+
+
+450 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+stimmen, wenn außer den Größen 2 Kz etc. auch F, p und V als 
+Funktionen der Zeit bekannt sind, oder wenn statt der letzten drei 
+Funktionen drei ihnen äquivalente Angaben über die Bedingungen 
+vorliegen, unter denen die Bewegung des Systems vor sich gehen soll. 
+
+
+$ 14. Beispiele. 
+
+
+Das betrachtete System bestehe in elektromagnetischer Strahlung, 
+welche in einen masselosen Hohlkörper eingeschlossen sei, dessen 
+Wandung dem Strahlungsdruck das Gleichgewicht leiste. Wenn keine 
+äußeren Kräfte auf den Hohlkörper. wirken, so können wir auf das 
+ganze System (den Hoblkörper inbegriffen) die Gleichungen (16a) und 
+(18a) anwenden. Es ist also: | 
+
+
+pee! 
+
+
+_ 9 
+Vi e? 
+
+
+G=- 41 - E=q 
+
+
+2 c? 
+Vi- 
+
+
+wobei Z, die Energie der Strahlung in bezug auf ein mitbewegtes 
+Bezugssystem bedeutet. 
+
+Sind dagegen die Wandungen des Hohlkörpers vollkommen bieg- 
+sam und dehnbar, so daß dem auf sie von innen ausgeübten Strah- 
+lungsdruck durch äußere Kräfte, welche von nicht zu dem betrachteten 
+System gehörigen Körpern ausgehen, das Gleichgewicht geleistet werden 
+muß, so sind die Gleichungen (16c) und (18c) anzuwenden, in welche 
+der bekannte Wert des Strahlungsdruckes 
+
+_1 Eu 
+Po = 3 ¢2 
+
+
+
+
+
+einzusetzen ist, so daß man erhält: 
+
+
+1 2 
+A (1 s et) 
+Vint 
+. 
+4 , 
+‘ hy 
+
+
+C= q 38 
+
+
+R EEE 
+ge 8 
+De 
+Ce” 
+
+
+Wir betrachten ferner den Fall eines elektrisch geladenen masse- 
+losen Körpers. Falls äußere Kräfte auf denselben nicht wirken, können 
+
+
+I ’ 
+4 = 
+si 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 451 
+
+
+wir wieder die Formeln (16a) und (18a) anwenden. Bezeichnet Fy 
+die elektrische Energie in bezug auf ein mitbewegtes Bezugssystem, 
+so hat man 
+
+
+0? 
+yi- 
+
+
+a = 2 œ 
+q 
+Vi- 
+
+
+Von diesen Werten entfällt ein Teil auf das elektromagnetische 
+Feld, der Rest auf den masselosen, von seiten seiner Ladung Kräften 
+unterworfenen Körper.!) 
+
+
+
+
+
+
+
+
+§ 15. Entropie und Temperatur bewegter Systeme. 
+
+
+Wir haben bisher von den Variabeln, welche den Zustand eines 
+physikalischen Systems bestimmen, nur Druck, Volumen, Energie, Ge- 
+schwindigkeit und Bewegungsgröße benutzt, von den thermischen Größen 
+aber noch nicht gesprochen. Es geschah dies deshalb, weil es für die 
+Bewegung eines Systems gleichgültig ist, welcher Art die ihm: zuge- 
+führte Energie ist, so daß wir bisher keine Ursache hatten, zwischen 
+Wärme und mechanischer Arbeit zu unterscheiden. Nun aber wollen 
+wir noch die thermischen Größen einführen. 
+
+Der Zustand eines bewegten Systems sei durch die Größen q, V, E 
+vollkommen bestimmt. Für ein solches System haben wir offenbar als 
+zugeführte Wärme d Q die gesamte Energiezunahme zu betrachten ab- 
+züglich der vom Drucke geleisteten und der auf Vergrößerung der 
+Bewegungsgröße verwendeten Arbeit, so daß man hat 
+
+dQ=dE+pdV — gan. (23) 
+
+Nachdem so die zugeführte Wärme für ein bewegtes System definiert 
+
+ist, kann man durch Betrachtung von umkehrbaren Kreisprozessen die 
+
+absolute Temperatur T und Entropie 7 des bewegten Systems in der- 
+
+selben Weise einführen, wie dies in den Lehrbüchen der Thermodynamik 
+geschieht. Für umkehrbare Prozesse gilt auch hier die Gleichung 
+
+dQ=Tan. (24) 
+
+Wir haben nun die Gleichungen abzuleiten, die zwischen den 
+Größen dQ, 7, T und den auf ein mitbewegtes Bezugssystem bezogenen 
+entsprechenden Größen d Qo, No, To bestehen. Bezüglich der Entropie 
+
+
+
+
+
+1) Vgl. A. Einstein, Ann. d. Phys. (4) 23, 373—379, 1907. 
+
+
+452 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+wiederhole ich hier eine von Herrn Planck angegebene Überlegung’), 
+indem ich bemerke, daß unter dem „gestrichenen“ bezw. „ungestrichenen“ 
+Bezugssystem das Bezugssystem S bezw. S zu verstehen ist. 
+
+„Wir denken uns den Körper aus einem Zustand, in welchem 
+er für das ungestrichene Bezugssystem ruht, durch irgendeinen rever- 
+siblen, adiabatischen Prozeß in einen zweiten Zustand gebracht, in 
+welchem er für das gestrichene Bezugssystem ruht. Bezeichnet man 
+die Entropie des Körpers für das ungestrichene System im Anfangs- 
+zustand mit 7,, im Endzustand mit 7, so ist wegen der Reversibilität 
+und Adiabasie 7, = N. Aber auch für das gestrichene Bezugssystem 
+ist der Vorgang reversibel und adiabatisch, also haben wir ebenso 
+My =M“ 
+
+„Wäre nun 7, nicht gleich 7,, sondern etwa 7, > m, so würde 
+das heißen: Die Entropie eines Körpers ist für das Bezugssystem, für 
+welches er in Bewegung begriffen ist, größer als für dasjenige Bezugs - 
+system, für welches er sich in Ruhe befindet. Dann müßte nach diesem 
+Satze auch 7, > g sein; denn im zweiten Zustand ruht der Körper 
+für das gestrichene Bezugssystem, während er für das ungestrichene 
+in Bewegung begriffen ist. Diese beiden Ungleichungen widersprechen 
+aber den oben aufgestellten beiden Gleichungen. Ebensowenig kann 
+mn > sein; folglich ist 7, =, und allgemein 7 = 7, d.h. die 
+Entropie des Körpers hängt nicht von der Wahl des Bezugssystems ab.“ 
+
+Bei Anwendung der von uns benutzten Bezeichnungsweise haben 
+wir also zu setzen: 
+
+= No - (25) 
+
+Führen wir ferner auf der rechten Seite der Gleichung (23) mittels 
+der Gleichungen (16c), (13c), (20) und (22) die Größen Fp, pọ und Th 
+ein, so erhalten wir 
+
+
+er y 
+d Q= V: = s (d Fy + py Vo) 
+
+
+ae p? 
+
+
+ec? ' 
+
+
+oder 
+
+
+Da ferner gemäß (24) die beiden Gleichungen 
+dV=Tdn 
+dy = Td ny | 
+gelten, so erhält man endlich mit Rücksicht auf (25) und (26) 
+
+
+1) M. Planck, Zur Dynamik bewegter Systeme. Sitzungsber. d. kel. 
+Preuß. Akad. d. Wissensch. 1907. 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 453 
+
+
+T = © _ 
+r,” 1 22° (27) 
+
+
+Die Temperatur eines bewegten Systems ist also in bezug auf ein 
+relativ zu ihm bewegtes Bezugssystem stets kleiner als in bezug auf 
+ein relativ zu ihm ruhendes Bezugssystem. 
+
+
+$ 16. Dynamik der Systeme und Prinzip der kleinsten 
+Wirkung. 
+
+Herr Planck geht in seiner Abhandlung „Zur Dynamik bewegter 
+Systeme“ vom Prinzip der kleinsten Wirkung (und von den Trans- 
+formationsgleichungen für Druck und Temperatur der Hohlraumstrah- 
+lung) aus!) und gelangt zu Resultaten, mit welchen die hier ent- 
+wickelten übereinstimmen. Es erhebt sich daher die Frage, wie die 
+Grundlagen seiner und der vorliegenden Untersuchung zusammen- 
+hängen. 
+
+Wir sind ausgegangen vom Energieprinzip und vom Prinzip von 
+der Erhaltung der Bewegungsgröße. Nennen wir Fr, Fy, Fx die 
+Komponenten der Resultierenden der auf das System wirkenden Kräfte, 
+so können wir die von uns benutzten Prinzipien für umkehrbare Pro- 
+zesse und ein System, dessen Zustand durch die Variabeln q}, V, T 
+bestimmt ist, so formulieren: 
+
+
+d E= Fidr + Fydy+ FRd2—pdV + Tds (28) 
+F: = er etc, (29) 
+dt 
+
+
+Aus diesen Gleichungen erhält man, wenn man beachtet, daß 
+F,dr=F,xdt=rlG=d(r G,) — Grdx ete. 
+und 
+Tdn=d(Tn)— dT, 
+die Beziehung 
+d(— E+ Ty+q G)=Grde+ Gydy + Gadx+pdV +d T. 
+Da auch die rechte Seite dieser Gleichung ein vollständiges Diffe- 
+
+
+rential sein muß, so folgt unter Berücksichtigung von (29): ’ 
+II , | 
+mn IM, 4M, 
+di 5 or at \ È Ji i dt l Ox 
+oll o/l 
+a: Ye 
+
+
+Dies sind aber die mittels des Prinzips der kleinsten Wirkung ableit- 
+baren Gleichungen, von denen Herr Planck ausgegangen ist. 
+
+
+1) M. Planck, Zur Dynamik bewegter Systeme. Sitzungsber d. kel. 
+Preuß. Akad. d. Wissensch. 1907. 
+
+
+a 
+
+
+454 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+V. Relativititsprinzip und Gravitation. 
+$ 17. Beschleunigtes Bezugssystem und Gravitationsfeld. 
+
+
+Bisher haben wir das Prinzip der Relativität, d. h. die Voraus- 
+setzung der Unabhängigkeit der Naturgesetze vom Bewegungszustande 
+des Bezugssystems, nur auf beschleunigungsfreie Bezugssysteme 
+angewendet. Ist es denkbar, daß das Prinzip der Relativität auch für 
+Systeme gilt, welche relativ zueinander beschleunigt sind? 
+
+Es ist zwar hier nicht der Ort für die eingehende Behandlung 
+dieser Frage. Da sich diese aber jedem aufdrängen muß, der die bis- 
+herigen Anwendungen des Relativitätsprinzips verfolgt hat, will ich es 
+nicht unterlassen, zu der Frage hier Stellung zu nehmen. 
+
+Wir betrachten zwei Bewegungssysteme 2, und 3. 2, sei in 
+Richtung seiner X-Achse beschleunigt, und es sei y die (zeitlich kon- 
+stante) Größe dieser Beschleunigung. 2, sei ruhend; es befinde sich 
+aber in einem homogenen Gravitationsfelde, das allen Gegenständen die 
+Beschleunigung — y in Richtung der X-Achse erteilt, 
+
+Soweit wir wissen, unterscheiden sich die physikalischen Gesetze 
+in bezug auf £; nicht von denjenigen in bezug auf 3,; es liegt dies 
+daran, daß alle Körper im Gravitationsfelde gleich beschleunigt werden. 
+Wir haben daher bei dem gegenwärtigen Stande unserer Erfahrung keinen 
+Anlaß zu der Annahme, daß sich die Systeme 2, und 3, in irgendeiner 
+Beziehung voneinander unterscheiden, und wollen daher im folgenden 
+die völlige physikalische Gleichwertigkeit von Gravitationsfeld und ent- 
+sprechender Beschleunigung des Bezugssystems annehmen, 
+
+Diese Annahme erweitert das Prinzip der Relativität auf den Fall 
+der gleichförmig beschleunigten Translationsbewegung des Bezugssystems. 
+Der heuristische Wert der Annahme liegt darin, daß sie ein homogenes 
+Gravitationsfeld durch ein gleichförmig beschleunigtes Bezugssystem zu 
+ersetzen gestattet, welch letzterer Fall bis zu einem gewissen Grade 
+der theoretischen Behandlung zugänglich ist. 
+
+
+S 13. Raum und Zeit in einem gleichförmig beschleunigten 
+Bezugssystem. 
+
+
+Wir betrachten zunächst einen Körper, dessen einzelne matericlle 
+Punkte zu einer bestimmten Zeit ¢ des beschleunigungsfreien Bezugs- 
+systems JS, relativ zu © keine Geschwindigkeit, jedoch eine gewisse 
+Beschleunigung besitzen. Was für einen Einfluß hat diese Beschleu- 
+nigung y auf die Gestalt des Körpers in bezug auf S? 
+
+Falls ein derartiger Einfluß vorhanden ist, wird er in einer Dila- 
+
+
+Einstein, Relativitätsprinzip u, die aus demselben gezog. Folgerungen. 455 
+
+
+tation nach konstantem Verhältnis in der Beschleunigungsrichtung so- 
+wie eventuell in den beiden dazu senkrechten Richtungen bestehen; 
+denn ein Einfluß anderer Art ist aus Symmetriegründen ausgeschlossen. 
+Jene von der Beschleunigung herrührenden Dilatationen müssen (falls 
+solche überhaupt existieren) gerade Funktionen von y sein; sie können 
+also vernachlässigt werden, wenn man sich auf den Fall beschränkt, daß 
+y so klein ist, daß Glieder zweiten und höheren Grades in y vernach- 
+lässigt werden dürfen. Da wir uns im folgenden auf diesen Fall be- 
+schränken wollen, haben wir also einen Einfluß der Beschleunigung auf 
+die Gestalt eines Körpers nicht anzunehmen. 
+
+Wir betrachten nun ein relativ zu dem beschleunigungsfreien Be- 
+zugssystem S in Richtung von dessen X-Achse gleichförmig beschleu- 
+nigtes Bezugssystem &. Uhren besw. Maßstab von © seien, ruhend 
+untersucht, gleich den Uhren bezw. dem Maßstab von S. Der Koor- 
+dinatenanfang von & bewege sich auf der X-Achse von ©, und die 
+Achsen von © seien denen von S dauernd parallel. Es existiert in 
+jedem Augenblick ein unbeschleunigtes Bezugssystem S’, dessen Koor- 
+dinatenachsen in dem betreffenden Augenblick (zu einer bestimmten 
+Zeit ¢’ von S’ mit den Koordinatenachsen von X zusammen fallen. Be- 
+sitzt ein Punktereignis, welches zu dieser Zeit ¢’ stattfindet, in bezug 
+auf & die Koordinaten $, 7, Č, so ist 
+
+
+roa 
+ro 
+Y =) ’ 
+x ==% | 
+
+
+weil ein Einfluß der Beschleunigung auf die Gestalt der zur Messung 
+von & 7), & benutzten Meßkörper nach dem Obigen nicht anzunehmen 
+ist. Wir wollen uns ferner vorstellen, daß die Uhren von Æ zu dieser 
+Zeit ¢’ von S’ so gerichtet werden, daß ihre Angabe in diesem 
+Augenblick gleich t’ ist. Wie steht es mit dem Gang der Uhren in 
+dem nächsten Zeitteilchen 7? 
+
+Zunächst haben wir zu berücksichtigen, daß ein spezifischer Ein- 
+flu8 der Beschleunigung auf den Gang der Uhren von I nicht in 
+Betracht fällt, da dieser von der Ordnung y? sein müßte. Da ferner 
+der Einfluß der während r erlangten Geschwindigkeit auf den Gang 
+der Uhren zu vernachlässigen ist, und ebenso die während der Zeit 7 
+von den Uhren relativ zu denen von S’ zurückgelegten Wege von der 
+Ordnung rT2, also zu vernachlässigen sind, so sind für das Zeitelement 7 
+die Angaben der Uhren von S durch die Angaben der Uhren von S’ 
+vollkommen nutzbar. 
+
+Aus dem Vorangehenden folgt, daß sich das Licht im Vakuum 
+
+
+456 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+relativ zu £ im Zeitelement t mit der universellen Geschwindigkeit c 
+fortpflanzt, falls wir die Gleichzeitigkeit in dem relativ zu £ momentan 
+ruhenden System S” definieren, und zur Zeit- bzw. Längenmessung 
+Uhren bzw. Maßstäbe verwenden, welche jenen gleich sind, die in 
+unbeschleunigten Systemen zur Ausmessung von Zeit und Raum benutzt 
+werden. Das Prinzip von der Konstanz der Lichtgeschwindigkeit läßt 
+sich also auch hier zur Definition der Gleichzeitigkeit verwenden, falls 
+man sich auf sehr kleine Lichtwege beschränkt. 
+
+Wir denken uns nun die Uhren von Æ in der angegebenen Weise 
+zu derjenigen Zeit =0 von S gerichtet, in welcher & relativ zu S 
+momentan ruht. Der Inbegriff der Angaben der so gerichteten Uhren von 
+= werde die „Ortszeit“ o des Systems 2 genannt. Die physikalische 
+Bedeutung der Ortszeit o ist, wie man unmittelbar erkennt, die folgende. 
+Bedient man sich zur zeitlichen Wertung der in den einzelnen Raum- 
+elementen von © stattfindenden Vorgänge jener Ortszeit o, so können 
+die Gesetze, denen jene Vorgänge gehorchen, nicht von der Lage des 
+betreffenden Raumelementes, d. h. von dessen Koordinaten, abhängen, 
+falls man sich in den verschiedenen Raumelementen nicht nur gleichen 
+Uhren, sondern auch sonst gleicher Meßmittel bedient. 
+
+Dagegen dürfen wir nicht die Lokalzeit ø als die „Zeit“ von 2 
+schlechthin bezeichnen, und zwar deshalb, weil zwei in verschiedenen 
+Punkten von 3 stattfindende Punktereignisse nicht dann im Sinne 
+unserer obigen Definition gleichzeitig sind, wenn ihre Lokalzeiten 6 
+einander gleich sind. Da nämlich irgend zwei Uhren von & zur Zeit 
+t= Q0 in bezug auf © synchron sind und den nämlichen Bewegungen 
+unterworfen werden, so bleiben sie dauernd in bezug auf S synchron. 
+Aus diesem Grunde laufen sie aber gemäß $ 4 in bezug auf ein 
+momentan relativ zu & ruhendes, in bezug auf © bewegtes Bezugs- 
+system S’ nicht synchron, also gemäß unserer Definition auch nicht 
+in bezug auf 2. 
+
+Wir definieren nun die „Zeit“ 7 des Systems 2 als den Inbegriff 
+derjenigen Angaben der im Koordinatenanfangspunkt von © befind- 
+lichen Uhr, welche mit den zeitlich zu wertenden Ereignissen im Sinne 
+der obigen Definition gleichzeitig sind.) 
+
+Wir wollen jetzt die Beziehung aufsuchen, welche zwischen der 
+Zeit t und der Ortszeit ø eines Punktereignisses besteht. Aus der 
+ersten der Gleichungen (1) folgt, daß zwei Ereignisse in bezug auf S’, 
+also auch in bezug auf © gleichzeitig sind, wenn 
+
+1) Das Zeichen „t“ ist also hier in einem anderen Sinne verwendet 
+als oben. 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 457 
+
+
+v v 
+t — a2 =h a 
+wobei die Indizes die Zugehörigkeit zu dem einen bzw. andern Punkt- 
+ereignis andeuten soll. Wir beschränken uns nun zunächst auf die 
+Betrachtung so kurzer Zeiten!), daß alle Glieder, welche die zweite 
+oder eine höhere Potenz von t oder v enthalten, weggelassen werden 
+dürfen; dann haben wir mit Rücksicht auf (1) und (29) zu setzen: 
+nen —y=h-$ 
+t =6 lp = 0, 
+v= yt(=/7T, 
+so daB wir aus obiger Gleichung erhalten: 
+
+
+T 
+o — 0 = y (& —&). 
+
+
+Verlegen wir das erste Punktereignis in den Koordinatenanfang, so 
+
+
+daß o, =T und = 0, so erhalten wir unter Weglassung des Index 
+für das zweite Punktereignis 
+
+
+o=r(1+ 5). (30) 
+
+
+Ta , 
+
+
+ál 
+
+Diese Gleichung gilt zunächst, wenn r und § unterhalb gewisser 
+Grenzen liegen. Sie gilt offenbar für beliebig große t, falls die Be- 
+schleunigung y mit Bezug auf Æ konstant ist, weil die Beziehung 
+zwischen 6 und t dann linear sein muß. Für beliebig große § gilt 
+Gleichung (30) nicht. Daraus, daß die Wahl des Koordinatenanfangs- 
+punktes auf die Relation nicht von Einfluß sein darf, schließt man 
+nämlich, daß die Gleichung (30) genau genommen durch die Gleichung 
+
+‘5 
+o=Te“ 
+ersetzt werden müßte. Wir wollen jedoch an der Formel (30) fest- 
+halten. 
+
+Gleichung (30) ist nach $ 17 auch auf ein Koordinatensytem an- 
+zuwenden, in dem ein homogenes Schwerfeld wirkt. In diesem Falle 
+haben wir Ø= y zu setzen, wobei ® das Potential der Schwerkraft 
+bedeutet, so dab wir erhalten 
+
+
+p | 
+
+o=r(1 4) (30a) 
+Wir haben zweierlei Zeiten für © definiert. Welcher von beiden 
+Definitionen haben wir uns für die verschiedenen Fälle zu bedienen? 
+Nehmen wir an, es existicre an zwei Orten verschiedenen Gravitations- 
+1) Hierdurch wird gemäß (1) auch eine gewisse Beschränkung in bezug 
+
+auf die Werte von =x angenommen. 
+
+Jahrb, d. Radioaktivität u. Elektronik. IV. 3l 
+
+
+458 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+potentials (5) je ein physikalisches System, und wir wollen ihre 
+physikalischen Größen vergleichen. Zu diesem Zwecke werden wir 
+wohl am natürlichsten folgendermaßen vorgehen: Wir begeben uns mit 
+unseren Meßmitteln zuerst zu dem ersten physikalischen System und 
+führen dort unsere Messungen aus; hierauf begeben wir uns samt 
+unsern Meßmitteln nach dem zweiten System, um hier die gleichen 
+Messungen auszuführen. Ergeben die Messungen da und dort die 
+gleichen Resultate, so werden wir die beiden physikalischen Systeme 
+als „gleich“ bezeichnen. Unter den g:nannten MeBmitteln befindet sich 
+eine Uhr, mit welcher wir Lokalzeiten ø messen. Daraus folgt, daß 
+wir uns zum Definieren der physikalischen Größen an einem Orte des 
+Schwerfeldes naturgemäß der Zeit øo bedienen. 
+
+Handelt es sich aber um ein Phänomen, bei welchem an Orten 
+verschiedenen Gravitationspotentials befindliche Gegenstände gleichzeitig 
+berücksichtigt werden müssen, so haben wir uns bei den Gliedern, in 
+welchen die Zeit explizite (d. h. nicht nur bei der Definition physi- 
+kalischer Größen) vorkommt, der Zeit r zu bedienen, da sonst die 
+Gleichzeitigkeit der Ereignisse nicht durch die Gleichheit der Zeitwerte 
+beider Ereignisse ausgedrückt würde. Da bei der Definition der Zeit t 
+nicht ein willkürlich gewählter Zeitpunkt, wohl aber eine an einem 
+willkürlich gewählten Orte befindliche Uhr benutzt ist, so können bei 
+Benutzung der Zeit t die Naturgesetze nicht mit der Zeit, wohl aber 
+mit dem Orte variieren. 
+
+
+§ 19. Einfluß des Gravitationsfeldes auf Uhren. 
+
+
+Befindet sich in einem Punkte P? vom Gravitationspotential ® eine 
+Uhr, welche die Ortszeit angibt, so sind gemäß (30a) ihre Angaben 
+
+
+(1 + 5) mal größer als die Zeit t, d.h. sie läuft (145) mal 
+
+
+schneller als eine gleich beschaffene, im Koordinatenanfangspunkt be- 
+findliche Uhr. Ein irgendwo im Raume befindlicher Beobachter nehme 
+die Angaben dieser beiden Uhren irgendwie, z. B. auf optischem Wege, 
+wahr. Da die Zeit Ar, welche zwischen dem Zeitpunkt einer Angabe 
+einer der Uhren und der Wahrnehmung dieser Angabe durch den 
+Beobachter verstreicht, von t unabhängig ist, so läuft die Uhr in P 
+
+
+N p 
+für einen irgendwo im Raume befindlichen Beobachter (1 + 2) mal 
+
+
+schneller als die Uhr im Koordinatenanfangspunkt. In diesem Sinne 
+können wir sagen, daß der in der Uhr sich abspielende Vorgang — 
+und allgemeiner jeder physikalische Prozeß — desto schneller abläuft, 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 459 
+
+
+je größer das Gravitationspotential des Ortes ist, an dem er sich 
+abspielt. 
+
+Es gibt nun „Uhren“, welche an Orten verschiedenen Gravitations- 
+potentials vorhanden sind und deren Ganggeschwindigkeit sehr genau 
+kontrolliert werden kann; es sind dies die Erzeuger der Spektrallinien. 
+Aus dem Obigen schließt man!), daß von der Sonnenoberfläche kom- 
+mendes Licht, welches von einem solchen Erzeuger herrührt, eine um 
+etwa zwei Millionstel größere Wellenlänge besitzt, als das von gleichen 
+Stoffen auf der Erde erzeugte Licht. 
+
+
+$ 20. Einfluß der Schwere auf die elektromagnetischen 
+Vorgänge. 
+
+Beziehen wir einen elektromagnetischen Vorgang in einem Zeit- 
+punkt auf ein beschleunigungsfreies Bezugssystem S’, das momentan 
+relativ zu dem wie oben beschleunigten Bezugssystem & ruht, so gelten 
+gemäß (5) und (6) die Gleichungen 
+
+1/,,,eX\ oN om 
+i (e ur + ar) ai a etc. 
+
+und 
+
+191 ƏY 97 
+
+Sp mr ete. 
+
+c òt 0x oy 
+Nach dem Obigen können wir die auf S’ bezogenen Größen @, w, X’, 
+L’, x ete. den entsprechenden auf &° bezogenen Größen ọ, u, X, L, 
+§ etc. ohne weiteres gleichsetzen, falls wir uns auf eine unendlich 
+kurze Zeit beschränken?), welche der Zeit der relativen Ruhe von S’ 
+und X unendlich nahe liegt. Ferner haben wir ¢’ durch die Lokal- 
+zeit 0 zu ersetzen. Dagegen dürfen wir nicht einfach 
+
+do 
+ot òo 
+
+setzen, und zwar deshalb, weil ein in bezug auf & ruhender Punkt, 
+auf den sich die auf £ transformierten Gleichungen beziehen sollen, 
+relativ zu S° während des Zeitteilchens dt’ == do seine Geschwindigkeit 
+ändert, welcher Änderung gemäß den Gleichungen (7a) und (7b) eine 
+zeitliche Änderung der auf © bezogenen Feldkomponenten entspricht. 
+Wir haben daher zu setzen: 
+
+
+1) Indem man voraussetzt, daß Gleichung (30a) auch für ein nicht- 
+homogenes Gravitationsfeld gelte. 
+
+2) Diese Beschränkung beeinträchtirt den Gültigkeitsbereich unserer 
+Resultate nicht, da die abzuleitenden Gesetze der Natur der Sache nach 
+von der Zeit nicht abhängen können. 
+
+31* 
+
+
+460 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+oX’ OX òL 
+ot do dt 
+oY oY ou’ 
+var! rn 
+eZ’ of ¥ dN’ 
+T ak ot 
+
+
+Die auf © bezogenen elektromagnetischen 
+zunächst 
+
+
+1 oY oN òM 
+„(eu urn oa ee 
+1 oY òL 
+A et ” +. ree oe 
+1 : Ae 
+(eur Ga) 
+1 = ar 07 
+còs of on 
+1/8M 7 0Z 
+> c z)= Os 
+LON yy) aX _ 
+c\ 0G c en 
+
+
+Diese Gleichungen multiplizieren wir mit (1 + 
+
+
+Abkürzung 
+Y+ — x + y S` 
+j \ o2) 
+o*=o(1+ 73) 
+
+
+Wir erhalten dann, indem wir Glieder 
+nachlässigen, die Gleichungen: 
+
+
+14 EAN ON 
+.(e Kr ie) on 
+lf, ,o¥*\ dL 
+(emt yg) = az 
+Lf F ò M * 
+B u- den 
+
+AG U 0 05 
+
+1aL* _dy* 82° | 
+c èo 8 07 | 
+1 ò M* oZ” _ oN” 
+
+e òs og ar l 
+Lane A ar 
+ce òg 07 es 
+
+
+ye=Y/1 
+\ Tr 
+
+
+= 
+m 
+
+
+do 
+
+
+OL 
+eae, 
+006 C 
+—** 
+tir 
+
+
+REN lauten also 
+
+
+ò N 
+E 
+
+
+- 
+
+
+- — 
+
+
+aX 
+oc 
+oy 
+eg 
+
+
+Ta T 
+
+
+S und setzen zur 
+
+
+1% 
+£ 
+
+
+§) ete 
+
+
+zweiten Grades in y ver- 
+
+
+ty In 
+
+
+"04u7* 
+
+
+
+
+
+0." (31a) 
+
+
+oL* 
+
+
+en 
+
+
+Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 461 
+
+
+Aus diesen Gleichungen ersieht man zunächst, wie das Gravitationsfeld 
+die statischen und stationären Erscheinungen beeinflußt. Die geltenden 
+Gesetzmäßigkeiten sind dieselben wie im gravitationsfreien Felde; nur 
+
+
+sind die Feldkomponenten X etc. durch x( 1+ 3) etc. und ọ durch 
+
+
+7s 
+0 (1 + 2) ersetzt. 
+
+
+Um ferner den Verlauf nichtstationärer Zustände zu übersehen, 
+bedienen wir uns der Zeit r sowohl bei den nach der Zeit differen- 
+zierten Gliedern als auch für die Definition der Geschwindigkeit der 
+Elektrizität, d. h. wir setzen gemäß (30) 
+
+
+ò yS\ 0 
+sont Sie 
+
+
+W: = (1 +75). 
+
+
+und 
+
+
+Wir erhalten so 
+1 ; * 4 s pi d 
+
+s (o Ww: + =) = Da — pn etc. (31 b) 
+C ( 1+ > ca 
+
+
+
+
+
+und 
+
+
+* | 
+ee ee (32 b) 
+
+
+Auch diese Gleichungen sind von derselben Form wie die ent- 
+sprechenden des beschleunigungs- bzw. gravitationsfreien Raumes; hier 
+tritt aber an die Stelle von c der Wert 
+
+
+(14 )=el1+)- 
+
+
+\ 
+$ 
+` x 
+
+
+Es folgt hieraus, daß die Lichtstrahlen, welche nicht in der §-Achse 
+verlaufen, durch das Gravitationsfeld gekrümmt werden; die Richtungs- 
+änderung beträgt, wie leicht zu ersehen, pro Zentimeter Lichtweg 
+7 
+2 
+und der des Lichtstrahles bedeutet. 
+
+Mittels dieser Gleichungen und den aus der Optik ruhender Körper 
+bekannten Gleichungen zwischen Feldstirke und elektrischer Strömung 
+an einem Orte läßt sich der Einfluß des Gravitationsfeldes auf die 
+optischen Erscheinungen bei ruhenden Körpern ermitteln. Es ist hier- 
+bei zu berücksichtigen, daß jene Gleichungen aus der Optik ruhender 
+Körper für die Lokalzeit 0 gelten. Leider ist der Einfluß des irdischen 
+Schwerefeldes nach unserer Theorie ein so geringer (wegen der Klein- 
+
+
+sing, wobei @ den Winkel zwischen der Richtung der Schwerkraft 
+
+
+462 Einstein, Relativitätsprinzip u. die aus demselben gezog. Folgerungen. 
+
+
+heit von oa daB eine Aussicht auf Vergleichung der Resultate der 
+c 
+Theorie mit der Erfahrung nicht besteht. 
+Multiplizieren wir die Gleichungen (81a) und (32a) der Reihe 
+
+
+X* N* 
+nach mit EERS und integrieren über den unendlichen Raum, 
+n 
+
+
+so erhalten wir bei Benutzung unserer früheren Bezeichnungsweise: 
+
+
+7s\* © 
+/G+3) an (u X+uY-+u Z)dwo 
+
+
+r&y, 1 ò 72 2 72 = 
++ f(a+%) = zg Č + Y?.... + N?) do = 0. 
+
+
+Na (u X+ u, Y+ u Z) ist die der Materie pro Volumeneinheit 
+
+
+und Einheit der Lokalzeit 0 zugeführte Energie 77., falls diese Energie 
+mittels an der betreffenden Stelle befindlicher Meßnmittel gemessen 
+
+
+wird. Folglich ist gemäß (30) = (1 = 
+
+
+rs die der Materie pro 
+
+
+Volumeneinheit und Einheit der Zeit t zugeführte (ebenso gemessene) 
+
+Energie. er (Y¥2+ ¥2,,... + N?) ist die elektromagnetische Ener- 
+
+gie € pro Volumeneinheit — ebenso gemessen, Berticksichtigen wir 
+ò ð ; 
+
+ferner, daß gemäß (30) w= 7); zu setzen ist, so er- 
+
+
+halten wir 
+
+
+; d Š 
+Jat imio + a; ([(2+7%3)edo} =o. 
+
+
+Diese Gleichung drückt das Prinzip von der Erhaltung der Energie 
+aus und enthält ein sehr bemerkenswertes Resultat. Eine Energie bzw. 
+eine Energiezufuhr, welche — an Ort und Stelle gemessen — den 
+Wert E=:£do bezw. E=n dowdt hat, liefert zum Energieintegral 
+außer dem ihrer Größe entsprechenden Wert E noch einen ihrer Lage 
+
+
+
+
+
+J ‘ í 
+entsprechenden Wert a y = - ®. Jeglicher Energie F kommt also 
+
+
+im Gravitationsfelde eine Energie der Lage zu, die ebenso groß ist, wie 
+
+
+die Energie der Lage einer „ponderabeln“ Masse von der Größe —,. 
+c 
+
+
+Der im $ 11 abgeleitete Satz, daß einer Energiemenge E eine 
+
+
+Y 
+
+
+E : ae ee t 
+Masse von der Größe -, zukomme, gilt also, falls die im $ 17 einge- 
+c 
+
+
+führte Voraussetzung zutriftt, nicht nur für die träge, sondern auch für 
+die gravitierende Masse. 
+(Eingegangen 4. Dezember 1907.) 
+

@@ -170,6 +170,11 @@
     - 数理基础：消息传递/传播-采样-池化流水线、谱域（Laplacian 特征分解、ChebNet、GCN 一阶近似）与空间域（GraphSAGE、GAT、MPNN）、GAE/VGAE、时空 GNN、1-WL 表达力上限与过平滑
     - 为什么精读：GNN 分类体系的地基综述——直接支撑 MeshGraphNet/物理网格学习（不规则网格→图、AMR 层次图、conservative transfer），并与 Geometric DL 等变、NTK 谱、DEQ 不动点传播衔接。关联：Geometric DL、Graph Kernel Network、DEQ、NTK、AMReX/BoxLib
 
+38. **On the Relativity Principle and the Conclusions Drawn from It (Einstein 1907)** — relativity
+    - 文件：[`relativity/on-the-relativity-principle-and-the-conclusions-drawn-from-it.md`](relativity/on-the-relativity-principle-and-the-conclusions-drawn-from-it.md)
+    - 数理基础：洛伦兹变换与 SR 系统化（收缩/膨胀/速度叠加/多普勒/纵横质量）、加速系时间 σ=τ(1+ax'/c²)、等效原理 Φ=ax'、引力红移 Δν/ν=-GM/(c²r)、能量引力质量 E/c²
+    - 为什么精读：从 SR 通往 GR 的过渡枢纽——等效原理、引力红移、能量有重量的原始出处；与库内 Einstein 1905 篇直接衔接，为相对论协变性建模知识链补上关键一环。关联：Einstein 1905、SR 流体 Hamilton 原理、Einstein 方程几何推导
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
