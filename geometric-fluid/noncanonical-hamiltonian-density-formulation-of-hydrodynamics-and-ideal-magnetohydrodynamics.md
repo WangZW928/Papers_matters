@@ -6,7 +6,7 @@
 **期刊：** Physical Review Letters 45(10): 790-794, 1980（含 Errata: PRL 48: 569, 1982）
 **DOI：** [https://doi.org/10.1103/PhysRevLett.45.790](https://doi.org/10.1103/PhysRevLett.45.790)
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓ | ⑦提交 ⏳
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓ | ⑦提交 ✓
 
 ---
 
