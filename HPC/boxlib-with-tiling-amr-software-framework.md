@@ -3,9 +3,9 @@
 **作者：** Weiqun Zhang, Ann Almgren, Marcus Day, Tan Nguyen, John Shalf, Didem Unat
 **期刊：** SIAM Journal on Scientific Computing, 2016
 **arXiv：** [https://arxiv.org/abs/1604.03570](https://arxiv.org/abs/1604.03570)
-**DOI：** [https://doi.org/10.48550/arXiv.1604.03570](https://doi.org/10.48550/arXiv.1604.03570)
+**arXiv DOI：** [https://doi.org/10.48550/arXiv.1604.03570](https://doi.org/10.48550/arXiv.1604.03570)
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review △(部分完成) | ⑦提交 ⏳
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓ | ⑦提交 ⏳
 
 ---
 
@@ -31,7 +31,7 @@
 - **MPI + OpenMP 混合并行：** tiles 作为 OpenMP 线程的工作单元
 
 ### 3. 主要结论是什么？
-通过在 BoxLib 框架层面嵌入 tiling 支持，应用代码无需修改即可在多核架构上获得显著的性能提升，为后续 AMReX 的 GPU 性能可移植策略奠定了基础。
+通过在 BoxLib 框架层面嵌入 tiling 支持，应用代码无需修改即可在多核架构上获得显著的性能提升。原文的 NUMA-aware 路径（TiDA 库）是 future work；GPU performance portability 是 AMReX 后续发展，并非本文直接结论。
 
 ---
 
@@ -39,11 +39,13 @@
 Doctor 指定精读
 
 ### 与 AMReX 论文的关系
-BoxLib with Tiling (2016) 是 AMReX (2021) 的直接前身，作者高度重叠（Weiqun Zhang, Ann Almgren 等）。本论文的 tiling 机制和 NUMA-aware 策略直接演化为 AMReX 中的 `MFIter` + tiling 框架和 GPU 性能可移植抽象层。两篇论文构成 BoxLib → AMReX 的演化脉络。
+BoxLib with Tiling (2016) 是 AMReX (2021) 的直接前身，作者高度重叠（Weiqun Zhang, Ann Almgren 等）。本论文的 tiling 机制和 iterator-centered execution 被 AMReX 的 `MFIter` + tiling 框架延续（作者高度重叠）；GPU 后端是 AMReX 的后续发展。两篇论文构成 BoxLib → AMReX 的演化脉络。
 
 ---
 
 ## 公式与代码梳理
+
+> ⚠️ 说明：原文对性能收益主要是定性表述（如 "Tiling reduces the working set size so that the working set of a thread can fit into cache"）。下文各节中的 cache/TLB/NUMA/memory-traffic 公式（含 $T_{\text{core}}$、$T_{\text{data}}$ 等记号）是基于原文机制的性能模型化补充与推导假设，并非论文原公式；引用时请以原文定性结论为准。
 
 ## 第一节：公式推导与算法原理
 
@@ -157,7 +159,7 @@ $$
 b\,n_c\,(m+n_{\mathrm{tmp}})\prod_d(\tau_d+2s)\le C_{\mathrm{eff}}.
 $$
 
-论文热方程实验使用 $128\times4\times4$，这体现了结构网格 stencil 中常见的选择：保留 $x$ 方向连续长循环以利于内存连续访问和向量化，在 $y,z$ 方向切小以缩小 cache footprint。
+论文热方程（heat）实验使用了 $128\times4\times4$ 的 tile size（表 1 中该 benchmark 的选择，非通用默认值）。可解释为：保留 $x$ 方向连续长循环以利于内存连续访问和向量化，在 $y,z$ 方向切小以缩小 cache footprint。$MFIter$ 支持运行时默认与显式数组两种 tile size 指定方式。
 
 ### 3. cache、TLB 与 NUMA 性能模型
 
@@ -288,7 +290,7 @@ $$
 \{ \mathrm{FArrayBox}(B_i^\ell)\}_{i=1}^{N_\ell}.
 $$
 
-每个 MPI rank 只拥有部分 `FArrayBox`，但每个 rank 保存所有 grid 的 metadata，以便计算通信关系和 coarse-fine 交互。
+每个 MPI rank 只拥有部分 `FArrayBox`，而框架维护 AMR metadata（grid 层次、box 拓扑），用于计算通信关系、box-box intersection 与 coarse-fine 交互（本文未给出各 rank 是否全量持有 metadata 的实现细节，此句为框架层常识性描述）。
 
 tiling 主要嵌入 `MFIter`。未 tiling 时：
 
@@ -312,7 +314,7 @@ for (MFIter mfi(mf, true); mfi.isValid(); ++mfi) {
 
 这说明 BoxLib 的设计选择是把 tiling 放在 iterator 层，而不是侵入每个物理 kernel。`FArrayBox` 不变，kernel 数据指针不变，只有工作 Box 改变。
 
-`growntilebox(nghost)` 用于 stencil 需要 ghost 区域时返回扩展 tile。它的关键语义不是保证所有 grown boxes 互不重叠，而是在 tile 内部边界处避免不必要扩展、在 grid 边界处提供所需 ghost/邻域访问；相邻 grown tile 仍可能因 stencil halo 而重叠。因此并行 kernel 应把写入限制在 `tilebox()` 对应的唯一覆盖区域，或对需要写 grown 区域的算法显式处理同步和归约。`nodaltilebox(direction)` 则为有限体积 flux 计算提供 face-type tile。
+`growntilebox(nghost)` 用于 stencil 需要 ghost 区域时返回扩展 tile。原文明确其语义为：**只在 grid 边界处扩展 ghost cells，因此同一 grid 产生的 grown tile boxes 仍互不重叠**（"growntilebox returns a grown tile box that includes ghost cells at grid boundaries only; therefore the returned boxes originating from the same grid are still non-overlapping"）。并行 kernel 可安全地把写入限制在 `tilebox()` 对应的唯一覆盖区域。`nodaltilebox(direction)` 则为有限体积 flux 计算提供 face-type tile。
 
 ### 5. AMR time-stepping / subcycling 与 tiling
 
@@ -471,7 +473,11 @@ const Box& tbox = mfi.tilebox();
 
 `FArrayBox& fab = mf[mfi]` 和 `double* a = fab.dataPtr()` 都不变。也就是说，tiling 对应用开发者暴露为“更小的 work region”，而不是新的数组类型。
 
-### 3. MPI + OpenMP 混合并行模型
+### 3. TiDA / regional tiling：future work 路径
+
+> ⚠️ 原文明确：TiDA 库集成与 regional tiling 属 future work（"Future work ... includes integrating the TiDA library"），论文仅给出 SMC 的 prototype 实现结果，并非当前 BoxLib 已完整集成的机制。
+
+### 4. MPI + OpenMP 混合并行模型
 
 BoxLib 的分布式并行仍然由 MPI 管理：
 
@@ -668,7 +674,7 @@ $$
 
 最重要的延续是 **iterator-centered execution abstraction**。BoxLib 没有让每个应用手写 tile loop，AMReX 也没有让每个应用手写 CUDA launch 配置。框架控制遍历与后端，应用控制物理公式。
 
-第二个延续是 **metadata 与数据分离**。`BoxArray`、`DistributionMapping` 等 metadata 可以全局复制并缓存；实际场数据分布式存储。这对 MPI 通信、ghost fill、负载均衡、GPU kernel packing 都是基础。
+第二个延续是 **metadata 与数据分离**。`BoxArray`、`DistributionMapping` 等 metadata 与场数据分离管理（框架维护通信关系、box intersection 和 coarse-fine 操作所需信息），实际场数据分布式存储。这对 MPI 通信、ghost fill、负载均衡、GPU kernel packing 都是基础。
 
 第三个延续是 **局部 kernel 接口稳定**。BoxLib 中 Fortran kernel 接收 lo/hi 和数组指针；AMReX 中 lambda 接收 $(i,j,k)$ 和 `Array4` 视图。二者都避免把 AMR 全局复杂性暴露给局部 physics kernel。
 
@@ -831,15 +837,21 @@ $$
 
 
 ## Review Questions
-## 公式与代码梳理：Kimi Review 注释
 
-Kimi Code review 进行中但未完成全部任务。已修正：
-1.  重叠语义更正
-2. Cache/TLB 性能模型补充假设说明
-3. NUMA 内存时间公式补充带宽模型
-4. OpenMP/MFIter 代码块改写
+1. BoxLib logical tiling 的 tile size 选择能否被统一到 Roofline/ECM 模型中：如何同时刻画 cache 工作集、TLB/page fault、halo 重复访问、kernel launch/parallel-region overhead，并把 CPU `MFIter` tiling、AMReX `TilingIfNotGPU()`、WarpX GPU kernel 粒度放进同一个可调优框架？
+2. TiDA regional tiling 提出的 region / data-placement / compute-placement 抽象，如何推广到 AMReX/WarpX 的异构内存体系：CPU NUMA、GPU HBM、pinned/managed memory、GPU-aware MPI buffer 和 ghost exchange 是否可以由统一 locality policy 管理，并用哪些 counter 验证收益？
+3. BoxLib tile-level static-like scheduling 与 fine-grained dynamic scheduling 的边界在哪里：面对 stencil、ghost fill、chemistry/VODE、particles、EB cut-cell、AMR coarse-grid multigrid 等负载差异，框架应如何在 tile locality、负载均衡和通信/packing 开销之间做动态决策？
 
-**剩余工作：** Review Questions 未追加，格式差异检查未执行。
+## Kimi Code Review 结论（2026-08-04）
 
-## Review Questions
-⏳ 待补充 Kimi Code review
+- 核心机制确认无误：`MFIter` logical tiling、tiling 不改变 `FArrayBox` 数据布局、OpenMP tile iteration 类似 static scheduling、thread-private memory arenas、fine-grained dynamic scheduling 适合 VODE 等不均衡负载、heat/ghost-fill/SMC 性能数字、SMC 8th-order stencil 跨 9 cells、regional tiling 用 ghost-cell exchange amortize NUMA latency，均与原文主旨一致。
+- 已修正 8 处：
+  1. DOI 字段实为 arXiv DOI（10.48550/arXiv.1604.03570），标签改为"arXiv DOI"（期刊 DOI 需另行补充）；
+  2. "直接演化为 GPU 性能可移植抽象层 / 为 AMReX GPU 策略奠定基础"弱化：原文只提 NUMA-aware TiDA 路径（future work），GPU backend 是 AMReX 后续发展，非本文直接结论；
+  3. 公式与性能模型节开头加标注：cache/TLB/NUMA/memory-traffic 公式为读者模型化补充与推导假设，非论文原公式（原文为定性表述）；
+  4. $128\times4\times4$ 弱化为 heat benchmark 特例选择（表 1），非通用规律或默认值；
+  5. "每个 rank 保存所有 grid metadata / BoxArray 全局复制缓存"弱化为框架常识性描述，注明本文未给实现细节；
+  6. `growntilebox` 语义按原文反转：只在 grid 边界扩展 ghost cells，同一 grid 产生的 grown tile boxes 仍互不重叠（原笔记误写"仍可能重叠"）；
+  7. TiDA / regional tiling 明确标注为 future work 路径与 SMC prototype 结果，非当前完整集成机制；
+  8. 清理末尾破损结构：删除重复 Review Questions 标题与残留"进行中"注释。
+- Markdown/语法：dollar 定界符全部闭合（偶数个），未发现无关的 ECM 记号（如 T_ECM）混入本文档。
