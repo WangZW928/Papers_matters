@@ -7,7 +7,7 @@
 **DOI：** 无（1907 年期刊文章，无 DOI/arXiv）
 **原文依据：** 德文原文扫描件（Internet Archive: jahrbuch-der-radioaktivitat-und-elektronik-4.1907, pp. 411-462；本库 `_full.txt` 为该扫描件的 OCR 文本）；英文参考 *The Collected Papers of Albert Einstein* Vol. 2（Beck 英译, Doc. 47）
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ✓
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓ | ⑦提交 ⏳
 
 ---
 
@@ -116,6 +116,8 @@ m_{\parallel}=\frac{m_0}{(1-v^2/c^2)^{3/2}}=\gamma^3m_0,
 m_{\perp}=\frac{m_0}{\sqrt{1-v^2/c^2}}=\gamma m_0.
 \]
 
+> 注：纵/横质量是按原文力定义 $\mathbf F=d\mathbf p/dt$ 得到的历史记号；现代表述中静质量 $m_0$ 不变，速度依赖写入动量 $\mathbf p=\gamma m_0\mathbf v$，不再引入方向依赖的“质量”。
+
 更重要的是能量推导。由功-动能关系
 
 \[
@@ -169,6 +171,8 @@ E_0=m_0c^2,
 \cos\theta'=\frac{\cos\theta-v/c}{1-(v/c)\cos\theta}.
 \]
 
+（以上光学公式按现代常用记号重写，与原文记号体系等价。）
+
 因此“光源位置”的观测方向不是几何绝对量，而依赖观察者运动状态。
 
 **加速系中的时间：§17-§18 的关键公式**
@@ -200,6 +204,8 @@ Einstein 接着考虑均匀加速参考系 $K'$。为避免与洛伦兹因子混
 \[
 \frac{d\tau_{\text{local}}}{dt}=1+\frac{\Phi}{c^2}.
 \]
+
+> 注：这是 1907 年的启发式弱场表述，仅在一阶近似下成立；现代 GR 中静态时空的精确红移公式为 $d\tau=\sqrt{1+2\Phi/c^2}\,dt$（弱场极限回到上式），两者不应混写。
 
 势越高，钟越快；势越低，钟越慢。这是广义相对论时间观的胚胎。
 
@@ -257,6 +263,8 @@ m_{\text{gravitational}}=\frac{E}{c^2}.
 U=\frac{E}{c^2}\Phi.
 \]
 
+> 注：$U=(E/c^2)\Phi$ 是对“能量有重量”的一阶弱场表达，不是一般相对论中完整的物质-引力耦合势能。
+
 这一步非常关键：1905 的 $E=mc^2$ 首先说明能量有惯性；1907 本文进一步说明能量有重量。它把能量、惯性、引力三者连到同一条线上。
 
 **与 1905、1911、1915 的位置**
@@ -264,6 +272,8 @@ U=\frac{E}{c^2}\Phi.
 本文前半部分是对 1905 《Zur Elektrodynamik bewegter Körper》的系统化重述：洛伦兹变换、同时性、长度收缩、时间膨胀、速度叠加、多普勒、光行差、电子纵/横质量都属于 SR 框架内的整理与推广。真正的新结果集中在第五部分：等效原理、引力时间膨胀、引力红移、能量的引力质量。1911 年《论引力对光传播的影响》会更明确地发展光线弯曲和红移；1915 年场方程则把这里的启发式“均匀引力场/加速系等价”升级为一般协变的时空几何动力学。
 
 ### 2. 算法/代码流程梳理
+
+> 注：以下为现代对应计算流程（含弱场/GR/GPS 工程化表述），不属于原文显式算法。
 
 本文无代码，但可以把它的推理转成三个可计算流程。
 
@@ -328,8 +338,6 @@ GPS 量级上，引力项约使卫星钟每天快 $45\ \mu s$，运动学项约�
 
 ## Review Questions
 
-> ⚠️ **Kimi review 未完成（上游故障）**：2026-08-04 23:57 起 zxcs99.cn 全模型不可用，重试仍失败；以下 3 问由 JARVIS 按 skill 要求自行补充（2026-08-04）。
-
-1. 等效原理的局部性：1907 年 Einstein 用“均匀加速系 ≡ 均匀引力场”的全局等价，而现代 GR 只在局部（测地线附近、潮汐项可忽略时）成立。若把等效原理写成可计算的几何语句（局部自由落体系中引力消失、测地线方程、黎曼曲率表征潮汐），从 1907 的启发式版本到现代版本的差距到底在哪一步？对库内“从变分原理推导 Einstein 方程”的几何论文有何承接意义？
-2. 引力红移的量级与验证：1907 年估计太阳表面 Δν/ν ~ 2×10⁻⁶，但太阳表面的对流/多普勒展宽远大于此（历史上长期无法验证）。现代验证（Pound-Rebka 地面实验 Δν/ν ~ 10⁻¹⁵、GPS 每天 ~38 μs 修正、光谱学）各依赖什么技术？对“弱场近似 + 一阶展开”的适用范围（如中子星表面 ~0.1 量级）应如何修正？
-3. “能量有重量”与库内物理建模主线的接口：E/c² 的引力质量在黑洞吸积、致密星物质（能量密度主导引力源）中成为核心；现代 ML/物理代理模型若要嵌入这类相对论效应（如洛伦兹不变损失、相对论流体模拟），1907 年这套“先建等效、再推广”的推理链对设计守恒/协变约束损失有何方法论启发（对照库内 HNN/LPNets 的结构保持思路）？
+1. 1907 文中“均匀加速系 ≡ 均匀引力场”的推理，和库内 [Einstein 1905](../relativity/on-the-electrodynamics-of-moving-bodies.md) 的惯性系协变性、以及 [因果作用原理推导 Einstein 方程](../differential-geometry/a-geometric-derivation-of-the-einstein-equations-from-the-causal-action-principle.md) 的局部几何化之间，分别在哪一步从“物理直觉”变成了“可计算结构”？
+2. 这篇笔记把引力红移、钟慢、能量有重量放在一起讲；如果把它们统一成一个弱场近似框架，哪些公式应明确标注为 1907 的启发式结果，哪些应标注为后来的 GR/弱场极限？
+3. 与 [Hamiltonian description of the ideal ﬂuid](../geometric-fluid/hamiltonian-description-of-the-ideal-ﬂuid.md) 和 [Hamilton principle for the vortex flow of an ideal fluid in special relativity](../geometric-fluid/hamilton-principle-for-the-vortex-flow-of-an-ideal-fluid-in-special-relativity.md) 对照时，1907 这篇“先建等效、再推广”的方法，对构造协变的守恒量或结构保持约束最有启发的一点是什么？

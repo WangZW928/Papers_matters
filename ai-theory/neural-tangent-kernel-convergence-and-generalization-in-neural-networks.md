@@ -7,7 +7,7 @@
 **DOI：** 无（会议论文；arXiv 版为正式文本）
 **arXiv：** [https://arxiv.org/abs/1806.07572](https://arxiv.org/abs/1806.07572)（v4, 2020-02-10）
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ✓
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓ | ⑦提交 ⏳
 
 ---
 
@@ -172,7 +172,7 @@ C(f)=\frac{1}{2}\|f-f^\ast\|_{p_{\rm in}}^2,
 f_t=f^\ast+e^{-t\Pi}(f_0-f^\ast),
 \]
 
-其中 $\Pi(f)=\Phi_K(\langle f,\cdot\rangle_{p_{\rm in}})$。在训练集 Gram 矩阵记号下，可粗略写成
+其中 $\Pi(f)=\Phi_K(\langle f,\cdot\rangle_{p_{\rm in}})$。在训练集 Gram 矩阵记号下（有限维训练集表示、线性化/核化设定），可写成
 
 \[
 f_t(X)=y+e^{-\eta \Theta t}(f_0(X)-y),
@@ -186,7 +186,9 @@ f_t(X)-y
 Ue^{-\eta\Lambda t}U^\top(f_0(X)-y).
 \]
 
-所以特征值 $\lambda_i$ 大的方向以 $e^{-\eta\lambda_i t}$ 快速衰减，特征值小的方向慢。这就是本文谱偏置结论的核心：训练优先拟合 NTK kernel PCA 的大主成分，通常对应低频、平滑、数据主变化方向；高频或噪声方向落在小特征值子空间，收敛慢，也为 early stopping 提供理论动机。
+> 注：上述含 $\Theta$ 的等式仅在无限宽极限（核在训练中恒定）下严格成立；有限宽时 $\Theta_t$ 会漂移，等式只是近似。
+
+所以特征值 $\lambda_i$ 大的方向以 $e^{-\eta\lambda_i t}$ 快速衰减，特征值小的方向慢。这就是本文谱偏置结论的核心：训练优先拟合 NTK kernel PCA 的大主成分；“低频、平滑”是对该谱偏置的直观类比（在平移不变的平滑核下成立），并非普适定理；高频或噪声方向落在小特征值子空间，收敛慢，也为 early stopping 提供理论动机。
 
 正定性保证收敛。若数据支撑在球面 $S^{d-1}$，激活 $\sigma$ 是非多项式 Lipschitz 函数，则 $L\ge 2$ 时 $\Theta_\infty^{(L)}$ 在球面上正定。证明思路是：先把 $\Theta^{(L+1)}=\dot\Sigma^{(L+1)}\Theta^{(L)}+\Sigma^{(L+1)}$ 分解为正半定项加 NNGP 项；再证明 $\Sigma^{(2)}$ 在球面上正定；最后利用 Hermite 展开与 Schoenberg 型定理。若
 
@@ -280,6 +282,8 @@ J_i=\nabla_\theta f_\theta(x_i),
 
 ### 3. 与库内相关论文的关联
 
+> 注：以下关联均为 NTK 视角下的诊断性解读，用于理解训练动力学，并非姊妹论文自身的结论。
+
 - `ai-for-physics/physics-informed-neural-networks-a-deep-learning-framework-for-solving-forward-a.md`：PINN 的训练失败可用 NTK 谱解释。多尺度 PDE residual、边界条件和观测数据对应不同核块；若 residual 块小特征值占主导，网络会先拟合低频/数据项，迟迟不能满足 PDE。NTK 加权方案正是沿这个方向修正损失尺度。
 
 - `ai-for-physics/nsfnets-navier-stokes-flow-nets-physics-informed-neural-networks-for-the-incompr.md`：NSFnets 面向不可压 Navier-Stokes，压力、速度、连续性约束与动量残差共同训练。NTK 视角可解释高 Reynolds 数、涡结构、边界层下的慢收敛：高频流动结构通常落在小特征值方向。
@@ -294,8 +298,6 @@ J_i=\nabla_\theta f_\theta(x_i),
 
 ## Review Questions
 
-> ⚠️ **Kimi review 未完成（上游故障）**：2026-08-04 23:57 起 zxcs99.cn 全模型不可用，重试仍失败；以下 3 问由 JARVIS 按 skill 要求自行补充（2026-08-04）。
-
-1. 对 PDE 残差型损失（PINN），NTK 的谱分层如何随解的多尺度性变化？数据项、边界项、残差项对应的核块特征值尺度差异能否定量刻画（如 Wang-Yu-Perdikaris 自适应加权是否等价于核块特征值重标定），并据此给出收敛率的可验证预测？
-2. 结构保持网络（HNN/LPNets）的 NTK 谱有何特征？把 Hamiltonian/Poisson 结构作为架构约束后，切向特征 $\nabla_\theta f$ 被限制在守恒子空间，NTK 的特征值分布与无约束 MLP 有何定量差异，是否会牺牲某些方向的可学习性？
-3. 谱偏置对物理 surrogate 的直接影响：若训练数据来自多尺度流场（宽能量谱），NTK 优先拟合大尺度低频结构，小尺度/耗散结构收敛慢——这是否解释了 neural operator/surrogate 在湍流小尺度上的系统性误差？early stopping 与能量谱截断（如截到 Kolmogorov 尺度）之间是否存在可操作的对偶关系？
+1. 这篇 NTK 笔记里把“训练动力学 → 固定核梯度流 → 谱偏置”串成一条主线；如果把同样的 NTK 视角放到 PINN 上，哪些慢收敛现象是核谱本身导致的，哪些其实来自损失构造或采样策略？能否给出可验证的区分标准？
+2. HNN / LPNets 通过结构约束缩小可学习函数空间；从 NTK 角度看，这种约束是主要在“改核的谱”，还是在“改可达表示子空间”？二者对守恒量学习和优化速度的影响是否能分开测量？
+3. 如果把 NTK 的谱偏置类比到几何深度学习或等变网络，群对称性到底是在提升泛化，还是在重排特征值分布、改变早停偏好？这和普通 MLP 的 kernel PCA 解释相比，哪里是同构的，哪里不是？

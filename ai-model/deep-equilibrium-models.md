@@ -8,7 +8,7 @@
 **arXiv：** [https://arxiv.org/abs/1909.01377](https://arxiv.org/abs/1909.01377)（v2, 2019-10-28）
 **代码：** https://github.com/locuslab/deq
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ✓
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓ | ⑦提交 ⏳
 
 ---
 
@@ -78,7 +78,7 @@ g_\theta(z^\star;x)=0 .
 z_{k+1}=f_\theta(z_k;x),
 \]
 
-它相当于用 $g(z)=f(z)-z$ 做最简单的松弛迭代。若 $f_\theta$ 是压缩映射，局部 Jacobian $J_f=\partial f_\theta/\partial z$ 的谱半径满足 $\rho(J_f)<1$，该迭代收敛。但深度网络中的 $f_\theta$ 通常高维、非线性强，朴素迭代可能振荡或收敛很慢。论文因此把前向传播改成 black-box root finding：
+它相当于用 $g(z)=f(z)-z$ 做最简单的松弛迭代。其收敛条件分两层：全局上，若 $f_\theta$ 是压缩映射（Lipschitz 常数 $c<1$），则迭代收敛到唯一不动点；局部上，常见判据是 Jacobian $J_f=\partial f_\theta/\partial z$ 在不动点处的谱半径满足 $\rho(J_f)<1$。但深度网络中的 $f_\theta$ 通常高维、非线性强，朴素迭代可能振荡或收敛很慢。论文因此把前向传播改成 black-box root finding：
 
 \[
 z^\star=\operatorname{RootFind}(g_\theta;x).
@@ -230,13 +230,13 @@ J_g^{-1}
 
 ### 4. Jacobian-free 反向计算
 
-实际反向不显式构造 $J_f$ 或 $J_g$。论文把核心项
+实际反向不显式构造 $J_f$ 或 $J_g$。论文把核心项（行向量记号）
 
 \[
--\frac{\partial \ell}{\partial z^\star}J_g^{-1}
+u^\top=-rac{\partial \ell}{\partial z^\star}J_g^{-1}
 \]
 
-改写为线性系统。设列向量 $u$ 满足
+改写为线性系统（转置成列向量形式）。设列向量 $u$ 满足
 
 \[
 J_g(z^\star)^\top u
@@ -343,7 +343,7 @@ DEQ 的数学理想条件是 $f_\theta$ 在相关区域内为 contraction：
 \qquad 0<c<1 .
 \]
 
-Banach fixed-point theorem 保证不动点存在唯一，且朴素迭代收敛。局部线性化下，对应条件是
+Banach fixed-point theorem 保证不动点存在唯一，且朴素迭代收敛（这是全局压缩映射条件下的结论）。局部线性化下，对应的收敛判据是
 
 \[
 \rho(J_f(z^\star))<1 .
@@ -418,7 +418,7 @@ J_g(z_k)\Delta z_k=-g(z_k),
 (I-J_f^\top)u=v
 \]
 
-也正是一个线性 Krylov 子问题。若用 GMRES/CG-like 方法求它，DEQ 的 backward 就非常接近 Newton-Krylov 中的线性求解阶段。预条件在这里同样关键：好的 $B_0$、归一化、Jacobian regularization、历史低秩近似，都可理解为降低线性系统条件数。
+也正是一个线性 Krylov 子问题。若用 GMRES 等 Krylov 方法求它（CG 仅适用于对称正定特例，而 DEQ 反向线性系统一般不满足），DEQ 的 backward 就非常接近 Newton-Krylov 中的线性求解阶段。预条件在这里同样关键：好的 $B_0$、归一化、Jacobian regularization、历史低秩近似，都可理解为降低线性系统条件数。
 
 从 PDE 角度看，DEQ 像一个稳态求解器。显式深层网络对应时间步进：
 
@@ -452,8 +452,6 @@ DEQ 直接求稳态：
 
 ## Review Questions
 
-> ⚠️ **Kimi review 未完成（上游故障）**：2026-08-04 23:57 起 zxcs99.cn 全模型不可用，重试仍失败；以下 3 问由 JARVIS 按 skill 要求自行补充（2026-08-04）。
-
-1. 把 DEQ 用于物理仿真（隐式时间步进/稳态 PDE）时，$(I-J_f)^{-1}$ 的谱条件与物理刚性直接相关：高 Reynolds 数/快速化学反应等刚性问题的 $J_f$ 谱半径接近或超过 1，Broyden/Neumann 方法的收敛与梯度稳定性如何保障？能否借鉴 JFNK 的预条件（如 multigrid、物理算子分裂）改善隐式层的条件数？
-2. DEQ 的隐式微分与可微仿真中的伴随法（adjoint method）在数学上是同一对象（都解伴随线性系统），但前者用 autograd VJP、后者常用手写伴随方程——在“学习 PDE 稳态解”的框架下（如 equilibrium 作为隐式层的 Neural Operator/物理网络），哪种梯度估计在噪声/不精确求解下更鲁棒？
-3. 对库内 PINN/物理约束网络：能否把 PDE 求解器（如稳态 NS 的 Newton-Krylov 迭代）包装成 DEQ 式隐式层并端到端学习边界条件/参数？其可微性与收敛保证（不动点唯一性、谱半径约束）对训练稳定性意味着什么，与直接 PINN 残差训练相比优劣如何？
+1. DEQ 和 JFNK/GMRES 都在解 $g(z)=0$，但前者前向用 Broyden、反向用隐式线性系统。对库内的稳态 PDE 或隐式时间步进问题，哪一类预条件最可能同时改善前向收敛与反向梯度稳定性？
+2. 这篇笔记把 $\rho(J_f)<1$、Banach contraction 和 Neumann 展开都串起来了；如果把它放到更强非线性或近临界谱半径的模型里，应该优先保留哪条数学条件作为训练可行性的判据？
+3. 结合 AMReX、PINN 和 GNN 这三条主线，DEQ 式隐式层更适合做“求解器组件”还是“可学习闭合项”？两种定位对内存、稳定性和可验证性有什么不同？

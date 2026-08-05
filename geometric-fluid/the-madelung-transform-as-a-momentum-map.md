@@ -7,7 +7,7 @@
 **DOI：** [https://doi.org/10.3934/jgm.2017006](https://doi.org/10.3934/jgm.2017006)
 **arXiv：** [https://arxiv.org/abs/1512.04611](https://arxiv.org/abs/1512.04611)（v2, 2016, math.SG / math-ph；本文库以 arXiv v2 与 JGM 版为准）
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓(JARVIS 补) | ⑦提交 ✓
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓ | ⑥review ✓ | ⑦提交 ⏳
 
 ---
 
@@ -31,7 +31,7 @@ Madelung 变换把非线性 Schrödinger 方程与称为量子流体动力学系
 - 构造半直积群 $G=\mathrm{Diff}(\mathbb{R}^n)\ltimes C^\infty(\mathbb{R}^n)$ 在 $\Psi$ 上的作用（微分同胚搬动波函数 + 相位函数作 $U(1)$ 型相乘）。
 - 计算该作用的无穷小生成元与动量映射 $J:\Psi\to\mathfrak{g}^*$，证明 $J(\psi)=(m,\rho)$，其中 $\rho=|\psi|^2$ 是密度、$m=\operatorname{Im}(\bar\psi\nabla\psi)$ 是动量密度——正是可压流体的两个场变量。
 - 利用"动量映射是 Poisson 映射"的通用定理：$\Psi$ 上辛结构经 $J$ 落到 $\mathfrak{g}^*$ 上的 Lie-Poisson 括号（半直积约化，Marsden-Weinstein 1984），即流体 Poisson 括号。由此 NLS 的 Hamiltonian 流自动映为量子流体动力学系统的流。
-- 观察 $\psi=\sqrt\rho\,e^{i\varphi}$ 给出 $m=\rho\nabla\varphi$，即密度 + 相位构成一组 Clebsch 变量。
+- 观察 $\psi=\sqrt\rho\,e^{i\varphi}$ 给出 $\mu=\rho\nabla\varphi$，即密度 + 相位构成一组 Clebsch 变量。
 
 ### 3. 主要结论是什么？
 Madelung 变换是半直积群 $G=\mathrm{Diff}(\mathbb{R}^n)\ltimes C^\infty(\mathbb{R}^n)$ 作用在波函数空间上的动量映射，因而是 Poisson 映射：NLS（含量子势能项的 Schrödinger 流）与可压 Euler 型量子流体动力学方程之间的对应不是巧合，而是辛约化的必然结果；同时 Madelung 变换给出流体动力学的 Clebsch 变量实现。这把"量子-经典流体对应"安放在动量映射/约化这一几何力学主干上，为后续 Khesin-Misiołek-Modin 的 Fisher-Rao/最优传输观点提供了出发点。
@@ -150,7 +150,7 @@ M(\psi)
 可压流体的构型群取半直积
 
 \[
-S=\operatorname{Diff}(\mathbb R^n)\ltimes H^\infty(\mathbb R^n).
+S=\operatorname{Diff}(\mathbb R^n)\ltimes H^\infty(\mathbb R^n;\mathbb R).
 \]
 
 其在波函数上的作用是
@@ -178,7 +178,7 @@ S=\operatorname{Diff}(\mathbb R^n)\ltimes H^\infty(\mathbb R^n).
 半直积 Lie 代数
 
 \[
-\mathfrak s=\operatorname{vect}(\mathbb R^n)\ltimes H^\infty(\mathbb R^n)
+\mathfrak s=\operatorname{vect}(\mathbb R^n)\ltimes H^\infty(\mathbb R^n;\mathbb R)
 \]
 
 的括号为
@@ -225,9 +225,10 @@ S=\operatorname{Diff}(\mathbb R^n)\ltimes H^\infty(\mathbb R^n).
 动量映射定义为：若 Lie 代数作用 $\xi\mapsto\xi_P$ 在 Poisson 流形 $P$ 上 Hamiltonian 化，则 $J:P\to\mathfrak g^*$ 满足
 
 \[
-X_{J(\xi)}=\xi_P,
+X_{J_\xi}=\xi_P,
 \qquad
-J(\xi)(p)=\langle J(p),\xi\rangle.
+J_\xi(p)=\langle J(p),\xi\rangle
+\qquad(\forall\,\xi\in\mathfrak g).
 \]
 
 Theorem 3.5 证明 $M$ 正是该作用的 momentum map。对 $\xi=(v,\alpha)$，
@@ -399,6 +400,8 @@ P(\rho)=\frac{\Delta\sqrt\rho}{2\sqrt\rho}
 
 ### 2. 算法/代码流程推演
 
+> 注：以下推演是笔记作者的计算性改写，不是论文算法，仅供理解与实现参考。
+
 本文没有代码，是纯理论几何力学论文。但若把结构转成可计算流程，可从离散波函数 $\psi_j$ 出发。给定网格点 $x_j$ 上的复数采样，先用谱方法或高阶有限差分计算
 
 \[
@@ -498,7 +501,7 @@ H_{\mathrm{NLS}}\approx H_{\mathrm{CF}}\circ M.
 
 `geometric-fluid/schrödingers-smoke.md`：Schrödinger's Smoke 用 Schrödinger/Gross-Pitaevskii 演化模拟不可压缩涡动力学。本文处理的是可压 QHD，但共同主线都是“波函数表示流体”。本文补上的正是 momentum map 解释：波函数不是数值技巧，而是流体 Poisson 几何的辛实现。
 
-`geometric-fluid/quantum-spin-representation-for-the-navier-stokes-equation.md`：库内存在该文件，但当前摘要内容似乎偏量子自旋/磁子平台，与题名的 Navier-Stokes 表述不完全一致。若后续校正该条目，它可接入“量子变量编码经典流体”的方向；本文则提供 Madelung 型编码的标准几何样板。
+`geometric-fluid/quantum-spin-representation-for-the-navier-stokes-equation.md`（额外相关条目，非本次审查指定姊妹论文）：库内存在该文件，但当前摘要内容似乎偏量子自旋/磁子平台，与题名的 Navier-Stokes 表述不完全一致。若后续校正该条目，它可接入“量子变量编码经典流体”的方向；本文则提供 Madelung 型编码的标准几何样板。
 
 `ai-for-physics/hamiltonian-neural-networks.md` 与 `ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`：HNN 学习正则 Hamiltonian，LPNets 学习非正则 Lie-Poisson 系统。本文正好说明 NLS/QHD 有两种等价学习坐标：$\Psi$ 上用 HNN 型常辛结构，$\mathfrak s^*$ 上用 LPNets 型流体 Lie-Poisson 结构，中间由 Madelung momentum map 保持 Poisson 关系。
 
@@ -506,8 +509,6 @@ H_{\mathrm{NLS}}\approx H_{\mathrm{CF}}\circ M.
 
 ## Review Questions
 
-> ⚠️ **Kimi review 未完成（上游故障）**：2026-08-04 23:57 起 zxcs99.cn 全模型不可用（gpt-5.4-mini 返回 Service temporarily unavailable，gpt-5.4/gpt-5.6 返回 Upstream request failed），重试一次仍失败；以下 3 问由 JARVIS 按 skill 要求自行补充（2026-08-04）。
-
-1. 动量映射的离散版本如何保结构？对 NLS 采用保辛离散化（如 mid-point/变分积分器）推进 $\psi$ 后，再经 $M$ 得到的 $(\mu,\rho)$ 是否仍近似满足 QHD 的离散 Lie-Poisson 结构？离散梯度 $\nabla_h$ 的选择（如 staggered 网格上的 mimetic 算子）如何影响 $\int\rho\,dx$、$H_{\mathrm{NLS}}$ 与动量映射不变量 $\int(\rho\alpha+\mu\cdot v)\,dx$ 的守恒误差？
-2. $M$ 的像只覆盖 $\mu=\rho\nabla\tau$ 的 gradient subspace（势流）；涡量非零的流场（如库内 Schrödinger's Smoke 的量子涡、Inside Fluids 的涡线）必须借助相位奇点或扩展的 Clebsch 变量。量子涡的相位缺陷、circulation 量子化与 momentum map 的纤维结构（$U(1)$ 整体相位等价类）之间应如何建立对应，才能在波函数表象里忠实表示有旋流？
-3. 对结构保持学习（HNN/LPNets）而言，把 momentum map 作为硬约束（损失项强制 $\rho=|\psi|^2$、$\mu=\operatorname{Im}\bar\psi\nabla\psi$）与作为架构先验（直接在 $\Psi$ 上训练、经 $M$ 输出流体变量）相比，哪种更利于跨初值泛化与长期能量稳定性？量子压 $\Delta\sqrt\rho/(2\sqrt\rho)$ 的高阶导数在 PINN 型损失中会加剧谱偏置与收敛困难，能否借鉴库内 PINN/谱偏置文献（NTK 视角）给出缓解方案？
+1. 动量映射 $M(\psi)=(\operatorname{Im}\bar\psi\nabla\psi,\ |\psi|^2)$ 的离散实现如何同时保持 Poisson 映射性质与质量守恒？结合 `geometric-fluid/geometric-hydrodynamics-via-madelung-transform.md`，应如何选择离散梯度与网格变量布局，避免把 $\mu=\rho\nabla\tau$ 的势流约束数值上破坏掉？
+2. 若把 Madelung 结构用于保结构学习，`ai-for-physics/hamiltonian-neural-networks.md` 的正则 Hamiltonian 先验与 `ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md` 的非正则 Lie-Poisson 先验分别适合学习 $\Psi$ 还是 $\mathfrak{s}^*$？对量子压项 $\Delta\sqrt\rho/(2\sqrt\rho)$ 的高阶导数，哪种参数化更稳，为什么？
+3. 结合 `vortex-dynamics/inside-fluids-clebsch-maps-for-visualization-and-processing.md` 与 `geometric-fluid/schrödingers-smoke.md`，当流场出现涡量或相位奇点时，Madelung/Clebsch 表示应如何从势流扩展到带旋流的情形？这一扩展与半直积群的 momentum map 等变性还有什么对应关系？

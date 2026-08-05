@@ -32,18 +32,18 @@
 
 # Kimi Code Review 报告 — 2026-08-04（学习路线规划精读批次 #4/#23/#24/#26/#29）
 
-> ⚠️ **本批次 Kimi review 未完成（上游故障）**：2026-08-04 23:57 起 zxcs99.cn 全模型不可用（gpt-5.4-mini 返回 `Service temporarily unavailable`，gpt-5.4/gpt-5.6 返回 `Upstream request failed`），跨多轮探测持续至 00:45 仍未恢复；每篇重试 1 次仍失败。按 skill 失败预案，3 个深度问题由 JARVIS 自行补充并已在各文档注明；`$$...$$` 检查由 JARVIS 完成（5 篇均无 `$$`，display math 均为 `\[...\]`）。
+> ✅ **本批次 Kimi review 已于 2026-08-05 补跑完成**：2026-08-04 当晚因 zxcs99.cn 上游全模型故障（mini=Service temporarily unavailable，5.4/5.6=Upstream request failed）未完成，当时由 JARVIS 代补 3 问；2026-08-05 13:50 起按 Doctor 指示，模型切换至 gpt-5.4（mini 仍 502）后串行补跑 5 篇（每篇新会话，gpt-5.4 全程 200 正常），修正已全部落实到各 paper.md，警告块已删除，RQ 已替换为 Kimi 生成版本。
 
-| # | 论文 | 公式修复 | 中文化 | 问题数 | 备注 |
-|---|------|---------|--------|--------|------|
-| 1 | The Madelung Transform as a Momentum Map | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
-| 2 | Neural Tangent Kernel: Convergence and Generalization in Neural Networks | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
-| 3 | Deep Equilibrium Models | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
-| 4 | Graph Neural Networks: A Review of Methods and Applications | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
-| 5 | On the Relativity Principle and the Conclusions Drawn from It | 否（Codex 补充） | 是 | 3（JARVIS 补） | Kimi 上游故障；Review Questions 由 JARVIS 补充 |
+| # | 论文 | 修正数 | 问题数 | 备注 |
+|---|------|--------|--------|------|
+| 1 | The Madelung Transform as a Momentum Map | 6 | 3 | μ/m 混用统一、H^∞(R^n;R) 实值约定、J_ξ 标准记法、算法推演标注、量子自旋条目标注额外条目 |
+| 2 | Neural Tangent Kernel: Convergence and Generalization in Neural Networks | 3 | 3 | f_t 公式补无限宽适用条件、谱偏置低频类比降级、关联节标注诊断性解读；Kimi 关于 $$ 的格式报告经核实为误报未采纳 |
+| 3 | Deep Equilibrium Models | 4 | 3 | 反向核心项行列记号厘清、Banach/谱半径层次分离、CG 仅限对称正定特例、不动点收敛条件分层；JFNK 关联经核实有效保留 |
+| 4 | Graph Neural Networks: A Review of Methods and Applications | 1 | 3 | 物理网格建图节标注“方法扩展非原文”；learning-mesh 条目本已标注“库内尚无”，保留 |
+| 5 | On the Relativity Principle and the Conclusions Drawn from It | 5 | 3 | 纵/横质量历史记号注、光学公式现代记号注、等效原理弱场一阶注、U=(E/c²)Φ 弱场注、算法节现代流程注 |
 
-## 统一检查（JARVIS 代行）
+## 统一检查（2026-08-05 补跑）
 
-- 5 篇文档均包含 `## Review Questions`，每篇 3 个深度问题（JARVIS 补充，注明"Kimi review 未完成（上游故障）"）。
-- 5 篇目标文档均未发现 `$$...$$` display math；display math 均使用 `\[...\]`。
-- 数学公式、变量名、作者、DOI 和技术专有名词均按库内格式保留。
+- 5 篇文档警告块全部删除，`## Review Questions` 均为 Kimi 生成的 3 个新问题。
+- 5 篇目标文档均未发现 `$$...$$` display math；display math 均使用 `\[...\]`（Kimi 对 NTK 一篇的 `$$` 误报经 grep 核实为 0 处，未采纳）。
+- 数学公式、变量名、作者、DOI 和技术专有名词均按库内格式保留；各篇状态标签更新为 `⑥review ✓`。
