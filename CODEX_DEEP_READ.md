@@ -1,6 +1,6 @@
-# Codex 精读推荐 — 38 篇论文排名
+# Codex 精读推荐 — 48 篇论文排名
 
-**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action；2026-08-04 学习路线规划精读批次 5 篇：Madelung Transform as a Momentum Map / Neural Tangent Kernel / Deep Equilibrium Models / GNN Review (Zhou et al.) / Einstein 1907 相对性原理与推论） | **审查范围：** 321 篇 | **Token：** 768,000
+**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action；2026-08-04 学习路线规划精读批次 5 篇：Madelung Transform as a Momentum Map / Neural Tangent Kernel / Deep Equilibrium Models / GNN Review (Zhou et al.) / Einstein 1907 相对性原理与推论；2026-08-07 学习路线规划批次 9 篇补精读 + FNO / ML-Accelerated CFD / Text2PDE） | **审查范围：** 321 篇 | **Token：** 768,000
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -175,11 +175,62 @@
     - 数理基础：洛伦兹变换与 SR 系统化（收缩/膨胀/速度叠加/多普勒/纵横质量）、加速系时间 σ=τ(1+ax'/c²)、等效原理 Φ=ax'、引力红移 Δν/ν=-GM/(c²r)、能量引力质量 E/c²
     - 为什么精读：从 SR 通往 GR 的过渡枢纽——等效原理、引力红移、能量有重量的原始出处；与库内 Einstein 1905 篇直接衔接，为相对论协变性建模知识链补上关键一环。关联：Einstein 1905、SR 流体 Hamilton 原理、Einstein 方程几何推导
 
+
+39. **Hamiltonian Neural Networks** — ai-for-physics
+    - 文件：[`ai-for-physics/hamiltonian-neural-networks.md`](ai-for-physics/hamiltonian-neural-networks.md)
+    - 数理基础：Hamiltonian 向量场 $\dot x=J\nabla H$ 的结构先验、能量守恒、辛积分器、正则坐标
+    - 为什么精读：结构保持神经网络的代表——把 Hamiltonian 结构作为网络架构约束而非软惩罚，与 LPNets、Covector Fluids、Hamiltonian ideal fluid 直接衔接。关联：LPNets、Hamiltonian ideal fluid、NTK
+
+40. **Machine Learning Hidden Symmetries** — ai-for-physics
+    - 文件：[`ai-for-physics/machine-learning-hidden-symmetries.md`](ai-for-physics/machine-learning-hidden-symmetries.md)
+    - 数理基础：对称变换群、可逆神经变换、守恒量发现、$\mathcal A(\theta)=|\mathcal L_\xi T_\theta|^2$ asymmetry loss
+    - 为什么精读：把隐藏对称性发现形式化为可逆坐标变换学习——与 Geometric DL 等变、Clebsch 变量、Hamiltonian 结构学习交叉。关联：Geometric DL、HNN、Clebsch Maps
+
+41. **Physics-Informed Diffusion Model for Flow Field Reconstruction** — ai-for-physics
+    - 文件：[`ai-for-physics/a-physics-informed-diffusion-model-for-high-fidelity-flow-field-reconstruction.md`](ai-for-physics/a-physics-informed-diffusion-model-for-high-fidelity-flow-field-reconstruction.md)
+    - 数理基础：条件扩散模型、PDE residual guidance、物理场重建、去噪采样
+    - 为什么精读：把扩散模型的生成能力与物理残差约束结合的范式——DDPM 的物理约束版，对湍流场重建、超分有直接价值。关联：DDPM、Text2PDE、PINN
+
+42. **Universal Anomalous Diffusion of Quantized Vortices** — fluid-mechanics
+    - 文件：[`fluid-mechanics/universal-anomalous-diffusion-of-quantized-vortices-in-ultraquantum-turbulence.md`](fluid-mechanics/universal-anomalous-diffusion-of-quantized-vortices-in-ultraquantum-turbulence.md)
+    - 数理基础：GPE 涡线动力学、MSD 输运统计、重联事件、Kelvin 波、反常扩散指数
+    - 为什么精读：量子湍流涡线输运的核心实验/数值工作——连接 Doctor 的量子涡与统计物理主线。关联：Inside Fluids、Vortex Segment Clouds
+
+43. **Hamiltonian Structure of Water Waves (Benjamin-Olver)** — geometric-fluid
+    - 文件：[`geometric-fluid/hamiltonian-structure-symmetries-and-conservation-laws-for-water-waves.md`](geometric-fluid/hamiltonian-structure-symmetries-and-conservation-laws-for-water-waves.md)
+    - 数理基础：Zakharov 正则变量、Dirichlet-Neumann 算子、水波 Hamiltonian 结构、对称性与守恒律
+    - 为什么精读：自由面水波 Hamiltonian 化的奠基工作——几何流体方法在自由边界问题的典范。关联：Hamiltonian ideal fluid、Madelung transform
+
+44. **Diffusion Equation Is Compatible with Special Relativity** — wave-mechanics
+    - 文件：[`wave-mechanics/diffusion-equation-is-compatible-with-special-relativity.md`](wave-mechanics/diffusion-equation-is-compatible-with-special-relativity.md)
+    - 数理基础：相对论动理论 lift、Vlasov-Fokker-Planck、因果稳定解类、扩散方程协变性
+    - 为什么精读：从动理论视角重新审视抛物方程因果性——连接相对论（Einstein 1905）与扩散/耗散系统。关联：Einstein 1905、DDPM（扩散视角）
+
+45. **AmgX: GPU-Accelerated Algebraic Multigrid** — numerical-computation
+    - 文件：[`numerical-computation/amgx-a-library-for-gpu-accelerated-algebraic-multigrid-and-preconditioned-iterat.md`](numerical-computation/amgx-a-library-for-gpu-accelerated-algebraic-multigrid-and-preconditioned-iterat.md)
+    - 数理基础：AMG 粗化、Galerkin 粗层算子 $A_c=RAP$、V/W/K-cycle、GPU 稀疏线性代数
+    - 为什么精读：GPU 上代数多重网格与预条件迭代库的工程范式——与 JFNK、Matrix-Free Multigrid、GPU GMRES 构成求解器主线。关联：JFNK Survey、Matrix-Free FEM Multigrid
+
+46. **Fourier Neural Operator** — ai-for-physics
+    - 文件：[`ai-for-physics/fourier-neural-operator-for-parametric-partial-differential-equations.md`](ai-for-physics/fourier-neural-operator-for-parametric-partial-differential-equations.md)
+    - 数理基础：谱域核积分算子、Fourier layer $v_{t+1}=\sigma(\mathcal F^{-1}(R_\phi\cdot\mathcal F v_t)+W v_t)$、分辨率不变性
+    - 为什么精读：算子学习的主流架构——谱域参数化 + GPU FFT，连接 PDE-Transformer、Neural Operator、Text2PDE。关联：Neural Operator、PDE-Transformer、PINN
+
+47. **Machine Learning–Accelerated CFD** — ai-for-physics
+    - 文件：[`ai-for-physics/machine-learning-accelerated-computational-fluid-dynamics.md`](ai-for-physics/machine-learning-accelerated-computational-fluid-dynamics.md)
+    - 数理基础：learned correction / learned interpolation、可微求解器（jax-cfd）、粗网格湍流精度恢复、DNS/LES 加速
+    - 为什么精读：把 ML 嵌入传统求解器内部而非替代——工程化 AI4CFD 的标杆，与 ML-Accelerated CFD、AMR、Roofline 性能视角衔接。关联：PINN、AMReX、Roofline
+
+48. **Text2PDE: Latent Diffusion Models for Physics Simulation** — ai-for-physics
+    - 文件：[`ai-for-physics/text2pde-latent-diffusion-models-for-accessible-physics-simulation.md`](ai-for-physics/text2pde-latent-diffusion-models-for-accessible-physics-simulation.md)
+    - 数理基础：潜空间扩散（VAE+DDPM）、physics-field/text/shape conditioning、推理期 guidance、多 PDE 联合生成
+    - 为什么精读：扩散模型进入 PDE 生成的最前沿——文本驱动、几何引导、零重训泛化，与 DDPM、PDE-Transformer、FNO 构成生成式模拟主线。关联：DDPM、PDE-Transformer、FNO
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
 2. **结构保持与涡方法** → Covector Fluids → Vortex Segment Clouds → Lie-Poisson Neural Networks
-3. **PDE 学习主线** → PINN → Neural Operator → SINDy → DMD/Koopman → DDPM
+3. **PDE 学习主线** → PINN → Neural Operator（GKN → FNO）→ SINDy → DMD/Koopman → DDPM → Text2PDE / Physics-Informed Diffusion（生成式模拟）
 4. **HPC 求解器主线** → JFNK Survey → Matrix-Free High-Order FEM Multigrid → Berger-Colella AMR (1989) → BoxLib with Tiling (2016) → AMReX → WarpX GPU 移植 → AmgX → GPU GMRES
     - 支撑：Roofline（性能上界）→ ECM 模型（可加预测）→ Hong-Kung I/O 复杂度（理论底座）→ Work-Stealing 调度（任务并行）
 5. **前沿交叉补强** → Schrödingerization PDE → Force-Free Fields → Extended Lagrangian → Log-conformation viscoelastic
@@ -187,4 +238,4 @@
 
 ---
 
-*覆盖 12 个分类 | 每篇均关联库内至少 1 篇其他论文 | 33/33 文件已链接*
+*覆盖 13 个分类 | 每篇均关联库内至少 1 篇其他论文 | 48/48 文件已链接*
