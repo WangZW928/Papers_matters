@@ -1,6 +1,6 @@
-# Codex 精读推荐 — 48 篇论文排名
+# Codex 精读推荐 — 49 篇论文排名
 
-**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action；2026-08-04 学习路线规划精读批次 5 篇：Madelung Transform as a Momentum Map / Neural Tangent Kernel / Deep Equilibrium Models / GNN Review (Zhou et al.) / Einstein 1907 相对性原理与推论；2026-08-07 学习路线规划批次 9 篇补精读 + FNO / ML-Accelerated CFD / Text2PDE；2026-08-07 空壳补精读 11 篇（Covector Fluids / Schrödinger's Smoke / Spectral Analysis / Log-Conformation / Vortex Segment Clouds / Extended Lagrangian SGN / GKN / SINDy / LPNets / Force-Free Fields / Schrödingerization）） | **审查范围：** 321 篇 | **Token：** 768,000
+**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action；2026-08-04 学习路线规划精读批次 5 篇：Madelung Transform as a Momentum Map / Neural Tangent Kernel / Deep Equilibrium Models / GNN Review (Zhou et al.) / Einstein 1907 相对性原理与推论；2026-08-07 学习路线规划批次 9 篇补精读 + FNO / ML-Accelerated CFD / Text2PDE；2026-08-07 空壳补精读 11 篇（Covector Fluids / Schrödinger's Smoke / Spectral Analysis / Log-Conformation / Vortex Segment Clouds / Extended Lagrangian SGN / GKN / SINDy / LPNets / Force-Free Fields / Schrödingerization）；2026-08-10 精读：Kitaev 任意子容错量子计算（Codex 精读补充 106,276 tokens）） | **审查范围：** 321 篇 | **Token：** 874,276
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -56,7 +56,7 @@
 12. **Quantum Simulation of PDEs via Schrödingerization** — quantum-computing
     - 文件：[`quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md`](quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 
-## Tier 3 — 扩展阅读（26 篇）
+## Tier 3 — 扩展阅读（37 篇）
 
 13. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
@@ -226,6 +226,11 @@
     - 数理基础：潜空间扩散（VAE+DDPM）、physics-field/text/shape conditioning、推理期 guidance、多 PDE 联合生成
     - 为什么精读：扩散模型进入 PDE 生成的最前沿——文本驱动、几何引导、零重训泛化，与 DDPM、PDE-Transformer、FNO 构成生成式模拟主线。关联：DDPM、PDE-Transformer、FNO
 
+49. **Fault-tolerant quantum computation by anyons** — quantum-computing
+    - 文件：[`quantum-computing/fault-tolerant-quantum-computation-by-anyons.md`](quantum-computing/fault-tolerant-quantum-computation-by-anyons.md)
+    - 数理基础：toric code 稳定子码与拓扑序、量子双 D(G) 表示论（共轭类=磁荷/中心化子表示=电电荷）、Hopf 代数对偶（ribbon 算子代数 F ↔ 局域算子代数 D）、R-矩阵与 Yang-Baxter 方程、辫子群表示、S₅ 模型普适计算
+    - 为什么精读：拓扑量子计算与拓扑量子纠错奠基之作——物理本质容错（编织/融合天然免疫局域噪声），与量子模拟（Schrödingerization、量子流体算法）构成量子计算主线两翼；数学上连通群论、Hopf 代数与量子纠错。关联：Quantum Simulation of PDEs via Schrödingerization、Efficient quantum algorithm for transport equation
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
@@ -235,7 +240,8 @@
     - 支撑：Roofline（性能上界）→ ECM 模型（可加预测）→ Hong-Kung I/O 复杂度（理论底座）→ Work-Stealing 调度（任务并行）
 5. **前沿交叉补强** → Schrödingerization PDE → Force-Free Fields → Extended Lagrangian → Log-conformation viscoelastic
 6. **几何耗散系统** → Double-Bracket Dissipation（刚体 → 未来理想流体推广）
+7. **量子计算与容错基础** → Kitaev Anyons（拓扑容错/量子双表示论）→ Quantum Simulation of PDEs（Schrödingerization）→ 量子流体算法（Lattice Boltzmann / Navier-Stokes）
 
 ---
 
-*覆盖 13 个分类 | 每篇均关联库内至少 1 篇其他论文 | 48/48 文件已链接*
+*覆盖 13 个分类 | 每篇均关联库内至少 1 篇其他论文 | 49/49 文件已链接*
