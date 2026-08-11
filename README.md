@@ -1,6 +1,6 @@
 # Papers Matters
 
-> 📋 [Codex Research Review — 12 个研究问题](./CODEX_REVIEW.md) | 📖 [Codex 精读排名 — 18 篇推荐](./CODEX_DEEP_READ.md)
+> 📋 [Codex Research Review — 12 个研究问题](./CODEX_REVIEW.md) | 📖 [Codex 精读排名 — 49 篇推荐](./CODEX_DEEP_READ.md)
 
 Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文元数据、中文摘要和关键结论。
 
@@ -373,6 +373,6 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 
 ---
 
-**总计**: 317 篇论文 | 📖 5 篇有精读笔记 | ⏭️ 24 篇已跳过
+**总计**: 362 篇论文（2026-08-11 实测；README 手工索引 317 篇，差 45 篇待补录） | 📖 49 篇有精读笔记 | ⏭️ 24 篇已跳过
 
-*最后更新: 2026-07-29*
+*最后更新: 2026-08-11*
