@@ -1,6 +1,6 @@
 # Codex 精读推荐 — 49 篇论文排名
 
-**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action；2026-08-04 学习路线规划精读批次 5 篇：Madelung Transform as a Momentum Map / Neural Tangent Kernel / Deep Equilibrium Models / GNN Review (Zhou et al.) / Einstein 1907 相对性原理与推论；2026-08-07 学习路线规划批次 9 篇补精读 + FNO / ML-Accelerated CFD / Text2PDE；2026-08-07 空壳补精读 11 篇（Covector Fluids / Schrödinger's Smoke / Spectral Analysis / Log-Conformation / Vortex Segment Clouds / Extended Lagrangian SGN / GKN / SINDy / LPNets / Force-Free Fields / Schrödingerization）；2026-08-10 精读：Kitaev 任意子容错量子计算（Codex 精读补充 106,276 tokens）） | **审查范围：** 321 篇（截至 2026-08-03） | **当前仓库：** 362 篇论文（2026-08-11 实测，主题目录下论文 Markdown 数） | **Token：** 874,276
+**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action；2026-08-04 学习路线规划精读批次 5 篇：Madelung Transform as a Momentum Map / Neural Tangent Kernel / Deep Equilibrium Models / GNN Review (Zhou et al.) / Einstein 1907 相对性原理与推论；2026-08-07 学习路线规划批次 9 篇补精读 + FNO / ML-Accelerated CFD / Text2PDE；2026-08-07 空壳补精读 11 篇（Covector Fluids / Schrödinger's Smoke / Spectral Analysis / Log-Conformation / Vortex Segment Clouds / Extended Lagrangian SGN / GKN / SINDy / LPNets / Force-Free Fields / Schrödingerization）；2026-08-10 精读：Kitaev 任意子容错量子计算（Codex 精读补充 106,276 tokens））；2026-08-14 精读：Baym–Kadanoff 1961 守恒定律与关联函数（Codex 精读补充，token 未单独记录）；2026-08-14 精读：Yang–Mills 1954 同位旋守恒与同位规范不变性（Codex 精读补充，token 未单独记录） | **审查范围：** 321 篇（截至 2026-08-03） | **当前仓库：** 362 篇论文（2026-08-11 实测，主题目录下论文 Markdown 数） | **Token：** 874,276
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -56,7 +56,7 @@
 12. **Quantum Simulation of PDEs via Schrödingerization** — quantum-computing
     - 文件：[`quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md`](quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 
-## Tier 3 — 扩展阅读（37 篇）
+## Tier 3 — 扩展阅读（39 篇）
 
 13. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
@@ -231,6 +231,16 @@
     - 数理基础：toric code 稳定子码与拓扑序、量子双 D(G) 表示论（共轭类=磁荷/中心化子表示=电电荷）、Hopf 代数对偶（ribbon 算子代数 F ↔ 局域算子代数 D）、R-矩阵与 Yang-Baxter 方程、辫子群表示、S₅ 模型普适计算
     - 为什么精读：拓扑量子计算与拓扑量子纠错奠基之作——物理本质容错（编织/融合天然免疫局域噪声），与量子模拟（Schrödingerization、量子流体算法）构成量子计算主线两翼；数学上连通群论、Hopf 代数与量子纠错。关联：Quantum Simulation of PDEs via Schrödingerization、Efficient quantum algorithm for transport equation
 
+50. **Conservation Laws and Correlation Functions (Baym–Kadanoff 1961)** — quantum-mechanics
+    - 文件：[`quantum-mechanics/conservation-laws-and-correlation-functions.md`](quantum-mechanics/conservation-laws-and-correlation-functions.md)
+    - 数理基础：有限温度格林函数虚时周期边界条件、外场生成泛函 G(U)、L=δG/δU 线性响应、守恒近似三条件 (A)(B)(C)、Ward 型恒等式、Bethe-Salpeter 型 L 方程、Hartree→RPA / HF→含交换 RPA / T 近似 / V_s 屏蔽近似、Φ-derivable 泛函先驱
+    - 为什么精读：Kadanoff-Baym 方程与非平衡格林函数方法的源头文献——把"响应函数必须满足守恒律"从事后检查变为构造原则；与 quantum-mechanical-closure（量子密度算子嵌入经典动力学）共享"由泛函结构保证物理约束"的逻辑，为量子多体输运/动力学平均场/自洽近似提供方法论底座。关联：Quantum Mechanical Closure of PDEs、Kitaev Anyons
+
+51. **Conservation of Isotopic Spin and Isotopic Gauge Invariance (Yang–Mills 1954)** — quantum-mechanics
+    - 文件：[`quantum-mechanics/conservation-of-isotopic-spin-and-isotopic-gauge-invariance.md`](quantum-mechanics/conservation-of-isotopic-spin-and-isotopic-gauge-invariance.md)
+    - 数理基础：同位旋 SU(2) 局域化、同位协变导数 D_μ=∂_μ−iετ·b_μ、非阿贝尔场强 f_μν=∂_μb_ν−∂_νb_μ−2εb_μ×b_ν（自相互作用非线性项）、b 场三重态（自旋 1、同位旋 1、电荷 ±e/0）、守恒流 j_μ=J_μ+2εb_μ×f_μν、质量项困境
+    - 为什么精读：非阿贝尔规范场论开山之作——"局域对称性决定相互作用形式"这一现代粒子物理核心思想的源头（电弱统一 SU(2)×U(1)、QCD SU(3) 的原型）；与 Baym–Kadanoff（守恒律约束近似结构）同属"守恒律/对称性作为构造原则"主线，也是理解规范结构与几何化物理（联络/曲率）的桥。关联：Conservation Laws and Correlation Functions、Quantum Mechanical Closure of PDEs
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
@@ -241,7 +251,8 @@
 5. **前沿交叉补强** → Schrödingerization PDE → Force-Free Fields → Extended Lagrangian → Log-conformation viscoelastic
 6. **几何耗散系统** → Double-Bracket Dissipation（刚体 → 未来理想流体推广）
 7. **量子计算与容错基础** → Kitaev Anyons（拓扑容错/量子双表示论）→ Quantum Simulation of PDEs（Schrödingerization）→ 量子流体算法（Lattice Boltzmann / Navier-Stokes）
+8. **量子多体与输运基础** → Baym–Kadanoff 守恒近似（有限温度格林函数 + 线性响应 + 三条件）→ 未来可延展：Keldysh 非平衡格林函数、Φ-derivable 自洽近似、动力学平均场
 
 ---
 
-*覆盖 13 个分类 | 每篇均关联库内至少 1 篇其他论文 | 49/49 文件已链接*
+*覆盖 13 个分类 | 每篇均关联库内至少 1 篇其他论文 | 51/51 文件已链接*
