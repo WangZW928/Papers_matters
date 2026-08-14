@@ -1,6 +1,6 @@
 # Codex 精读推荐 — 49 篇论文排名
 
-**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action；2026-08-04 学习路线规划精读批次 5 篇：Madelung Transform as a Momentum Map / Neural Tangent Kernel / Deep Equilibrium Models / GNN Review (Zhou et al.) / Einstein 1907 相对性原理与推论；2026-08-07 学习路线规划批次 9 篇补精读 + FNO / ML-Accelerated CFD / Text2PDE；2026-08-07 空壳补精读 11 篇（Covector Fluids / Schrödinger's Smoke / Spectral Analysis / Log-Conformation / Vortex Segment Clouds / Extended Lagrangian SGN / GKN / SINDy / LPNets / Force-Free Fields / Schrödingerization）；2026-08-10 精读：Kitaev 任意子容错量子计算（Codex 精读补充 106,276 tokens））；2026-08-14 精读：Baym–Kadanoff 1961 守恒定律与关联函数（Codex 精读补充，token 未单独记录）；2026-08-14 精读：Yang–Mills 1954 同位旋守恒与同位规范不变性（Codex 精读补充，token 未单独记录） | **审查范围：** 321 篇（截至 2026-08-03） | **当前仓库：** 362 篇论文（2026-08-11 实测，主题目录下论文 Markdown 数） | **Token：** 874,276
+**日期：** 2026-08-03（2026-08-04 追加：Berger-Colella AMR +70,977、WarpX GPU 移植 +81,317、ECM 模型 +81,101、Roofline +89,794、Hong-Kung I/O +65,718、Work-Stealing +83,820 tokens、BoxLib with Tiling 精读收尾（Token 未单独记录）、2026-08-04 六篇精读：Morrison-Greene 1980 / PDE-Transformer / Geometric DL / 量子闭包 / Einstein 1905 / Causal Action；2026-08-04 学习路线规划精读批次 5 篇：Madelung Transform as a Momentum Map / Neural Tangent Kernel / Deep Equilibrium Models / GNN Review (Zhou et al.) / Einstein 1907 相对性原理与推论；2026-08-07 学习路线规划批次 9 篇补精读 + FNO / ML-Accelerated CFD / Text2PDE；2026-08-07 空壳补精读 11 篇（Covector Fluids / Schrödinger's Smoke / Spectral Analysis / Log-Conformation / Vortex Segment Clouds / Extended Lagrangian SGN / GKN / SINDy / LPNets / Force-Free Fields / Schrödingerization）；2026-08-10 精读：Kitaev 任意子容错量子计算（Codex 精读补充 106,276 tokens））；2026-08-14 精读：Baym–Kadanoff 1961 守恒定律与关联函数（Codex 精读补充，token 未单独记录）；2026-08-14 精读：Yang–Mills 1954 同位旋守恒与同位规范不变性（Codex 精读补充，token 未单独记录）；2026-08-14 精读：Feynman 1949 量子电动力学的时空方法（Codex 精读补充，token 未单独记录）；2026-08-14 精读：Feynman 1948 非相对论量子力学的时空方法（Codex 精读补充，token 未单独记录） | **审查范围：** 321 篇（截至 2026-08-03） | **当前仓库：** 362 篇论文（2026-08-11 实测，主题目录下论文 Markdown 数） | **Token：** 874,276
 
 > 🔗 **GitHub 仓库：** [WangZW928/Papers_matters](.)
 
@@ -56,7 +56,7 @@
 12. **Quantum Simulation of PDEs via Schrödingerization** — quantum-computing
     - 文件：[`quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md`](quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 
-## Tier 3 — 扩展阅读（39 篇）
+## Tier 3 — 扩展阅读（41 篇）
 
 13. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
@@ -241,6 +241,16 @@
     - 数理基础：同位旋 SU(2) 局域化、同位协变导数 D_μ=∂_μ−iετ·b_μ、非阿贝尔场强 f_μν=∂_μb_ν−∂_νb_μ−2εb_μ×b_ν（自相互作用非线性项）、b 场三重态（自旋 1、同位旋 1、电荷 ±e/0）、守恒流 j_μ=J_μ+2εb_μ×f_μν、质量项困境
     - 为什么精读：非阿贝尔规范场论开山之作——"局域对称性决定相互作用形式"这一现代粒子物理核心思想的源头（电弱统一 SU(2)×U(1)、QCD SU(3) 的原型）；与 Baym–Kadanoff（守恒律约束近似结构）同属"守恒律/对称性作为构造原则"主线，也是理解规范结构与几何化物理（联络/曲率）的桥。关联：Conservation Laws and Correlation Functions、Quantum Mechanical Closure of PDEs
 
+52. **Space-Time Approach to Quantum Electrodynamics (Feynman 1949)** — quantum-mechanics
+    - 文件：[`quantum-mechanics/space-time-approach-to-quantum-electrodynamics.md`](quantum-mechanics/space-time-approach-to-quantum-electrodynamics.md)
+    - 数理基础：时空传播子 K(2,1)、作用量/路径积分思想、费曼规则（电子线 K_+、光子线 Δ_+、顶点 γ_μ）、自能与截断、动量空间表述（δ 函数/回路积分/正电子）、辐射修正结构、真空极化 Pauli-Bethe 方法、质量/电荷重正化与 Schwinger 一致性、Feynman 参数积分技术
+    - 为什么精读：费曼图与传播子方法的奠基文献——把相互作用量子系统的计算变成"可视化、可组合、可算法化的 Green-function grammar"；是 Dyson 形式化、现代 QFT 以及凝聚态多体（Kadanoff-Baym、GW、Bethe-Salpeter）全部图技术的源头。关联：Conservation Laws and Correlation Functions、Conservation of Isotopic Spin and Isotopic Gauge Invariance、Space-Time Approach to Non-Relativistic Quantum Mechanics
+
+53. **Space-Time Approach to Non-Relativistic Quantum Mechanics (Feynman 1948)** — quantum-mechanics
+    - 文件：[`quantum-mechanics/space-time-approach-to-non-relativistic-quantum-mechanics.md`](quantum-mechanics/space-time-approach-to-non-relativistic-quantum-mechanics.md)
+    - 数理基础：路径积分公设（单路径振幅 e^{iS[x]/ℏ}）、传播子 K(b,a) 构造（时间细分+完备性插入+泛函积分极限）、短时传播子、Chapman-Kolmogorov 组合律与 Schrödinger 方程等价性、[p,q]=ℏ/i 重现、经典极限驻相近似、测量与干涉、消去场振子坐标
+    - 为什么精读：路径积分量子化奠基文献——把量子力学重建为"对路径的振幅求和"，经典极限（最小作用量）天然显现；是费曼图（1949 QED）、虚时路径积分统计力学、量子蒙特卡洛/PIMD（库内 path-integral-molecular-dynamics 一脉）与泛函积分多体方法的数学地基。关联：Space-Time Approach to Quantum Electrodynamics、Conservation Laws and Correlation Functions、Path Integral Molecular Dynamics
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
@@ -255,4 +265,4 @@
 
 ---
 
-*覆盖 13 个分类 | 每篇均关联库内至少 1 篇其他论文 | 51/51 文件已链接*
+*覆盖 13 个分类 | 每篇均关联库内至少 1 篇其他论文 | 53/53 文件已链接*
