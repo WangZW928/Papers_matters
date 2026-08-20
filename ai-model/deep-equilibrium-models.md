@@ -233,7 +233,7 @@ J_g^{-1}
 实际反向不显式构造 $J_f$ 或 $J_g$。论文把核心项（行向量记号）
 
 \[
-u^\top=-rac{\partial \ell}{\partial z^\star}J_g^{-1}
+u^\top=-\frac{\partial \ell}{\partial z^\star}J_g^{-1}
 \]
 
 改写为线性系统（转置成列向量形式）。设列向量 $u$ 满足

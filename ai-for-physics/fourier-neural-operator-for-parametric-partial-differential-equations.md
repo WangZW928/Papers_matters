@@ -201,7 +201,7 @@ k_v = IFFT(out_hat)
 v_next = activation(W(v) + k_v)
 ```
 
-FNO 的 resolution invariance 来自两个事实。第一，学习参数 $R(k)$ 定义在连续 Fourier 基函数 $e^{2\pi i\langle x,k\rangle}$ 的有限低频集合上，而不是定义在某个固定网格索引空间上。第二，更换物理分辨率只改变函数在物理空间的采样与 FFT 的离散实现；只要低频内容被解析，同一组 $R(k)$ 可作用于不同 $s_1,\ldots,s_d$ 的网格。因此 FNO 的误差主要是 operator approximation error 与训练分布误差，而不是固定图像网络的输入尺寸误差。
+FNO 的 resolution invariance 来自两个事实。第一，学习参数 $R(k)$ 定义在连续 Fourier 基函数 $e^{2\pi i\langle x,k\rangle}$ 的有限低频集合上，而不是定义在某个固定网格索引空间上。第二，更换物理分辨率只改变函数在物理空间的采样与 FFT 的离散实现；当训练和测试使用相同的定义域、边界表示与 Fourier 参数化，且保留低频在两种网格上均被充分解析时，同一组 $R(k)$ 可作用于不同 $s_1,\ldots,s_d$ 的网格。这是条件性的跨分辨率迁移，不消除离散化/求积、aliasing、谱截断、边界表示或未解析高频带来的误差；除 operator approximation error 与训练分布误差外，这些误差也需单独评估。
 
 ### 关键推导
 

@@ -15,7 +15,7 @@
 
 ### 数学结构与核心公式
 
-Morrison 的主线是：理想流体不是“近似地像 Hamilton 系统”，而是其自然变量选择决定了 Hamilton 结构的显式形式。材料坐标 $q(a,t)$ 给出正则 Hamilton 描述，Euler 变量 $(M,\rho,\sigma)$ 给出非正则 Lie-Poisson 描述。这里 $a$ 是流体粒子标签，$r=q(a,t)$ 是空间位置，$J=\det(\partial q^i/\partial a^j)$，质量、熵、动量密度由 Lagrange-Euler 映射给出
+Morrison 的主线是：理想流体不是“近似地像 Hamilton 系统”，而是其自然变量选择决定了 Hamilton 结构的显式形式。本文以下把比内能统一记为 $U(\rho,s)$，其中第二个自变量 $s$ 是单位质量熵。材料坐标 $q(a,t)$ 给出正则 Hamilton 描述，Euler 变量 $(M,\rho,\sigma)$ 给出非正则 Lie-Poisson 描述。这里 $a$ 是流体粒子标签，$r=q(a,t)$ 是空间位置，$J=\det(\partial q^i/\partial a^j)$，质量、熵、动量密度由 Lagrange-Euler 映射给出
 
 \[
 \rho(r,t)=\int_D \rho_0(a)\delta(r-q(a,t))\,d^3a,\quad
@@ -30,7 +30,7 @@ v=M/\rho .
 正则材料变量中的 Hamiltonian 是
 
 \[
-H[q,p]=\int_D\left(\frac{|p|^2}{2\rho_0}+\rho_0 U(s_0,\rho_0/J)\right)d^3a ,
+H[q,p]=\int_D\left(\frac{|p|^2}{2\rho_0}+\rho_0 U(\rho_0/J,s_0)\right)d^3a ,
 \]
 
 正则 Poisson 括号为
@@ -99,7 +99,7 @@ p=\rho^2\frac{\partial U}{\partial \rho}
 和 $\rho=\rho_0/J$，势能
 
 \[
-V[q]=\int_D \rho_0 U(s_0,\rho_0/J)\,d^3a
+V[q]=\int_D \rho_0 U(\rho_0/J,s_0)\,d^3a
 \]
 
 只通过 $J$ 依赖于 $q$。利用行列式变分

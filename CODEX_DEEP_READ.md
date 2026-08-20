@@ -1,6 +1,6 @@
 # CODEX_DEEP_READ Tier 独立审查与重新分层
 
-审查口径：Doctor 的主线是高性能 AMR/PDE 求解器框架、几何流体/结构保持方法、AI for Physics、量子计算与量子多体、相对论与几何。Tier 1 只保留“不读就缺少领域骨架”的源头文献；Tier 2 是值得系统精读、能直接改造研究路线或工程架构的论文；Tier 3 是扩展阅读或了解核心思想即可的论文。  
+审查口径：Doctor 的主线是高性能 AMR/PDE 求解器框架、几何流体/结构保持方法、AI for Physics、量子计算与量子多体、相对论与几何。Tier 1 原则上只保留“不读就缺少领域骨架”的源头文献；唯一明确例外是能汇集该骨架的**方法论入口综述**，目前仅限 JFNK Survey，作为隐式 PDE 求解器与可微隐式层的共同术语、算法和预条件接口，不据此泛化为一般综述准入规则。Tier 2 是值得系统精读、能直接改造研究路线或工程架构的论文；Tier 3 是扩展阅读或了解核心思想即可的论文。
 
 ## 第一部分：调整摘要
 
@@ -59,7 +59,7 @@
 4. **Jacobian-free Newton-Krylov Methods: A Survey** — numerical-computation
    - 文件：[`numerical-computation/jacobian-free-newton-krylov-methods-a-survey-of-approaches-and-applications.md`](numerical-computation/jacobian-free-newton-krylov-methods-a-survey-of-approaches-and-applications.md)
    - 数理基础：Newton-Krylov、Jacobian-vector product、Krylov 子空间、预条件、非线性全局化、隐式 PDE 求解器。
-   - 为什么精读：大规模隐式 PDE 求解器的方法论底座；AMR 多物理求解、非线性稳态问题、隐式时间步进和可微隐式层都会回到这套语言。关联：Deep Equilibrium Models、Matrix-Free Multigrid、AmgX。
+   - 为什么精读：这是上述 Tier 1 方法论入口例外，而非源头论文：它为大规模隐式 PDE 求解器提供共同语言。AMR 多物理求解、非线性稳态问题、隐式时间步进和可微隐式层都会回到这套语言。关联：Deep Equilibrium Models、Matrix-Free Multigrid、AmgX。
 
 5. **Physics-informed neural networks (PINN)** — ai-for-physics
    - 文件：[`ai-for-physics/physics-informed-neural-networks-a-deep-learning-framework-for-solving-forward-a.md`](ai-for-physics/physics-informed-neural-networks-a-deep-learning-framework-for-solving-forward-a.md)
