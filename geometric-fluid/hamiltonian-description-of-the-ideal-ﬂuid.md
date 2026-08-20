@@ -209,6 +209,21 @@ G=\int_D(M\cdot\xi+\rho\eta+\sigma\kappa)\,d^3r ,
 
 其中 $P_i=\rho v\cdot\partial_i\xi+\rho\partial_i\eta+\sigma\partial_i\kappa$。若此二次型在允许扰动上正定，就得到 Rayleigh/Fjortoft 型充分稳定条件。
 
+### 研究者复核：变量、约束与推导边界
+
+上面的材料--Euler 映射应把初始数据的角色说得更精确：
+\(\rho_0(a)\,d^3a\) 是质量形式，\(\sigma_0(a)\,d^3a=\rho_0s_0\,d^3a\) 是熵密度形式，故在 \(J>0\) 的光滑可逆流映射上 \(\rho=\rho_0/J\)、\(\sigma=\sigma_0/J\)，并且 \(s=\sigma/\rho=s_0\circ q^{-1}\)。这既说明了势能中 \(U(\rho_0/J,s_0)\) 的第二个自变量，也说明了为何 Euler Hamiltonian 必须写成 \(\rho U(\rho,\sigma/\rho)\)，而不能把 \(\sigma\) 误当作比熵。
+
+为补足压力项的符号，令 \(A_{ij}=\partial J/\partial q^i{}_{,j}\)。则
+\[
+\delta V=\int \rho_0U_\rho\,\delta(\rho_0/J)\,d^3a
+=-\int \frac{\rho_0^2U_\rho}{J^2}A_{ij}\partial_{a^j}\delta q^i\,d^3a
+=\int\partial_{a^j}(pA_{ij})\,\delta q^i\,d^3a .
+\]
+Here \(p=\rho^2U_\rho\); using the Piola identity \(\partial_{a^j}A_{ij}=0\) and \(A_{ij}\partial_{a^j}=J\partial_{r^i}\) gives \(\rho_0\ddot q^i=-J\partial_{r^i}p\), hence the stated Euler equation. This assumes impermeable/periodic boundaries (or variations vanishing at the boundary) and excludes loss of invertibility \(J\le0\).
+
+The displayed dynamically accessible variations use a generator/sign convention. With the bracket printed here, a generator may equally be defined with \(-\xi\), reversing the displayed signs of \(\delta\rho\) and \(\delta\sigma\) without changing the admissible tangent space or \(\delta^2H_{\rm da}\). The energy--Casimir condition is a sufficient Lyapunov criterion only after specifying the function space, boundary conditions, and positivity/coercivity of the constrained second variation; it is not a general necessary stability test.
+
 ### 对 HPC 框架的启示
 
 这篇文章对 CFD 框架最直接的要求是：离散化不应只盯住守恒通量，还要显式编码 Poisson 结构、Casimir 与边界项。对不可压/可压 Euler 模块，可以把状态变量层分成正则材料变量、Euler 守恒变量、Clebsch/势变量三种视图；不同求解器共享同一个 Hamiltonian 与变分导数接口，而 Poisson operator 作为稀疏/矩阵无关算子提供。

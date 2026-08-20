@@ -78,6 +78,12 @@ $$
 
 ### 关键推导/算法
 
+For a graph free surface take \(\Omega_\eta=\{(x,y):-h<y<\eta(x)\}\), impose \(\partial_n\phi=0\) at a rigid bottom (or decay at infinite depth), and define
+\[
+G(\eta)\xi=\sqrt{1+|\nabla\eta|^2}\,\partial_n\phi\big|_{y=\eta}.
+\]
+Green's identity gives \(\int_{\Omega_\eta}|\nabla\phi|^2=\int\xi G(\eta)\xi\,dx\), explaining both the kinetic term and the self-adjoint nonnegative character of \(G(\eta)\). At fixed \(\eta\), \(\delta_\xi H=\int\delta\xi\,G(\eta)\xi\,dx\), so \(\eta_t=G(\eta)\xi\) is the kinematic condition. The shape derivative \(-\delta H/\delta\eta=\xi_t\) is Bernoulli's condition in graph coordinates; its component formula depends on the normal/sign convention. This also states the boundary assumptions under which the canonical reduction is valid.
+
 1. 建立势流自由边界问题：体内 Laplace 方程，加上自由面运动学条件、动力学 Bernoulli 条件、底边界条件和表面张力项。
 2. 选取自由面变量 $(\eta,\xi)$，将体内势函数由边界数据唯一确定，从而把问题化为自由面上的 Hamiltonian 演化。
 3. 用变分导数计算 $\delta H/\delta \xi$ 与 $\delta H/\delta \eta$，验证它们恢复运动学与动力学自由面边界条件。
@@ -102,10 +108,6 @@ $$
 3. 是否能把 Noether 守恒量自动生成机制嵌入 Doctor 的 PDE DSL，用于自动产生 diagnostics 与 structure-preserving tests？
 
 ## Review Questions
-
-4. 1. Zakharov 变量中的正则辛结构与 Eulerian 变量中的非正则 Lie-Poisson 结构如何对应？这种对应在含涡量或自由边界拓扑变化时会在哪里失效？
-5. 2. 对 Dirichlet-Neumann 算子做离散近似时，保持自伴性、正定性与几何一致性三者之间是否存在不可兼得的张力？这会如何影响长期能量与动量诊断？
-6. 3. 若把 Benjamin-Olver 的对称性分析推广到量子自由面或带相位缺陷的超流界面，守恒量生成机制会更接近 Noether、Casimir，还是约束流形上的约化动力学？
 
 1. 在自由面变量 $(\eta,\xi)$ 中，Dirichlet-Neumann 算子 $G(\eta)$ 承担了哪些几何信息？若离散 $G(\eta)$ 不自伴，会怎样破坏 Hamiltonian 结构和能量守恒？
 2. Benjamin-Olver 的 Noether 分析如何帮助判断一个近似水波模型是否“结构可信”？对长波、浅水或弱非线性模型应检查哪些对称性和守恒量？

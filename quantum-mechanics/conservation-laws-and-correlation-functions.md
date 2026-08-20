@@ -622,6 +622,18 @@ GGGG\,\bigl(V_s(3-4')V_s(4-3')+V_s(3-4)V_s(4'-3')\bigr)\,L.
 
 最后一项具有类似 Boltzmann 碰撞项的 $|V_s|^2$ 结构；原文将其长波极限与相应的 Boltzmann 形式联系起来。这正适合高密度电子气、等离子体以及电子-离子双组分金属模型，因为 $V_s$ 的极点包含等离激元，也可在双组分情形中包含声波型集体模。
 
+### 研究者复核：源约定与 Ward 链条
+
+All signs in the response equations depend on the paper's definition of the time-ordered \(G\), \(G_2\), and source coupling. Consequently the free term in the Bethe--Salpeter equation should be read as the derivative \(\delta G/\delta U\) in that convention, rather than as a convention-free \(\pm GG\) identity. The Hartree--Fock exchange sign is likewise fixed only after those definitions are retained. The compact \(T\)- and \(V_s\)-equations in this note are diagrammatic/index-suppressed summaries, not equations safe for direct numerical implementation.
+
+The logically precise chain is
+\[
+\text{compatible left/right equations for }G(U)
+\;\Longrightarrow\;\text{continuity identity for }G
+\;\xrightarrow{\,\delta/\delta U\,}\;\text{Ward identity for }L.
+\]
+Exchange symmetry of \(G_2\) cancels internal forces in momentum, angular-momentum, and energy balances; the vertex symmetry organizes the corresponding exchange/reciprocity properties of the response. These are complementary hypotheses, not interchangeable one-line proofs. For a local scalar source, integration by parts using \(\partial_t n+\nabla\cdot\mathbf j=0\) and vanishing boundary flux gives \(d\langle H_0\rangle/dt=\int(-\nabla U)\cdot\langle\mathbf j\rangle\), whereas the total explicitly time-dependent Hamiltonian obeys \(d\langle H\rangle/dt=\int(\partial_tU)\langle n\rangle\). Keeping these two energies distinct resolves the apparent sign/power ambiguity.
+
 ### 6. 与 Kadanoff-Baym 方程和非平衡格林函数的历史联系
 
 这篇 1961 年论文是后来 “conserving approximation” 和 “Baym-Kadanoff formalism” 的核心前身。它的关键思想可以概括为：
@@ -763,13 +775,3 @@ i\partial_{t_1}-h_0(1)
 2. 在高性能计算语境下，若要数值求解自洽的 \(G\)-\(\Sigma\)-\(L\) 方程组，最主要的计算瓶颈是什么：双时间/双频卷积、顶点核 \(\mathcal I\) 的存储、还是自洽迭代的收敛性？对比今天的 GW、T-matrix、Bethe-Salpeter 求解器，这篇 1961 文章的框架在哪些部分最适合并行化，哪些部分最难扩展到大规模 HPC？
 
 3. 对等离子体与流体/动理学之间的联系，文中说 \(T\) 近似与 \(V_s\) 近似在长波极限下会导向类似线性化 Boltzmann 方程的碰撞结构。能否进一步追问：从 conserving approximation 到量子动理学，再到经典流体闭合，这条链上哪些守恒量是“自动继承”的，哪些额外闭合关系则必须另行假设？
-
-## Review Questions
-
-**Review Questions**
-
-1. Baym–Kadanoff 的守恒近似可由 $\Sigma[G]$ 与 $\mathcal I=\delta\Sigma/\delta G$ 的自洽链条生成。这个结构与现代 PDE/科学机器学习中的“把守恒律直接编码进模型或损失函数”有什么本质异同？能否构造一个类比：把 Ward identity 当作 PINN 中的硬约束，而把 $\Phi$-derivable 结构当作更强的生成原则？
-
-2. 在高性能计算语境下，若要数值求解自洽的 $G$-$\Sigma$-$L$ 方程组，最主要的计算瓶颈是什么：双时间/双频卷积、顶点核 $\mathcal I$ 的存储、还是自洽迭代的收敛性？对比今天的 GW、T-matrix、Bethe-Salpeter 求解器，这篇 1961 文章的框架在哪些部分最适合并行化，哪些部分最难扩展到大规模 HPC？
-
-3. 对等离子体与流体/动理学之间的联系，文中说 $T$ 近似与 $V_s$ 近似在长波极限下会导向类似线性化 Boltzmann 方程的碰撞结构。能否进一步追问：从 conserving approximation 到量子动理学，再到经典流体闭合，这条链上哪些守恒量是“自动继承”的，哪些额外闭合关系则必须另行假设？

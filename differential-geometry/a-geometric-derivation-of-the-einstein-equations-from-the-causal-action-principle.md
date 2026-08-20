@@ -484,6 +484,12 @@ $$
 
 整体上，这篇论文可放在本库“几何/变分/物理结构保持”主线中：  
 从 **对称性 → 局部规范/密切模型 → 连接与曲率 → EL 方程 → 守恒律/Einstein 方程**，形成一条由底层变分原理生成宏观几何的路线。
+## 研究者复核：逻辑地位、边界项与有效应力
+
+The displayed Einstein equation is an effective result conditional on the paper's regularity, short-range expansion, and (for the Lorentzian part) causal-fermion-system vacuum hypotheses; it is not a derivation of classical GR from the bare action without additional input. The EL relation \(\ell|_M=0\) only permits the integrations by parts used in the alignment expansion when the variations are compactly supported or the relevant nonlocal boundary terms vanish. Since the effective tensor includes \(K\), alignment, and measure corrections, its conservation is tied to the Bianchi identity and the approximation order, rather than an independently postulated standard matter stress tensor.
+
+For comparison with the conventional normalization one would write \(G_{ij}+\Lambda g_{ij}=8\pi G_{\!N}T^{\rm matter}_{ij}\). Here the note's \(T_{ij}\) absorbs normalization and geometric correction terms, so \(G_{\rm eff}\sim\delta^2\) is a scaling statement, not an equality that fixes Newton's constant. The Lorentz flip \(\eta=4\omega\otimes\omega-g\) has signature \((+---)\) when \(g\) is positive definite and \(\omega\) is unit; swapping signature conventions reverses which direction is called timelike.
+
 ## Review Questions
 
 1. 如果把这里的 alignment vector field 与 x/p-divergence 展开落到实际数值框架里，哪些离散可观测量最适合作为 $O(\delta^2)$ 有效应力项的诊断量，以区分“真实几何响应”和“核截断/网格误差”？

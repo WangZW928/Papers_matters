@@ -216,6 +216,20 @@ i\hbar\frac{\partial\psi}{\partial t}
 
 所以路径积分不是近似图像，而是在上述短时极限和归一化下与 Schrödinger 表述等价。
 
+### 研究者复核：时间切片、归一化和方程极限
+
+The free-kernel normalization follows from the identity limit,
+\[
+\lim_{\epsilon\downarrow0}\int dx\,K_0(x',t+\epsilon;x,t)f(x)=f(x').
+\]
+With the branch obtained by \(\epsilon\to\epsilon-i0\), the Gaussian moments already displayed give
+\[
+\psi(t+\epsilon)=\psi+\epsilon\left(\frac{i\hbar}{2m}\partial_x^2-\frac{i}{\hbar}V\right)\psi+o(\epsilon),
+\]
+which establishes the Schrödinger limit for smooth \(V\) and \(\psi\). Singular potentials require a separately defined short-time kernel.
+
+For velocity-dependent actions, midpoint slicing fixes an operator-ordering prescription; it is not merely an interchangeable quadrature rule. Thus \(\mathcal D x\) denotes the stated time-sliced oscillatory limit, not a real probability measure. Likewise, classical paths dominate only as a stationary-phase asymptotic under the usual nondegeneracy assumptions, rather than through a literal least-action selection.
+
 ### 4. 与矩阵力学和算符代数的关系
 
 费曼把通常的 matrix element 改写为跨越一段时间的 transition element。若初态在 $t'$ 为 $\psi$、末态实验在 $t''$ 由 $\chi$ 表示，则

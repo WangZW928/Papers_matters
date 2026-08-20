@@ -150,14 +150,14 @@ $$
 在欧氏空间中 $i_vu=|v|^2$，而 $i_vdu$ 对应涡量项。用分量展开得到
 
 $$
-(\mathcal L_vu)_i=v^j\partial_ju_i+u_j\partial_iv^j
+(\mathcal L_v u)_i=v^j\partial_j u_i+u_j\partial_i v^j
 =(v\cdot\nabla)v_i+\partial_i\left(\frac12|v|^2\right).
 $$
 
 代回 Euler 方程可得
 
 $$
-\partial_tu+\mathcal L_vu=-d\left(p-\frac12|v|^2\right).
+\partial_t u+\mathcal L_v u=-d\left(p-\frac12|v|^2\right).
 $$
 
 所以 pressure 只负责 gauge/exact form，不负责改变 $du$ 的拓扑内容。
@@ -165,7 +165,7 @@ $$
 第二步是从 Lie advection 得到 pullback 离散。若忽略右端 exact form，
 
 $$
-\partial_tu+\mathcal L_vu=0 .
+\partial_t u+\mathcal L_v u=0 .
 $$
 
 对随体曲线 $\gamma_t=\varphi_t(\gamma_0)$，
@@ -173,7 +173,7 @@ $$
 $$
 \frac{d}{dt}\int_{\gamma_t}u
 =\frac{d}{dt}\int_{\gamma_0}\varphi_t^*u
-=\int_{\gamma_0}\varphi_t^*(\partial_tu+\mathcal L_vu)=0 .
+=\int_{\gamma_0}\varphi_t^*(\partial_t u+\mathcal L_v u)=0 .
 $$
 
 因此离散时应更新的是 $\varphi_t^*u$，不是逐分量搬运 $v$。半拉格朗日回溯 $X$ 给出局部公式 $u^{*}(x)=DX(x)^Tu^n(X(x))$。
@@ -191,6 +191,16 @@ du^{n+1}=du^{*}-d^2q=du^{*}.
 $$
 
 因此投影只改变速度的一形式代表元，不改变涡量二形式。这与 `Hamiltonian ideal fluid` 中的非正则退化结构一致：物理状态在 gauge 商空间上演化，压力是约束乘子。
+
+#### 研究者复核：pullback、投影与边界
+
+The cotangent-lift statement is exact only for the inviscid transport substep and a sufficiently smooth flow map. Indeed, differentiating \(\varphi_t^*u(t)\) gives
+\[
+\frac{d}{dt}\varphi_t^*u=\varphi_t^*(\partial_t u+\mathcal L_v u),
+\]
+so a gradient force contributes \(-d\,\varphi_t^*(p-|v|^2/2)\), whose integral over a closed material loop vanishes. The pressure projection preserves \(du\) algebraically, but it does not by itself preserve kinetic energy, and boundary circulation requires compatible no-through-flow boundary conditions plus a boundary treatment for the Poisson solve.
+
+The identification of a sampled covector with a velocity vector is valid only in a fixed Euclidean metric. On a mapped grid the discrete pullback must be combined with a discrete Hodge star; otherwise the phrase “multiply by \(DX^T\)” has no coordinate-invariant meaning. The coadjoint description concerns the one-form density \(m=u\otimes dV\); calling \(u\) alone the coadjoint variable suppresses this volume-form factor.
 
 #### 对 HPC 框架的启示
 

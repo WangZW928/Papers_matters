@@ -299,6 +299,21 @@ $$
 $$
 
 是否被保持。对于谱代码，(14) 提供直接路线；对于网格代码，重点是离散梯度、散度、curl 与分部积分恒等式要成对设计，否则反对称性和 Jacobi 性会在离散层面被破坏。
+## 研究者复核：括号到方程的最短闭环
+
+变量 \(s\) 在物理变量括号中是比熵，\(\sigma=\rho s\) 才是守恒熵密度；两套括号不能混用其泛函导数。以守恒变量 Hamiltonian 为例，固定 \((\rho,\sigma,\mathbf B)\) 时
+\[
+H_{\mathbf M}=\frac{\mathbf M}{\rho}=\mathbf v,\qquad
+H_\sigma=U_s=T,
+\]
+而固定 \((\mathbf M,\sigma,\mathbf B)\) 时
+\[
+H_\rho=-\frac{|\mathbf M|^2}{2\rho^2}+U+\rho U_\rho-sU_s.
+\]
+The last \(-sU_s\) is essential: varying \(\rho\) at fixed \(\sigma\) changes \(s=\sigma/\rho\). Substitution of \(H_{\mathbf M}=\mathbf v\) in (9), tested against \(F=\int f\rho\), yields \(\dot\rho=-\nabla\!\cdot(\rho\mathbf v)\); tested against \(F=\int\mathbf f\!\cdot\mathbf B\), integration by parts yields \(\dot{\mathbf B}=\nabla\times(\mathbf v\times\mathbf B)\) when boundary terms vanish. Thus the recovery statement requires periodic, decaying, or compatible impermeable/conducting boundary conditions.
+
+The MHD bracket is Lie--Poisson on the divergence-free magnetic-field sector. The Erratum's extension off that sector is convention-dependent and should be read from the Erratum before implementation; the conservative physical system itself still requires \(\nabla\cdot\mathbf B=0\). In particular, the stress-divergence expression in this note equals \((\nabla\times\mathbf B)\times\mathbf B\) only after imposing that constraint. Fourier truncation preserves antisymmetry only if conjugate modes/reality and dealiasing are handled consistently; a finite truncation does not automatically inherit the continuum Jacobi identity.
+
 ## Review Questions
 
 1. 对高性能 PDE/流体框架而言，如何把 Morrison-Greene 的守恒变量括号 $(\rho,\sigma,\mathbf M,\mathbf B)$ 实现成 GPU/AMR 友好的 matrix-free `poisson_apply`，同时在 coarse-fine 边界保持能量守恒、反对称性和 $\nabla\cdot\mathbf B=0$？

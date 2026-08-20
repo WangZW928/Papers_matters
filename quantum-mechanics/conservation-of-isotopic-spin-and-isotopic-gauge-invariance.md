@@ -269,6 +269,18 @@ D_\mu\psi
 
 这就是非阿贝尔理论里“源也包括规范场本身”的最早清楚表述。
 
+### 研究者复核：一次无穷小变换与守恒的精确含义
+
+Let \(B_\mu=2b_\mu^aT^a\), \(D_\mu=\partial_\mu-i\epsilon B_\mu\), and choose \(\psi'=S\psi\). Covariance \(D'_\mu S=SD_\mu\) gives
+\[
+B'_\mu=SB_\mu S^{-1}+\frac{i}{\epsilon}(\partial_\mu S)S^{-1},\qquad
+F'_{\mu\nu}=SF_{\mu\nu}S^{-1},\quad
+F_{\mu\nu}=\partial_\mu B_\nu-\partial_\nu B_\mu-i\epsilon[B_\mu,B_\nu].
+\]
+The inverse-conjugation formula printed earlier belongs to the opposite convention for the transformed matter field; the two conventions cannot be mixed. Using \([T^a,T^b]=i\epsilon^{abc}T^c\) then yields the stated cross-product term. The 1954 \(x_4=ict\) notation must not be read as a literal modern Minkowski-sign equation.
+
+The field equation implies covariant conservation \(D_\nu J^\nu=0\), not ordinary conservation of the matter current. A “matter plus gauge-field” ordinary current is a convention- and gauge-dependent split; local gauge invariance alone does not supply a gauge-invariant local isospin charge without specifying boundary conditions and residual gauge transformations.
+
 ### 5. 守恒律与 Gauge Invariance 的关系
 
 在 QED 中，电磁场 $A_\mu$ 不带 electric charge。电子场方程本身就给出 charge conservation，因此可以独立证明 photon 质量为零的 Ward-type 约束。
@@ -318,8 +330,6 @@ Yang 和 Mills 因而无法在理论内部给出 $b$ quantum 的质量。他们�
 后来 electroweak theory 使用 $SU(2)_L\times U(1)_Y$，QCD 使用 $SU(3)_c$。Yang-Mills 的 $SU(2)$ isotopic gauge invariance 成为这些理论的原型。
 
 1954 年留下的质量难题，后来由 spontaneous symmetry breaking 与 Higgs mechanism 解决：规范对称性不被显式破坏，质量来自真空结构和 Higgs field 的协变导数项。于是 $W^\pm,Z$ 可有质量，photon 仍无质量；QCD 中 gluons 形式上无质量，但 confinement 使自由 gluon 不出现。Yang-Mills 理论由此从一个核物理猜想，变成现代 Standard Model 的数学骨架。
-
-## Review Questions
 
 ## Review Questions
 

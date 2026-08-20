@@ -225,6 +225,19 @@ Fisher-Rao 与 Fubini-Study 的等距也可直接计算。上式给出
 \int_M\left(\frac{\dot\rho^2}{\rho}+\rho\dot\theta^2\right)\mu .
 \]
 
+### 研究者复核：Madelung 标度与定义域
+
+The geometric statement concerns positive smooth densities and phases modulo constants; it does not provide a direct formulation of generic rotational Euler or Navier--Stokes flow. More precisely, set \(\psi=\sqrt\rho e^{i\theta}\) with \(\rho>0\). Direct separation of
+\(i\psi_t=-\Delta\psi+V\psi+f(\rho)\psi\) gives
+\[
+\rho_t+2\operatorname{div}(\rho\nabla\theta)=0,
+\qquad
+\theta_t+|\nabla\theta|^2+V+f(\rho)-\frac{\Delta\sqrt\rho}{\sqrt\rho}=0.
+\]
+Thus the velocity is \(u=2\nabla\theta\) for this normalization. Rewriting the phase equation and taking a gradient yields exactly the note's factor \(2\) in the quantum-force equation. If instead the Schrödinger kinetic term is \(-\hbar^2\Delta/(2m)\), then \(u=(\hbar/m)\nabla\theta\) and the quantum potential is \(-\hbar^2\Delta\sqrt\rho/(2m\sqrt\rho)\); factors should not be transferred between these conventions.
+
+The pullback of the Hilbert-space symplectic form is also normalization-sensitive: the calculation in the preceding section proves symplecticity only after fixing the chosen factor and quotienting the global phase. At zeros of \(\psi\), \(\theta\) may be multivalued and \(\Delta\sqrt\rho/\sqrt\rho\) is singular, so the density--phase chart and the smooth derivations cease to apply; evolving \(\psi\) directly is then the safe interpretation.
+
 ### 对 HPC 框架的启示
 
 这篇文章提示可以把势流压缩 Euler、Hamilton-Jacobi、Schrodinger/NLS、量子压力流统一为“密度 + 相位”的后端。HPC 框架中可实现一个 `DensityPhaseState`：$\rho$ 由 positivity-preserving 存储保证，$\theta$ 模常数，速度由 $u=\nabla\theta$ 懒计算。这样 Wasserstein 动能、Fisher 信息、barotropic 内能都可作为可组合 Hamiltonian 项。

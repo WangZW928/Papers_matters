@@ -147,7 +147,7 @@ Lie-Poisson 括号：
 
 ### 3. 基于 retraction 的具体离散化
 
-引入 retraction \(\tau:\mathfrak g\to G\)（\(\tau(0)=e,\; \tau(\xi)\tau(-\xi)=e\)）：
+引入 retraction \(\tau:\mathfrak g\to G\)（至少 \(\tau(0)=e\)、\(d\tau_0=\operatorname{id}\)；\(\tau(\xi)\tau(-\xi)=e\) 是指数/Cayley 等对称 retraction 的额外性质）：
 
 \[w_k = \tau(h\xi_k),\quad \xi_k = \frac{1}{h}\tau^{-1}(w_k).\]
 
@@ -229,6 +229,17 @@ for k = 0,...,N-1:
 **核心启发：**
 - 连续层面：耗散不必破坏几何约束；只要耗散项仍写成余伴随方向，轨道可保持而能量可下降
 - 离散层面：要保持伴随轨道，就把每一步更新设计成精确的 \(Ad^*\) 作用
+
+## 研究者复核：约定、耗散号与离散顺序
+
+All coadjoint formulas in this note use the stated left-trivialization convention. With \(\langle ad^*_\xi\mu,\eta\rangle=\langle\mu,[\eta,\xi]\rangle\), changing the orbit parameterization from \(Ad^*_{g^{-1}}\mu_0\) to \(Ad^*_g\mu_0\) reverses the continuous sign; the bracket and equation must then change together. The discrete product order \(w_k\phi_d(w_k)\) must not be reversed.
+
+If \(a=ad^*_\xi\mu\) and \(\phi(\xi)=k^\sharp a\), the sign check is
+\[
+\frac{dE_l}{dt}=\langle \xi,ad^*_{\phi(\xi)}\mu\rangle
+=-\langle ad^*_\xi\mu,\phi(\xi)\rangle=-k(a,a)\leq0.
+\]
+This uses positive-semidefiniteness of \(k\). It proves continuous energy decrease, not unconditional stepwise decrease for every discrete \(\phi_d\); the exact discrete claim is orbit preservation of \(M_k\) when the implicit Legendre equation is solved accurately.
 
 ## Review Questions
 
