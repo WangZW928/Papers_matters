@@ -170,6 +170,7 @@ $$
 $$
 (\hat{\mathcal{F}}^{-1}f)_l(x)
 =
+\frac{1}{n}
 \sum_{k_1=0}^{s_1-1}\cdots\sum_{k_d=0}^{s_d-1}
 f_l(k_1,\ldots,k_d)
 \exp\left(
@@ -184,10 +185,8 @@ Z_{k_{\max}}
 =
 \left\{
 (k_1,\ldots,k_d):
-k_j\leq k_{\max,j}
-\ \text{or}\
-s_j-k_j\leq k_{\max,j},
-\ j=1,\ldots,d
+\min\{k_j,s_j-k_j\}\leq k_{\max,j}
+\ \text{for every }j=1,\ldots,d
 \right\}.
 $$
 
@@ -250,10 +249,6 @@ FNO 对 Doctor 的 HPC 框架最直接的启示是：Neural Operator 可以被�
 3. 对三维湍流和量子涡，低频截断能否保留拓扑事件、涡线重联和相位奇点？若不能，输入/输出变量应从速度场改为涡量、Clebsch 变量、密度-相位还是复波函数 $\psi$？
 
 ## Review Questions
-
-4. 如果 FNO 用于含复杂边界的 PDE，如何在保留 Fourier 低模态参数化的同时处理边界层和几何局部性？
-5. 对 Hamiltonian / incompressible 系统，FNO 的频域截断会优先破坏哪些守恒或拓扑量，如何加结构约束？
-6. 在多 GPU 3D FFT 场景下，FNO 的真实瓶颈更可能是通信还是复数矩阵乘？应如何建模？
 
 1. FNO 的平移不变卷积核假设与复杂边界、非均匀介质、AMR patch 接口之间的冲突在哪里？如何设计一个既保留 FFT 高吞吐又能处理几何局部性的混合算子？
 2. 若把 FNO 用作 Hamiltonian PDE 的时间推进器，它学习的 $G^\dagger$ 应是一步流映射、有限时间 flow map，还是 Poisson tensor 与 Hamiltonian 的分解？不同选择对长期守恒误差有什么影响？

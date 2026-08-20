@@ -142,10 +142,6 @@ GPU 实现重点：
 
 ## Review Questions
 
-4. 1. sum-factorization 提高的是算子求值效率，但多重网格收敛性取决于层间误差传播；在 GPU 上这两者何时会相互冲突？
-5. 2. 对连续高阶 FEM，matrix-free kernel 的瓶颈究竟在单元内张量操作、面通量、还是全局 scatter/gather？不同离散类型下最优线程映射是否应不同？
-6. 3. 若 Doctor 的框架同时支持高阶 Hamiltonian 波动问题和黏性流动问题，是否应共享同一套 matrix-free multigrid 基础设施，还是按算子谱性质拆成两类预条件路线？
-
 1. **Q:** sum-factorization 如何将高阶 FEM 算子求值的复杂度从 O(p^{2d}) 降到 O(d p^{d+1})，这种变化对 GPU 上的内存带宽和算术强度意味着什么？
 2. **Q:** 为什么在高阶 FEM 中需要将 p-multigrid 与 h-multigrid 结合以获得稳健收敛，而 p-coarsening（降低多项式阶数）与 h-coarsening（粗化网格）在谱半径性质上有何差异？
 3. **Q:** 在高多项式阶数下实现无矩阵平滑器（例如 Chebyshev-accelerated Jacobi）时，关键挑战是什么，sum-factorization 的单元局部特性又如何与 multigrid cycles 中的全局通信需求相互作用？

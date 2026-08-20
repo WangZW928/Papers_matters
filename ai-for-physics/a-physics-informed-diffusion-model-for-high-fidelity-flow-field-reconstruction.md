@@ -133,10 +133,6 @@ return reconstructed high-fidelity field
 
 ## Review Questions
 
-4. 1. PDE residual guidance 应被理解为后验修正还是生成先验的一部分？若 guidance 很强，它是否仍在采样同一个 learned distribution？
-5. 2. 在不可压流体重建中，散度自由约束、边界条件一致性与观测匹配三者若冲突，推理阶段应该按什么优先级处理？
-6. 3. 若扩展到三维湍流或量子涡场，条件变量应继续放在欧拉网格场上，还是改成谱系数、涡结构或拓扑特征，为什么？
-
 1. 本文的训练-推理解耦为什么能提升低保真输入分布变化下的鲁棒性？这种设计与传统 paired super-resolution 网络的误差传播有何不同？
 2. PDE residual guidance 是硬约束、软约束还是后验采样修正？在 Hamiltonian/不可压流体问题中，哪些约束必须 projection，哪些可以 penalty？
 3. 如果把该方法扩展到量子涡或三维湍流，扩散变量应选 $\psi$、密度/相位、速度/压力，还是涡量/涡线表示？

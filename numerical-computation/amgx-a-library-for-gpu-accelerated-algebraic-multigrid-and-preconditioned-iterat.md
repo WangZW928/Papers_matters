@@ -138,10 +138,6 @@ GPU 设计要点：
 
 ## Review Questions
 
-4. 1. 在 GPU 上，AMG 的 setup 阶段与 solve 阶段哪个更容易成为端到端瓶颈？这一判断会如何改变非线性/瞬态求解器里的层级复用策略？
-5. 2. 对高阶 PDE 离散，何时应把 AmgX 当作黑盒线性代数后端，何时必须暴露物理块结构、Schur 补或辅助空间信息给它？
-6. 3. 多 GPU AMG 的最粗层往往并行度最低、通信最重。对 exascale 风格硬件，继续做更深层级是否总是有利，还是应提前切换到聚合粗求解或混合直接法？
-
 1. AMG 的 $A_c=RAP$ Galerkin 构造为什么对收敛性重要？在 GPU 上形成 $A_c$ 的代价和稀疏模式膨胀如何影响整体效率？
 2. 对 Doctor 的高阶数值框架，什么时候应该调用 AmgX 这类 assembled AMG，什么时候应实现 matrix-free geometric/p-multigrid？
 3. 多 GPU AMG 中，coarsening 后并行度降低和通信占比升高如何限制强扩展？有哪些算法策略可以缓解？

@@ -15,7 +15,7 @@
 
 ## 价值评估
 
-Doctor 指定精读**Doctor 指定精读。**。按 6 级标准看，本文 idea 清晰度高：核心是从有限维网格映射转向函数空间算子 $G^\dagger:a\mapsto u$，再用可离散化的核积分层实现网格无关近似。计算结果中高：Darcy flow、Burgers 等基准显示 GKN 比普通 FC/CNN 更适合不规则点云与变分辨率推理。预言能力中高：它学习参数化 PDE 的解算子，对同一方程族的新系数场可快速预测，但外推仍受训练分布限制。方法新颖性高，来源为 ICLR 2020 workshop / arXiv 2003.03485（论文页：https://authors.library.caltech.edu/102271/）；精读判断：应作为 Neural Operator 到 FNO 的前置论文精读。
+Doctor 指定精读。GKN 将有限维网格映射提升为函数空间算子近似，并以可离散化的核积分层处理不规则点集。所谓分辨率泛化依赖于坐标、测度权重与边界编码在训练和测试间表示同一连续问题；它不是无条件的跨网格保证。
 
 ## 公式与代码梳理
 
@@ -149,9 +149,3 @@ $$
 1. 如果把 GKN 的消息传递层解释为可学习 Green operator，它和传统 multigrid coarse-grid correction 或 Schur complement 近似有什么结构相似性？
 2. 在 AMR 框架中，图核网络的边权应由几何邻接决定，还是由物理传播速度、特征线和局部 CFL 条件决定？
 3. 对 Hamiltonian ideal fluid，GKN 若直接学习 $u^{n+1}=G_\theta(u^n)$，怎样避免长期 rollout 中能量、环量和 Casimir 漂移？
-
-4. 若训练点集是非均匀采样，邻域平均与 quadrature-consistent（求积一致）的离散化观点如何统一？是否需要显式测度权重或 lumped mass 修正？
-5. 在 AMR / coarse-fine mesh 场景下，图连接跨层级时如何避免算子只学到插值伪影，而不是真正的跨分辨率 PDE 映射？
-6. 如果目标 PDE 具有 Hamiltonian / 守恒结构，GKN 的 kernel parameterization 能否显式编码 skew-symmetry、energy conservation 或 Casimir 约束？
-
----

@@ -97,10 +97,6 @@ $$
 
 ## Review Questions
 
-4. 1. 这篇工作的关键到底是在“修改扩散方程”，还是在“收缩可接受的解类与信号定义”？这两种立场对数值建模和物理解释有本质不同。
-5. 2. 若一个宏观扩散解存在 relativistic kinetic lift，这个 lift 的非唯一性是否会影响熵产生、涨落统计或边界层行为？
-6. 3. 对 Hamiltonian-耗散混合系统，是否可以把这种“微观因果、宏观抛物”的思路嵌入 GENERIC 或 kinetic-fluid 混合框架，而不是诉诸 Maxwell-Cattaneo 型双曲修正？
-
 1. 本文如何区分扩散方程 Green 函数的数学支撑与物理信号传播？这种区分对波动-扩散统一模型有什么影响？
 2. 如果一个宏观 PDE 的某些解在微观理论中不可实现，数值框架应在初值、边界条件还是时间推进阶段排除它们？
 3. 该结果能否启发 dissipative Hamiltonian、GENERIC 或 kinetic-fluid 混合框架，用于同时表达守恒结构、熵增和因果性？

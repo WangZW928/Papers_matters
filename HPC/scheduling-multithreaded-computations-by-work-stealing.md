@@ -445,4 +445,4 @@ Cilk 的运行时设计基本就是这篇论文的工程化：spawn 时继续执
   7. 概率陈述补条件“对任意给定 round 集合（$r\ge 2$，delay-sequence 分析中）”；
   8. 通信界局部解释拆分：join edge resolution 为 $O(n_d)$ 字节，$S_{\max}$ 对应 activation frame 迁移，每次偷窃通信量 $O(n_d)+O(S_{\max})$；
   9. 通信下界 $\Omega(PT_\infty S_{\max})$ 标注为 $n_d=1$ 时与 Theorem 14 一般式等价。
-- Markdown/语法：通读未发现未闭合 $\$$ 定界符或标题层级异常；关于 skill 中 display math 建议使用 $\[\ldots\]$ 的规范，因库内全部现有论文统一采用 $\$\$$\ldots\$\$$ 且 GitHub 渲染正常，本次保持库内约定一致（若 Doctor 希望切换全部存量文档格式，可另行安排）。
+- Markdown/语法：通读未发现未闭合的显示数学定界符或标题层级异常；关于 display math 的规范，库内此文沿用既有的双美元定界格式，本次保持一致（若 Doctor 希望切换全部存量文档格式，可另行安排）。

@@ -744,4 +744,4 @@ $$
   11. "socket DRAM 带宽瓶颈"限定为 SNB 这类 L3 可扩展架构；
   12. 三维 tile 公式 $n\to n_{\mathrm{shared}}$（私有 L1/L2 取 1，共享 L3 乘线程数）；
   13. ECM 层级预测记号 $\{a\rceil b\rceil c\rceil d\}$ 加说明（$\rceil$ 分隔各级，$\parallel$ 表示可重叠 core 部分）。
-- Markdown 结构整体连贯，$$...$$ 未发现破损；C 代码块中 blocking 边界已是补全形式 $\min(N_i-1, i_s+b_i-1)$。
+- Markdown 结构整体连贯，显示数学定界符未发现破损；C 代码块中 blocking 边界已是补全形式 $\min(N_i-1, i_s+b_i-1)$。

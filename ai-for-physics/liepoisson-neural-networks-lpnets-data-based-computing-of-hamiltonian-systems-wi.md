@@ -19,7 +19,7 @@ LPNets（Eldred 等）：把对称性诱导的 Lie-Poisson bracket 视为已知�
 
 ## 价值评估
 
-Doctor 指定精读**Doctor 指定精读。**。按 6 级标准看，本文 idea 清晰度高：把对称性诱导的 Lie-Poisson bracket 视为已知硬结构，把未知或近似的物理 Hamiltonian 交给数据学习。计算结果中高：刚体、卫星、 underwater vehicle、磁场中粒子等例子展示了长期 rollout 中 Casimir 可达到机器精度守恒，能量保持较好。预言能力中高：对同一 Poisson 流形上的长时间预测明显优于普通神经网络，但需要事先知道合适的 Poisson 结构和可积测试 Hamiltonian 映射。方法新颖性高，来源为 Neural Networks 2024，DOI 10.1016/j.neunet.2024.106162（论文页：https://doi.org/10.1016/j.neunet.2024.106162）；精读判断：非常贴合 Doctor 的几何力学主线，应与 HNN、symplectic NN 和 Hamiltonian ideal fluid 合并阅读。
+Doctor 指定精读。本文把对称性诱导的 Lie--Poisson bracket 视为已知硬结构，把未知或近似的 Hamiltonian 交给数据学习。其 Casimir 保持是由层映射的结构而非训练误差保证；能量或相位精度则仍须独立评估，尤其当训练轨迹来自非结构保持离散时。
 
 ## 公式与代码梳理
 
@@ -149,7 +149,7 @@ $$
 \right\|^2.
 $$
 
-但与普通 MSE 网络不同，$\Phi_\theta$ 的每一层都是 Poisson map，所以训练过程无论是否收敛，都不会破坏 Casimir 叶面。
+但与普通 MSE 网络不同，$\Phi_\theta$ 的每一层都是 Poisson map，所以在该 map 精确实现、变量确实处于同一 Lie--Poisson 流形的前提下，训练参数取何值都不会把状态带离 Casimir 叶面；浮点和 map 实现误差仍需量测。
 
 ### 关键推导
 
@@ -212,9 +212,3 @@ $$
 1. LPNets 把 Poisson bracket 当作已知硬结构；对 Doctor 的量子涡/GPE 问题，哪些变量选择能让 bracket 最简单？
 2. 若训练数据来自非结构保持求解器，LPNets 保 Casimir 到机器精度是否可能“纠正”数据，还是会造成相位误差？
 3. G-LPNets 的 Poisson map composition 能否看作一种 learned geometric integrator，并与传统 splitting method 建立误差阶分析？
-
-4. 对非典范 Poisson bracket，变量选择是否决定了网络能否真正学到结构，而不是仅在某组坐标下拟合守恒量外观？
-5. 若训练数据来自非结构保持求解器，LPNets 会把数值伪耗散也编码成“动力学规律”吗？作者如何分离这两者？
-6. 与 splitting / variational integrator / discrete gradient 等几何积分器相比，LPNets 的优势究竟在未知模型学习，还是在已知结构下的高效 surrogate？
-
----

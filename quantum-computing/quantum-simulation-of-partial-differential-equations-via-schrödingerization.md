@@ -17,7 +17,7 @@ Schrödingerization（Jin 等，PRL 2024）：通过 warped phase transformation
 
 ## 价值评估
 
-Doctor 指定精读**Doctor 指定精读。**。按 6 级标准看，本文 idea 清晰度很高：通过 warped phase transformation 把一般线性 ODE/PDE 的非幺正演化提升为高一维 Schrödinger 型幺正演化。计算结果偏理论算法型：PRL 论文给出框架、复杂度和多类 PDE/量子问题应用方向，而非传统 HPC benchmark。预言能力中高：它可统一处理 heat、transport、Fokker-Planck、Black-Scholes、非 Hermitian quantum dynamics 等线性问题，但输出是归一化量子态，完整场重构仍受测量成本限制。方法新颖性高，来源为 Phys. Rev. Lett. 133, 230602，DOI 10.1103/PhysRevLett.133.230602（论文页：https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.133.230602）；精读判断：值得精读，尤其适合连接量子算法、Hamiltonian simulation 和经典 PDE solver 的结构转换。
+Doctor 指定精读。本文通过 warped phase transformation 把一般线性 ODE/PDE 的非幺正演化提升为高一维 Schrödinger 型幺正演化。它给出的是理论算法框架；完整场重构仍受输入制备、归一化与测量成本限制，故“量子加速”必须按目标 observable 而非仅按演化复杂度判断。
 
 ## 公式与代码梳理
 
@@ -47,13 +47,13 @@ H=\frac{A+A^\dagger}{2},
 \bar{H}=\frac{i(A^\dagger-A)}{2}.
 $$
 
-若 $H$ 半正定，则可用 warped phase transformation 引入辅助变量 $p$。在 $p>0$ 区域定义
+若 $H$ 半正定，则可用 warped phase transformation 引入辅助变量 $p$。采用下列符号约定，在 $p>0$ 区域定义
 
 $$
-v(t,p)=e^{-p}u(t).
+v(t,p)=e^{p}u(t).
 $$
 
-因为 $\partial_p v=-e^{-p}u=-v$，原方程
+因为 $\partial_p v=e^{p}u=v$，原方程
 
 $$
 \partial_t u=-(H+i\bar{H})u
@@ -133,25 +133,19 @@ $$
 \frac{d}{dt}u=-Hu
 $$
 
-且 $H=H^\dagger\geq 0$。定义 $v=e^{-p}u$，则
+且 $H=H^\dagger\geq 0$。按上面的约定定义 $v=e^{p}u$，则
 
 $$
-\partial_t v=e^{-p}\partial_t u=-He^{-p}u=-Hv.
+\partial_t v=e^{p}\partial_t u=-He^{p}u=-Hv.
 $$
 
-又有 $\partial_p v=-v$，所以
-
-$$
-\partial_t v-H\partial_p v=0
-$$
-
-或按符号约定写作
+又有 $\partial_p v=v$，所以
 
 $$
 \partial_t v+H\partial_p v=0.
 $$
 
-这说明原来的耗散衰减被编码为辅助维 $p$ 上的平移。
+这说明原来的耗散衰减被编码为辅助维 $p$ 上的平移。若采用 $e^{-p}$ 或相反的 Fourier 相位，运输号和 Fourier 标签必须同时反号；不能只改其中一个。
 
 第二步是 Fourier 化后获得 Hermitian generator。对 $p$ 变换后，$\partial_p$ 变成 $i\eta$，于是
 
@@ -212,11 +206,5 @@ $$
 1. Schrödingerization 给出的是归一化量子态 $|u(t)\rangle$，而 CFD/HPC 通常需要全场数组；哪些 PDE 任务真正适合这种输出模型？
 2. 对 GPE、open quantum system 或含吸收边界的 Schrödinger 方程，本文的非 Hermitian 到 Hermitian lifting 能否提供比 PML 更结构化的边界处理？
 3. 若把 $H_{\text{total}}=H\otimes D+\bar{H}\otimes I$ 作为 matrix-free 算子，在 GPU 上它的 Roofline 瓶颈更像 stencil、FFT，还是 batched sparse matvec？
-
-4. Schrödingerization 最终给出的是归一化量子态 `|u(t)\rangle`，而 CFD/HPC 常需要全场数值和绝对幅值；哪些 PDE 任务真正适合这种“状态方向优先”的输出模型？
-5. 对带吸收边界、开放系统或非 Hermitian Schrödinger 方程，本文的 lifting 是否只是把困难转移到更高维 Hamiltonian 模拟，还是确实改善了稳定性与可测量性？
-6. 若把 `H_{\text{total}}=H\otimes D+\bar H\otimes I` 当作经典 GPU 上的 matrix-free 算子，其性能瓶颈更接近 FFT、stencil 还是 batched sparse matvec，作者有没有给出可操作的复杂度模型？
-tokens used
-58,462
 
 ---
