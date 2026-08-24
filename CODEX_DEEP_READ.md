@@ -83,10 +83,10 @@
    - 数理基础：波函数空间实 Hermite 内积与 NLS Poisson 括号、半直积群 \(Diff(\mathbb R^n)\ltimes H^\infty\) 作用、动量映射、Lie-Poisson 可压流体括号、量子压、Clebsch/symplectic realization。
    - 为什么精读：把 Madelung 变换从代数代换提升为 Poisson/动量映射机制，是量子-经典流体对应的几何解释核心。关联：Geometric hydrodynamics via Madelung transform、Morrison-Greene 1980、Clebsch Maps。
 
-9. **Covector Fluids** — geometric-fluid
-   - 文件：[`geometric-fluid/covector-fluids.md`](geometric-fluid/covector-fluids.md)
-   - 数理基础：速度/动量一形式、余切提升、Euler-Poincare/Lie-Poisson 离散化、结构保持流体表示。
-   - 为什么精读：它把几何力学语言转成可计算的流体模拟表示，是 Hamiltonian ideal fluid 到图形学/数值算法之间的重要桥梁。关联：Hamiltonian ideal fluid、LPNets、Schrödinger's Smoke。
+9. **Covector Fluids** — computer-graphics
+   - 文件：[`computer-graphics/covector-fluids.md`](computer-graphics/covector-fluids.md)
+   - 数理基础：速度一形式、余切 pullback、Lie advection、Kelvin 环量与涡量二形式输运；规则 MAC 网格上的半拉格朗日实现。
+   - 为什么精读：它把几何流体力学语言落到图形学 advection-projection solver，是结构保持流体表示与 AMReX/VWiS 离散设计之间的重要桥梁；但论文没有给出 AMR/任意网格或严格离散守恒证明。
 
 10. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
