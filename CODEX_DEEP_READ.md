@@ -311,6 +311,25 @@
     - 文件：[`vortex-dynamics/inside-fluids-clebsch-maps-for-visualization-and-processing.md`](vortex-dynamics/inside-fluids-clebsch-maps-for-visualization-and-processing.md)
     - 数理基础：Clebsch 势、相位缺陷、涡结构表示、螺旋度、环量、拓扑守恒、Schrödinger 演化。
     - 为什么精读：这是“涡拓扑 + 量子表象 + 可视化”的好论文，但它是应用构造而非骨架源头。建议从 Tier 1 降到 Tier 4：读核心表示和算法思想即可，不应压过 Morrison-Greene、Berger-Colella、FNO 等源头文献。关联：Schrödinger's Smoke、Madelung transform、Clebsch free-surface。
+
+## 本轮新增精读（2026-10-15）
+
+以下条目是本轮新增阅读建议，不重排既有 Tier 编号或路线；Tier 指阅读优先级，不是前述六维价值分数。
+
+### Tier 2 — 与高性能框架/搜索架构直接相关
+
+- **egg: Fast and Extensible Equality Saturation** — [`numerical-computation/egg-fast-and-extensible-equality-saturation.md`](numerical-computation/egg-fast-and-extensible-equality-saturation.md)。e-graph rebuilding 与 e-class analysis 为等价变换、语义分析及代价抽取提供可扩展编译优化架构；连接 Exo 2 与 tensor-program search。
+- **Exo 2: Growing a Scheduling Language** — [`numerical-computation/exo-2-growing-a-scheduling-language.md`](numerical-computation/exo-2-growing-a-scheduling-language.md)。用户可组合安全 scheduling primitives，适合作为可生长 kernel/AMR 调度接口的设计参照。
+- **Tensor Program Optimization with Probabilistic Programs** — [`numerical-computation/tensor-program-optimization-with-probabilistic-programs.md`](numerical-computation/tensor-program-optimization-with-probabilistic-programs.md)。将优化搜索空间本身作为模块化概率程序，适合对照 Exo 2 理解空间构造与搜索的分工。
+- **GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning** — [`ai-agent-systems/gepa-reflective-prompt-evolution-can-outperform-reinforcement-learning.md`](ai-agent-systems/gepa-reflective-prompt-evolution-can-outperform-reinforcement-learning.md)。文本化执行反馈、Pareto 候选管理和 rollout 预算对 agent search 有启发；GPU 结论须由 kernel evaluator 单独验证。
+- **ShinkaEvolve: Towards Open-Ended and Sample-Efficient Program Evolution** — [`ai-agent-systems/shinkaevolve-towards-open-ended-and-sample-efficient-program-evolution.md`](ai-agent-systems/shinkaevolve-towards-open-ended-and-sample-efficient-program-evolution.md)。parent/novelty/model-bandit 共同改善候选预算使用，适合与 AlphaEvolve、K-Search 比较。
+- **KernelSkill: A Multi-Agent Framework for GPU Kernel Optimization** — [`ai-agent-systems/kernelskill-a-multi-agent-framework-for-gpu-kernel-optimization.md`](ai-agent-systems/kernelskill-a-multi-agent-framework-for-gpu-kernel-optimization.md)。值得参考其 profile → 可审核规则 → 计划/修复闭环，以及双层经验记忆。
+- **KernelEvolve: Scaling Agentic Kernel Coding for Heterogeneous AI Accelerators at Meta** — [`ai-agent-systems/kernelevolve-scaling-agentic-kernel-coding-for-heterogeneous-ai-accelerators-at-meta.md`](ai-agent-systems/kernelevolve-scaling-agentic-kernel-coding-for-heterogeneous-ai-accelerators-at-meta.md)。系统级异构硬件、评测和生产部署经验与框架工作直接相关；Meta 内部数据不可独立复现，应和公开基准结果分层。
+
+### Tier 3 — Agent 运行时记忆/上下文适应
+
+- **Agentic Plan Caching** — [`ai-agent-systems/agentic-plan-caching-test-time-memory-for-fast-and-cost-efficient-llm-agents.md`](ai-agent-systems/agentic-plan-caching-test-time-memory-for-fast-and-cost-efficient-llm-agents.md)。复用可适配的计划模板而非旧回答，对降低反复规划成本有参考。
+- **Agentic Context Engineering (ACE)** — [`ai-agent-systems/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md`](ai-agent-systems/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md)。以 itemized delta 更新缓解 playbook 细节坍缩，可用于思考如何维护可追溯的实验经验。
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
@@ -325,4 +344,4 @@
 
 ---
 
-*覆盖 13 个分类 | 每篇均关联库内至少 1 篇其他论文 | 53/53 文件已链接*
+*覆盖 13 个分类 | 原有 Tier 编号和路线保留；另增 9 篇精读的补充评估索引*

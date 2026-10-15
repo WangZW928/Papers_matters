@@ -115,11 +115,17 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 
 ## AI Agents and Systems
 
+- 📖 [Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models](./ai-agent-systems/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md)
+- 📖 [Agentic Plan Caching: Test-Time Memory for Fast and Cost-Efficient LLM Agents](./ai-agent-systems/agentic-plan-caching-test-time-memory-for-fast-and-cost-efficient-llm-agents.md)
 - 📖 [AlphaEvolve: A Coding Agent for Scientific and Algorithmic Discovery](./ai-agent-systems/alphaevolve-a-coding-agent-for-scientific-and-algorithmic-discovery.md)
+- 📖 [GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning](./ai-agent-systems/gepa-reflective-prompt-evolution-can-outperform-reinforcement-learning.md)
 - 📖 [KernelBench: Can LLMs Write Efficient GPU Kernels?](./ai-agent-systems/kernelbench-can-llms-write-efficient-gpu-kernels.md)
 - 📖 [KernelCraft: Benchmarking for Agentic Close-to-Metal Kernel Generation on Emerging Hardware](./ai-agent-systems/kernelcraft-benchmarking-for-agentic-close-to-metal-kernel-generation.md)
+- 📖 [KernelEvolve: Scaling Agentic Kernel Coding for Heterogeneous AI Accelerators at Meta](./ai-agent-systems/kernelevolve-scaling-agentic-kernel-coding-for-heterogeneous-ai-accelerators-at-meta.md)
+- 📖 [KernelSkill: A Multi-Agent Framework for GPU Kernel Optimization](./ai-agent-systems/kernelskill-a-multi-agent-framework-for-gpu-kernel-optimization.md)
 - 📖 [K-Search: LLM Kernel Generation via Co-Evolving Intrinsic World Model](./ai-agent-systems/k-search-llm-kernel-generation-via-co-evolving-intrinsic-world-model.md)
 - 📖 [Optimizing CUDA like a Human: Micro-Profiling Tools as Expert Surrogates for LLM-Based GPU Kernel Optimization](./ai-agent-systems/optimizing-cuda-like-a-human-micro-profiling-tools.md)
+- 📖 [ShinkaEvolve: Towards Open-Ended and Sample-Efficient Program Evolution](./ai-agent-systems/shinkaevolve-towards-open-ended-and-sample-efficient-program-evolution.md)
 - 📖 [SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering](./ai-agent-systems/swe-agent-agent-computer-interfaces-enable-automated-software-engineering.md)
 
 ## Computer Graphics
@@ -284,6 +290,8 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [AmgX: A Library for GPU Accelerated Algebraic Multigrid and Preconditioned Iterative Methods | SIAM Journal on Scientific Computing | Vol. 37, No. 5 | Society for Industrial and Applied Mathematics](./numerical-computation/amgx-a-library-for-gpu-accelerated-algebraic-multigrid-and-preconditioned-iterat.md)
 - 📄 [An immersed boundary method using online sequential data assimilation](./numerical-computation/an-immersed-boundary-method-using-online-sequential-data-assimilation.md)
 - 📄 [Arbitrary Lagrangian-Eulerian Methods](./numerical-computation/arbitrary-lagrangian-eulerian-methods.md)
+- 📖 [egg: Fast and Extensible Equality Saturation](./numerical-computation/egg-fast-and-extensible-equality-saturation.md)
+- 📖 [Exo 2: Growing a Scheduling Language](./numerical-computation/exo-2-growing-a-scheduling-language.md)
 - 📄 [computing unsteady ﬂows on unstructured grids](./numerical-computation/computing-unsteady-ﬂows-on-unstructured-grids.md)
 - 📄 [Exact Jacobians for implicit Navier–Stokes simulations of equilibrium real gas flows](./numerical-computation/exact-jacobians-for-implicit-navierstokes-simulations-of-equilibrium-real-gas-fl.md)
 - 📄 [GPGPU-based heterogeneous parallel implementation of direct discontinuous Galerkin methods](./numerical-computation/gpgpu-based-heterogeneous-parallel-implementation-of-direct-discontinuous-galerk.md)
@@ -296,6 +304,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Path integral molecular dynamics approximations of quantum canonical observables](./numerical-computation/path-integral-molecular-dynamics-approximations-of-quantum-canonical-observables.md)
 - 📄 [Ruminated Tensor Decomposition algorithm for solving inviscid Burgers' equation](./numerical-computation/ruminated-tensor-decomposition-algorithm-for-solving-inviscid-burgers-equation.md)
 - 📄 [Sparse Matrix Solvers on the GPU: Conjugate Gradients and Multigrid](./numerical-computation/sparse-matrix-solvers-on-the-gpu-conjugate-gradients-and-multigrid.md)
+- 📖 [Tensor Program Optimization with Probabilistic Programs](./numerical-computation/tensor-program-optimization-with-probabilistic-programs.md)
 - 📄 [SU2: An Open-Source Suite for Multiphysics Simulation and Design](./numerical-computation/su2-an-open-source-suite-for-multiphysics-simulation-and-design.md)
 - 📄 [TeraFLOP Computing on a Desktop PC with GPUs for 3D CFD](./numerical-computation/teraflop-computing-on-a-desktop-pc-with-gpus-for-3d-cfd.md)
 - 📄 [The Hermite-Taylor Correction Function Method for Maxwell's Equations](./numerical-computation/the-hermite-taylor-correction-function-method-for-maxwells-equations.md)
