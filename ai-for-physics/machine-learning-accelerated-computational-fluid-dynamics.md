@@ -51,7 +51,7 @@ Doctor 指定精读（跳过 Codex 价值评估）。按 6 级标准看，本文
 
 论文的物理对象是二维不可压 Navier-Stokes 方程。原文采用无量纲形式：
 
-$$
+\[
 \frac{\partial\mathbf{u}}{\partial t}
 =
 -\nabla\cdot(\mathbf{u}\otimes\mathbf{u})
@@ -61,49 +61,49 @@ $$
 \frac{1}{\rho}\nabla p
 +
 \mathbf{f},
-$$
+\]
 
-$$
+\[
 \nabla\cdot\mathbf{u}=0.
-$$
+\]
 
 其中 $\mathbf{u}$ 是速度场，$\mathbf{f}$ 是外力，$\rho$ 为常密度，$p$ 是用于 enforce incompressibility 的 Lagrange multiplier，$Re$ 控制对流与扩散的相对强度。二维诊断常用涡量
 
-$$
+\[
 \omega=\partial_x u_y-\partial_y u_x,
-$$
+\]
 
 以及能谱
 
-$$
+\[
 E(\mathbf{k})=\frac{1}{2}|\mathbf{u}(\mathbf{k})|^2.
-$$
+\]
 
 LES 情形中，速度替换为滤波速度 $\overline{\mathbf{u}}$，动量方程右端增加 sub-grid 项
 
-$$
+\[
 -\nabla\cdot\boldsymbol{\tau},
-$$
+\]
 
 其中
 
-$$
+\[
 \boldsymbol{\tau}
 =
 \overline{\mathbf{u}\otimes\mathbf{u}}
 -
 \overline{\mathbf{u}}\otimes\overline{\mathbf{u}}.
-$$
+\]
 
 附录中基线 LES 使用 Smagorinsky-Lilly SGS：
 
-$$
+\[
 \tau_{ij}
 =
 -2(C_s\Delta)^2|\overline{S}|\overline{S}_{ij},
-$$
+\]
 
-$$
+\[
 \overline{S}_{ij}
 =
 \frac{1}{2}
@@ -112,13 +112,13 @@ $$
 |\overline{S}|
 =
 2\sqrt{\sum_{i,j}\overline{S}_{ij}\overline{S}_{ij}},
-$$
+\]
 
 其中 $C_s=0.2$，$\Delta$ 是网格间距。
 
 数值框架是 staggered-square mesh 上的有限体积法。速度分量放在 cell edges，压力放在 cell centers。一个时间步可抽象为
 
-$$
+\[
 \mathbf{u}^{*}
 =
 \mathbf{u}^{n}
@@ -131,53 +131,53 @@ $$
 +
 \mathbf{f}^{n}
 \right],
-$$
+\]
 
-$$
+\[
 \mathbf{u}^{n+1}
 =
 \Pi_h(\mathbf{u}^{*}),
-$$
+\]
 
 其中 $\mathcal{C}_h$ 是离散对流项，$\mathcal{D}_h$ 是离散扩散项，$\Pi_h$ 是压力投影，用 Poisson solve enforce
 
-$$
+\[
 \nabla_h\cdot\mathbf{u}^{n+1}=0.
-$$
+\]
 
 本文的核心判断是：粗网格误差主要来自对流通量 $\mathbf{u}\otimes\mathbf{u}$ 的 face value 近似。因此 learned interpolation 不直接预测下一帧，而是替换有限体积通量构造中的插值算子。对某个 face 或插值目标 $x$，从局部 stencil $\{u_i\}_{i=1}^{n}$ 构造
 
-$$
+\[
 u(x)\approx\sum_{i=1}^{n}a_i u_i.
-$$
+\]
 
 不同于固定 polynomial interpolation，系数 $a_i$ 来自卷积神经网络对局部流场的输出。为保证至少一阶一致性，约束
 
-$$
+\[
 \sum_{i=1}^{n}a_i=1.
-$$
+\]
 
 实现上，网络先输出无约束向量 $\mathbf{x}\in\mathbb{R}^{n-1}$，再经仿射映射生成满足约束的插值系数：
 
-$$
+\[
 \mathbf{a}=A\mathbf{x}+\mathbf{b}.
-$$
+\]
 
 其中 $A$ 是全 1 约束矩阵零空间的一组基，$\mathbf{b}$ 是任意满足 $\sum_i b_i=1$ 的基准系数，例如最近源位置的线性插值。论文使用以 unit-cell 右上角为中心的 $4\times4$ patch，因此 $n=16$，需要 $15$ 个无约束输出生成一组插值系数。由于二维中每个速度分量和每个通量方向都要处理，对 $d$ 维空间有 $d^2$ 个 convective flux module；二维时为 $4$ 类通量，实际网络输出包含多个插值点的系数集合。
 
 learned correction 是更接近 LES closure 的替代路线。它先用粗网格传统求解器得到未修正速度 $\mathbf{u}^{*}_t$，再加残差网络：
 
-$$
+\[
 \mathbf{u}_t
 =
 \mathbf{u}^{*}_t+\mathrm{LC}(\mathbf{u}^{*}_t).
-$$
+\]
 
 该式既可理解为 temporally discretized closure，也可理解为粗网格离散化误差修正。与 LI 相比，LC inductive bias 更弱，解释性与稳定性较差，但实现简单。
 
 训练损失把神经模块放在完整求解器内部反传。给定高分辨率 DNS/LES 轨迹下采样后的 ground truth $\mathbf{u}(t_i)$，以及粗网格 learned solver 的 rollout $\widetilde{\mathbf{u}}(t_i)$，损失为
 
-$$
+\[
 L(x,y)
 =
 \sum_{t_i}^{t_T}
@@ -186,26 +186,26 @@ L(x,y)
 \mathbf{u}(t_i),
 \widetilde{\mathbf{u}}(t_i)
 \right).
-$$
+\]
 
 关键不是单步 a priori fitting，而是 model-consistent training：网络在 unroll 后看到自己的输出作为下一步输入。论文中常用 32 步 unroll（需配合梯度截断/checkpointing 控制反向传播的显存与稳定性），并通过 gradient checkpoint 降低显存。
 
 精度-分辨率等价可写为：若传统 solver 在网格 $h/K$ 上的误差与 learned coarse solver 在网格 $h$ 上相当，
 
-$$
+\[
 \mathrm{Err}_{\mathrm{ML}}(h)
 \approx
 \mathrm{Err}_{\mathrm{DNS}}\left(\frac{h}{K}\right),
-$$
+\]
 
 则 $K$ 是有效粗化因子。二维显式流体中，空间两个维度和 CFL 时间步共同带来近似 $K^{d+1}$ 的规模收益；考虑神经网络相对基线的单格点成本，论文给出运行时间估计
 
-$$
+\[
 T
 \sim
 (C_{\mathrm{ML}}+C_{\mathrm{physics}})
 \left(\frac{N}{K}\right)^{d+1}.
-$$
+\]
 
 其中 $C_{\mathrm{ML}}$ 是每网格点 ML 推理成本，$C_{\mathrm{physics}}$ 是基线数值方法成本，$N$ 是 resolved grid 每维点数，$d$ 是空间维数，$K$ 是有效 coarse graining factor。实验中 $C_{\mathrm{ML}}/C_{\mathrm{physics}}\approx 12$，若 $K\approx10$ 且 $d=2$，速度比约为 $10^3/12\approx80$。
 
@@ -213,41 +213,41 @@ $$
 
 第一步是把对流项写成有限体积通量问题。连续对流项
 
-$$
+\[
 -\nabla\cdot(\mathbf{u}\otimes\mathbf{u})
-$$
+\]
 
 在 cell average 上通过 Gauss 定理变成 face flux 求和。于是粗网格误差的关键不是直接拟合 $\partial_t\mathbf{u}$，而是更准确地估计 face 上的 $\mathbf{u}\otimes\mathbf{u}$。LI 用神经网络生成局部插值系数 $a_i$，但仍把通量放回守恒形式，因此局部动量守恒结构由 divergence operator 保留。
 
 第二步是一致性约束。若真实局部场为常数 $u_i=c$，则
 
-$$
+\[
 \sum_i a_i u_i
 =
 c\sum_i a_i
 =
 c.
-$$
+\]
 
 只要 $\sum_i a_i=1$，插值至少能精确再现常数场，即一阶一致性的基础。通过 $\mathbf{a}=A\mathbf{x}+\mathbf{b}$，网络无论输出什么 $\mathbf{x}$，都落在约束仿射子空间里。这比在 loss 中惩罚 $\sum_i a_i-1$ 更硬，也更适合长期积分稳定性。
 
 第三步是压力投影把 learned flux 的结果拉回不可压流形。粗步得到 $\mathbf{u}^{*}$ 后，解离散 Poisson 方程
 
-$$
+\[
 \nabla_h^2 p
 =
 \frac{\rho}{\Delta t}\nabla_h\cdot\mathbf{u}^{*},
-$$
+\]
 
 再投影
 
-$$
+\[
 \mathbf{u}^{n+1}
 =
 \mathbf{u}^{*}
 -
 \frac{\Delta t}{\rho}\nabla_h p.
-$$
+\]
 
 这说明神经网络没有负责所有物理约束；它只改善对流近似，而不可压约束仍由经典 projection method 强制执行。
 

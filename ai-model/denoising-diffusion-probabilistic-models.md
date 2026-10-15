@@ -1,5 +1,11 @@
 # 去噪扩散概率模型
 
+**作者：** Jonathan Ho, Ajay Jain, Pieter Abbeel
+
+**会议：** NeurIPS 2020
+
+**来源：** [arXiv:2006.11239v2](https://arxiv.org/abs/2006.11239v2)
+
 **来源 PDF：** `2006.11239v2.pdf`
 **阅读状态：** 🔬 精读
 **流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ⏳ | ⑥review ✓ | ⑦提交 ⏳
@@ -8,7 +14,7 @@
 
 ## 摘要
 
-_暂无_
+论文在已有扩散概率模型基础上，建立去噪参数化、变分训练与去噪得分匹配的联系，并采用简化的噪声预测目标改善图像生成质量。生成通过学习反向马尔可夫链完成，论文还研究了渐进生成与插值。这里是据原文概述，并非逐字摘要翻译。
 
 ## 总结
 
@@ -17,7 +23,7 @@ _暂无_
 **方法：** 去噪扩散概率模型（DDPM）方法
 
 **关键结果：**
-1. 提出了扩散模型的完整概率框架
+1. 改进扩散生成模型的参数化与训练目标，并展示高质量图像生成
 2. 实现了与 GAN 可比的高质量图像生成
 3. 展示了扩散过程的渐进生成与插值能力
 
@@ -33,52 +39,52 @@ Doctor 指定精读（学习路线规划推荐）。DDPM 是现代扩散生成�
 
 DDPM 定义固定的前向扩散过程：
 
-$$
+\[
 q(x_t|x_{t-1})=
 \mathcal{N}\left(x_t;\sqrt{1-\beta_t}x_{t-1},\beta_t I\right),
-$$
+\]
 
 其中 $\beta_t$ 是预设噪声日程。记
 
-$$
+\[
 \alpha_t=1-\beta_t,\qquad
 \bar{\alpha}_t=\prod_{s=1}^t\alpha_s,
-$$
+\]
 
 则任意时刻可直接从干净样本 $x_0$ 采样：
 
-$$
+\[
 q(x_t|x_0)=
 \mathcal{N}\left(x_t;\sqrt{\bar{\alpha}_t}x_0,(1-\bar{\alpha}_t)I\right),
-$$
+\]
 
 等价重参数化为
 
-$$
+\[
 x_t=\sqrt{\bar{\alpha}_t}x_0+\sqrt{1-\bar{\alpha}_t}\epsilon,\qquad
 \epsilon\sim\mathcal{N}(0,I).
-$$
+\]
 
 反向生成过程由神经网络参数化：
 
-$$
+\[
 p_\theta(x_{t-1}|x_t)=
 \mathcal{N}\left(x_{t-1};\mu_\theta(x_t,t),\Sigma_\theta(x_t,t)\right).
-$$
+\]
 
 论文将变分下界分解为逐时间步 KL 项：
 
-$$
+\[
 \mathbb{E}_q[-\log p_\theta(x_0)]
 \le
 \mathbb{E}_q\left[
 -\log\frac{p_\theta(x_{0:T})}{q(x_{1:T}|x_0)}
 \right].
-$$
+\]
 
 关键简化是让网络预测噪声 $\epsilon_\theta(x_t,t)$，训练目标写成
 
-$$
+\[
 \mathcal{L}_{\mathrm{simple}}
 =
 \mathbb{E}_{t,x_0,\epsilon}
@@ -87,17 +93,17 @@ $$
 \sqrt{\bar{\alpha}_t}x_0+\sqrt{1-\bar{\alpha}_t}\epsilon,t
 \right)\right\|^2
 \right].
-$$
+\]
 
 这说明模型不是直接生成 $x_0$，而是在每个噪声尺度上学习 score/去噪方向。反向均值可由噪声预测写出：
 
-$$
+\[
 \mu_\theta(x_t,t)
 =\frac{1}{\sqrt{\alpha_t}}
 \left(
 x_t-\frac{\beta_t}{\sqrt{1-\bar{\alpha}_t}}\epsilon_\theta(x_t,t)
 \right).
-$$
+\]
 
 ### 关键推导/算法
 
@@ -144,4 +150,8 @@ return x_0
 
 1. 去噪扩散概率模型中的前向固定扩散过程与反向学习生成过程之间，变分下界如何保证训练目标是可处理的？为什么该下界又可以简化为加权的去噪 score matching 目标？
 2. 为什么重参数化技巧可以把 DDPM 的损失写成一个简单的噪声预测任务？这一点又如何通过 score function 将 DDPM 与基于 score 的生成建模联系起来？
-3. 前向扩散过程在数学上等价于热方程 SDE 的离散化。这种物理类比如何启发流体力学中的应用，例如湍流闭合建模、流场超分辨或 CFD 中的数据同化？
+3. DDPM 的连续极限包含线性衰减漂移：$dx=-\tfrac12\beta(t)x\,dt+\sqrt{\beta(t)}\,dW_t$。它与纯热方程对应的布朗扩散有何区别？迁移到流场时如何处理量纲与守恒量？
+
+## 核对依据与边界（2026-10-15）
+
+对照[DDPM v2](https://arxiv.org/abs/2006.11239v2)§2–3 的前向转移、反向均值与简化目标。Review Questions 的连续极限是对离散转移做小步长展开的补充，不归作该文首次提出的 SDE 理论。

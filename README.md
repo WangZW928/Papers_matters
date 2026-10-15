@@ -1,8 +1,8 @@
 # Papers Matters
 
-> 📋 [Codex Research Review — 12 个研究问题](./CODEX_REVIEW.md) | 📖 [Codex 精读排名 — 49 篇推荐](./CODEX_DEEP_READ.md)
+> 📋 [Codex Research Review — 12 个研究问题](./CODEX_REVIEW.md) | 📖 [Codex 分层阅读建议](./CODEX_DEEP_READ.md)
 
-Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文元数据、中文摘要和关键结论。
+Doctor 的论文库，按研究方向分类整理。条目按研究方向归档，内容完整性不一。
 
 ---
 
@@ -12,7 +12,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [5666_Neural_Fluid_Simulation_o](./ai-for-physics/5666_neural_fluid_simulation_o.md)
 - 📄 [A generalized framework of neural networks for Hamiltonian systems](./ai-for-physics/a-generalized-framework-of-neural-networks-for-hamiltonian-systems.md)
 - 📄 [A non-gradient method for solving elliptic partial differential equations with deep neural networks](./ai-for-physics/a-non-gradient-method-for-solving-elliptic-partial-differential-equations-with-d.md)
-- 📄 [A physics-informed diffusion model for high-fidelity flow field reconstruction](./ai-for-physics/a-physics-informed-diffusion-model-for-high-fidelity-flow-field-reconstruction.md)
+- 📖 [A physics-informed diffusion model for high-fidelity flow field reconstruction](./ai-for-physics/a-physics-informed-diffusion-model-for-high-fidelity-flow-field-reconstruction.md)
 - 📄 [A two-stage physics-informed neural network method based on conserved quantities and applications in localized wave solutions](./ai-for-physics/a-two-stage-physics-informed-neural-network-method-based-on-conserved-quantities.md)
 - 📄 [Accurate medium-range global weather forecasting with 3D neural networks](./ai-for-physics/accurate-medium-range-global-weather-forecasting-with-3d-neural-networks.md)
 - 📄 [AI Feynman: A physics-inspired method for symbolic regression](./ai-for-physics/ai-feynman-a-physics-inspired-method-for-symbolic-regression.md)
@@ -34,7 +34,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Desynchronization Transitions in Adaptive Networks](./ai-for-physics/desynchronization-transitions-in-adaptive-networks.md)
 - 📄 [DGM: A deep learning algorithm for solving partial differential equations](./ai-for-physics/dgm-a-deep-learning-algorithm-for-solving-partial-differential-equations.md)
 - 📄 [Dimensionally consistent learning with Buckingham Pi](./ai-for-physics/dimensionally-consistent-learning-with-buckingham-pi.md)
-- 📄 [Discovering governing equations from data by sparse identification of nonlinear dynamical systems](./ai-for-physics/discovering-governing-equations-from-data-by-sparse-identification-of-nonlinear-.md)
+- 📖 [Discovering governing equations from data by sparse identification of nonlinear dynamical systems](./ai-for-physics/discovering-governing-equations-from-data-by-sparse-identification-of-nonlinear-.md)
 - 📄 [Dynamic Mode Decomposition and Its Variants](./ai-for-physics/dynamic-mode-decomposition-and-its-variants.md)
 - 📄 [Dynamic mode structure of active turbulence](./ai-for-physics/dynamic-mode-structure-of-active-turbulence.md)
 - 📄 [Dynamics-based machine learning of transitions in Couette flow](./ai-for-physics/dynamics-based-machine-learning-of-transitions-in-couette-flow.md)
@@ -45,7 +45,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [From Bypass Transition to Flow Control and Data-Driven Turbulence Modeling: An Input–Output Viewpoint](./ai-for-physics/from-bypass-transition-to-flow-control-and-data-driven-turbulence-modeling-an-in.md)
 - 📄 [From limited observations to the state of turbulence: Fundamental difficulties of flow reconstruction](./ai-for-physics/from-limited-observations-to-the-state-of-turbulence-fundamental-difficulties-of.md)
 - 📄 [Fundamental Dynamics of Popularity-Similarity Trajectories in Real Networks](./ai-for-physics/fundamental-dynamics-of-popularity-similarity-trajectories-in-real-networks.md)
-- 📄 [Hamiltonian Neural Networks](./ai-for-physics/hamiltonian-neural-networks.md)
+- 📖 [Hamiltonian Neural Networks](./ai-for-physics/hamiltonian-neural-networks.md)
 - 📄 [IGA-Graph-Net: 基于图神经网络的等几何分析重用方法用于拓扑一致模型](./ai-for-physics/iga-graph-net-基于图神经网络的等几何分析重用方法用于拓扑一致模型.md)
 - 📄 [J. Fluid Mech. (2019), vol. 870, pp.106–120](./ai-for-physics/j-fluid-mech-2019-vol-870-pp106120.md)
 - 📄 [J. Fluid Mech. (2020), vol.905, A10. © The Author(s), 2020.](./ai-for-physics/j-fluid-mech-2020-vol905-a10-the-authors-2020.md)
@@ -58,12 +58,12 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Large eddy simulation of transitional channel flow using a machine learning classifier to distinguish laminar and turbulent regions](./ai-for-physics/large-eddy-simulation-of-transitional-channel-flow-using-a-machine-learning-clas.md)
 - 📄 [Learned discretizations for passive scalar advection in a two-dimensional turbulent flow](./ai-for-physics/learned-discretizations-for-passive-scalar-advection-in-a-two-dimensional-turbul.md)
 - 📄 [Learning dynamical systems from data: An introduction to physics-guided deep learning](./ai-for-physics/learning-dynamical-systems-from-data-an-introduction-to-physics-guided-deep-lear.md)
-- 📄 [Lie–Poisson Neural Networks (LPNets): Data-based computing of Hamiltonian systems with symmetries](./ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
+- 📖 [Lie–Poisson Neural Networks (LPNets): Data-based computing of Hamiltonian systems with symmetries](./ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)
 - 📄 [Linear Classification of Neural Manifolds with Correlated Variability](./ai-for-physics/linear-classification-of-neural-manifolds-with-correlated-variability.md)
 - 📄 [Machine learning-augmented turbulence modeling for RANS simulations of massively separated flows](./ai-for-physics/machine-learning-augmented-turbulence-modeling-for-rans-simulations-of-massively.md)
 - 📄 [Machine Learning Conservation Laws from Trajectories](./ai-for-physics/machine-learning-conservation-laws-from-trajectories.md)
 - 📄 [Machine Learning for Fluid Mechanics](./ai-for-physics/machine-learning-for-fluid-mechanics.md)
-- 📄 [Machine Learning Hidden Symmetries](./ai-for-physics/machine-learning-hidden-symmetries.md)
+- 📖 [Machine Learning Hidden Symmetries](./ai-for-physics/machine-learning-hidden-symmetries.md)
 - 📄 [Machine-Learning Optimized Measurements of Chaotic Dynamical Systems via the Information Bottleneck](./ai-for-physics/machine-learning-optimized-measurements-of-chaotic-dynamical-systems-via-the-inf.md)
 - 📄 [Measuring Entanglement in Physical Networks](./ai-for-physics/measuring-entanglement-in-physical-networks.md)
 - 📄 [Model Reduction for Flow Analysis and Control](./ai-for-physics/model-reduction-for-flow-analysis-and-control.md)
@@ -71,7 +71,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Modeling the dynamics of PDE systems with physics-constrained deep auto-regressive networks](./ai-for-physics/modeling-the-dynamics-of-pde-systems-with-physics-constrained-deep-auto-regressi.md)
 - 📄 [Mosayeb Shams, Ahmed H. Elsheikh](./ai-for-physics/mosayeb-shams-ahmed-h-elsheikh.md)
 - 📄 [Neural-network Density Functional Theory Based on Variational Energy Minimization](./ai-for-physics/neural-network-density-functional-theory-based-on-variational-energy-minimizatio.md)
-- 📄 [Neural Operator: Graph Kernel Network](./ai-for-physics/neural-operator-graph-kernel-network.md)
+- 📖 [Neural Operator: Graph Kernel Network](./ai-for-physics/neural-operator-graph-kernel-network.md)
 - 📄 [NSFnets (Navier-Stokes flow nets): Physics-informed neural networks for the incompressible Navier-Stokes equations](./ai-for-physics/nsfnets-navier-stokes-flow-nets-physics-informed-neural-networks-for-the-incompr.md)
 - 📄 [Oblique and parallel modes of the bistable bluff body wake](./ai-for-physics/oblique-and-parallel-modes-of-the-bistable-bluff-body-wake.md)
 - 📄 [Ordinary-differential-equation-based nonequilibrium wall modeling for large-eddy simulation](./ai-for-physics/ordinary-differential-equation-based-nonequilibrium-wall-modeling-for-large-eddy.md)
@@ -110,7 +110,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 ## AI Models
 
 - 📄 [3D Gaussian Splatting for Real-Time Radiance Field Rendering](./ai-model/3d-gaussian-splatting-for-real-time-radiance-field-rendering.md)
-- 📄 [Denoising Diffusion Probabilistic Models](./ai-model/denoising-diffusion-probabilistic-models.md)
+- 📖 [Denoising Diffusion Probabilistic Models](./ai-model/denoising-diffusion-probabilistic-models.md)
 - 📄 [Is Sora a World Simulator? A Comprehensive](./ai-model/is-sora-a-world-simulator-a-comprehensive.md)
 
 ## AI Agents and Systems
@@ -135,7 +135,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Animating sand as a fluid](./computer-graphics/animating-sand-as-a-fluid.md)
 - 📄 [asdf](./computer-graphics/asdf.md)
 - 📄 [ChainQueen: A Real-Time Differentiable Physical Simulator](./computer-graphics/chainqueen-a-real-time-differentiable-physical-simulator.md)
-- 📄 [Covector Fluids](./computer-graphics/covector-fluids.md)
+- 📖 [Covector Fluids](./computer-graphics/covector-fluids.md)
 - 📄 [Eurographics/ ACM SIGGRAPH Symposium on Computer Animation (2010)](./computer-graphics/eurographics-acm-siggraph-symposium-on-computer-animation-2010.md)
 - 📄 [FLIP: A Method for Adaptively Zoned, Particle-in-Cell](./computer-graphics/flip-a-method-for-adaptively-zoned-particle-in-cell.md)
 - 📄 [Fluid Simulation on Neural Flow Maps](./computer-graphics/fluid-simulation-on-neural-flow-maps.md)
@@ -162,7 +162,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Area formula for spherical polygons via prequantization](./differential-geometry/area-formula-for-spherical-polygons-via-prequantization.md)
 - 📄 [Chebyshev nets from commuting PolyVector fields](./differential-geometry/chebyshev-nets-from-commuting-polyvector-fields.md)
 - 📄 [Eurographics Symposium on Geometry Processing 2010](./differential-geometry/eurographics-symposium-on-geometry-processing-2010.md)
-- 📄 [Force-Free Fields are Conformally Geodesic](./differential-geometry/force-free-fields-are-conformally-geodesic.md)
+- 📖 [Force-Free Fields are Conformally Geodesic](./differential-geometry/force-free-fields-are-conformally-geodesic.md)
 - 📄 [Function Space-Time Manifolds](./differential-geometry/function-space-time-manifolds.md)
 - 📄 [Geometric Test for Topological States of Matter](./differential-geometry/geometric-test-for-topological-states-of-matter.md)
 - 📄 [Kelvin Transformations for Simulations on Infinite Domains](./differential-geometry/kelvin-transformations-for-simulations-on-infinite-domains.md)
@@ -211,10 +211,10 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Relative equilibria of vortices in two dimensions](./fluid-mechanics/relative-equilibria-of-vortices-in-two-dimensions.md)
 - 📄 [Scientific machine learning for modeling and simulating complex fluids](./fluid-mechanics/scientific-machine-learning-for-modeling-and-simulating-complex-fluids.md)
 - 📄 [Shockwavelike Behavior across Social Media](./fluid-mechanics/shockwavelike-behavior-across-social-media.md)
-- 📄 [Spectral analysis of nonlinear flows](./fluid-mechanics/spectral-analysis-of-nonlinear-flows.md)
+- 📖 [Spectral analysis of nonlinear flows](./fluid-mechanics/spectral-analysis-of-nonlinear-flows.md)
 - 📄 [Swirling Due to Misaligned Perception-Dependent Motility](./fluid-mechanics/swirling-due-to-misaligned-perception-dependent-motility.md)
 - 📄 [Tailor-Designed Models for the Turbulent Velocity Gradient through Normalizing Flow](./fluid-mechanics/tailor-designed-models-for-the-turbulent-velocity-gradient-through-normalizing-f.md)
-- 📄 [Universal Anomalous Diffusion of Quantized Vortices in Ultraquantum Turbulence](./fluid-mechanics/universal-anomalous-diffusion-of-quantized-vortices-in-ultraquantum-turbulence.md)
+- 📖 [Universal Anomalous Diffusion of Quantized Vortices in Ultraquantum Turbulence](./fluid-mechanics/universal-anomalous-diffusion-of-quantized-vortices-in-ultraquantum-turbulence.md)
 - 📄 [Universal Velocity Statistics in Decaying Turbulence](./fluid-mechanics/universal-velocity-statistics-in-decaying-turbulence.md)
 - 📄 [An Energy Stable Immersed Boundary Method for Deformable Membrane Problem with Non-uniform Density and Viscosity](./fluid-mechanics/粘弹性流体/an-energy-stable-immersed-boundary-method-for-deformable-membrane-problem-with-n.md)
 - 📄 [An immersed boundary method for simulating Newtonian vesicles in viscoelastic fluid](./fluid-mechanics/粘弹性流体/an-immersed-boundary-method-for-simulating-newtonian-vesicles-in-viscoelastic-fl.md)
@@ -224,7 +224,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [J. Fluid Mech. (2023), vol.966, A35, doi:10.1017/jfm.2023.456](./fluid-mechanics/粘弹性流体/j-fluid-mech-2023-vol966-a35-doi101017jfm2023456.md)
 - 📄 [J. Fluid Mech. (2025), vol.1025, A36, doi:10.1017/jfm.2025.10933](./fluid-mechanics/粘弹性流体/j-fluid-mech-2025-vol1025-a36-doi101017jfm202510933.md)
 - 📄 [The beads-on-string structure of viscoelastic threads](./fluid-mechanics/粘弹性流体/the-beads-on-string-structure-of-viscoelastic-threads.md)
-- 📄 [The log-conformation formulation for single- and multi-phase axisymmetric viscoelastic flows](./fluid-mechanics/粘弹性流体/the-log-conformation-formulation-for-single--and-multi-phase-axisymmetric-viscoe.md)
+- 📖 [The log-conformation formulation for single- and multi-phase axisymmetric viscoelastic flows](./fluid-mechanics/粘弹性流体/the-log-conformation-formulation-for-single--and-multi-phase-axisymmetric-viscoe.md)
 
 ## Geometric Fluid
 
@@ -252,7 +252,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Hamiltonian description of axisymmetric vortex flows and the system of vortex rings](./geometric-fluid/hamiltonian-description-of-axisymmetric-vortex-flows-and-the-system-of-vortex-ri.md)
 - 📖 [Hamiltonian description of the ideal ﬂuid *](./geometric-fluid/hamiltonian-description-of-the-ideal-ﬂuid.md)
 - 📄 [Hamiltonian formulation towards minimization of viscous fluid fingering](./geometric-fluid/hamiltonian-formulation-towards-minimization-of-viscous-fluid-fingering.md)
-- 📄 [Hamiltonian structure, symmetries and conservation laws for water waves](./geometric-fluid/hamiltonian-structure-symmetries-and-conservation-laws-for-water-waves.md)
+- 📖 [Hamiltonian structure, symmetries and conservation laws for water waves](./geometric-fluid/hamiltonian-structure-symmetries-and-conservation-laws-for-water-waves.md)
 - 📄 [Hamilton原理的实际应用](./geometric-fluid/hamilton原理的实际应用.md)
 - 📄 [Hidden Degrees of Freedom in Implicit Vortex Filaments](./geometric-fluid/hidden-degrees-of-freedom-in-implicit-vortex-filaments.md)
 - 📄 [J. Fluid Mech. (2019), vol. 863, pp.513-544](./geometric-fluid/j-fluid-mech-2019-vol-863-pp513-544.md)
@@ -262,7 +262,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [On the integration of the hydrodynamical equations](./geometric-fluid/on-the-integration-of-the-hydrodynamical-equations.md)
 - 📄 [Quantum spin representation for the Navier-Stokes equation](./geometric-fluid/quantum-spin-representation-for-the-navier-stokes-equation.md)
 - 📄 [Schrödinger neural networks for solving quantized PDEs](./geometric-fluid/schrödinger-neural-networks-for-solving-quantized-pdes.md)
-- 📄 [Schrödinger's Smoke](./geometric-fluid/schrödingers-smoke.md)
+- 📖 [Schrödinger's Smoke](./geometric-fluid/schrödingers-smoke.md)
 - 📄 [Schrödinger's Smoke](./geometric-fluid/schrödinger’s-smoke/schrödingers-smoke.md)
 - 📄 [Stokes flow of an evolving fluid film with arbitrary](./geometric-fluid/stokes-flow-of-an-evolving-fluid-film-with-arbitrary.md)
 - 📄 [The derivation of the equations of motion of an ideal fluid by Hamilton's principle](./geometric-fluid/the-derivation-of-the-equations-of-motion-of-an-ideal-fluid-by-hamiltons-princip.md)
@@ -287,7 +287,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [A Matrix-free Preconditioned Newton/GMRES Method for Unsteady Navier-Stokes Solutions](./numerical-computation/a-matrix-free-preconditioned-newtongmres-method-for-unsteady-navier-stokes-solut.md)
 - 📄 [Acceleration of the data-parallel lower-upper relaxation time-integration method on GPU for an unstructured CFD solver](./numerical-computation/acceleration-of-the-data-parallel-lower-upper-relaxation-time-integration-method.md)
 - 📄 [AFiD-MHD: A finite difference method for magnetohydrodynamic flows](./numerical-computation/afid-mhd-a-finite-difference-method-for-magnetohydrodynamic-flows.md)
-- 📄 [AmgX: A Library for GPU Accelerated Algebraic Multigrid and Preconditioned Iterative Methods | SIAM Journal on Scientific Computing | Vol. 37, No. 5 | Society for Industrial and Applied Mathematics](./numerical-computation/amgx-a-library-for-gpu-accelerated-algebraic-multigrid-and-preconditioned-iterat.md)
+- 📖 [AmgX: A Library for GPU Accelerated Algebraic Multigrid and Preconditioned Iterative Methods | SIAM Journal on Scientific Computing | Vol. 37, No. 5 | Society for Industrial and Applied Mathematics](./numerical-computation/amgx-a-library-for-gpu-accelerated-algebraic-multigrid-and-preconditioned-iterat.md)
 - 📄 [An immersed boundary method using online sequential data assimilation](./numerical-computation/an-immersed-boundary-method-using-online-sequential-data-assimilation.md)
 - 📄 [Arbitrary Lagrangian-Eulerian Methods](./numerical-computation/arbitrary-lagrangian-eulerian-methods.md)
 - 📖 [egg: Fast and Extensible Equality Saturation](./numerical-computation/egg-fast-and-extensible-equality-saturation.md)
@@ -299,7 +299,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📖 [Jacobian-free Newton-Krylov Methods: A Survey of Approaches and Applications](./numerical-computation/jacobian-free-newton-krylov-methods-a-survey-of-approaches-and-applications.md)
 - 📄 [Lattice Boltzmann Method for Fluid Flows](./numerical-computation/lattice-boltzmann-method-for-fluid-flows.md)
 - 📄 [Matrix-free GPU Implementation of a Preconditioned Conjugate Gradient Solver for Anisotropic Elliptic PDEs](./numerical-computation/matrix-free-gpu-implementation-of-a-preconditioned-conjugate-gradient-solver-for.md)
-- 📄 [Multigrid for Matrix-Free High-Order Finite Element Computations on Graphics Processors](./numerical-computation/multigrid-for-matrix-free-high-order-finite-element-computations-on-graphics-pro.md)
+- 📖 [Multigrid for Matrix-Free High-Order Finite Element Computations on Graphics Processors](./numerical-computation/multigrid-for-matrix-free-high-order-finite-element-computations-on-graphics-pro.md)
 - 📄 [Parallel Eulerian-Lagrangian coupling method on hierarchical meshes](./numerical-computation/parallel-eulerian-lagrangian-coupling-method-on-hierarchical-meshes.md)
 - 📄 [Path integral molecular dynamics approximations of quantum canonical observables](./numerical-computation/path-integral-molecular-dynamics-approximations-of-quantum-canonical-observables.md)
 - 📄 [Ruminated Tensor Decomposition algorithm for solving inviscid Burgers' equation](./numerical-computation/ruminated-tensor-decomposition-algorithm-for-solving-inviscid-burgers-equation.md)
@@ -335,7 +335,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Quantum computing of reacting flows via Hamiltonian](./quantum-computing/quantum-computing-of-reacting-flows-via-hamiltonian.md)
 - 📄 [Quantum Machine Learning for High Energy Physics: A Hybrid Quantum-Classical Approach to Jet Classification](./quantum-computing/quantum-machine-learning-for-high-energy-physics-a-hybrid-quantum-classical-appr.md)
 - 📄 [Quantum simulation for partial differential equations with physical boundary or interface conditions](./quantum-computing/quantum-simulation-for-partial-differential-equations-with-physical-boundary-or-.md)
-- 📄 [Quantum Simulation of Partial Differential Equations via Schrödingerization](./quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
+- 📖 [Quantum Simulation of Partial Differential Equations via Schrödingerization](./quantum-computing/quantum-simulation-of-partial-differential-equations-via-schrödingerization.md)
 - 📄 [Quantum state preparation for a velocity field based on the](./quantum-computing/quantum-state-preparation-for-a-velocity-field-based-on-the.md)
 - 📄 [Signed particles and neural networks, towards efficient simulations of quantum systems](./quantum-computing/signed-particles-and-neural-networks-towards-efficient-simulations-of-quantum-sy.md)
 - 📄 [Simulating Hydrodynamics on Noisy Intermediate-Scale Quantum Devices with Random Circuits](./quantum-computing/simulating-hydrodynamics-on-noisy-intermediate-scale-quantum-devices-with-random.md)
@@ -362,7 +362,7 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [A Clebsch Method for Free-Surface Vortical Flow Simulation](./vortex-dynamics/a-clebsch-method-for-free-surface-vortical-flow-simulation.md)
 - 📄 [A Moving Eulerian-Lagrangian Particle Method for Thin Film and Foam Simulation](./vortex-dynamics/a-moving-eulerian-lagrangian-particle-method-for-thin-film-and-foam-simulation.md)
 - 📄 [Generation of streamwise helical vortex loops via successive reconnections in early pipe transition](./vortex-dynamics/generation-of-streamwise-helical-vortex-loops-via-successive-reconnections-in-ea.md)
-- 📄 [Incompressible Flow Simulation on Vortex Segment Clouds](./vortex-dynamics/incompressible-flow-simulation-on-vortex-segment-clouds.md)
+- 📖 [Incompressible Flow Simulation on Vortex Segment Clouds](./vortex-dynamics/incompressible-flow-simulation-on-vortex-segment-clouds.md)
 - 📖 [Inside Fluids: Clebsch Maps for Visualization and Processing](./vortex-dynamics/inside-fluids-clebsch-maps-for-visualization-and-processing.md)
 - 📄 [Neural vortex method: From finite Lagrangian particles to infinite dimensional Eulerian dynamics](./vortex-dynamics/neural-vortex-method-from-finite-lagrangian-particles-to-infinite-dimensional-eu.md)
 - 📄 [See discussions, st ats, and author pr ofiles f or this public ation at : https://www .researchgate.ne t/public ation/342027470](./vortex-dynamics/see-discussions-st-ats-and-author-pr-ofiles-f-or-this-public-ation-at-httpswww-r.md)
@@ -383,14 +383,14 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 
 ## Wave Mechanics
 
-- 📄 [Diffusion Equation Is Compatible with Special Relativity](./wave-mechanics/diffusion-equation-is-compatible-with-special-relativity.md)
-- 📄 [Extended Lagrangian approach for the numerical study of multidimensional dispersive waves: Applications to the Serre-Green-Naghdi equations](./wave-mechanics/extended-lagrangian-approach-for-the-numerical-study-of-multidimensional-dispers.md)
+- 📖 [Diffusion Equation Is Compatible with Special Relativity](./wave-mechanics/diffusion-equation-is-compatible-with-special-relativity.md)
+- 📖 [Extended Lagrangian approach for the numerical study of multidimensional dispersive waves: Applications to the Serre-Green-Naghdi equations](./wave-mechanics/extended-lagrangian-approach-for-the-numerical-study-of-multidimensional-dispers.md)
 - 📄 [Schrödinger equation revisited](./wave-mechanics/schrödinger-equation-revisited.md)
 
 > ⏭️ 4 篇已跳过
 
 ---
 
-**总计**: 368 篇论文（原统计 362 篇 + 本次 6 篇；README 索引 320 篇，48 篇暂未录入索引） | 📖 55 篇有精读笔记 | ⏭️ 24 篇已跳过
+**文件统计**：分类目录内 373 个文献 Markdown 文件（含教材与重复条目，未按独立论文去重）；其中 60 篇有精读笔记（59 篇论文、1 篇教材）。README 分类列表尚非完整索引。
 
 *最后更新: 2026-10-15*

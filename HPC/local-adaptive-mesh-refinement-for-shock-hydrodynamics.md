@@ -50,36 +50,36 @@ Doctor 指定精读
 
 论文求解二维双曲守恒律：
 
-$$
+\[
 u_t+f(u)_x+g(u)_y=0.
-$$
+\]
 
 对单元
 
-$$
+\[
 C_{ij}=[x_{i-\frac12},x_{i+\frac12}]\times[y_{j-\frac12},y_{j+\frac12}]
-$$
+\]
 
 做体平均：
 
-$$
+\[
 U_{ij}(t)=\frac{1}{\Delta x\Delta y}\int_{C_{ij}}u(x,y,t)\,dxdy.
-$$
+\]
 
 把 PDE 在单元上积分，利用 Gauss 定理：
 
-$$
+\[
 \frac{dU_{ij}}{dt}
 =
 -\frac{1}{\Delta x}
 \left(F_{i+\frac12,j}-F_{i-\frac12,j}\right)
 -\frac{1}{\Delta y}
 \left(G_{i,j+\frac12}-G_{i,j-\frac12}\right),
-$$
+\]
 
 其中 $F$、$G$ 是穿过单元边界的数值通量。显式一步格式写成论文的式 (1)：
 
-$$
+\[
 U_{ij}^{n+1}
 =
 U_{ij}^{n}
@@ -89,7 +89,7 @@ U_{ij}^{n}
 -
 \frac{\Delta t}{\Delta y}
 \left(G_{i,j+\frac12}^{n}-G_{i,j-\frac12}^{n}\right).
-$$
+\]
 
 这个式子的关键不是具体 Godunov/Riemann solver，而是 **通量差分形式**。相邻两个单元共享同一个面通量，例如 $F_{i+\frac12,j}$ 对左单元是流出，对右单元是流入；在全域求和时内部通量成对抵消。因此均匀网格上天然守恒。AMR 的全部难点在于：粗细界面处不再天然共享同一个面通量，必须人为恢复这件事。
 
@@ -97,27 +97,27 @@ $$
 
 设第 $\ell$ 层网格间距为 $\Delta x_\ell,\Delta y_\ell$，相邻层细化比为 $r$：
 
-$$
+\[
 r=\frac{\Delta x_{\ell-1}}{\Delta x_\ell}
 =
 \frac{\Delta y_{\ell-1}}{\Delta y_\ell}.
-$$
+\]
 
 论文要求时间也按同一个比例细化：
 
-$$
+\[
 \Delta t_\ell=\frac{\Delta t_{\ell-1}}{r}.
-$$
+\]
 
 于是 CFL 数保持一致：
 
-$$
+\[
 \frac{a\Delta t_\ell}{\Delta x_\ell}
 =
 \frac{a(\Delta t_{\ell-1}/r)}{\Delta x_{\ell-1}/r}
 =
 \frac{a\Delta t_{\ell-1}}{\Delta x_{\ell-1}}.
-$$
+\]
 
 数学意义是：同一个显式差分格式在每层上有相同稳定性约束；工程意义是：细层只在局部区域多走 $r$ 个小步，不把最小时间步强加给全域。
 
@@ -125,34 +125,34 @@ $$
 
 若一个粗单元 $C_{IJ}^{\ell-1}$ 被第 $\ell$ 层的 $r\times r$ 个细单元覆盖，则粗层有效值不应继续使用粗层自己推进得到的值，而应由细层守恒平均给出：
 
-$$
+\[
 U_{IJ}^{\ell-1}
 \leftarrow
 \frac{1}{r^2}
 \sum_{p=0}^{r-1}\sum_{q=0}^{r-1}
 U_{rI+p,rJ+q}^{\ell}.
-$$
+\]
 
 推导很直接。粗单元平均值定义为
 
-$$
+\[
 U_{IJ}^{\ell-1}
 =
 \frac{1}{|C_{IJ}^{\ell-1}|}
 \int_{C_{IJ}^{\ell-1}}u\,dxdy.
-$$
+\]
 
 粗单元面积是细单元面积的 $r^2$ 倍，且
 
-$$
+\[
 C_{IJ}^{\ell-1}
 =
 \bigcup_{p,q} C_{rI+p,rJ+q}^{\ell}.
-$$
+\]
 
 所以
 
-$$
+\[
 U_{IJ}^{\ell-1}
 =
 \frac{1}{r^2\Delta x_\ell\Delta y_\ell}
@@ -160,7 +160,7 @@ U_{IJ}^{\ell-1}
 \int_{C_{rI+p,rJ+q}^{\ell}}u\,dxdy
 =
 \frac{1}{r^2}\sum_{p,q}U_{rI+p,rJ+q}^{\ell}.
-$$
+\]
 
 这一步就是现代 AMR 框架里的 restriction / average-down。它保证被细网格覆盖的区域以最高分辨率为准，并且守恒量总积分不变。
 
@@ -168,34 +168,34 @@ $$
 
 考虑一个粗单元 $C_{IJ}^{\ell-1}$ 的右边界贴着细网格。粗层单步更新原本使用粗通量
 
-$$
+\[
 F_{I+\frac12,J}^{\ell-1}.
-$$
+\]
 
 但真实的 AMR 守恒要求：粗单元流出的通量，必须等于细网格相邻边界流入的通量总和。粗边界在空间上对应 $r$ 条细边，在时间上对应 $r$ 个细时间步。因此粗时间步内的细网格等效通量应为
 
-$$
+\[
 \overline{F}_{I+\frac12,J}^{\ell}
 =
 \frac{1}{r^2}
 \sum_{m=0}^{r-1}
 \sum_{p=0}^{r-1}
 F_{rI+\frac12,rJ+p}^{\ell,n+\frac{m}{r}}.
-$$
+\]
 
 这里两个 $1/r$ 分别来自：
 
-$$
+\[
 \Delta t_\ell=\frac{\Delta t_{\ell-1}}{r},
 \qquad
 \Delta y_\ell=\frac{\Delta y_{\ell-1}}{r}.
-$$
+\]
 
 也就是说，粗面通量是时间平均加面积平均；细面通量必须先在 $r$ 个子时间步、$r$ 个细面片上求和，再除以 $r^2$。
 
 所以粗细界面邻接粗单元应使用：
 
-$$
+\[
 U_{IJ}^{\ell-1,n+1}
 =
 U_{IJ}^{\ell-1,n}
@@ -213,7 +213,7 @@ G_{I,J+\frac12}^{\ell-1}
 -
 G_{I,J-\frac12}^{\ell-1}
 \right),
-$$
+\]
 
 假设只有右侧是粗细界面。与普通粗层更新相比，唯一变化是把粗通量 $F_{I+\frac12,J}^{\ell-1}$ 替换为细层等效通量 $\overline{F}_{I+\frac12,J}^{\ell}$。
 
@@ -221,28 +221,28 @@ $$
 
 论文没有让积分器直接知道 AMR 层级，而是保存一个粗细边界通量差：
 
-$$
+\[
 \delta F_{I+\frac12,J}
 =
 \overline{F}_{I+\frac12,J}^{\ell}
 -
 F_{I+\frac12,J}^{\ell-1}.
-$$
+\]
 
 实现上分三步。
 
 第一步，粗层计算完通量后，在粗细边界初始化：
 
-$$
+\[
 \delta F_{I+\frac12,J}
 \leftarrow
 -
 F_{I+\frac12,J}^{\ell-1}.
-$$
+\]
 
 第二步，每个细时间步结束后累加细通量：
 
-$$
+\[
 \delta F_{I+\frac12,J}
 \leftarrow
 \delta F_{I+\frac12,J}
@@ -251,49 +251,49 @@ $$
 \sum_{p=0}^{r-1}
 F_{rI+\frac12,rJ+p}^{\ell,n+\frac{m}{r}},
 \qquad m=0,\ldots,r-1.
-$$
+\]
 
 第三步，细层完成 $r$ 个子步、与粗层同步后，用 $\delta F$ 修正粗单元。若该面是粗单元的左面，则该通量流入粗单元：
 
-$$
+\[
 U_{I+1,J}^{\ell-1}
 \leftarrow
 U_{I+1,J}^{\ell-1}
 +
 \frac{\Delta t_{\ell-1}}{\Delta x_{\ell-1}}
 \delta F_{I+\frac12,J}.
-$$
+\]
 
 若该面是粗单元的右面，则该通量流出粗单元：
 
-$$
+\[
 U_{I,J}^{\ell-1}
 \leftarrow
 U_{I,J}^{\ell-1}
 -
 \frac{\Delta t_{\ell-1}}{\Delta x_{\ell-1}}
 \delta F_{I+\frac12,J}.
-$$
+\]
 
 $y$ 方向同理：
 
-$$
+\[
 U_{I,J+1}^{\ell-1}
 \leftarrow
 U_{I,J+1}^{\ell-1}
 +
 \frac{\Delta t_{\ell-1}}{\Delta y_{\ell-1}}
 \delta G_{I,J+\frac12},
-$$
+\]
 
-$$
+\[
 U_{I,J}^{\ell-1}
 \leftarrow
 U_{I,J}^{\ell-1}
 -
 \frac{\Delta t_{\ell-1}}{\Delta y_{\ell-1}}
 \delta G_{I,J+\frac12}.
-$$
+\]
 
 这就是后来 AMR 文献和 AMReX/BoxLib 中的 reflux。它的数学目标只有一个：让粗细界面上的通量也像均匀网格内部通量一样成对抵消，从而恢复全局守恒。
 
@@ -301,79 +301,79 @@ $$
 
 设差分算子 $Q_h$ 在空间步长 $h$、时间步长 $k$ 上推进一步，时间和空间精度同为 $q$。局部截断误差满足：
 
-$$
+\[
 u(x,t+k)-Q_hu(x,t)
 =
 k\left(c_1(x,t)k^q+c_2(x,t)h^q\right)
 +
 kO(k^{q+1}+h^{q+1}).
-$$
+\]
 
 把主项记为
 
-$$
+\[
 \tau_h(x,t)
 =
 k\left(c_1k^q+c_2h^q\right).
-$$
+\]
 
 若连续走两个小步：
 
-$$
+\[
 u(x,t+2k)-Q_h^2u(x,t)
 =
 2\tau_h
 +
 kO(k^{q+1}+h^{q+1}).
-$$
+\]
 
 若改用 $2h,2k$ 的虚拟粗化网格走一个大步：
 
-$$
+\[
 u(x,t+2k)-Q_{2h}u(x,t)
 =
 2k\left(c_1(2k)^q+c_2(2h)^q\right)
 +
 kO(k^{q+1}+h^{q+1}).
-$$
+\]
 
 因为
 
-$$
+\[
 2k\left(c_1(2k)^q+c_2(2h)^q\right)
 =
 2^{q+1}k\left(c_1k^q+c_2h^q\right)
 =
 2^{q+1}\tau_h,
-$$
+\]
 
 所以
 
-$$
+\[
 u(x,t+2k)-Q_{2h}u(x,t)
 =
 2^{q+1}\tau_h
 +
 kO(k^{q+1}+h^{q+1}).
-$$
+\]
 
 两式相减，真实解 $u(x,t+2k)$ 消去：
 
-$$
+\[
 Q_h^2u(x,t)-Q_{2h}u(x,t)
 =
 (2^{q+1}-2)\tau_h
 +
 kO(k^{q+1}+h^{q+1}).
-$$
+\]
 
 于是得到局部截断误差估计：
 
-$$
+\[
 \tau_h
 \approx
 \frac{Q_h^2u-Q_{2h}u}{2^{q+1}-2}.
-$$
+\]
 
 实际 AMR 中做法是：把当前层解投影到一个每隔一个点取样的虚拟粗网格；原网格走两步，虚拟粗网格用双倍步长走一步；再把两者在同一物理位置比较。如果某个粗化单元上的差值超过容许阈值，则对应的 $2\times2$ 真实细单元被标记。
 
@@ -432,40 +432,40 @@ regrid(base_level):
 
 误差估计：
 
-$$
+\[
 E_i
 =
 \left\|
 \frac{Q_h^2U_i-Q_{2h}U_i}{2^{q+1}-2}
 \right\|.
-$$
+\]
 
 标记规则：
 
-$$
+\[
 i\in\mathcal{T}
 \quad\Longleftrightarrow\quad
 E_i>\varepsilon.
-$$
+\]
 
 缓冲带把标记集合扩张为：
 
-$$
+\[
 \mathcal{T}_{\mathrm{buf}}
 =
 \{j:\operatorname{dist}(j,\mathcal{T})\le b\}.
-$$
+\]
 
 双曲方程有有限传播速度。若 regrid 不是每步都做，缓冲带保证激波、接触面或高误差区域在下一次 regrid 前不会立刻跑出细网格。缓冲越宽，regrid 频率可降低，但细网格无效覆盖越多。
 
 proper nesting 要求细网格边界与下一粗层单元角点对齐，并且第 $\ell$ 层细单元不能直接贴到第 $\ell-2$ 层区域，中间至少隔一层 $\ell-1$ 单元。可写成：
 
-$$
+\[
 \operatorname{coarsen}_{r}(\Omega^{\ell})
 \oplus B_1
 \subseteq
 \Omega^{\ell-1},
-$$
+\]
 
 其中 $B_1$ 表示至少一圈粗单元缓冲，物理边界处例外。这保证细层边界插值和通量修正总能找到合法的父层数据。
 
@@ -473,37 +473,37 @@ $$
 
 给定标记点集合 $\mathcal{T}$，先取包围盒 $B$，定义 patch 效率：
 
-$$
+\[
 \eta(B)
 =
 \frac{|\mathcal{T}\cap B|}{|B|}.
-$$
+\]
 
 若
 
-$$
+\[
 \eta(B)\ge\eta_{\min},
-$$
+\]
 
 则接受该 patch。论文例子中 $\eta_{\min}$ 约为 $60\%$ 到 $65\%$。若效率不足，则沿长方向二分：
 
-$$
+\[
 B\rightarrow B_L\cup B_R,
-$$
+\]
 
 并把标记点按所在半区分配，递归处理。bisection 的好处是简单、快；缺点是只看矩形长度，不看激波几何，因此可能产生局部合格但整体不优的 patch 集合。
 
 merge pass 用代价函数判断两个 patch 是否应合并。对 $m\times n$ patch，论文认为积分代价近似为：
 
-$$
+\[
 C(m,n)\propto mn+m+n.
-$$
+\]
 
 其中 $mn$ 是体单元工作量，$m+n$ 代表边界相关开销：边界条件、粗细界面更新、特殊斜率计算、间接寻址等。若两个 patch $B_1,B_2$ 合并后的包围盒 $B_{12}$ 满足：
 
-$$
+\[
 C(B_{12})<C(B_1)+C(B_2),
-$$
+\]
 
 且效率仍可接受，则合并。这个规则体现了块结构 AMR 的核心工程取舍：宁可多覆盖少量无效单元，也要减少 patch 数量、边界长度和小数组调度开销。
 
@@ -537,31 +537,31 @@ Table II 的单元更新数为：
 
 总有效单元更新约为：
 
-$$
+\[
 2.98\times10^5+4.59\times10^6+1.13\times10^8
 \approx
 1.179\times10^8.
-$$
+\]
 
 其中最细层占比为：
 
-$$
+\[
 \frac{1.13\times10^8}{1.179\times10^8}
 \approx
 95.8\%.
-$$
+\]
 
 这正是 subcycling 的结果。若二维空间细化比为 $r=4$，细层单位物理区域的单元数增加 $r^2=16$ 倍，时间步数再增加 $r=4$ 倍，因此单位物理面积、单位粗时间步的工作量放大约为：
 
-$$
+\[
 r^2\cdot r=r^3=64.
-$$
+\]
 
 所以即使最细层只覆盖约 $10\%$ 物理区域，计算工作也会集中到最细层：
 
-$$
+\[
 0.1\times64=6.4
-$$
+\]
 
 相当于粗层全域工作量的 6.4 倍。这解释了论文中“超过 90% 的被积分单元属于最细层”的观察，也解释了为什么误差估计便宜：误差估计不在最细层做，而最细层恰恰承担了绝大多数推进工作。
 
@@ -575,9 +575,9 @@ $$
 
 论文中的网格层级
 
-$$
+\[
 \mathcal{G}^{\ell}=\{G_{\ell,k}\}_k
-$$
+\]
 
 直接演化为 BoxLib/AMReX 中的 `BoxArray`。每个矩形 patch 上的守恒变量数组演化为 `FArrayBox`，同层多个 patch 的数据集合演化为 `MultiFab`。BoxLib with Tiling 进一步把 patch 内循环拆成 tile；AMReX 则把同一抽象推广到 MPI、OpenMP 和 GPU kernel。
 
@@ -585,11 +585,11 @@ $$
 
 论文中被细网格覆盖的粗单元用
 
-$$
+\[
 U^{\ell-1}
 \leftarrow
 \frac{1}{r^d}\sum U^\ell
-$$
+\]
 
 替换，正是 AMReX 多层数据同步中的 average-down。现代多物理代码在 reflux 前后仍要做这一步，以保证 coarse valid data 与 fine valid data 在覆盖区域一致。
 
@@ -601,9 +601,9 @@ $$
 
 论文要求
 
-$$
+\[
 \Delta t_{\ell+1}=\Delta t_\ell/r
-$$
+\]
 
 并递归推进细层 $r$ 次。这就是 AMReX 仍支持的 subcycling AMR 时间推进模式。不同应用可选择 no-subcycling，但经典 Berger-Colella 模式仍是理解 AMReX 多层推进的基础。
 
@@ -615,9 +615,9 @@ $$
 
 论文中的“标记点 → 矩形 patch”的启发式聚类（long-direction bisection + merge）是后来 Berger-Rigoutsos 聚类算法的思想前身，二者同属一个算法谱系；Berger-Rigoutsos 在其基础上发展为更完整的 signature/projection 聚类。AMReX 论文中提到的 Berger-Rigoutsos 聚类，解决的仍是同一个问题：
 
-$$
+\[
 \text{用少量矩形块覆盖 tagged cells，同时控制无效覆盖率。}
-$$
+\]
 
 BoxLib/AMReX 在此基础上加入 `max_grid_size`、`blocking_factor`、负载均衡和 GPU 友好的 box 尺寸约束。
 

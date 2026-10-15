@@ -2,7 +2,7 @@
 
 **作者：** Albert Chern, Felix Knöppel, Ulrich Pinkall, Peter Schröder, Steffen Weißmann
 
-**DOI：** [http:](https://doi.org/http:)
+**DOI：** [10.1145/2897824.2925868](https://doi.org/10.1145/2897824.2925868)
 
 **源 PDF：** `SchrodingersSmoke.pdf`
 
@@ -23,168 +23,168 @@
 
 ## 公式与代码梳理
 
-#### 数学结构与核心公式
+### 数学结构与核心公式
 
 本文的状态变量不是速度 $u$ 或涡量 $\omega$，而是二分量复波函数
 
-$$
+\[
 \Psi=(\psi_1,\psi_2)^T\in\mathbb C^2,\qquad \Psi^\dagger\Psi=1 .
-$$
+\]
 
 这里 $\dagger$ 表示 Hermitian transpose。速度一形式由 Berry connection 给出：
 
-$$
+\[
 u=\hbar\,\operatorname{Im}(\Psi^\dagger d\Psi).
-$$
+\]
 
 在向量记号中，
 
-$$
+\[
 \mathbf u=\hbar\,\operatorname{Im}(\Psi^\dagger\nabla\Psi).
-$$
+\]
 
 若做局部相位变换
 
-$$
+\[
 \Psi\mapsto e^{-i\phi/\hbar}\Psi,
-$$
+\]
 
 则速度变为
 
-$$
+\[
 \mathbf u\mapsto \mathbf u-\nabla\phi .
-$$
+\]
 
 这正好对应不可压投影中的 pressure/gauge correction。不可压约束为
 
-$$
+\[
 \nabla\cdot\mathbf u=0,\qquad |\Psi|^2=1 .
-$$
+\]
 
 波函数还定义一个 spin map
 
-$$
+\[
 \mathbf S=\Psi^\dagger\boldsymbol\sigma\Psi\in S^2,
-$$
+\]
 
 其中 $\boldsymbol\sigma=(\sigma_1,\sigma_2,\sigma_3)$ 是 Pauli 矩阵。涡量二形式可由 $\mathbf S$ 的球面面积形式 pullback 表示；向量形式可写作
 
-$$
+\[
 \boldsymbol\omega
 =\nabla\times\mathbf u
-=\frac{\hbar}{2}\epsilon_{abc}S_a\nabla S_b\times\nabla S_c .
-$$
+=\frac{\hbar}{4}\epsilon_{abc}S_a\nabla S_b\times\nabla S_c .
+\]
 
 这与 `Clebsch Maps` 中的球面 Clebsch map 是同一个几何机制：涡线是 $\mathbf S:M\to S^2$ 的等值线，涡管是球面区域的原像。
 
 能量结构由两部分组成。第一部分是不可压流体动能：
 
-$$
+\[
 E_{\rm kin}=\frac12\int_M|\mathbf u|^2\,dV .
-$$
+\]
 
 第二部分是 Landau-Lifshitz 型 spin 能量：
 
-$$
-E_{\rm LL}=\frac{\hbar^2}{4}\int_M|\nabla\mathbf S|^2\,dV .
-$$
+\[
+E_{\rm LL}=\frac{\hbar^2}{8}\int_M|\nabla\mathbf S|^2\,dV .
+\]
 
 总能量可理解为
 
-$$
+\[
 E[\Psi]=E_{\rm kin}+E_{\rm LL}.
-$$
+\]
 
 $E_{\rm LL}$ 对细涡丝很重要：它给 spin map 的空间变化惩罚，相当于为涡管核心提供可解析的宽度尺度，避免涡量在网格上被普通速度平流抹掉。
 
 时间推进采用 splitting。自由 Schrödinger 步可写为
 
-$$
+\[
 i\hbar\partial_t\Psi=-\frac{\hbar^2}{2}\Delta\Psi .
-$$
+\]
 
 在周期盒上，Fourier 模式满足
 
-$$
+\[
 \widehat\Psi_{\mathbf k}(t+\Delta t)
 =\exp\left(-i\frac{\hbar|\mathbf k|^2}{2}\Delta t\right)\widehat\Psi_{\mathbf k}(t).
-$$
+\]
 
 所以代码上是 FFT、逐模相位乘法、inverse FFT。随后做归一化
 
-$$
+\[
 \Psi\leftarrow\frac{\Psi}{|\Psi|}
-$$
+\]
 
 保持 $\Psi^\dagger\Psi=1$。再做不可压投影：先由 $\Psi$ 计算 $\mathbf u$，解
 
-$$
+\[
 \Delta\phi=\nabla\cdot\mathbf u,
-$$
+\]
 
 再更新
 
-$$
+\[
 \Psi\leftarrow e^{-i\phi/\hbar}\Psi,\qquad
 \mathbf u\leftarrow\mathbf u-\nabla\phi .
-$$
+\]
 
 障碍物可通过 penalty 或 mask 处理，把固体内部速度约束为目标边界速度。其本质仍是相位/gauge 修正，只是 Poisson 或 Helmholtz 问题带有障碍物系数。
 
-#### 关键推导
+### 关键推导
 
 第一步是 Berry connection 到不可压投影。由
 
-$$
+\[
 \mathbf u=\hbar\operatorname{Im}(\Psi^\dagger\nabla\Psi)
-$$
+\]
 
 和 $\Psi' = e^{-i\phi/\hbar}\Psi$，有
 
-$$
+\[
 \nabla\Psi'=e^{-i\phi/\hbar}\left(\nabla\Psi-\frac{i}{\hbar}\Psi\nabla\phi\right).
-$$
+\]
 
 因此
 
-$$
+\[
 {\Psi'}^\dagger\nabla\Psi'
 =\Psi^\dagger\nabla\Psi-\frac{i}{\hbar}\nabla\phi .
-$$
+\]
 
 取虚部并乘以 $\hbar$ 得到
 
-$$
+\[
 \mathbf u'=\mathbf u-\nabla\phi .
-$$
+\]
 
 令 $\nabla\cdot\mathbf u'=0$，就得到 Poisson 方程 $\Delta\phi=\nabla\cdot\mathbf u$。这说明 incompressible projection 在波函数表象里只是相位规范变换。
 
 第二步是 spin map 与涡量。$u=\hbar\operatorname{Im}(\Psi^\dagger d\Psi)$ 是 Hopf fibration 上的联络一形式。取外微分：
 
-$$
+\[
 du=\frac{\hbar}{2}\mathbf S^*dA_{S^2}.
-$$
+\]
 
 在三维中经 Hodge 对偶得到
 
-$$
+\[
 \nabla\times\mathbf u
-=\frac{\hbar}{2}\epsilon_{abc}S_a\nabla S_b\times\nabla S_c .
-$$
+=\frac{\hbar}{4}\epsilon_{abc}S_a\nabla S_b\times\nabla S_c .
+\]
 
 因此涡量不是从速度差分中被动恢复，而是由 $S^2$ 值映射的面积拉回给出。相位奇点和 spin map 拓扑自然编码涡丝。
 
 第三步是 Schrödinger 步为什么适合 FFT。自由 Schrödinger 方程在 Fourier 空间对角化：
 
-$$
+\[
 i\hbar\partial_t\widehat\Psi_{\mathbf k}
 =\frac{\hbar^2}{2}|\mathbf k|^2\widehat\Psi_{\mathbf k}.
-$$
+\]
 
 所以精确时间步为纯相位旋转。该步是酉的，保持 $L^2$ 范数；归一化和投影再把状态拉回 $|\Psi|=1$、$\nabla\cdot u=0$ 的约束流形。这解释了算法稳定性的主要来源（整体分裂格式的稳定性还依赖子步间的相容性）。
 
-#### 对 HPC 框架的启示
+### 对 HPC 框架的启示
 
 这篇对 Doctor 的框架价值很直接：它把涡动力学从“速度-压力 PDE”转成“复波函数 + FFT + 投影”的算子链。对于周期域或规则盒，核心 kernel 是 FFT、spectral Laplacian、pointwise normalization、Pauli spin reconstruction、Poisson projection，非常适合 GPU 和多节点 FFT。对非周期/复杂边界，需要把 FFT 换成 Helmholtz/Poisson solver，或用嵌入边界 mask 与 penalty。
 
@@ -192,7 +192,7 @@ $$
 
 对 AI4Physics，可把 $\Psi$ 作为学习变量而不是 $\mathbf u$。神经算子若直接学习速度，容易损失 $\nabla\cdot u=0$ 和涡线拓扑；若学习 spinor 或 spin map，再由固定公式恢复速度/涡量，结构约束更硬。DDPM/score-based 模型也可在 $\Psi$ 或 $\mathbf S$ 空间生成涡结构，但必须处理 $|\Psi|=1$ 和 $U(1)$ gauge 冗余。
 
-#### 待深入研究
+### 待深入研究
 
 1. $\hbar$ 同时控制涡核尺度和 Schrödinger 色散尺度；如何在 AMR 中随网格层级自适应选择 $\hbar$，避免涡核过宽或欠解析？
 2. 对非周期边界，FFT 优势减弱；是否可用 matrix-free Helmholtz/Poisson、AMG 或 JFNK 保持投影效率？
@@ -202,7 +202,7 @@ $$
 
 1. Schrödinger's Smoke 的 $\mathbb C^2$ spinor 表示相比标量 Madelung 变量，究竟多编码了哪些涡拓扑自由度？
 2. 若把该方法嵌入 AMR/GPU 框架，FFT splitting、projection、障碍物 penalty 哪一步最容易破坏 Hamiltonian 或 gauge 结构？
-3. 能否训练等变神经算子直接预测 $\Psi$ 的短时演化，同时用固定 Berry connection 恢复 $\mathbf u$，从而保证不可压和涡量结构？
+3. 能否训练等变神经算子直接预测 $\Psi$ 的短时演化，同时用固定 Berry connection 恢复 $\mathbf u$，并额外施加不可压投影？Berry connection 本身为何不能保证速度无散？
 
 4. 该方法中的 `U(1)` gauge、点态单位范数约束与不可压投影之间，哪个才是真正承载流体几何结构的核心约束？
 5. 对非周期域和固壁边界，如何构造既保留 Berry connection 解释、又不破坏投影结构的离散 Schrödinger 步？
@@ -211,3 +211,7 @@ $$
 ---
 
 ---
+
+## 核对依据与边界（2026-10-15）
+
+对照[作者全文](https://cseweb.ucsd.edu/~alchern/projects/SchrodingersSmoke/SchrodingersSmoke.pdf)§4.3 的能量分解。在本页标准 Pauli 约定 $\mathbf S=\Psi^\dagger\boldsymbol\sigma\Psi$ 下，$dA_{S^2}=\frac12\epsilon_{abc}S_a\,dS_b\wedge dS_c$，所以向量式采用全重复指标求和时系数为 $\hbar/4$；spin 梯度能量系数为 $\hbar^2/8$。该 ISF 模型含 spin 能量贡献，不等同于任意经典 Euler 流的精确求解。

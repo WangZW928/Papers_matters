@@ -27,7 +27,7 @@
 ### 2. 用了什么方法论？
 - **Tiling（分块循环变换）：** 将大循环嵌套切分成小 tile，提升 cache 局部性和并行粒度
 - **框架级嵌入：** 在 BoxLib 的数据结构和迭代器层面集成 tiling，对应用开发者透明
-- **TiDA 库：** 面向 NUMA-aware 优化的可移植抽象层
+- **TiDA 库（未来工作）：** 面向 NUMA-aware 优化的可移植抽象层；文中原型结果不代表 BoxLib 已完整集成
 - **MPI + OpenMP 混合并行：** tiles 作为 OpenMP 线程的工作单元
 
 ### 3. 主要结论是什么？
@@ -53,66 +53,66 @@ BoxLib with Tiling (2016) 是 AMReX (2021) 的直接前身，作者高度重叠�
 
 BoxLib 原始的计算模式是“每个 grid 调一次 kernel”，即对一个三维 Box
 
-$$
+\[
 B=[i_0,i_1]\times[j_0,j_1]\times[k_0,k_1]
-$$
+\]
 
 执行完整区域上的嵌套循环：
 
-$$
+\[
 \text{for } k\in[k_0,k_1],\quad
 \text{for } j\in[j_0,j_1],\quad
 \text{for } i\in[i_0,i_1].
-$$
+\]
 
 tiling 后，把 $B$ 划分为若干子 Box：
 
-$$
+\[
 B=\bigcup_{q=1}^{N_T} T_q,\qquad T_p\cap T_q=\varnothing\quad(p\neq q)
-$$
+\]
 
 其中每个 tile 为
 
-$$
+\[
 T_q=[i_q^0,i_q^1]\times[j_q^0,j_q^1]\times[k_q^0,k_q^1].
-$$
+\]
 
 若 tile 尺寸为
 
-$$
+\[
 \tau=(\tau_x,\tau_y,\tau_z),
-$$
+\]
 
 则理想情况下 tile 数约为
 
-$$
+\[
 N_T(B)\approx
 \left\lceil\frac{n_x}{\tau_x}\right\rceil
 \left\lceil\frac{n_y}{\tau_y}\right\rceil
 \left\lceil\frac{n_z}{\tau_z}\right\rceil,
-$$
+\]
 
 其中 $n_x=i_1-i_0+1$、$n_y=j_1-j_0+1$、$n_z=k_1-k_0+1$ 是按闭区间计数的 cell 数。原来的 grid-level 迭代
 
-$$
+\[
 \sum_{B\in\mathcal{G}} \mathcal{K}(B)
-$$
+\]
 
 变成 tile-level 迭代：
 
-$$
+\[
 \sum_{B\in\mathcal{G}}\sum_{T\in\mathcal{T}(B)} \mathcal{K}(T).
-$$
+\]
 
 关键点是：BoxLib 论文采用的是 **logical tiling**，即 tile 只改变 iteration space，不改变 `FArrayBox` 的数据布局。数据仍然是一块连续数组；kernel 仍然拿同一个 `double*`；唯一变化是传入 kernel 的工作区域从 `validbox()` 变成 `tilebox()`。
 
 因此 tiling 的数学本质不是改变离散方程，而是改变算子应用的遍历分解：
 
-$$
+\[
 L(U)|_B
 \quad\Rightarrow\quad
 \{L(U)|_{T_q}\}_{q=1}^{N_T(B)}.
-$$
+\]
 
 只要每个 tile 覆盖互不重叠且并集等于原 valid region，且 ghost / stencil 所需数据已填充，离散结果与未 tiling 版本应保持一致。
 
@@ -120,44 +120,44 @@ $$
 
 设 stencil 半径为 $s$，变量 component 数为 $n_c$，每个 double 为 $b=8$ 字节。若 kernel 对 $m$ 个数组读写，并需要 $n_{\mathrm{tmp}}$ 个临时数组，则 tile 的工作集可粗略估计为
 
-$$
+\[
 W(\tau)
 \approx
 b\,n_c\,(m+n_{\mathrm{tmp}})
 (\tau_x+2s)(\tau_y+2s)(\tau_z+2s).
-$$
+\]
 
 这是把所有数组都按完整 stencil 扩展区域计入的保守估计；实际工作集还取决于数组布局、读写方向、缓存层级、写分配策略以及临时量是否可复用。为了让一个线程的工作集尽量留在目标 cache 层级中，理想约束是
 
-$$
+\[
 W(\tau)\le C_{\mathrm{eff}},
-$$
+\]
 
 其中 $C_{\mathrm{eff}}$ 是可被单线程有效使用的 cache 容量，而不是整个 socket 的理论 cache 容量。
 
 同时 tile 不能太小，否则 tile 边界和调度开销占比变大。若每个 tile 的计算量为
 
-$$
+\[
 F(\tau)\approx c_{\mathrm{op}}\tau_x\tau_y\tau_z,
-$$
+\]
 
 tile 调度、函数调用和边界处理开销为 $O_{\mathrm{tile}}$，则希望
 
-$$
+\[
 F(\tau)\gg O_{\mathrm{tile}}.
-$$
+\]
 
 所以 tile size 的实际选择是两类约束的折中：
 
-$$
+\[
 O_{\mathrm{tile}}\ll c_{\mathrm{op}}\prod_d \tau_d
-$$
+\]
 
 且
 
-$$
+\[
 b\,n_c\,(m+n_{\mathrm{tmp}})\prod_d(\tau_d+2s)\le C_{\mathrm{eff}}.
-$$
+\]
 
 论文热方程（heat）实验使用了 $128\times4\times4$ 的 tile size（表 1 中该 benchmark 的选择，非通用默认值）。可解释为：保留 $x$ 方向连续长循环以利于内存连续访问和向量化，在 $y,z$ 方向切小以缩小 cache footprint。$MFIter$ 支持运行时默认与显式数组两种 tile size 指定方式。
 
@@ -165,49 +165,49 @@ $$
 
 未 tiling 时，一个大 grid 的工作集可粗略写为
 
-$$
+\[
 W_B\approx b\,n_c\,(m+n_{\mathrm{tmp}})
 (n_x+2s)(n_y+2s)(n_z+2s).
-$$
+\]
 
 若 $W_B\gg C_{\mathrm{eff}}$，则多次 stencil loop 之间难以复用 cache 数据。热方程测试中，二阶导数被写成多个 loop：先算各方向 flux，再算 divergence。未 fusion 的多 loop 模式会造成数组反复从内存流入 cache。tiling 后，每个 tile 内的多 loop 更可能复用局部数据，但内存流量不能只由 tile 体积决定。用每个数组在一个 loop 中的读写字节数 $q_r$ 表示其流量、用 $H_T$ 表示所有 tile halo 的重复加载和边界访问，则更稳妥的近似是
 
-$$
+\[
 Q_{\mathrm{mem}}^{\mathrm{untiled}}
 \approx \sum_{r=1}^{N_{\mathrm{loop}}} q_r|B|,
-$$
+\]
 
-$$
+\[
 Q_{\mathrm{mem}}^{\mathrm{tiled}}
 \approx \sum_{r=1}^{N_{\mathrm{loop}}}q_r
 \left(|B|+H_{T,r}\right),
-$$
+\]
 
 其中 $H_{T,r}$ 由 tile 形状、stencil 半径、数组布局、缓存容量和 loop fusion 决定。只有在未 tiling 的跨 loop 复用很差、而 tile 内复用有效时，第二式才可能明显小于第一式；tiling 并不必然减少 DRAM 流量。
 
 cache miss 率可以抽象为（需明确统计的 cache 层级和访问次数）
 
-$$
+\[
 r_{\mathrm{miss}}
 =
 \frac{M_{\mathrm{cache}}}{A_{\mathrm{mem}}},
-$$
+\]
 
 tiling 的目标是降低不必要的 cache miss 和内存流量，不是降低总算术操作数。对于 memory-bound stencil，运行时间可用 roofline 式上界近似为
 
-$$
+\[
 T\approx
 \max\left(
 \frac{F}{P_{\mathrm{flop}}},
 \frac{Q_{\mathrm{mem}}}{B_{\mathrm{mem}}}
 \right),
-$$
+\]
 
 而此类 stencil 往往由第二项主导。因此当 tiling 确实减少有效 DRAM 流量或 miss penalty 时，才会直接带来加速。
 
 TLB 方面，若页面大小为 $P_{\mathrm{page}}$，工作集跨越页面数可用下式估计上界：
 
-$$
+\[
 N_{\mathrm{page}}(\tau)
 \lesssim
 \left\lceil
@@ -215,34 +215,34 @@ N_{\mathrm{page}}(\tau)
 \right\rceil
 +
 N_{\mathrm{stride}},
-$$
+\]
 
 其中 $N_{\mathrm{stride}}$ 表示由多数组、非连续切片、页边界对齐和访问步长带来的额外页跨度。若 $N_{\mathrm{page}}(\tau)$ 超过 TLB 可覆盖页数，频繁跨页会增加 TLB miss。tiling 通过减小线程局部工作集，使
 
-$$
+\[
 N_{\mathrm{page}}(\tau)\le N_{\mathrm{TLB}}
-$$
+\]
 
 更容易成立。论文还指出，kernel 内动态分配临时数组会导致 allocator lock contention、TLB miss，甚至 page fault。BoxLib 的 thread-private memory arena 正是为减少这些问题。
 
 NUMA 方面，设一个节点有 $R$ 个 NUMA domain。若线程 $p$ 访问本地内存的带宽/延迟为 $(B_{\mathrm{loc}},L_{\mathrm{loc}})$，访问远端内存为 $(B_{\mathrm{rem}},L_{\mathrm{rem}})$，通常
 
-$$
+\[
 B_{\mathrm{rem}}<B_{\mathrm{loc}},\qquad
 L_{\mathrm{rem}}>L_{\mathrm{loc}}.
-$$
+\]
 
 logical tiling 只改变访问次序，不改变 grid 数据分配。如果一个 `FArrayBox` 被单块连续分配，它可能被放在某个 NUMA domain 或按 first-touch 分散，tile 执行线程却可能位于另一个 NUMA domain，于是远端访问比例
 
-$$
+\[
 \rho_{\mathrm{remote}}
 =
 \frac{Q_{\mathrm{remote}}}{Q_{\mathrm{local}}+Q_{\mathrm{remote}}}
-$$
+\]
 
 可能偏高。若把带宽限制和未被带宽项吸收的远端访问延迟分开建模，总访存时间可估为
 
-$$
+\[
 T_{\mathrm{mem}}
 \approx
 \frac{Q_{\mathrm{local}}}{B_{\mathrm{loc}}}
@@ -250,7 +250,7 @@ T_{\mathrm{mem}}
 \frac{Q_{\mathrm{remote}}}{B_{\mathrm{rem}}}
 +
 N_{\mathrm{remote}}\Delta L_{\mathrm{rem}},
-$$
+\]
 
 其中 $\Delta L_{\mathrm{rem}}$ 是相对本地访问的额外延迟，$N_{\mathrm{remote}}$ 应理解为不能被连续带宽传输摊销的远端访存事件数，而不是所有远端字节数。TiDA 的 regional tiling 则把 grid 切成 region，每个 region 的数据独立连续分配，并尽量放置在对应 NUMA domain。目标是降低 $\rho_{\mathrm{remote}}$，使大部分 tile 的主访问变成本地访问。
 
@@ -264,31 +264,31 @@ BoxLib 的核心数据结构链条是：
 
 `Box` 是整数索引空间中的矩形区域。三维 Box 可由六个整数描述：
 
-$$
+\[
 B=(i_{\min},i_{\max},j_{\min},j_{\max},k_{\min},k_{\max}).
-$$
+\]
 
 `FArrayBox` 是单个 Box 上的浮点数组。它内部是一维连续内存，但可以按 Fortran 多维数组视图解释：
 
-$$
+\[
 a(i,j,k,n),\qquad n=1,\ldots,n_c.
-$$
+\]
 
 `FArrayBox` 的数据区域可以大于 valid region，因为它包含 ghost cells：
 
-$$
+\[
 B_{\mathrm{fab}}
 =
 \operatorname{grow}(B_{\mathrm{valid}}, n_{\mathrm{ghost}}).
-$$
+\]
 
 `MultiFab` 是一个 AMR level 上多个 `FArrayBox` 的分布式集合：
 
-$$
+\[
 \mathrm{MultiFab}^{\ell}
 =
 \{ \mathrm{FArrayBox}(B_i^\ell)\}_{i=1}^{N_\ell}.
-$$
+\]
 
 每个 MPI rank 只拥有部分 `FArrayBox`，而框架维护 AMR metadata（grid 层次、box 拓扑），用于计算通信关系、box-box intersection 与 coarse-fine 交互（本文未给出各 rank 是否全量持有 metadata 的实现细节，此句为框架层常识性描述）。
 
@@ -320,19 +320,19 @@ for (MFIter mfi(mf, true); mfi.isValid(); ++mfi) {
 
 BoxLib 支持多种 AMR time-subcycling。对相邻层 $\ell$ 和 $\ell+1$，细化比为
 
-$$
+\[
 r_\ell=\frac{\Delta x_\ell}{\Delta x_{\ell+1}},
-$$
+\]
 
 典型 subcycling 时间步为
 
-$$
+\[
 \Delta t_{\ell+1}=\frac{\Delta t_\ell}{r_\ell}.
-$$
+\]
 
 有限体积更新可写为
 
-$$
+\[
 U_i^{n+1}
 =
 U_i^n
@@ -341,30 +341,30 @@ U_i^n
 \sum_{f\in\partial i} A_f F_f
 +
 \Delta t S_i.
-$$
+\]
 
 AMR subcycling 的递归结构是：
 
-$$
+\[
 \operatorname{Advance}(\ell,\Delta t_\ell)
 \rightarrow
 r_\ell \text{ 次 } \operatorname{Advance}(\ell+1,\Delta t_{\ell+1})
 \rightarrow
 \operatorname{Sync}(\ell,\ell+1).
-$$
+\]
 
 同步包括 restriction 和 reflux。restriction 把细层平均回粗层：
 
-$$
+\[
 U_I^\ell
 \leftarrow
 \frac{1}{r^D}
 \sum_{i\in\mathcal{C}(I)} U_i^{\ell+1}.
-$$
+\]
 
 reflux 用细层更准确的通量修正粗细边界：
 
-$$
+\[
 U_I^\ell
 \leftarrow
 U_I^\ell
@@ -375,15 +375,15 @@ A_f
 \left(
 F_f^\ell-\overline{F}_f^{\ell+1}
 \right).
-$$
+\]
 
 tiling 不改变 subcycling 的数学顺序。它改变的是每一层内部 operator 的执行粒度：
 
-$$
+\[
 L^\ell(U^\ell)|_{B_i^\ell}
 \quad\Rightarrow\quad
 \{L^\ell(U^\ell)|_{T_{iq}}\}_q.
-$$
+\]
 
 因此 tiling 必须满足两个条件：第一，tile 之间不能破坏 valid region 的唯一覆盖；第二，stencil、ghost fill、flux register、restriction/reflux 所需数据必须在 tile kernel 进入前或局部扩展区域内可见。
 
@@ -393,35 +393,35 @@ TiDA 引入两个概念：regional tiling 和 logical tiling。
 
 logical tiling 是 BoxLib 论文中已经实现的部分。每个 grid 只有一个 region，数据仍然整块连续分配：
 
-$$
+\[
 G \rightarrow R_1,\qquad R_1=G,
-$$
+\]
 
 然后在 iteration space 上切成 tile：
 
-$$
+\[
 R_1=\bigcup_q T_q.
-$$
+\]
 
 regional tiling 更一般。一个 grid 先切成多个 region：
 
-$$
+\[
 G=\bigcup_{r=1}^{N_R} R_r,
-$$
+\]
 
 每个 region 独立连续分配内存，再把 region 切成 logical tiles：
 
-$$
+\[
 R_r=\bigcup_{q=1}^{N_T(r)} T_{rq}.
-$$
+\]
 
 其设计目标是让 region 对应 NUMA domain 或 memory locality domain：
 
-$$
+\[
 \operatorname{place}(R_r)=\operatorname{NUMA}(r),
 \qquad
 \operatorname{execute}(T_{rq})\approx \operatorname{NUMA}(r).
-$$
+\]
 
 这样 memory placement 和 computation placement 可以由框架或 TiDA 管理，而不是由应用开发者手写。论文中的未来方向是：BoxLib 保持应用层 API 尽量稳定，底层通过 TiDA 改变数据布局和执行映射，从 logical tiling 走向 NUMA-aware regional tiling。
 
@@ -481,25 +481,25 @@ const Box& tbox = mfi.tilebox();
 
 BoxLib 的分布式并行仍然由 MPI 管理：
 
-$$
+\[
 \mathcal{G}=\bigcup_{p=0}^{P-1}\mathcal{G}_p,
-$$
+\]
 
 其中 $\mathcal{G}_p$ 是 rank $p$ 拥有的 grids。tiling 后，每个 rank 的工作集进一步分成 tiles：
 
-$$
+\[
 \mathcal{T}_p
 =
 \bigcup_{B\in\mathcal{G}_p}\mathcal{T}(B).
-$$
+\]
 
 OpenMP 线程在 rank 内分配 tiles：
 
-$$
+\[
 \mathcal{T}_p
 =
 \bigcup_{q=0}^{Q-1}\mathcal{T}_{p,q},
-$$
+\]
 
 其中 $Q$ 是该 rank 内线程数。
 
@@ -538,7 +538,7 @@ TiDA 的角色不是替换 BoxLib 的 AMR 抽象，而是在数据布局和 loca
 
 BoxLib 论文中的 logical tiling 是低侵入版本；TiDA regional tiling 是面向未来 NUMA 架构的增强版本。抽象层次可以写成：
 
-$$
+\[
 \text{AMR level}
 \rightarrow
 \text{grid}
@@ -548,7 +548,7 @@ $$
 \text{tile}
 \rightarrow
 \text{cell loop}.
-$$
+\]
 
 其中 grid 是 AMR 几何/通信单位，region 是 NUMA 数据放置单位，tile 是线程执行单位。这三个层次不应混淆。
 
@@ -566,9 +566,9 @@ Babbage 的 60-core Intel Knights Corner 上，heat equation kernel 的 120-thre
 
 论文还测试了 ghost cell filling。即使没有 MPI，周期边界 ghost fill 也涉及本地数据 copy。KNC 上 240-thread tiled ghost fill 相对单线程 untiled run 达到 $126\times$。未 tiling 的 120-thread run 中，ghost fill 时间占 fill + kernel 总时间超过 40%，这是 Amdahl 定律的典型体现：
 
-$$
+\[
 S(N)=\frac{1}{(1-f)+f/N}.
-$$
+\]
 
 如果 ghost fill 这类“看似辅助”的部分不并行化，主 kernel 再快也会被串行或低效部分限制。
 
@@ -582,27 +582,27 @@ tiling 改善的是 node 内线程负载均衡，而不是直接替代 MPI 级�
 
 未 tiling 时，线程若按 grid 分配，负载近似为
 
-$$
+\[
 W(B_i)\approx |B_i|\,c_i.
-$$
+\]
 
 AMR grids 大小不一，且不同物理区域代价可能不同，所以 grid-level threading 容易出现
 
-$$
+\[
 \max_q W_q \gg \frac{1}{Q}\sum_q W_q.
-$$
+\]
 
 tiling 后，grid 被切成更细的 tile，线程负载变成
 
-$$
+\[
 W_q=\sum_{T\in\mathcal{T}_q} |T|\,c_T.
-$$
+\]
 
 当 tile 数远大于线程数时，静态分配也能获得更好的均衡：
 
-$$
+\[
 N_T \gg Q.
-$$
+\]
 
 但 tiling 不是万能的。论文特别指出，对于化学反应这类 cell-wise 代价高度不均匀的工作，例如每个 cell 内用 VODE 做隐式反应积分，传统 fine-grained loop-level threading 加 dynamic scheduling 可能更合适。也就是说，tile-level static scheduling 适合 stencil、ghost copy、规则局部计算；对强非均匀局部工作负载，仍需要动态调度或更细粒度任务模型。
 
@@ -624,7 +624,7 @@ BoxLib with Tiling 是 AMReX 的直接前史。两者保持下来的核心思想
 
 BoxLib 论文的核心设计公式可以概括为：
 
-$$
+\[
 \text{physics kernel}
 +
 \text{work box}
@@ -634,7 +634,7 @@ $$
 \text{分离于}
 \quad
 \text{parallel execution policy}.
-$$
+\]
 
 AMReX 继续保留这一思想，只是把 execution policy 从 CPU OpenMP tiling 扩展到了 GPU backend。
 
@@ -658,15 +658,15 @@ for (MFIter mfi(mf, TilingIfNotGPU()); mfi.isValid(); ++mfi) {
 
 这里的演化关系很清楚：
 
-$$
+\[
 \text{BoxLib: } \mathrm{MFIter}\rightarrow \mathrm{tilebox}\rightarrow \mathrm{Fortran\ kernel}
-$$
+\]
 
 变成
 
-$$
+\[
 \text{AMReX: } \mathrm{MFIter}\rightarrow \mathrm{Box}\rightarrow \mathrm{ParallelFor}\rightarrow \mathrm{backend\ kernel}.
-$$
+\]
 
 在 CPU 上，tiling 仍然有意义，因为它提升 cache locality 和 OpenMP 粒度。在 GPU 上，通常不再用 CPU 风格 tile 作为并行单位，而是由 GPU kernel 内部的 thread/block 层次完成细粒度并行。因此 AMReX 常见策略是 `TilingIfNotGPU()`：CPU 开 tile，GPU 不开传统 tile，避免把 GPU kernel launch 切得过碎。
 
@@ -698,7 +698,7 @@ Doctor 的论文库主线包含高性能 PDE 求解器、AMR、matrix-free multi
 
 BoxLib 的经验可以概括为：
 
-$$
+\[
 \text{算法正确性}
 +
 \text{数据局部性}
@@ -706,7 +706,7 @@ $$
 \text{并行粒度}
 +
 \text{应用可维护性}
-$$
+\]
 
 必须同时满足。手工 tiling 一个 SMC 应用可以证明性能潜力，但只有把 tiling 下沉到 BoxLib，整个 AMR 生态才真正受益。
 
@@ -716,7 +716,7 @@ $$
 
 第一，执行粒度应独立于数学网格粒度。AMR grid 是负载均衡、通信和元数据管理单位；tile 是 cache 和线程调度单位；GPU thread/block 是设备执行单位。这些层次应解耦：
 
-$$
+\[
 \text{AMR patch}
 \neq
 \text{CPU tile}
@@ -724,7 +724,7 @@ $$
 \text{GPU block}
 \neq
 \text{数学控制体}.
-$$
+\]
 
 第二，tile size 应成为 runtime / algorithm-dependent 参数。不同 kernel 的最优 tile size 不同：低阶 stencil、八阶 stencil、reaction solve、EB cut-cell update、particle deposition、multigrid smoother 都不应强制使用同一 tile shape。
 
@@ -732,13 +732,13 @@ $$
 
 第四，memory allocator 是框架核心组件，不是附属工具。thread-private arena、NUMA-aware region allocation、GPU arena、pinned buffer 本质上都在解决同一个问题：
 
-$$
+\[
 \text{减少昂贵分配}
 +
 \text{提高 locality}
 +
 \text{降低同步竞争}.
-$$
+\]
 
 ### 3. tiling 到 GPU portability 的设计启示
 
@@ -746,13 +746,13 @@ BoxLib 到 AMReX 的演化说明，一个成功的 HPC 抽象不应绑定某一�
 
 对 Doctor 如果设计高性能 PDE 框架，建议把核心接口设计成：
 
-$$
+\[
 \mathcal{K}: (U,\mathrm{Box},\mathrm{Geometry},\mathrm{BC})\mapsto L(U)|_{\mathrm{Box}},
-$$
+\]
 
 而不是写成固定后端的 loop。然后由框架选择：
 
-$$
+\[
 \mathrm{execute}(\mathcal{K},B)
 =
 \begin{cases}
@@ -761,7 +761,7 @@ $$
 \text{CUDA/HIP/SYCL kernel},\\
 \text{task graph node}.
 \end{cases}
-$$
+\]
 
 这样未来从 CPU 到 GPU、从 GPU 到多 GPU、从规则网格到 AMR/EB，都不需要重写物理离散本身。
 
@@ -780,7 +780,7 @@ Doctor 的研究方向中有 Hamiltonian ideal fluid、Clebsch maps、Covector F
 
 这可以抽象为一个离散不变量检验：
 
-$$
+\[
 I_h(U^{n+1})-I_h(U^n)
 =
 \epsilon_{\mathrm{time}}
@@ -790,7 +790,7 @@ I_h(U^{n+1})-I_h(U^n)
 \epsilon_{\mathrm{AMR}}
 +
 \epsilon_{\mathrm{parallel}}.
-$$
+\]
 
 高质量框架应能把这些误差来源分开测量，而不是只给总误差。
 
@@ -800,29 +800,29 @@ BoxLib with Tiling 不是 AI 论文，但它对 AI for Physics 很关键，因�
 
 一个有价值的研究接口不是只让网络预测点态场值
 
-$$
+\[
 U_\theta(x,t),
-$$
+\]
 
 而是让学习模型嵌入框架级算子：
 
-$$
+\[
 L(U)
 =
 L_{\mathrm{physics}}(U)
 +
 L_{\theta}(U),
-$$
+\]
 
 并要求它满足离散守恒或同步约束，例如
 
-$$
+\[
 \sum_i U_i^{n+1}\Delta V_i
 =
 \sum_i U_i^{n}\Delta V_i
 +
 \Delta t\sum_i S_i\Delta V_i.
-$$
+\]
 
 BoxLib 的 tiling 经验说明：即使 learned kernel 本身很快，如果它不能适配 tile、ghost、AMR level、GPU backend 和 communication pipeline，也难以成为可用的高性能 PDE 框架组件。
 
@@ -830,9 +830,9 @@ BoxLib 的 tiling 经验说明：即使 learned kernel 本身很快，如果它�
 
 这篇论文的核心价值不是提出新的 AMR 数学格式，而是展示一个成熟科学计算框架如何把经典 loop transformation 提升为框架级抽象。它解决了三个深层问题：
 
-$$
+\[
 \text{如何暴露更多并行度？}
-$$
+\]
 
 
 

@@ -7,7 +7,7 @@ _精读笔记｜arXiv:2502.10517v1，2025-02-14｜全文阅读：主文、实验
 ## 📌 书目信息与问题
 
 - **作者：** Anne Ouyang、Simon Guo、Simran Arora 等
-- **来源：** [arXiv:2502.10517](https://arxiv.org/abs/2502.10517)；[KernelBench 代码与基准](https://github.com/ScalingIntelligence/KernelBench)
+- **来源：** [arXiv:2502.10517](https://arxiv.org/abs/2502.10517v1)；[KernelBench 代码与基准](https://github.com/ScalingIntelligence/KernelBench)
 - **研究问题：** 现有 LLM 能否从 PyTorch 工作负载生成既正确又真正快于框架基线的 GPU kernel？模型在哪些环节失败，运行时反馈是否有用？
 - **阅读范围：** 基准构造、one-shot 评估、失败分析、迭代反馈、硬件感知与作者讨论。
 
@@ -36,10 +36,18 @@ KernelBench 的重要性不只是列出 kernel 任务，而是把“能生成 CU
 - **对 SCALE_Forge 的启示：** oracle 应包含独立正确性与可重复性能测量；结构化记录 build/runtime/semantic/performance-regression 失败；比较方法时固定调用预算或 evaluator 次数；保存 workload、硬件、编译器和 baseline 身份，否则 speedup 不可审计。
 - **与后续工作：** KernelBench 是 KernelPro、KernelCraft 等采用或对照的任务来源之一；其任务子集、硬件和 baseline 不同，不能将不同论文均值当作同一排行榜。
 
-## ❓复读问题与价值判断
+## Review Questions
 
 1. 是否可用 property-based 或 metamorphic tests 降低“数值容差通过但语义遗漏”的风险？
 2. 是否同时保留 `fast_p`、正确率、预算、失败原因和相对更强 baseline 的结果？
-3. **阅读价值：高。** 对建立 Agent 优化评测与 oracle 设计尤其重要；具体百分比只适用于论文所述模型、预算、baseline 和 L40S 配置。
+3. 增加测试输入与测量重复次数后，已报告的 fast_p 和错误类别是否稳定？
+
+## 价值评估
+
+**阅读价值：高。** 对建立 Agent 优化评测与 oracle 设计尤其重要；具体百分比只适用于论文所述模型、预算、baseline 和 L40S 配置。
 
 **状态：** ✅ 已精读（2026-10-15）
+
+## 核对依据与边界（2026-10-15）
+
+本次取得的 PDF 首页版本与本页声明的 2502.10517v1 一致；检查结果数字与方法边界，统一复读问题及价值评估格式。这里的“已精读”是原有阅读记录，不表示本次重新独立复现了所有实验。

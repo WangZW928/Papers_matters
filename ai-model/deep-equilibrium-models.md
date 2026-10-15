@@ -1,6 +1,6 @@
 # 深度平衡模型
 
-# Deep Equilibrium Models
+*Deep Equilibrium Models*
 
 **作者：** Shaojie Bai, J. Zico Kolter, Vladlen Koltun
 **期刊：** NeurIPS 2019（Spotlight/Oral；Advances in Neural Information Processing Systems 32, 2019）

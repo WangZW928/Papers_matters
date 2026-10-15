@@ -1,5 +1,9 @@
 # Geometric hydrodynamics via Madelung transform
 
+**作者：** Boris Khesin, Gerard Misiołek, Klas Modin
+
+**来源：** [作者预印本](https://arxiv.org/abs/1711.00321)，PNAS 2018
+
 **Source PDF:** `khesin-et-al-2018-geometric-hydrodynamics-via-madelung-transform.pdf`
 
 ---
@@ -9,11 +13,11 @@
 
 ## 摘要
 
-本文通过Madelung变换将流体动力学方程（如欧拉方程和纳维-斯托克斯方程）转化为几何框架下的测地线方程或梯度流方程，揭示了流体运动与黎曼几何中无穷维流形上测地线运动的等价性。作者利用该变换建立了可压缩与不可压缩流体在Wasserstein空间和微分同胚群上的统一几何描述，并推导出涡量动力学与曲率张量之间的显式关系。
+论文在微分同胚群和密度空间上研究无限维 Newton 方程，并用 Madelung 变换联系流体、波函数与几何结构。在光滑正密度及合适相位条件下，该变换联系密度余切丛的辛结构与射影波函数空间；配置适当的 Fisher–Rao/Sasaki 与 Fubini–Study 度量后，还具有 Kähler 几何解释。文中联系势流、Schrödinger 等模型，不能据此声称任意旋转 Navier–Stokes 流都等价于这一变换下的梯度流。
 
 ## 结论
 
-Madelung变换为流体动力学提供了一种严格的几何化方法，证明理想流体运动等价于无穷维流形上的测地线运动，而粘性流体则对应于该流形上的梯度流。这一框架将涡量动力学与流形曲率直接关联，为后续研究流体稳定性与湍流几何结构奠定了基础。
+贡献是不同无限维力学描述之间的几何对应。具体 PDE 取决于 Hamiltonian、势能与变量限制；正密度、相位与拓扑条件不可省略。一般含涡或黏性流体需要额外结构，不能从标量 Madelung 直接推出。
 
 ## 精读笔记
 
@@ -255,7 +259,15 @@ Fisher-Rao 几何还给 mesh adaptation 和误差度量提供线索：$\int \dot
 5. 对工程 CFD，势流子空间与全旋转流之间能否通过 Helmholtz/Clebsch 分解做混合求解？
 
 
-### 问题
+## Review Questions
 1. Madelung 变换如何把 $T^*\mathrm{Dens}(M)$ 上的 Sasaki-Fisher-Rao 度量与射影 Hilbert 空间上的 Fubini-Study 度量联系成同一个几何对象，并且为什么这里不仅是辛同构，还是等距的 Kähler 映射？
-2. Madelung 变换后的 Schrödinger 方程中，量子压力项的物理含义是什么，它为什么只在波函数振幅为常数时才消失？
+2. Madelung 变换后的 Schrödinger 方程中，量子压力势及其梯度各在什么条件下消失？常振幅是充分条件，为什么不能未经边界和定义域分析就断言必要？
 3. 密度空间上的 Wasserstein-Otto 度量与 Fisher-Rao 度量分别对应什么不同的流体物理情形，为什么前者导出 barotropic Euler 方程，而后者导出全非线性波动方程？
+
+## 核对依据与边界（2026-10-15）
+
+对照[作者预印本](https://arxiv.org/abs/1711.00321)的 Newton 框架与 Madelung/Kähler 对应；保留正文已有的密度正性、势流限制与量子压力推导。
+
+## 价值评估
+
+沿用指定精读层级。对几何流体、量子压力和结构保持离散有直接价值；应先掌握正密度、势流及相位商空间条件，再研究含涡与真空扩展。

@@ -1,5 +1,9 @@
 # Neural Operator: Graph Kernel Network
 
+**作者：** Zongyi Li, Nikola Kovachki, Kamyar Azizzadenesheli, Burigede Liu, Kaushik Bhattacharya, Andrew Stuart, Anima Anandkumar
+
+**来源版本：** [arXiv:2003.03485v1](https://arxiv.org/abs/2003.03485v1)（PDF 首页署 March 10, 2020）
+
 **Source PDF:** `2003.03485v1.pdf`
 
 **阅读状态：** 🔬 精读
@@ -23,39 +27,39 @@ Doctor 指定精读。GKN 将有限维网格映射提升为函数空间算子近
 
 论文的基本对象是参数化 PDE 的解算子，而不是单个离散网格上的函数拟合。设有紧区域 $D\subset \mathbb{R}^d$，输入函数 $a\in \mathcal{A}$ 描述系数、初值、源项或几何参数，输出函数 $u\in \mathcal{U}$ 是 PDE 解。真实目标写作
 
-$$
+\[
 G^\dagger:\mathcal{A}\to\mathcal{U},\qquad u=G^\dagger(a).
-$$
+\]
 
 GKN 的关键不是学习某个固定维度向量映射 $\mathbb{R}^n\to\mathbb{R}^n$，而是学习一个可以在不同离散点集上评估的参数化算子 $G_\theta$。这也是它和普通 CNN/MLP 的分界：CNN 的卷积核绑定规则网格，GKN 的核函数 $\kappa_\phi$ 直接接受坐标与函数值，因此天然适合图离散。
 
 连续层写成提升、核积分迭代、投影三步。首先把低维物理输入提升到通道空间：
 
-$$
+\[
 v_0(x)=P_\theta(a(x),x),\qquad v_0:D\to\mathbb{R}^{d_v}.
-$$
+\]
 
 其中 $P_\theta$ 通常是点态 MLP，输入可包含 $a(x)$、坐标 $x$、边界标记或局部几何特征。第 $t$ 层神经算子采用
 
-$$
+\[
 v_{t+1}(x)=\sigma\left(
 W v_t(x)+
 \int_D \kappa_\phi(x,y,a(x),a(y))v_t(y)\,dy
 +b(x)
 \right).
-$$
+\]
 
 这里 $W$ 是点态线性变换，负责 channel mixing；$\kappa_\phi$ 是可学习核，负责非局部传播；$\sigma$ 是非线性激活。若 PDE 的解有 Green 函数表示
 
-$$
+\[
 u(x)=\int_D G_a(x,y)f(y)\,dy,
-$$
+\]
 
 则 GKN 可理解为用神经核 $\kappa_\phi$ 近似参数依赖 Green kernel，并通过多层组合表达非线性或复杂边界效应。
 
 离散化时，点集 $\{x_i\}_{i=1}^n$ 形成图 $\mathcal{G}=(V,E)$，节点特征为 $v_i^t=v_t(x_i)$。核积分被图消息传递近似：
 
-$$
+\[
 v_i^{t+1}=\sigma\left(
 Wv_i^t+
 \frac{1}{|\mathcal{N}(i)|}
@@ -63,27 +67,27 @@ Wv_i^t+
 \kappa_\phi(x_i,x_j,a_i,a_j)v_j^t
 +b_i
 \right).
-$$
+\]
 
 也可写作边消息
 
-$$
+\[
 m_{ij}^t=\kappa_\phi(e_{ij})v_j^t,\qquad
 e_{ij}=(x_i,x_j,a_i,a_j,x_i-x_j),
-$$
+\]
 
 再聚合
 
-$$
+\[
 m_i^t=\operatorname{Agg}_{j\in\mathcal{N}(i)}m_{ij}^t,\qquad
 v_i^{t+1}=\sigma(Wv_i^t+m_i^t).
-$$
+\]
 
 最后输出由点态投影给出：
 
-$$
+\[
 u_\theta(x_i)=Q_\theta(v_i^T).
-$$
+\]
 
 从代码角度看，GKN 的核心 kernel 是三类算子：`lift`、`message_passing`、`project`。其中 `message_passing` 是最重部分，复杂度约为 $O(|E|d_v^2)$ 或 $O(|E|d_vd_k)$，取决于 $\kappa_\phi$ 输出矩阵还是低秩向量权重。若图为全连接，则 $|E|=O(n^2)$；若采用半径图或 kNN，则 $|E|=O(kn)$。这直接决定 GPU 上是 memory-bound gather/scatter，还是 dense small-matmul dominated。
 
@@ -91,36 +95,36 @@ $$
 
 第一步是从 PDE 解映射到算子学习。传统监督学习把网格解看成
 
-$$
+\[
 \mathbf{u}=G_h(\mathbf{a}),\qquad \mathbf{a},\mathbf{u}\in\mathbb{R}^n,
-$$
+\]
 
 但这会把训练分辨率 $h$ 固化进模型。GKN 改成先定义连续算子层，再在任意点集上求积：
 
-$$
+\[
 \int_D \kappa(x,y)v(y)\,dy
 \approx
 \sum_{j=1}^n w_j\kappa(x_i,x_j)v_j.
-$$
+\]
 
 若点云近似均匀，$w_j$ 可吸收到归一化因子；若是 AMR 或非均匀网格，$w_j$ 应显式使用 cell volume、quadrature weight 或 control-volume area。
 
 第二步是把核积分解释为图消息传递。对每个目标节点 $i$，邻域 $\mathcal{N}(i)$ 取代全域积分，边特征编码空间相对关系和局部系数：
 
-$$
+\[
 K_\phi v_i
 =
 \sum_{j\in\mathcal{N}(i)}
 \kappa_\phi(x_i,x_j,a_i,a_j)v_j.
-$$
+\]
 
 这一步提供了离散化不变性的来源：参数 $\phi$ 与节点数 $n$ 无关，只要输入坐标和权重表达同一个物理域，模型可在不同图上复用。
 
 第三步是多层组合产生非线性算子。单层核积分近似线性 Green operator，多层结构
 
-$$
+\[
 G_\theta=Q_\theta\circ \mathcal{L}_{T-1}\circ\cdots\circ\mathcal{L}_0\circ P_\theta
-$$
+\]
 
 通过激活函数表达非线性 PDE、参数依赖边界、非局部耦合和多尺度效应。这里 $\mathcal{L}_t$ 表示第 $t$ 个核积分更新层。
 
@@ -130,9 +134,9 @@ GKN 对 Doctor 的框架启示主要在 mesh abstraction。它要求框架把 fi
 
 第二个结合点是 matrix-free operator interface。GKN 的消息传递可以看成一个可学习 sparse matrix-free stencil：
 
-$$
+\[
 (K_\phi v)_i=\sum_{j\in\mathcal{N}(i)}K_{ij}(\theta,a,x)v_j.
-$$
+\]
 
 这和 JFNK、matrix-free GPU solver 的算子调用模式一致，可把 learned preconditioner、learned flux correction 或 learned closure 写成同一类 `apply(y, x)` 接口。
 

@@ -1,5 +1,7 @@
 # Hamiltonian Neural Networks
 
+**作者：** Sam Greydanus, Misko Dzamba, Jason Yosinski
+
 **arXiv:** [1906.01563](https://arxiv.org/abs/1906.01563)
 **会议：** NeurIPS 2019
 
@@ -11,7 +13,7 @@
 
 ## 摘要
 
-本文提出 Hamiltonian 神经网络（HNN），通过学习系统的 Hamiltonian 函数而非直接拟合状态导数，保证学习到的动力学满足能量守恒。在理想弹簧、摆、三体问题等物理系统上，HNN 相比标准神经网络在长时间预测中显着降低了能量漂移。
+本文提出 Hamiltonian 神经网络（HNN），通过学习系统的 Hamiltonian 函数而非直接拟合状态导数，使连续时间模型保持学习到的 $H_\theta$；这不自动保证真实 Hamiltonian 或离散轨道的能量守恒。在理想弹簧、摆、二体问题等物理系统上，HNN 相比标准神经网络在长时间预测中显着降低了能量漂移。
 
 ## 结论
 
@@ -27,7 +29,7 @@ Doctor 指定精读（学习路线规划推荐）。HNN 是 AI4Physics 中把 Ha
 
 经典 Hamiltonian 系统以正则坐标 $x=(q,p)$ 表示：
 
-$$
+\[
 \frac{d}{dt}
 \begin{pmatrix}
 q\\
@@ -40,39 +42,39 @@ p
 \end{pmatrix}
 \nabla H(q,p)
 =J\nabla H(q,p).
-$$
+\]
 
 展开即 Hamilton 方程：
 
-$$
+\[
 \dot{q}=\frac{\partial H}{\partial p},\qquad
 \dot{p}=-\frac{\partial H}{\partial q}.
-$$
+\]
 
 HNN 用神经网络 $H_\theta(q,p)$ 参数化 Hamiltonian，而不是直接学习向量场 $f_\theta(q,p)\approx \dot{x}$。预测的动力学为
 
-$$
+\[
 \dot{x}_\theta = J\nabla_x H_\theta(x).
-$$
+\]
 
 训练损失比较观测导数与由 Hamiltonian 梯度生成的导数：
 
-$$
+\[
 \mathcal{L}_{\mathrm{HNN}}
 =\left\|
 \frac{dx}{dt}
 -J\nabla_x H_\theta(x)
 \right\|_2^2.
-$$
+\]
 
 由于 $J$ 反对称，沿模型轨道有
 
-$$
+\[
 \frac{dH_\theta}{dt}
 =\nabla H_\theta^\top J\nabla H_\theta=0.
-$$
+\]
 
-这在连续时间模型层面解释了 HNN 为什么在无耗散系统中比普通 MLP 更能抑制长期能量漂移：能量守恒来自网络输出结构，而不是损失函数中的软惩罚（实际数值积分时需配合辛积分器才能在离散轨道上近似保持能量）。
+这在连续时间模型层面解释了 HNN 为什么在无耗散系统中比普通 MLP 更能抑制长期能量漂移：能量守恒来自网络输出结构，而不是损失函数中的软惩罚（离散能量误差仍依赖积分器与步长；辛积分器在适当条件下有长期优势，但不是近似保能量的唯一方法，也不一般严格保能量）。
 
 论文还讨论了非正则坐标或只观测部分变量时的扩展：若输入不是标准 $(q,p)$，需要学习或指定坐标变换，否则 $J\nabla H$ 的结构假设可能失配。
 
@@ -117,3 +119,7 @@ for batch x, xdot:
 1. HNN 中 $J\nabla H_\theta$ 的结构为什么自动保证模型能量守恒？如果 $J$ 依赖状态变量或存在 Casimir，这一论证需要怎样修改？
 2. 对 Hamiltonian PDE 离散系统，学习 $H_h$ 与学习连续 $H$ 后再离散化分别有什么优缺点？它们对 HPC 框架中的网格无关性有何影响？
 3. 在流体和量子涡问题中，真实系统常含耗散、驱动或拓扑事件。HNN 应如何与耗散结构、事件检测和守恒投影结合？
+
+## 核对依据与边界（2026-10-15）
+
+依据[HNN 原论文](https://arxiv.org/abs/1906.01563)的方法与实验；连续模型的 $dH_\theta/dt=0$ 和离散求解误差分开陈述。

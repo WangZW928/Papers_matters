@@ -48,114 +48,114 @@ Doctor 指定精读（跳过 Codex 价值评估）。按 6 级标准看，本文
 
 论文的起点是算子学习，而不是单个 PDE 实例求解。设 $D\subset\mathbb{R}^{d}$，输入函数空间与输出函数空间分别为
 
-$$
+\[
 \mathcal{A}=\mathcal{A}(D;\mathbb{R}^{d_a}),\qquad
 \mathcal{U}=\mathcal{U}(D;\mathbb{R}^{d_u}),
-$$
+\]
 
 真实 PDE 解算子为
 
-$$
+\[
 G^\dagger:\mathcal{A}\to\mathcal{U}.
-$$
+\]
 
 训练数据为 $\{a_j,u_j\}_{j=1}^{N}$，其中 $a_j\sim\mu$，$u_j=G^\dagger(a_j)$。目标是学习参数化算子
 
-$$
+\[
 G:\mathcal{A}\times\Theta\to\mathcal{U},\qquad
 G_\theta:\mathcal{A}\to\mathcal{U},
-$$
+\]
 
 并最小化
 
-$$
+\[
 \min_{\theta\in\Theta}
 \mathbb{E}_{a\sim\mu}
 \left[
 C(G(a,\theta),G^\dagger(a))
 \right].
-$$
+\]
 
 这里的核心记号约定是：$a$ 是 PDE 参数、系数、初值或外力等函数输入，$u$ 是解函数；$v_t$ 是隐藏通道函数，不是物理时间。FNO 的网络结构为 lifting、若干 Fourier layer、projection：
 
-$$
+\[
 v_0(x)=P(a(x)),\qquad
 u(x)=Q(v_T(x)).
-$$
+\]
 
 一般神经算子层写成
 
-$$
+\[
 v_{t+1}(x)
 =
 \sigma\left(
 Wv_t(x)+(\mathcal{K}(a;\phi)v_t)(x)
 \right),
 \qquad x\in D,
-$$
+\]
 
 其中 $W:\mathbb{R}^{d_v}\to\mathbb{R}^{d_v}$ 是局部线性变换，$\sigma$ 是逐点非线性，$\mathcal{K}$ 是非局部核积分算子。一般核积分形式为
 
-$$
+\[
 (\mathcal{K}(a;\phi)v_t)(x)
 =
 \int_D
 \kappa(x,y,a(x),a(y);\phi)v_t(y)\,\mathrm{d}y.
-$$
+\]
 
 FNO 的关键限制是去掉显式 $a(x),a(y)$ 依赖，并令核只依赖位移：
 
-$$
+\[
 \kappa(x,y,a(x),a(y);\phi)=\kappa_\phi(x-y).
-$$
+\]
 
 于是核积分变成卷积。由卷积定理，
 
-$$
+\[
 (\mathcal{K}(\phi)v_t)(x)
 =
 \mathcal{F}^{-1}
 \left(
 \mathcal{F}(\kappa_\phi)\cdot\mathcal{F}(v_t)
 \right)(x).
-$$
+\]
 
 论文进一步直接参数化 Fourier 空间中的核：
 
-$$
+\[
 (\mathcal{K}(\phi)v_t)(x)
 =
 \mathcal{F}^{-1}
 \left(
 R_\phi\cdot(\mathcal{F}v_t)
 \right)(x),
-$$
+\]
 
 其中对每个 Fourier mode $k$，
 
-$$
+\[
 (\mathcal{F}v_t)(k)\in\mathbb{C}^{d_v},\qquad
 R_\phi(k)\in\mathbb{C}^{d_v\times d_v}.
-$$
+\]
 
 实际实现只保留低频集合 $Z_{k_{\max}}$。若 $v_t\in\mathbb{R}^{n\times d_v}$，则
 
-$$
+\[
 \mathcal{F}(v_t)\in\mathbb{C}^{n\times d_v},
-$$
+\]
 
 截断后只对 $k\in Z_{k_{\max}}$ 施加复数权重矩阵：
 
-$$
+\[
 \left(R\cdot(\mathcal{F}v_t)\right)_{k,l}
 =
 \sum_{j=1}^{d_v}
 R_{k,l,j}(\mathcal{F}v_t)_{k,j}.
-$$
+\]
 
 在均匀网格 $s_1\times\cdots\times s_d=n$ 上，用 FFT 近似 Fourier 变换：
 
-$$
+\[
 (\hat{\mathcal{F}}f)_l(k)
 =
 \sum_{x_1=0}^{s_1-1}\cdots\sum_{x_d=0}^{s_d-1}
@@ -163,11 +163,11 @@ f_l(x_1,\ldots,x_d)
 \exp\left(
 -2\pi i\sum_{j=1}^{d}\frac{x_jk_j}{s_j}
 \right).
-$$
+\]
 
 逆变换为
 
-$$
+\[
 (\hat{\mathcal{F}}^{-1}f)_l(x)
 =
 \frac{1}{n}
@@ -176,11 +176,11 @@ f_l(k_1,\ldots,k_d)
 \exp\left(
 2\pi i\sum_{j=1}^{d}\frac{x_jk_j}{s_j}
 \right).
-$$
+\]
 
 截断模态集合在实现中常取 Fourier 张量的低频角块：
 
-$$
+\[
 Z_{k_{\max}}
 =
 \left\{
@@ -188,7 +188,7 @@ Z_{k_{\max}}
 \min\{k_j,s_j-k_j\}\leq k_{\max,j}
 \ \text{for every }j=1,\ldots,d
 \right\}.
-$$
+\]
 
 因此一个 Fourier layer 的代码结构可写为：
 
@@ -206,29 +206,29 @@ FNO 的 resolution invariance 来自两个事实。第一，学习参数 $R(k)$ 
 
 第一步是从一般核积分到卷积。一般神经算子用 $\kappa(x,y,a(x),a(y))$ 表示任意非局部相互作用，表达力强但代价接近稠密积分。FNO 令核平移不变：
 
-$$
+\[
 \kappa(x,y)=\kappa(x-y),
-$$
+\]
 
 于是
 
-$$
+\[
 (\mathcal{K}v)(x)
 =
 \int_D\kappa(x-y)v(y)\,\mathrm{d}y
 =
 (\kappa*v)(x).
-$$
+\]
 
 这一步牺牲了显式位置依赖，但换来了谱域对角化。
 
 第二步是用 Fourier 乘法替代物理空间积分：
 
-$$
+\[
 \mathcal{F}(\kappa*v)(k)
 =
 \mathcal{F}(\kappa)(k)\mathcal{F}(v)(k).
-$$
+\]
 
 对多通道场，标量乘法变成每个频率上的通道混合矩阵 $R(k)$。这解释了为什么 FNO 同时具有全局感受野与相对低的复杂度：非局部传播由 FFT 完成，通道耦合由小矩阵乘完成。
 

@@ -2,7 +2,7 @@
 
 **Authors:** Albert Chern, Felix Knöppel, Ulrich Pinkall, and Peter Schröder
 
-**DOI:** [http://dx.doi.org/10.1145/3072959.3073591](https://doi.org/http://dx.doi.org/10.1145/3072959.3073591)
+**DOI:** [http://dx.doi.org/10.1145/3072959.3073591](https://doi.org/10.1145/3072959.3073591)
 
 **Source PDF:** `Clebsch1.pdf`
 
@@ -13,23 +13,15 @@
 
 ## Abstract
 
-_Not available_
+据[作者全文](https://cseweb.ucsd.edu/~alchern/projects/Clebsch/Clebsch.pdf)概述：球面 Clebsch 映射用函数编码速度与涡量，使涡线可由涡量映射的等值线表示。论文通过非线性 Dirichlet 能量最小化，为给定数值速度场寻找近似映射，用于可视化、分析与亚格子涡量增强。模型存在拓扑和近似限制，不是天然严格保螺旋度的 Schrödinger 时间演化求解器。
 
 ## Summary
 
-**核心问题：** Clebsch映射在流体可视化和涡旋处理中的应用——如何利用Schrödinger方程处理涡旋数据？
+**核心问题：** 如何为已有数值速度场构造球面 Clebsch 映射，并利用映射提取涡结构、处理流场？
 
-**方法：** 引入Clebsch映射（Clebsch maps）概念：将流体速度场通过Clebsch势表示映射到波函数空间，利用Schrödinger流（量子力学中波函数的演化）处理流体数据，用于可视化涡丝追踪和流场处理。
+**方法：** 将速度拟合项与球面映射平滑项合为联络 Dirichlet 能量，使用梯度流及隐式求解寻找近似极小值；映射的原像提供涡线、涡管可视化。
 
-**关键结果：**
-- Clebsch映射提供了涡丝自动检测和追踪的新方法——涡线对应波函数的相位缺陷
-- Schrödinger演化天然保持拓扑守恒（如螺旋度、环量），适合处理涡旋数据的平滑和插值
-- 方法在计算流体和实验流体数据上都展示了优异的涡结构可视化能力
-
-**与你工作的相关性：** Clebsch表示的数值框架可参考用于HPC框架中涡动力学的可视化和数据分析工具。
-
-**状态：** ✅ 完整摘要
-
+**结果与边界：** 论文在基准和数值流场上展示可视化与亚格子涡量增强。球面表示的涡线通常闭合或终止于边界；孤立涡量零点、一般非闭合轨迹、量子化螺旋度和局部极小值都会限制精确拟合。不能把这些结果说成任意流场拓扑严格守恒。
 
 ## 精读笔记
 
@@ -80,7 +72,7 @@ C=S^3,\quad \Sigma=S^2,\quad s=\pi\circ\psi ,
 其中 $S^3$ 用单位四元数 $q$ 表示，固定
 
 \[
-\alpha=\hbar\langle dq,iq\rangle,\quad \sigma=\frac{\hbar}{2}dA_{S^2},\quad \pi(q)=qiq .
+\alpha=\hbar\langle dq,iq\rangle,\quad \sigma=\frac{\hbar}{2}dA_{S^2},\quad \pi(q)=\bar q\,i q .
 \]
 
 速度与涡量由
@@ -90,7 +82,7 @@ C=S^3,\quad \Sigma=S^2,\quad s=\pi\circ\psi ,
 \omega=s^*\sigma
 \]
 
-给出。因为 $s^{-1}(p)$ 是 $S^2$ 上点 $p$ 的原像，所以它天然给出闭合涡线；$s^{-1}(\Omega)$ 给出涡管。
+给出。因为 $s^{-1}(p)$ 是 $S^2$ 上点 $p$ 的原像，在正则值等条件下给出涡线（闭合，或起止于定义域边界）；$s^{-1}(\Omega)$ 给出涡管。
 
 给定目标速度一形式 $\eta_0$，算法求解
 
@@ -159,16 +151,16 @@ d\eta=d\lambda\wedge d\mu-d^2\phi=d\lambda\wedge d\mu .
 球面 map 从涡量到速度的 lift 也有明确构造。给定 $s:M\to S^2$，若 $M$ 星形且 $\omega=s^*\sigma$ 精确，沿从原点到 $r$ 的径向线定义 $s_r(t)=s(tr)$，解
 
 \[
-\frac{d}{dt}\psi_r=-\frac{i}{2}\psi_r\frac{d}{dt}s_r,\quad \psi_r(0)=\psi_0 .
+\frac{d}{dt}\psi_r=-\frac{i}{2}\psi_r\frac{d}{dt}s_r,\quad \psi_r(0)=\psi_0,\quad \bar\psi_0 i\psi_0=s(0) .
 \]
 
 可得
 
 \[
-\frac{d}{dt}(\psi_ri\bar\psi_r)=\frac{d}{dt}s_r,
+\frac{d}{dt}(\bar\psi_r i\psi_r)=\frac{d}{dt}s_r,
 \]
 
-故 $\psi_ri\bar\psi_r=s_r$。令 $\varphi(r)=\psi_r(1)$，则 $\pi\circ\varphi=s$。由
+故 $\bar\psi_r i\psi_r=s_r$。令 $\varphi(r)=\psi_r(1)$，则 $\pi\circ\varphi=s$。由
 
 \[
 \tilde\eta=\hbar\langle d\varphi,i\varphi\rangle
@@ -265,3 +257,11 @@ E_\epsilon(\psi)=\sum_{ij\in E}w_{ij}\left|P^\epsilon_{ij}(\nabla_{\eta_0}\psi)_
 1. 为什么经典的 R^2 Clebsch map 总是给出零 helicity，而球面 S^2 Clebsch map 又如何借助 Hopf 不变量的量子化关系 H = n h^2 突破这一限制？
 2. Berger 度量参数 epsilon 在能量泛函中具有怎样的几何含义，为什么优化时必须采用逐步减小（continuation）的方式，而不能一开始就直接设为零？
 3. SU(2) 上 Maurer-Cartan 形式的拉回如何同时编码速度一形式与涡量二形式，这对理想流体中的速度与涡量关系说明了什么？
+
+## 价值评估
+
+沿用指定精读层级。球面 Clebsch 映射把涡线可视化与几何表示联系起来，也提供亚格子涡量处理工具；实际使用必须评估拟合误差、边界、非闭合轨迹与螺旋度量子化的限制。
+
+## 核对依据与边界（2026-10-15）
+
+对照[全文](https://cseweb.ucsd.edu/~alchern/projects/Clebsch/Clebsch.pdf)PDF 第 2 页 Hopf 映射公式（已查看原页，避免 OCR 漏掉共轭），以及 §3 的能量最小化和 §4 的表示限制。

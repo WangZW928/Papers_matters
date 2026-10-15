@@ -1,6 +1,6 @@
 # 图神经网络：方法与应用的综述
 
-# Graph Neural Networks: A Review of Methods and Applications
+*Graph Neural Networks: A Review of Methods and Applications*
 
 **作者：** Jie Zhou, Ganqu Cui, Shengding Hu, Zhengyan Zhang, Cheng Yang, Zhiyuan Liu, Lifeng Wang, Changcheng Li, Maosong Sun
 **期刊：** AI Open 1: 57-81, 2020（2021-01-28 在线见刊；arXiv 预印本 2018-12）

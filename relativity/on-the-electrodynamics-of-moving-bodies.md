@@ -1,6 +1,6 @@
 # 论动体的电动力学（狭义相对论奠基论文）
 
-# On the Electrodynamics of Moving Bodies (Zur Elektrodynamik bewegter Körper)
+*On the Electrodynamics of Moving Bodies (Zur Elektrodynamik bewegter Körper)*
 
 **作者：** Albert Einstein
 **期刊：** Annalen der Physik 17(10): 891-921, 1905
@@ -62,9 +62,9 @@ Doctor 指定精读（跳过 Codex 价值评估）。
 
 任意光线在真空中总以确定速度 $c$ 传播，且该速度与发光体的运动状态无关。用 §1 中定义的时间间隔表示：
 
-$$
+\[
 \text{velocity}=\frac{\text{light path}}{\text{time interval}}=c
-$$
+\]
 
 这里 $c$ 是真空光速；“time interval”不是先验绝对时间，而是由同一惯性系内同步钟给出的时间间隔。
 
@@ -72,21 +72,21 @@ $$
 
 爱因斯坦首先指出，“时间”只有在说明如何比较远处事件时才有物理意义。若 $A$、$B$ 两点各有一只静止于同一坐标系的钟，从 $A$ 在 $t_A$ 发出光信号，到 $B$ 在 $t_B$ 反射，再回到 $A$ 于 $t'_A$，则定义两钟同步当且仅当：
 
-$$
+\[
 t_B-t_A=t'_A-t_B
-$$
+\]
 
 等价地：
 
-$$
+\[
 t_B=\frac{t_A+t'_A}{2}
-$$
+\]
 
 这不是由更深的绝对时间推出，而是一个操作定义：用光信号规定远处钟的同步。进一步假设：
 
-$$
+\[
 \frac{2AB}{t'_A-t_A}=c
-$$
+\]
 
 其中 $AB$ 是两点间距离。这给出同一惯性系内的统一时间定义。重要的是：同步性依赖坐标系；一个系中同步的远处钟，在另一个匀速运动系中一般不同步。
 
@@ -100,29 +100,29 @@ $$
 
 设杆沿 $x$ 方向以速度 $v$ 运动，杆在静止系中长度为 $r_{AB}$。从后端 $A$ 发光到前端 $B$，由于 $B$ 远离光，传播时间为：
 
-$$
+\[
 t_B-t_A=\frac{r_{AB}}{c-v}
-$$
+\]
 
 反射后从 $B$ 回到 $A$，由于 $A$ 迎向光，传播时间为：
 
-$$
+\[
 t'_A-t_B=\frac{r_{AB}}{c+v}
-$$
+\]
 
 二者不相等：
 
-$$
+\[
 \frac{r_{AB}}{c-v}\neq \frac{r_{AB}}{c+v}
-$$
+\]
 
 因此，随杆运动的观察者会判定两端钟不同步，而静止系观察者可判定它们同步。这一步给出相对论运动学的核心断裂点：同时性不是绝对的。
 
 完整的长度收缩公式随后在 §4 由洛伦兹变换推出：
 
-$$
+\[
 L=L_0\sqrt{1-\frac{v^2}{c^2}}
-$$
+\]
 
 其中 $L_0$ 是物体静止时的固有长度，$L$ 是它沿运动方向在另一惯性系中被同时测量到的长度。横向长度不变。
 
@@ -130,159 +130,159 @@ $$
 
 设静止系为 $K:(x,y,z,t)$，运动系为 $k:(\xi,\eta,\zeta,\tau)$，$k$ 相对 $K$ 沿 $x$ 轴以速度 $v$ 运动。令：
 
-$$
+\[
 x'=x-vt
-$$
+\]
 
 由于空间和时间的均匀性，变换应为线性。对运动系中的钟使用 §1 的光同步定义，有：
 
-$$
+\[
 \frac{1}{2}\left[\tau(0,0,0,t)+\tau\left(0,0,0,t+\frac{x'}{c-v}+\frac{x'}{c+v}\right)\right]
 =
 \tau\left(x',0,0,t+\frac{x'}{c-v}\right)
-$$
+\]
 
 取 $x'$ 为无穷小，得到偏微分关系：
 
-$$
+\[
 \frac{\partial \tau}{\partial x'}+
 \frac{v}{c^2-v^2}
 \frac{\partial \tau}{\partial t}=0
-$$
+\]
 
 对横向方向，由对称性和光速不变得到：
 
-$$
+\[
 \frac{\partial \tau}{\partial y}=0,
 \qquad
 \frac{\partial \tau}{\partial z}=0
-$$
+\]
 
 因此：
 
-$$
+\[
 \tau=a\left(t-\frac{v}{c^2-v^2}x'\right)
-$$
+\]
 
 其中 $a$ 是只依赖 $v$ 的未知函数。
 
 原文在此补出关键中间式（从同步规则到空间坐标变换）：光线在运动系中满足 $\xi=c\tau$，并结合光在 $K$ 中沿 $+x$ 方向追赶运动系原点所满足的 $x'/(c-v)=t$，推出：
 
-$$
+\[
 \xi=a\frac{c^2}{c^2-v^2}x'
-$$
+\]
 
 横向坐标同理：光沿 $y$ 方向传播时 $\eta=c\tau$，结合 $y/\sqrt{c^2-v^2}=t$（$y$ 方向光程在 $K$ 中耗时由光速不变给出），推出 $\eta,\zeta$ 与 $y,z$ 同型。
 
 进一步要求光在运动系中也以速度 $c$ 传播，可得一般形式：
 
-$$
+\[
 \tau=\phi(v)\beta\left(t-\frac{vx}{c^2}\right)
-$$
+\]
 
-$$
+\[
 \xi=\phi(v)\beta(x-vt)
-$$
+\]
 
-$$
+\[
 \eta=\phi(v)y
-$$
+\]
 
-$$
+\[
 \zeta=\phi(v)z
-$$
+\]
 
 其中：
 
-$$
+\[
 \beta=\frac{1}{\sqrt{1-\frac{v^2}{c^2}}}
-$$
+\]
 
 现代记号通常写作 $\gamma$，即 $\beta=\gamma$。
 
 接着证明 $\phi(v)=1$。引入第三个坐标系 $K'$，相对 $k$ 以速度 $-v$ 运动。连续做两次变换，得到：
 
-$$
+\[
 t'=\phi(v)\phi(-v)t
-$$
+\]
 
-$$
+\[
 x'=\phi(v)\phi(-v)x
-$$
+\]
 
-$$
+\[
 y'=\phi(v)\phi(-v)y
-$$
+\]
 
-$$
+\[
 z'=\phi(v)\phi(-v)z
-$$
+\]
 
 因为 $K'$ 与 $K$ 相对静止，这个复合变换必须是恒等变换，所以：
 
-$$
+\[
 \phi(v)\phi(-v)=1
-$$
+\]
 
 再看垂直于运动方向的杆。由对称性，横向长度不能依赖速度方向的正负，因此：
 
-$$
+\[
 \phi(v)=\phi(-v)
-$$
+\]
 
 联立得到：
 
-$$
+\[
 \phi(v)=1
-$$
+\]
 
 于是最终洛伦兹变换为：
 
-$$
+\[
 \tau=\beta\left(t-\frac{vx}{c^2}\right)
-$$
+\]
 
-$$
+\[
 \xi=\beta(x-vt)
-$$
+\]
 
-$$
+\[
 \eta=y
-$$
+\]
 
-$$
+\[
 \zeta=z
-$$
+\]
 
 逆变换为：
 
-$$
+\[
 t=\beta\left(\tau+\frac{v\xi}{c^2}\right)
-$$
+\]
 
-$$
+\[
 x=\beta(\xi+v\tau)
-$$
+\]
 
-$$
+\[
 y=\eta
-$$
+\]
 
-$$
+\[
 z=\zeta
-$$
+\]
 
 它保持光锥不变。若在 $K$ 中光波面满足：
 
-$$
+\[
 x^2+y^2+z^2=c^2t^2
-$$
+\]
 
 则在 $k$ 中也满足：
 
-$$
+\[
 \xi^2+\eta^2+\zeta^2=c^2\tau^2
-$$
+\]
 
 这就是两条公设相容性的数学表达。
 
@@ -290,53 +290,53 @@ $$
 
 设半径为 $R$ 的球在运动系 $k$ 中静止：
 
-$$
+\[
 \xi^2+\eta^2+\zeta^2=R^2
-$$
+\]
 
 用洛伦兹变换写到 $K$，并取同一静止系时刻 $t=0$，得到：
 
-$$
+\[
 \frac{x^2}{\left(\sqrt{1-\frac{v^2}{c^2}}\right)^2}+y^2+z^2=R^2
-$$
+\]
 
 所以静止时为球的物体，在静止系 $K$ 中以同一 $t$ 切片测得为旋转椭球（原文表述为 viewed from the stationary system）；在自身静止系中仍为球。轴长为：
 
-$$
+\[
 R\sqrt{1-\frac{v^2}{c^2}},\quad R,\quad R
-$$
+\]
 
 即沿运动方向收缩，横向不变。
 
 时间膨胀由运动系原点上的钟推出。该钟满足：
 
-$$
+\[
 x=vt
-$$
+\]
 
 代入：
 
-$$
+\[
 \tau=\beta\left(t-\frac{vx}{c^2}\right)
-$$
+\]
 
 得：
 
-$$
+\[
 \tau=t\sqrt{1-\frac{v^2}{c^2}}
-$$
+\]
 
 因此运动钟相对于 $K$ 变慢。低速展开：
 
-$$
+\[
 \tau\approx t\left(1-\frac{1}{2}\frac{v^2}{c^2}\right)
-$$
+\]
 
 每秒慢约：
 
-$$
+\[
 \frac{1}{2}\frac{v^2}{c^2}
-$$
+\]
 
 这也是后来的“钟慢效应”和双生子佯谬的原型推论。
 
@@ -344,51 +344,51 @@ $$
 
 若在运动系 $k$ 中质点速度分量为：
 
-$$
+\[
 \xi=w_\xi\tau,\qquad \eta=w_\eta\tau,\qquad \zeta=0
-$$
+\]
 
 则在 $K$ 中：
 
-$$
+\[
 \frac{dx}{dt}=\frac{w_\xi+v}{1+\frac{vw_\xi}{c^2}}
-$$
+\]
 
-$$
+\[
 \frac{dy}{dt}=
 \frac{\sqrt{1-\frac{v^2}{c^2}}}{1+\frac{vw_\xi}{c^2}}w_\eta
-$$
+\]
 
 若 $w$ 与 $v$ 的夹角为 $a$，合速度大小为：
 
-$$
+\[
 V=
 \frac{
 \sqrt{v^2+w^2+2vw\cos a-\left(\frac{vw\sin a}{c}\right)^2}
 }{
 1+\frac{vw\cos a}{c^2}
 }
-$$
+\]
 
 同向时化为：
 
-$$
+\[
 V=\frac{v+w}{1+\frac{vw}{c^2}}
-$$
+\]
 
 这说明普通速度平行四边形法则只在低速近似成立。当 $v<c$ 且 $w<c$ 时，合速度仍小于 $c$；若其中一个速度为 $c$，则：
 
-$$
+\[
 V=\frac{c+w}{1+\frac{w}{c}}=c
-$$
+\]
 
 因此光速在速度合成下保持不变。
 
 群性质来自连续洛伦兹变换：若 $K\to k$ 的相对速度为 $v$，$k\to k'$ 的相对速度为 $w$，则 $K\to k'$ 仍是同型变换，只是速度参数变为：
 
-$$
+\[
 u=\frac{v+w}{1+\frac{vw}{c^2}}
-$$
+\]
 
 这说明沿同一直线的洛伦兹变换在复合下封闭，构成一参数群。
 
@@ -396,41 +396,41 @@ $$
 
 原文采用高斯单位。令电场为：
 
-$$
+\[
 \mathbf{E}=(X,Y,Z)
-$$
+\]
 
 磁场为：
 
-$$
+\[
 \mathbf{B}=(L,M,N)
-$$
+\]
 
 真空中的麦克斯韦-赫兹方程在 $K$ 中写作分量形式。要求它们在 $k$ 中保持同样形式，结合坐标变换可推出场变换。原文先说明：两套麦克斯韦-赫兹方程在运动系中可相差一个只依赖 $v$ 的公共因子 $\psi(v)$（场方程形式比较允许公共因子），再由反变换与对称性得到 $\psi(v)\psi(-v)=1$、$\psi(v)=1$。最终 $\psi(v)=1$ 后：
 
-$$
+\[
 X'=X
-$$
+\]
 
-$$
+\[
 L'=L
-$$
+\]
 
-$$
+\[
 Y'=\beta\left(Y-\frac{v}{c}N\right)
-$$
+\]
 
-$$
+\[
 M'=\beta\left(M+\frac{v}{c}Z\right)
-$$
+\]
 
-$$
+\[
 Z'=\beta\left(Z+\frac{v}{c}M\right)
-$$
+\]
 
-$$
+\[
 N'=\beta\left(N-\frac{v}{c}Y\right)
-$$
+\]
 
 物理意义：
 
@@ -438,9 +438,9 @@ $$
 
 低速近似下，运动电荷受到的附加电动力相当于：
 
-$$
+\[
 \mathbf{F}_{\text{mag}}\sim \frac{q}{c}\mathbf{v}\times \mathbf{B}
-$$
+\]
 
 这解释了引言中的磁铁-导体非对称性：不是现象本身不对称，而是旧理论把同一电磁过程在两个参考系中用了不同语言描述。
 
@@ -448,57 +448,57 @@ $$
 
 设平面电磁波相位为：
 
-$$
+\[
 \Phi=\omega\left[t-\frac{1}{c}(lx+my+nz)\right]
-$$
+\]
 
 其中 $(l,m,n)$ 是波法线方向余弦，$\omega$ 是角频率。变换到 $k$ 后：
 
-$$
+\[
 \Phi'=\omega'\left[\tau-\frac{1}{c}(l'\xi+m'\eta+n'\zeta)\right]
-$$
+\]
 
 频率变换为：
 
-$$
+\[
 \omega'=\omega\beta\left(1-\frac{lv}{c}\right)
-$$
+\]
 
 若光源-观察者连线与观察者速度方向夹角为 $\phi$，则：
 
-$$
+\[
 \nu'=\nu
 \frac{1-\frac{v}{c}\cos\phi}
 {\sqrt{1-\frac{v^2}{c^2}}}
-$$
+\]
 
 这就是任意速度下的相对论多普勒公式。若 $\phi=0$：
 
-$$
+\[
 \nu'=\nu\sqrt{\frac{1-\frac{v}{c}}{1+\frac{v}{c}}}
-$$
+\]
 
 光行差公式为：
 
-$$
+\[
 \cos\phi'=
 \frac{\cos\phi-\frac{v}{c}}
 {1-\frac{v}{c}\cos\phi}
-$$
+\]
 
 若 $\phi=\frac{\pi}{2}$，则：
 
-$$
+\[
 \cos\phi'=-\frac{v}{c}
-$$
+\]
 
 振幅变换满足：
 
-$$
+\[
 A'^2=A^2
 \frac{\left(1-\frac{v}{c}\cos\phi\right)^2}
 {1-\frac{v^2}{c^2}}
-$$
+\]
 
 按原文符号约定补充：$\phi$ 是光源-观察者连线与观察者速度方向的夹角，$v>0$ 表示观察者沿连线远离光源运动——原文在 $\phi=0$ 时给出的是红移形式 $\nu'=\nu\sqrt{(1-v/c)/(1+v/c)}$，并特别指出 $v=-c$ 时 $\nu'=\infty$；因此“接近光源时频率和强度都会增大”对应 $v<0$（或等价的反向角度），$\phi=0,v>0$ 是远离光源的情形。振幅与强度变换同源：强度无穷大的表述也限定为 approaching ... with velocity $c$ 的极限情形。
 
@@ -506,47 +506,47 @@ $$
 
 因为高斯单位中电磁波能量密度为：
 
-$$
+\[
 u=\frac{A^2}{8\pi}
-$$
+\]
 
 但一个光束复合体在两个惯性系中的体积不同。若 $S$ 是 $K$ 中包围同一光复合体的球体积，$S'$ 是 $k$ 中对应椭球体积，则：
 
-$$
+\[
 \frac{S'}{S}=
 \frac{\sqrt{1-\frac{v^2}{c^2}}}
 {1-\frac{v}{c}\cos\phi}
-$$
+\]
 
 结合振幅变换，光能量变换为：
 
-$$
+\[
 \frac{E'}{E}=
 \frac{1-\frac{v}{c}\cos\phi}
 {\sqrt{1-\frac{v^2}{c^2}}}
-$$
+\]
 
 这与频率变换同型：
 
-$$
+\[
 \frac{E'}{E}=\frac{\nu'}{\nu}
-$$
+\]
 
 这条关系后来可自然连接到光量子关系 $E=h\nu$，虽然本文尚未使用光量子语言。
 
 对运动完美反射镜，若入射光与镜面法线夹角由 $\phi$ 表示，辐射压为：
 
-$$
+\[
 P=2\cdot \frac{A^2}{8\pi}
 \frac{\left(\cos\phi-\frac{v}{c}\right)^2}
 {1-\frac{v^2}{c^2}}
-$$
+\]
 
 低速近似恢复经典结果：
 
-$$
+\[
 P\approx 2\cdot \frac{A^2}{8\pi}\cos^2\phi
-$$
+\]
 
 方法论重点：所有运动介质光学问题，都可先变换到与物体共动的坐标系，在那里求静止光学问题，再变换回原参考系。
 
@@ -554,48 +554,48 @@ $$
 
 含电荷和对流电流时，原文写：
 
-$$
+\[
 \rho=
 \frac{\partial X}{\partial x}
 +\frac{\partial Y}{\partial y}
 +\frac{\partial Z}{\partial z}
-$$
+\]
 
 其中 $\rho$ 是 $4\pi$ 倍的电荷密度，电荷速度为：
 
-$$
+\[
 \mathbf{u}=(u_x,u_y,u_z)
-$$
+\]
 
 变换后速度分量为：
 
-$$
+\[
 u_\xi=
 \frac{u_x-v}{1-\frac{u_xv}{c^2}}
-$$
+\]
 
-$$
+\[
 u_\eta=
 \frac{u_y}{\beta\left(1-\frac{u_xv}{c^2}\right)}
-$$
+\]
 
-$$
+\[
 u_\zeta=
 \frac{u_z}{\beta\left(1-\frac{u_xv}{c^2}\right)}
-$$
+\]
 
 这正是 §5 的速度合成公式。
 
 电荷密度变换为：
 
-$$
+\[
 \rho'=
 \frac{\partial X'}{\partial \xi}
 +\frac{\partial Y'}{\partial \eta}
 +\frac{\partial Z'}{\partial \zeta}
 =
 \beta\left(1-\frac{u_xv}{c^2}\right)\rho
-$$
+\]
 
 物理意义：电荷本身守恒，但电荷密度依赖参考系，因为体积和同时性切片都会改变。论文明确指出：若带电体在自身共动系中电荷不变，则在静止系中看其总电荷也保持不变。
 
@@ -603,90 +603,90 @@ $$
 
 设电子在瞬时静止系中满足低速牛顿型运动方程：
 
-$$
+\[
 m\frac{d^2\xi}{d\tau^2}=\epsilon X'
-$$
+\]
 
-$$
+\[
 m\frac{d^2\eta}{d\tau^2}=\epsilon Y'
-$$
+\]
 
-$$
+\[
 m\frac{d^2\zeta}{d\tau^2}=\epsilon Z'
-$$
+\]
 
 其中 $m$ 是静止质量，$\epsilon$ 是电荷。若电子在 $K$ 中瞬时沿 $x$ 方向以速度 $v$ 运动，则变换回 $K$ 得：
 
-$$
+\[
 \frac{d^2x}{dt^2}=
 \frac{\epsilon}{m\beta^3}X
-$$
+\]
 
-$$
+\[
 \frac{d^2y}{dt^2}=
 \frac{\epsilon}{m\beta}
 \left(Y-\frac{v}{c}N\right)
-$$
+\]
 
-$$
+\[
 \frac{d^2z}{dt^2}=
 \frac{\epsilon}{m\beta}
 \left(Z+\frac{v}{c}M\right)
-$$
+\]
 
 若仍用“力 = 质量 × 加速度”的旧语言，并把力定义为瞬时共动系中测得的力，则得到：
 
 纵向质量：
 
-$$
+\[
 m_\parallel=
 \frac{m}{\left(1-\frac{v^2}{c^2}\right)^{3/2}}
 =
 m\beta^3
-$$
+\]
 
 横向质量：
 
-$$
+\[
 m_\perp=
 \frac{m}{1-\frac{v^2}{c^2}}
 =
 m\beta^2
-$$
+\]
 
 ⚠️ 版本注记：这是 Einstein 在此处特定 force/acceleration 定义下的 transverse mass——力定义为瞬时共动系中可由弹簧秤测得的 ponderomotive force、加速度在静止系 $K$ 中测量——**非现代动量定义下常见的 $\gamma m$**。论文也提醒：这些“质量”依赖力与加速度的定义；原文脚注还提到 Planck 后来指出这种力定义“不优”。后来更常用的是保持不变静止质量 $m$，把速度依赖性放入动量和能量。
 
 动能由外电场做功给出：
 
-$$
+\[
 W=\int \epsilon X\,dx
-$$
+\]
 
 利用纵向运动方程：
 
-$$
+\[
 W=m\int_0^v \beta^3 v\,dv
-$$
+\]
 
 得到：
 
-$$
+\[
 W=mc^2\left(
 \frac{1}{\sqrt{1-\frac{v^2}{c^2}}}-1
 \right)
-$$
+\]
 
 即现代形式：
 
-$$
+\[
 W=(\gamma-1)mc^2
-$$
+\]
 
 当 $v\to c$ 时：
 
-$$
+\[
 W\to \infty
-$$
+\]
 
 因此有质量粒子不能被加速到或超过光速。
 
@@ -694,29 +694,29 @@ $$
 
 磁偏转与电偏转比：
 
-$$
+\[
 \frac{A_m}{A_e}=\frac{v}{c}
-$$
+\]
 
 电势差 $P$ 与速度关系：
 
-$$
+\[
 P=
 \frac{m}{\epsilon}c^2
 \left(
 \frac{1}{\sqrt{1-\frac{v^2}{c^2}}}-1
 \right)
-$$
+\]
 
 纯磁场垂直偏转时轨道曲率半径：
 
-$$
+\[
 R=
 \frac{mc^2}{\epsilon}
 \frac{\frac{v}{c}}
 {\sqrt{1-\frac{v^2}{c^2}}}
 \frac{1}{N}
-$$
+\]
 
 其中 $N$ 是垂直于速度、造成偏转的磁场分量。
 
@@ -752,9 +752,9 @@ $w_\xi,w_\eta$：§5 中质点在 $k$ 系中的速度分量。
 
 $\beta$：原文记号，等于现代的 $\gamma$：
 
-$$
+\[
 \beta=\gamma=\frac{1}{\sqrt{1-\frac{v^2}{c^2}}}
-$$
+\]
 
 $(X,Y,Z)$：电场分量。
 
@@ -792,17 +792,17 @@ $\epsilon$：电子电荷。
 
 也就是说，本文的核心是：
 
-$$
+\[
 x^\mu \mapsto \Lambda^\mu{}_\nu x^\nu
-$$
+\]
 
 以及物理方程在洛伦兹变换下形式不变；相对论涡旋流体论文则把这种要求推广到连续介质场：
 
-$$
+\[
 \text{action } S \text{ Lorentz-covariant}
 \quad\Rightarrow\quad
 \text{fluid equations Lorentz-covariant}
-$$
+\]
 
 两者共同主题是：不要把某个参考系中的分量形式当成绝对对象，真正有物理意义的是在惯性系变换下保持一致的结构。电磁学中体现为 $\mathbf{E}$ 与 $\mathbf{B}$ 的混合；相对论流体中体现为流体变量与四维涡量张量通过协变作用量组织。
 ## Review Questions

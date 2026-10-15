@@ -7,7 +7,7 @@ _精读笔记｜arXiv:2602.19128v2，2026-02-26｜全文阅读：主文与主要
 ## 📌 书目信息与问题
 
 - **作者：** Shiyi Cao、Ziming Mao、Joseph E. Gonzalez、Ion Stoica，UC Berkeley
-- **来源：** [arXiv:2602.19128](https://arxiv.org/abs/2602.19128)；[K-Search 代码](https://github.com/caoshiyi/K-Search)
+- **来源：** [arXiv:2602.19128](https://arxiv.org/abs/2602.19128v2)；[K-Search 代码](https://github.com/caoshiyi/K-Search)
 - **研究问题：** 将 LLM 仅作为代码候选生成器加外部进化搜索，是否会错过需要多步、非单调变换的 kernel 优化路径？能否让模型显式规划并随搜索结果更新规划？
 - **阅读范围：** 搜索状态与 world model、三阶段循环、FlashInfer 与 GPUMode 实验、作者结论。
 
@@ -35,10 +35,18 @@ K-Search 将 kernel 优化写成固定 evaluator 预算下的搜索。评估器�
 - **正确理解 world model：** 这里的“world model”是维护/更新搜索假设和动作优先级的机制，不是对 GPU 微架构的高保真模拟。
 - **对 SCALE_Forge 的启示：** 将高层策略（优化动作 DAG/树）与低层候选代码分层记录；候选效用绑定正确性、实测耗时和 evaluator 元数据；允许策略继承多个已验证变换；停滞时触发局部改写或换分支，而非只重复采样 prompt。
 
-## ❓复读问题与价值判断
+## Review Questions
 
 1. 经验条目应是“代码技巧”还是“带前提的搜索动作”？其状态和证伪条件如何表达？
 2. 如何识别变换组合收益，避免因单独尝试分数低而过早剪枝？
-3. **阅读价值：很高。** 与“提案—评估—状态转移—再搜索”型 Agent loop 直接相关；应在自身 workload 上验证规划机制，不宜只引用 headline speedup。
+3. 固定相同的测量预算后，如何分别消融策略更新、代码生成与初始程序的贡献？
+
+## 价值评估
+
+**阅读价值：很高。** 与“提案—评估—状态转移—再搜索”型 Agent loop 直接相关；应在自身 workload 上验证规划机制，不宜只引用 headline speedup。
 
 **状态：** ✅ 已精读（2026-10-15）
+
+## 核对依据与边界（2026-10-15）
+
+本次取得的 PDF 首页版本与本页声明的 2602.19128v2 一致；检查结果数字与方法边界，统一复读问题及价值评估格式。这里的“已精读”是原有阅读记录，不表示本次重新独立复现了所有实验。

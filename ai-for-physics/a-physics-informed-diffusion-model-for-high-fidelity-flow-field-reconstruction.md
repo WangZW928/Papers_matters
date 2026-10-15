@@ -1,6 +1,6 @@
 # A physics-informed diffusion model for high-fidelity flow field reconstruction
 
-**Authors:** Dule Shu
+**Authors:** Dule Shu, Zijie Li, Amir Barati Farimani
 
 **DOI:** [10.1016/j.jcp.2023.111972](https://doi.org/10.1016/j.jcp.2023.111972)
 
@@ -12,11 +12,11 @@
 
 ## 摘要
 
-本文针对高保真流场重建问题，提出了一种物理信息扩散模型（Physics-Informed Diffusion Model）。该方法将流体动力学控制方程（如Navier-Stokes方程）作为物理约束嵌入扩散模型的逆扩散过程中，从而在稀疏或噪声观测数据下重建出符合物理规律的流场。在圆柱绕流和翼型流场数据集上的实验表明，该方法在重建精度上相比传统插值方法和纯数据驱动扩散模型提升了约15%-20%，且能有效保证流场的物理一致性（如质量守恒和动量守恒）。
+本文研究二维湍流场的高保真重建。扩散模型先只用高保真流场学习先验，推理时利用低保真或稀疏观测进行条件重建，并可引入 PDE 残差引导。实验比较重建误差与物理残差；物理引导是软约束，不构成质量、动量严格守恒的保证。原笔记中的圆柱/翼型实验和统一 15%–20% 提升没有相应原文依据，已删除。
 
 ## 结论
 
-本文提出的物理信息扩散模型能够在不依赖大量高分辨率训练数据的情况下，实现高精度且物理一致的流场重建，验证了将物理约束融入生成式模型是解决稀疏观测下流场重建问题的有效途径。
+训练与重建条件解耦，有助于将同一个高保真先验用于不同低保真输入。效果仍依赖高保真训练分布、观测覆盖和采样成本；本文不能支持“不依赖大量高分辨率训练数据”的普遍结论。
 
 ## 价值评估
 
@@ -28,68 +28,68 @@ Doctor 指定精读（学习路线规划推荐）。本文是 DDPM 在流体高�
 
 基础扩散结构沿用 DDPM。对高保真流场 $x_0$，前向加噪为
 
-$$
+\[
 x_t=\sqrt{\bar{\alpha}_t}x_0+\sqrt{1-\bar{\alpha}_t}\epsilon,
 \qquad \epsilon\sim\mathcal{N}(0,I).
-$$
+\]
 
 去噪网络预测噪声：
 
-$$
-\epsilon_\theta(x_t,t,c),
-$$
+\[
+\epsilon_\theta(x_t,t),
+\]
 
-其中 $c$ 可表示低分辨率输入、稀疏观测填充、mask 或物理条件。训练损失仍是噪声预测：
+这里训练网络只输入带噪流场和扩散步；低保真输入、观测 mask 及 PDE 引导在推理重建中处理。训练损失是噪声预测：
 
-$$
+\[
 \mathcal{L}_{\mathrm{diff}}
 =
 \mathbb{E}
 \left[
-\left\|\epsilon-\epsilon_\theta(x_t,t,c)\right\|_2^2
+\left\|\epsilon-\epsilon_\theta(x_t,t)\right\|_2^2
 \right].
-$$
+\]
 
 该论文的重要设计是训练-推理解耦：训练阶段主要用高保真数据学习流场先验，低保真输入不必与训练集成对；推理阶段将重建任务写成条件去噪。
 
 物理信息通过 PDE residual 进入。对一般流体方程可写成
 
-$$
+\[
 \mathcal{N}(u)=0,
-$$
+\]
 
 物理残差损失为
 
-$$
+\[
 \mathcal{L}_{\mathrm{phys}}=\|\mathcal{N}(u_\theta)\|_2^2.
-$$
+\]
 
 若考虑二维不可压 Navier-Stokes，常见约束包括连续性
 
-$$
+\[
 \nabla\cdot \mathbf{u}=0
-$$
+\]
 
 以及动量残差
 
-$$
+\[
 \partial_t\mathbf{u}
 +(\mathbf{u}\cdot\nabla)\mathbf{u}
 +\nabla p
 -\nu\nabla^2\mathbf{u}
 =0.
-$$
+\]
 
 论文的 physics-informed conditioning 可理解为在反向去噪时利用残差梯度修正采样方向：
 
-$$
+\[
 x_t
 \leftarrow
 x_t
 -\lambda_t \nabla_{x_t}\mathcal{L}_{\mathrm{phys}}(x_t),
-$$
+\]
 
-其中 $\lambda_t$ 是 guidance 强度，作用在当前时刻 $x_t$ 上（在去噪采样步之前施加物理残差修正）。这个公式表达的是算法结构；实际实现中会结合具体 PDE、归一化和采样步长。
+其中 $\lambda_t$ 是 guidance 强度，此处仅表达残差梯度修正的结构，不指定作者算法中的具体子步顺序；残差变量、归一化和采样系数须对照原算法。下面伪代码也是流程示意，不是可直接复现的逐行实现。
 
 ### 关键推导/算法
 
@@ -136,3 +136,7 @@ return reconstructed high-fidelity field
 1. 本文的训练-推理解耦为什么能提升低保真输入分布变化下的鲁棒性？这种设计与传统 paired super-resolution 网络的误差传播有何不同？
 2. PDE residual guidance 是硬约束、软约束还是后验采样修正？在 Hamiltonian/不可压流体问题中，哪些约束必须 projection，哪些可以 penalty？
 3. 如果把该方法扩展到量子涡或三维湍流，扩散变量应选 $\psi$、密度/相位、速度/压力，还是涡量/涡线表示？
+
+## 核对依据与边界（2026-10-15）
+
+依据[作者预印本](https://arxiv.org/abs/2211.14680)的训练/推理方法与二维湍流重建实验；删除无法对应其图表的性能数字。

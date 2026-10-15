@@ -1,5 +1,11 @@
 # Hamiltonian description of the ideal ﬂuid *
 
+**作者：** P. J. Morrison
+
+**发表：** Reviews of Modern Physics 70, 467–521 (1998)
+
+**DOI：** [10.1103/RevModPhys.70.467](https://doi.org/10.1103/RevModPhys.70.467)
+
 **Source PDF:** `RevModPhys.70.467.pdf`
 
 ---
@@ -246,3 +252,7 @@ The displayed dynamically accessible variations use a generator/sign convention.
 1. Lie-Poisson 括号的退化性如何产生 Casimir 不变量？这种退化又为何体现了 Euler 描述的非正则性质？
 2. 动态可达扰动与能量-Casimir 稳定性方法之间有什么关系？为什么物理上允许的扰动必须与平衡态位于同一辛叶片？
 3. 在 Clebsch 表示中存在哪些规范自由度？这种冗余如何与三维理想流体的 helicity 不变量联系起来？
+
+## 价值评估
+
+沿用指定精读层级。材料变量到 Euler 变量的约化、非正则括号及能量–Casimir 方法是后续几何流体学习的基础；具体 Casimir 和稳定性结论需连同边界与函数空间核对。

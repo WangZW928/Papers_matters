@@ -1,5 +1,9 @@
 # Quantum Simulation of Partial Differential Equations via Schrödingerization
 
+**作者：** Shi Jin, Nana Liu, Yue Yu
+
+**发表：** Physical Review Letters 133, 230602 (2024)
+
 **DOI:** [10.1103/PhysRevLett.133.230602](https://doi.org/10.1103/PhysRevLett.133.230602)
 
 **Source PDF:** `PhysRevLett.133.230602.pdf`
@@ -21,190 +25,71 @@ Doctor 指定精读。本文通过 warped phase transformation 把一般线性 O
 
 ## 公式与代码梳理
 
-### 数学结构与核心公式
+### 符号约定与可归一化的提升
 
-Schrödingerization 的目标是把非 Hermitian、非幺正的线性动力学
+统一使用本笔记的 $\dot u=-Au$ 约定，令
 
-$$
-\frac{d}{dt}u(t)=-Au(t)
-$$
+\[
+A=H+i\bar H,\qquad H=\frac{A+A^\dagger}{2},\qquad
+\bar H=\frac{A-A^\dagger}{2i}.
+\]
 
-转化为 Schrödinger 型方程
+两者均 Hermitian。先假设 $H\succeq0$。在辅助变量 $p>0$ 上定义 $v(t,p)=e^{-p}u(t)$，并把**初值**延拓为整轴上的 $v(0,p)=e^{-|p|}u(0)$。随后在整轴解输运系统，而不是在负半轴也强行定义 $v(t,p)=e^{-|p|}u(t)$。初值可平方积分，能够做 Fourier 变换和量子态归一化。
 
-$$
-i\frac{d}{dt}\psi(t)=H\psi(t),
-\qquad
-H=H^\dagger.
-$$
+在正半轴，$\partial_pv=-v$，所以
 
-对 PDE，空间离散后通常也得到上述 ODE 系统，其中 $A$ 可来自扩散、输运、边界条件或耗散算子。一般 $A$ 不是 Hermitian，不能直接作为量子 Hamiltonian。论文将 $A$ 分解为两个 Hermitian 矩阵：
+\[
+\partial_t v-H\partial_pv+i\bar H v=0.
+\]
 
-$$
-A=H+i\bar{H},
-\qquad
-H=\frac{A+A^\dagger}{2},
-\qquad
-\bar{H}=\frac{i(A^\dagger-A)}{2}.
-$$
+输运速度矩阵是 $-H$，其特征速度非正；在上述假设下正半轴不依赖负半轴向右传入的数据。一般增长系统若不满足 $H\succeq0$，需要另行控制恢复区域、谱界或做平移变换，不能无条件使用全部 $p>0$。
 
-若 $H$ 半正定，则可用 warped phase transformation 引入辅助变量 $p$。采用下列符号约定，在 $p>0$ 区域定义
+采用 $\widetilde v(\eta)=\int_{\mathbb R}e^{-i\eta p}v(p)\,dp$，有 $\partial_p\mapsto i\eta$，得到
 
-$$
-v(t,p)=e^{p}u(t).
-$$
+\[
+i\partial_t\widetilde v=(-\eta H+\bar H)\widetilde v.
+\]
 
-因为 $\partial_p v=e^{p}u=v$，原方程
+因为 $\eta\in\mathbb R$，这个生成元是 Hermitian。按“物理状态空间 $\otimes$ 辅助 Fourier 空间”的排列，离散后为
 
-$$
-\partial_t u=-(H+i\bar{H})u
-$$
+\[
+H_{\rm total}=-H\otimes D+\bar H\otimes I,
+\qquad |\widetilde v(t)\rangle=e^{-iH_{\rm total}t}|\widetilde v(0)\rangle.
+\]
 
-可转写为
+有限辅助区间的截断、周期化和网格误差需要单独分析。
 
-$$
-\partial_t v+H\partial_p v+i\bar{H}v=0.
-$$
+### 恢复与标量检验
 
-对 $p$ 做 Fourier 变换，设共轭变量为 $\eta$：
+正半轴上可由 $u(t)=e^p v(t,p)$ 恢复，也可在连续、未归一化表示下用
 
-$$
-\tilde{v}(t,\eta)=\int_{\mathbb{R}}e^{-i\eta p}v(t,p)\,dp.
-$$
+\[
+u(t)=\int_0^\infty v(t,p)\,dp.
+\]
 
-利用 $\partial_p\mapsto i\eta$，得到
+量子实现涉及归一化、辅助寄存器投影/后选择及其成功概率，不能理解为免费读出全部场分量。态方向、范数和物理观测量的恢复成本应分别计算。
 
-$$
-\partial_t\tilde{v}+i\eta H\tilde{v}+i\bar{H}\tilde{v}=0,
-$$
+补充自检：取 $A=a>0$、$\bar H=0$，输运解为 $v(t,p)=e^{-|p+at|}u_0$；对 $p>0$，$e^p v(t,p)=e^{-at}u_0$，与原 ODE 一致。若用原笔记的 $e^{+p}$ 正半轴初值，整轴 Fourier/量子态归一化就不成立；修正指数时必须同步修改输运号和 Hamiltonian 的号。
 
-即
+### 对 HPC 框架的启示与限制
 
-$$
-i\partial_t\tilde{v}
-=
-(\eta H+\bar{H})\tilde{v}.
-$$
+空间离散后的耗散矩阵可用这一提升构造 Hermitian 算子。matrix-free 实现只需分别调用 $H$、$\bar H$ 和辅助 Fourier 乘子，无需形成 Kronecker 矩阵。应把额外维数、FFT、输入制备与输出恢复纳入成本。
 
-由于 $\eta\in\mathbb{R}$ 且 $H,\bar{H}$ 都 Hermitian，所以
+高维系统幺正并不消除原问题的病态性：逆热方程的高频放大、初值噪声和恢复条件数不会因为提升自动消失。因此，这不是逆热问题无条件稳定求解或端到端量子加速的证明。
 
-$$
-H_{\text{tot}}(\eta)=\eta H+\bar{H}
-$$
+### 进一步研究问题
 
-是 Hermitian。这就是 Schrödingerization 的核心：每个 Fourier mode $\eta$ 都对应一个实时间 Schrödinger 方程。
-
-离散辅助变量后，可写成张量积 Hamiltonian：
-
-$$
-i\frac{d}{dt}\tilde{v}
-=
-\left(
-H\otimes D+\bar{H}\otimes I
-\right)\tilde{v}
-=
-H_{\text{total}}\tilde{v},
-$$
-
-其中 $D$ 是 $\eta$ 或离散 Fourier multiplier 对角矩阵。量子态演化为
-
-$$
-|\tilde{v}(t)\rangle
-=
-e^{-iH_{\text{total}}t}
-|\tilde{v}(0)\rangle.
-$$
-
-原解 $u(t)$ 的恢复不是直接读出所有分量，而是通过投影到辅助维中的正 $p$ 区域或相应权重态。量子态通常表示归一化解：
-
-$$
-|u(t)\rangle
-=
-\frac{1}{\|u(t)\|}
-\sum_i u(t,x_i)|i\rangle.
-$$
-
-因此算法天然给出状态方向，范数 $\|u(t)\|$ 或物理观测量需额外估计。
-
-### 关键推导
-
-第一步是从耗散到输运。设
-
-$$
-\frac{d}{dt}u=-Hu
-$$
-
-且 $H=H^\dagger\geq 0$。按上面的约定定义 $v=e^{p}u$，则
-
-$$
-\partial_t v=e^{p}\partial_t u=-He^{p}u=-Hv.
-$$
-
-又有 $\partial_p v=v$，所以
-
-$$
-\partial_t v+H\partial_p v=0.
-$$
-
-这说明原来的耗散衰减被编码为辅助维 $p$ 上的平移。若采用 $e^{-p}$ 或相反的 Fourier 相位，运输号和 Fourier 标签必须同时反号；不能只改其中一个。
-
-第二步是 Fourier 化后获得 Hermitian generator。对 $p$ 变换后，$\partial_p$ 变成 $i\eta$，于是
-
-$$
-\partial_t\tilde{v}+i\eta H\tilde{v}=0
-$$
-
-等价于
-
-$$
-i\partial_t\tilde{v}=\eta H\tilde{v}.
-$$
-
-若 $H$ Hermitian，则 $\eta H$ Hermitian，演化幺正。
-
-第三步是推广到一般非 Hermitian $A$。分解 $A=H+i\bar{H}$ 后，耗散部分 $H$ 通过 warped phase 进入 $\eta H$，反 Hermitian 部分本来就是 Schrödinger 型，进入 $\bar{H}$。合并得到
-
-$$
-i\partial_t\tilde{v}=(\eta H+\bar{H})\tilde{v}.
-$$
-
-这避免了 imaginary time evolution 只适合热方程的限制。
-
-### 对 HPC 框架的启示
-
-对 Doctor 的 HPC 框架，这篇论文最有价值的不是“马上量子加速 PDE”，而是提供了一种 operator lifting 思想。许多经典 PDE 半离散后是非正规、非 Hermitian、带耗散的矩阵系统：
-
-$$
-\dot{u}=Lu.
-$$
-
-Schrödingerization 说明可以通过增加一维，把耗散写成更高维 conservative / Hamiltonian-like 演化。这与仓库里的 Quantum closure、Hamiltonian ideal fluid、JFNK 和 matrix-free solver 都有连接。
-
-在经典 HPC 上，这种提升也可能有算法启发。例如对 ill-posed backward heat、非 Hermitian 边界吸收层、open quantum system，可把不稳定的非幺正传播改写成更高维 skew-Hermitian 系统，再用能量稳定时间推进。虽然维度增加，但结构更好，可能适合 Krylov exponential、split-step Fourier 或 GPU batched Hamiltonian simulation。
-
-代码实现上，核心接口类似：
-
-$$
-A \mapsto (H,\bar{H}) \mapsto H_{\text{total}}=H\otimes D+\bar{H}\otimes I.
-$$
-
-这正是 matrix-free operator construction。无需显式形成 Kronecker 矩阵，只需实现
-
-$$
-y=(H\otimes D)x+(\bar{H}\otimes I)x.
-$$
-
-对 GPU，$D$ 是辅助 Fourier 维上的逐模态乘法，$H,\bar{H}$ 是空间算子；可以按 $\eta$ mode batch 调用已有 PDE stencil 或 sparse/matrix-free kernel。
-
-### 待深入研究
-
-1. Schrödingerization 的测量瓶颈如何影响 PDE 场量重构？如果只需要 observables、低阶矩或局部统计量，优势是否更现实？
-2. 对非线性 PDE，Carleman linearization 加 Schrödingerization 的维度爆炸如何控制？是否可结合稀疏截断或 Neural Operator closure？
-3. 在经典 HPC 中，高一维 Hamiltonian lifting 能否用于构造稳定预条件器或 time-reversible solver？
+1. 如何从特征速度与谱界判断哪些 $p$ 区域能恢复原解？$H$ 不半正定时怎样调整？
+2. 若只需要低阶矩而不是全场，输入、演化、后选择与测量各占多少成本？
+3. 对 GPU 上的 $-H\otimes D+\bar H\otimes I$，辅助维数和数据布局如何决定 FFT 与空间算子的瓶颈？
 
 ## Review Questions
 
-1. Schrödingerization 给出的是归一化量子态 $|u(t)\rangle$，而 CFD/HPC 通常需要全场数组；哪些 PDE 任务真正适合这种输出模型？
-2. 对 GPE、open quantum system 或含吸收边界的 Schrödinger 方程，本文的非 Hermitian 到 Hermitian lifting 能否提供比 PML 更结构化的边界处理？
-3. 若把 $H_{\text{total}}=H\otimes D+\bar{H}\otimes I$ 作为 matrix-free 算子，在 GPU 上它的 Roofline 瓶颈更像 stencil、FFT，还是 batched sparse matvec？
+1. 原解恢复为何必须与辅助变量的延拓、特征速度和后选择概率一起分析？
+2. 对非正规或增长的系统，哪些谱界决定有效恢复区域？
+3. 若只输出观测量而非全部场数组，Schrödingerization 的端到端资源优势在什么条件下成立？
 
----
+
+## 核对依据与边界（2026-10-15）
+
+对照[作者提供的期刊全文](https://ins.sjtu.edu.cn/people/shijin/PS/PhysRevLett-JinLiuYu.pdf)中 warped phase transformation、整轴初值延拓与 Fourier 提升公式（式 2–8）。本页统一到 $\dot u=-Au$ 的符号约定；标量检验为补充推导。

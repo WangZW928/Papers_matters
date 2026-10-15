@@ -7,7 +7,7 @@ _精读笔记｜arXiv:2603.08721v2，2026-05-29｜ICML 2026｜全文阅读：主
 ## 📌 书目信息与问题
 
 - **作者：** Jiayi Nie、Haoran Wu、Yao Lai、Zeyu Cao、Cheng Zhang、Binglei Lou、Erwei Wang、Jianyi Cheng、Timothy M. Jones、Robert Mullins、Rika Antonova、Yiren Zhao
-- **来源：** [arXiv:2603.08721](https://arxiv.org/abs/2603.08721)；[项目主页](https://kernelcraft-cam.github.io/)
+- **来源：** [arXiv:2603.08721](https://arxiv.org/abs/2603.08721v2)；[项目主页](https://kernelcraft-cam.github.io/)
 - **研究问题：** 面向新兴加速器及新 ISA，工具使用 Agent 能否生成并迭代优化接近硬件的 assembly kernel？任务复杂度、文档、工具和推理预算怎样影响成功率？
 - **阅读范围：** benchmark 设计、三类硬件与工具闭环、模型/平台结果、消融、CPU 与专家内核扩展案例。
 
@@ -35,10 +35,18 @@ _精读笔记｜arXiv:2603.08721v2，2026-05-29｜ICML 2026｜全文阅读：主
 - **人类专家对比：** Coral depthwise-convolution 案例中，Agent 相对 compiler baseline 在 C1 为 2.5×，人工优化为 20×；C2/C3 Agent 反而低于 baseline。胜过 compiler 不代表接近专家上限。
 - **对 SCALE_Forge 的启示：** 硬件 specification 与 tools 作为实验条件版本化；分开记录任务可评估、编译成功、语义正确、性能比和预算；backend 适配评估要覆盖 Level 1→2→3 难度曲线，而非单 kernel 演示。
 
-## ❓复读问题与价值判断
+## Review Questions
 
 1. 后端规范能否以 Agent 可检索、但带版本和来源的结构化资源暴露？
 2. 对精度容差、编译器 baseline 与测量后端，如何使跨芯片结果仍可解释？
-3. **阅读价值：高。** 对 Agent tools、低层代码生成、硬件文档与难度分层基准很有参考；CUDA 专属闭环的结论不能无条件外推。
+3. 硬件、任务子集和编译配置改变时，哪些结论仍可比较，哪些必须重新测量？
+
+## 价值评估
+
+**阅读价值：高。** 对 Agent tools、低层代码生成、硬件文档与难度分层基准很有参考；CUDA 专属闭环的结论不能无条件外推。
 
 **状态：** ✅ 已精读（2026-10-15）
+
+## 核对依据与边界（2026-10-15）
+
+本次取得的 PDF 首页版本与本页声明的 2603.08721v2 一致；检查结果数字与方法边界，统一复读问题及价值评估格式。这里的“已精读”是原有阅读记录，不表示本次重新独立复现了所有实验。

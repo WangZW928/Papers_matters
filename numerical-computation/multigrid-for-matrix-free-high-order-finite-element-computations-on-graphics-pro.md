@@ -1,5 +1,7 @@
 # 面向图形处理器的矩阵无关高阶有限元多重网格计算
 
+**作者：** Martin Kronbichler, Karl Ljungkvist
+
 **期刊：** ACM Transactions on Parallel Computing，2019
 
 **DOI：** [10.1145/3322813](https://doi.org/10.1145/3322813)
@@ -12,18 +14,18 @@
 
 ## 摘要
 
-_无可用摘要_
+据[期刊摘要](https://doi.org/10.1145/3322813)概述：论文将矩阵无关高阶有限元算子与几何多重网格并行到 GPU，核心是 sum factorization，并支持曲边和自适应六面体网格。四类 Poisson 算例比较 P100 与优化过的 Broadwell/Xeon Phi 实现，报告约 1.5–2 倍性能差异；该数字限于对应硬件和算例。原笔记将 p/h 混合多重网格写为主要方法，依据不足。
 
 ## 总结
 
 **核心问题：** 如何在图形处理器上为矩阵无关高阶有限元构建高效的多重网格加速方案，并兼顾高阶方法的计算效率与多重网格的收敛性。
 
-**方法：** 论文提出了一种面向 GPU 的矩阵无关多重网格方法用于高阶有限元计算：通过 sum-factorization 技术高效完成单元级矩阵-向量乘，并结合 p-多重网格与 h-多重网格实现多层求解。
+**方法：** 论文提出了一种面向 GPU 的矩阵无关多重网格方法用于高阶有限元计算：通过 sum-factorization 技术高效完成单元级矩阵-向量乘，并用几何 h-多重网格实现多层求解。
 
 **关键结果：**
 - sum-factorization 将高阶单元的矩阵-向量乘复杂度从 O(p^6) 降至 O(p^4)（三维情形；一般维度为 O(p^{2d}) → O(dp^{d+1})）
 - GPU 加速的多重网格在三维高阶有限元中实现了近线性复杂度
-- p-多重网格与 h-多重网格的组合策略平衡了收敛性与并行效率
+- 论文研究高阶算子与几何多重网格的组合；p/h 混合层级可作后续比较方向，不记为本篇已验证结论
 
 **与你工作的相关性：** 这种矩阵无关多重网格方法可为 HPC 框架中的高阶离散最优复杂度求解提供参考。
 
@@ -37,21 +39,21 @@ Doctor 指定精读（学习路线规划推荐）。本文是高阶 FEM、matrix
 
 高阶有限元离散后要求解
 
-$$
+\[
 Au=b,
-$$
+\]
 
 但 matrix-free 方法不显式组装 $A$，而是在每次 Krylov 或 multigrid 平滑中计算
 
-$$
+\[
 y=Ax
-$$
+\]
 
 的作用。
 
 对单元 $K$，有限元算子应用通常来自弱形式积分：
 
-$$
+\[
 (A_K u)_i
 =
 \sum_q w_q
@@ -59,36 +61,36 @@ $$
 \nabla\varphi_i(x_q)\cdot C(x_q)\nabla u(x_q)
 +\varphi_i(x_q)c(x_q)u(x_q)
 \right]J_K(x_q).
-$$
+\]
 
 直接张量收缩在 $d$ 维、阶数 $p$ 下代价接近
 
-$$
+\[
 O(p^{2d}),
-$$
+\]
 
 而 tensor-product 基函数的 sum-factorization 将其降为
 
-$$
+\[
 O(dp^{d+1}).
-$$
+\]
 
 核心思想是把多维插值/微分矩阵拆成一维矩阵连乘，避免形成完整单元矩阵。
 
 多重网格使用层级空间 $V_\ell$ 和算子 $A_\ell$。一次误差校正为
 
-$$
+\[
 r_\ell=b_\ell-A_\ell u_\ell,\qquad
 b_{\ell-1}=R_\ell r_\ell,
-$$
+\]
 
 粗层求解后
 
-$$
+\[
 u_\ell\leftarrow u_\ell+P_\ell e_{\ell-1}.
-$$
+\]
 
-高阶方法中常结合 $p$-multigrid 与 $h$-multigrid：先降低多项式阶数，再在低阶层做几何或代数粗化，从而兼顾高阶局部效率和粗网格全局传播。
+以下是扩展设计思路，而非本文方法归述：高阶方法可以结合 $p$-multigrid 与 $h$-multigrid：先降低多项式阶数，再在低阶层做几何或代数粗化，从而兼顾高阶局部效率和粗网格全局传播。
 
 ### 关键推导/算法
 
@@ -107,7 +109,7 @@ for each cell K in parallel:
 multigrid/preconditioned Krylov：
 
 ```text
-build p/h hierarchy
+build geometric h hierarchy (fixed polynomial degree)
 for each Krylov iteration:
     apply matrix-free A on fine level
     apply multigrid preconditioner:
@@ -143,5 +145,9 @@ GPU 实现重点：
 ## Review Questions
 
 1. **Q:** sum-factorization 如何将高阶 FEM 算子求值的复杂度从 O(p^{2d}) 降到 O(d p^{d+1})，这种变化对 GPU 上的内存带宽和算术强度意味着什么？
-2. **Q:** 为什么在高阶 FEM 中需要将 p-multigrid 与 h-multigrid 结合以获得稳健收敛，而 p-coarsening（降低多项式阶数）与 h-coarsening（粗化网格）在谱半径性质上有何差异？
+2. **Q:** 本文的几何 h 层级与可选的 p/h 混合层级有何不同？怎样在相同容差下比较收敛、粗层成本与总耗时，避免把混合作为必要条件？
 3. **Q:** 在高多项式阶数下实现无矩阵平滑器（例如 Chebyshev-accelerated Jacobi）时，关键挑战是什么，sum-factorization 的单元局部特性又如何与 multigrid cycles 中的全局通信需求相互作用？
+
+## 核对依据与边界（2026-10-15）
+
+本次对照出版方经 Crossref 提供的摘要与元数据；公开全文下载失败，未核验所有实验表格。因此正文通用 FEM/多重网格推导与扩展建议不能当作已验证的作者实现。

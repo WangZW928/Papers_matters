@@ -12,7 +12,7 @@
 
 ## Abstract
 
-_Not available_
+据[期刊摘要](https://doi.org/10.1137/140980260)概述：AmgX 将经典型和聚合型 AMG、平滑器、预条件器与 Krylov 方法组织为可组合的 GPU 求解器库，支持分布式大规模稀疏线性系统。本文重点是库的设计与实现，以及不同配置和硬件上的性能；具体加速比必须附带矩阵、CPU/GPU、精度和计时范围。
 
 ## Summary
 
@@ -22,7 +22,7 @@ _Not available_
 
 **关键结果：**
 - 实现了GPU上AMG全套组件的高效CUDA内核，包括setup和solve阶段
-- 在单GPU上比CPU实现加速8-10倍，多GPU扩展良好
+- 原笔记“单 GPU 比 CPU 加速 8–10 倍”缺少可对应的实验表格与基线，暂不保留该数字；具体性能与扩展效率需按原文实验配置核验
 - 提供了灵活的嵌套求解器和复合预条件框架，可作为CFD代码的即插即用线性求解器
 
 **与你工作的相关性：** GPU加速线性求解器（AMG）是HPC框架中最关键的组件之一，AMGX库可直接评估集成。
@@ -37,53 +37,53 @@ Doctor 指定精读（学习路线规划推荐）。AmgX 是 GPU 上可生产使
 
 AmgX 解决的大问题是稀疏线性系统
 
-$$
+\[
 Ax=b.
-$$
+\]
 
 多重网格的基本误差校正过程为：给定近似解 $x$，残差
 
-$$
+\[
 r=b-Ax.
-$$
+\]
 
 限制到粗层：
 
-$$
+\[
 r_c=Rr.
-$$
+\]
 
 粗层误差方程：
 
-$$
+\[
 A_c e_c = r_c.
-$$
+\]
 
 延拓并校正：
 
-$$
+\[
 x \leftarrow x + P e_c.
-$$
+\]
 
 Galerkin 粗层算子为
 
-$$
+\[
 A_c=RAP.
-$$
+\]
 
 其中 $P$ 是 prolongation/interpolation，$R$ 是 restriction，常见选择是 $R=P^\top$ 或基于加权的限制算子。
 
 AMG 的核心在于不依赖几何网格，而是从矩阵图构造强连接、粗点/聚合和插值。平滑器用于消除高频误差，例如加权 Jacobi：
 
-$$
+\[
 x^{k+1}=x^k+\omega D^{-1}(b-Ax^k),
-$$
+\]
 
 其中 $D=\mathrm{diag}(A)$。在 Krylov 方法中，AMG 常作为预条件器 $M^{-1}$：
 
-$$
+\[
 M^{-1}Ax=M^{-1}b.
-$$
+\]
 
 AmgX 的工程重点是将 AMG V-cycle/W-cycle/K-cycle、Krylov solver、smoother、coarsening、interpolation 和 distributed communication 做成可组合配置。
 
@@ -134,10 +134,14 @@ GPU 设计要点：
 
 1. 对高阶 matrix-free FEM/DG，如何构造可供 AmgX 使用的低阶 assembled surrogate preconditioner？
 2. 在不可压 Navier-Stokes saddle-point 系统中，AmgX 的 block solver/preconditioner 如何与压力 Schur complement 结合？
-3. 对 Hamiltonian 或波动问题，AMG 作为隐式求解器是否会引入过强耗散，如何设计结构兼容预条件？
+3. 对 Hamiltonian 或波动问题，有限线性求解容差如何影响守恒误差？精确求解时预条件不改变原线性系统解，应如何将迭代误差与时间离散耗散分开测量？
 
 ## Review Questions
 
 1. AMG 的 $A_c=RAP$ Galerkin 构造为什么对收敛性重要？在 GPU 上形成 $A_c$ 的代价和稀疏模式膨胀如何影响整体效率？
 2. 对 Doctor 的高阶数值框架，什么时候应该调用 AmgX 这类 assembled AMG，什么时候应实现 matrix-free geometric/p-multigrid？
 3. 多 GPU AMG 中，coarsening 后并行度降低和通信占比升高如何限制强扩展？有哪些算法策略可以缓解？
+
+## 核对依据与边界（2026-10-15）
+
+本次核验出版元数据及摘要，未取得论文全文完成逐表复核；公式部分是通用 AMG 教学说明，不是对 AmgX 所有实现细节的逐项验证。

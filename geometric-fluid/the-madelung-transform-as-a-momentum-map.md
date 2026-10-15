@@ -1,6 +1,6 @@
 # Madelung 变换作为动量映射
 
-# The Madelung Transform as a Momentum Map
+*The Madelung Transform as a Momentum Map*
 
 **作者：** Daniel Fusca
 **期刊：** Journal of Geometric Mechanics 9(2): 157-165, 2017

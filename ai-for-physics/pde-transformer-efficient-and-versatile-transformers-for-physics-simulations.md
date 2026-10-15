@@ -1,6 +1,6 @@
 # PDE-Transformer：面向物理模拟的高效通用 Transformer
 
-# PDE-Transformer: Efficient and Versatile Transformers for Physics Simulations
+*PDE-Transformer: Efficient and Versatile Transformers for Physics Simulations*
 
 **作者：** Benjamin Holzschuh, Qiang Liu, Georg Kohl, Nils Thuerey
 **期刊：** 出处/版本：arXiv:2505.24717v1 [cs.LG]（无 DOI）；ICML 2025, PMLR 267
@@ -43,36 +43,36 @@ Doctor 指定精读（跳过 Codex 价值评估）。
 
 论文把一个物理系统记为 $S$，其状态是二维规则网格上的多物理量场：
 
-$$
+\[
 u(x,t): \Omega_S \times [0,T] \to \mathbb{R}^n,\qquad \Omega_S\subset \mathbb{R}^2
-$$
+\]
 
 离散后是一段时空序列：
 
-$$
+\[
 [u_0^S,u_{\Delta t}^S,\ldots,u_T^S]
-$$
+\]
 
 额外条件记为 $c$，包含 PDE 类型、物理通道类型、扩散时间、可选模拟参数等。模型为 $M_\Theta$。
 
 核心实验是自回归一步预测，使用 $T_p=1$ 个历史快照：
 
-$$
+\[
 u_{\text{in}}=[u_{t-T_p\Delta t}^S,\ldots,u_{t-\Delta t}^S],\qquad
 u_{\text{out}}=[u_t^S]
-$$
+\]
 
 但该定义可替换为其他任务：
 
-$$
+\[
 u_{\text{in}}=\varnothing,\quad u_{\text{out}}=[u_t^S]
-$$
+\]
 
 用于无条件生成；或
 
-$$
+\[
 u_{\text{in}}=[u_{t-\Delta t}^S,u_{t+\Delta t}^S],\quad u_{\text{out}}=[u_t^S]
-$$
+\]
 
 用于时间插值。
 
@@ -84,35 +84,35 @@ PDE-Transformer 直接作用于原始规则网格数据，而不是 DiT 常用�
 
 单通道输入尺寸为：
 
-$$
+\[
 T\times H\times W
-$$
+\]
 
 （空间 patch 为非重叠切分，隐含 stride=$p$；时间维 $T$ / 实验中的历史帧整体并入每个 patch，不沿时间维再做滑窗切分。）
 
 给定空间 patch size $p$，将输入切成：
 
-$$
+\[
 N=\frac{H}{p}\cdot \frac{W}{p}
-$$
+\]
 
 个时空 patch，每个 patch 大小为：
 
-$$
+\[
 T\times p\times p
-$$
+\]
 
 再通过线性层映射到 $d$ 维 token：
 
-$$
+\[
 z_i = W_{\text{patch}}\operatorname{vec}(u_i)+b,\qquad z_i\in\mathbb{R}^d
-$$
+\]
 
 论文定义 token expansion rate：
 
-$$
+\[
 E(p):=\frac{d}{p^2T}
-$$
+\]
 
 $p$ 越小，token 越多，表达更细，但注意力计算更贵；$p$ 越大，计算更省，但压缩更强。实验结论是 $p=4,w=8$ 在精度与计算之间最好。
 
@@ -122,21 +122,21 @@ $p$ 越小，token 越多，表达更细，但注意力计算更贵；$p$ 越大
 
 设最大通道数为 $C_{\max}$，每个 patch 为：
 
-$$
+\[
 T\times C_{\max}\times p\times p
-$$
+\]
 
 不足的通道补零，然后一次性嵌入：
 
-$$
+\[
 z_i = W_{\text{MC}}\operatorname{vec}(u_i^{1:C_{\max}})+b
-$$
+\]
 
 问题是不同物理量被压进同一个 token，等效每个通道的 expansion rate 下降为：
 
-$$
+\[
 E_{\text{MC}}(p)=\frac{d}{C_{\max}p^2T}
-$$
+\]
 
 即每个物理通道的信息密度随 $C_{\max}$ 增大而降低。
 
@@ -144,21 +144,21 @@ $$
 
 对每个物理通道 $c$ 单独 patchify 和嵌入：
 
-$$
+\[
 z_{i,c}=W_{\text{SC}}\operatorname{vec}(u_{i,c})+b,\qquad z_{i,c}\in\mathbb{R}^d
-$$
+\]
 
 token 数变为：
 
-$$
+\[
 N_{\text{SC}}=C\cdot \frac{H}{p}\cdot \frac{W}{p}
-$$
+\]
 
 优点是每个通道保持同样的信息密度：
 
-$$
+\[
 E_{\text{SC}}(p)=\frac{d}{p^2T}
-$$
+\]
 
 代价是计算量随通道数 $C$ 线性增加。论文后续更重视 SC，因为预训练权重迁移到 Well 下游任务时收益明显大于 MC（SC 预训练收益约为 MC 的 $2.7\times$ 到 $4.4\times$）。
 
@@ -173,52 +173,52 @@ PDE-Transformer 的关键改动是把注意力拆成两类：
 
 对某个通道 $c$ 的窗口 token 集合 $\mathcal{W}$，空间 shifted-window MHSA 可写为：
 
-$$
+\[
 Q= \operatorname{RMSNorm}(ZW_Q),\quad
 K= \operatorname{RMSNorm}(ZW_K),\quad
 V=ZW_V
-$$
+\]
 
-$$
+\[
 \operatorname{Attn}(Z)=
 \operatorname{softmax}\left(
 \frac{QK^\top}{\sqrt{d_h}} + B_{\text{rel}}(\Delta x,\Delta y)
 \right)V
-$$
+\]
 
 其中 $B_{\text{rel}}$ 不是绝对位置编码，而是基于 log-spaced relative position，再经小型前馈网络生成的相对位置偏置。论文强调这比绝对位置更适合 PDE，因为它提高 translation-invariance / 平移泛化倾向，并更容易跨窗口分辨率泛化（未声明严格的 translation equivariance）。
 
 SC 版本中，空间窗口注意力不跨通道：
 
-$$
+\[
 \operatorname{Attn}_{\text{space}}(z_{i,c}, z_{j,c'})
 =0,\qquad c\neq c'
-$$
+\]
 
 通道交互改由 channel-wise axial MHSA 完成。对固定空间 patch 位置 $i$，令：
 
-$$
+\[
 Z_i=[z_{i,1},z_{i,2},\ldots,z_{i,C}]
-$$
+\]
 
 则通道注意力为：
 
-$$
+\[
 \operatorname{Attn}_{\text{channel}}(Z_i)
 =
 \operatorname{softmax}\left(
 \frac{Q_iK_i^\top}{\sqrt{d_h}}
 \right)V_i
-$$
+\]
 
 这里 token 序列长度是通道数 $C$，所以它专门建模“密度、速度、涡量、压力”等物理量之间的耦合。论文图 2 中的 SC block 可理解为：
 
-$$
+\[
 Z
 \to Z+\operatorname{SW\text{-}MHSA}_{\text{space}}(Z)
 \to Z+\operatorname{MHSA}_{\text{channel}}(Z)
 \to Z+\operatorname{MLP}(Z)
-$$
+\]
 
 ---
 
@@ -230,25 +230,25 @@ PDE-Transformer 继承 DiT 的几个关键设计，但针对 PDE 做了修改。
 
 所有 conditioning embedding 相加后输入 MLP，生成归一化层的 scale、shift，以及残差门控参数。可抽象为：
 
-$$
+\[
 e_c = e_{\text{PDE}} + e_{\text{channel}} + e_{\text{diffusion-time}} + e_{\text{other}}
-$$
+\]
 
-$$
+\[
 (\gamma,\beta,\alpha)=\operatorname{MLP}(e_c)
-$$
+\]
 
 对 block 输入 $x$：
 
-$$
+\[
 \operatorname{adaLN}(x,c)=\gamma(c)\odot \operatorname{LN}(x)+\beta(c)
-$$
+\]
 
 adaLN-Zero 将残差分支初始化为近似零，使整个 residual block 初始接近恒等映射：
 
-$$
+\[
 x_{\ell+1}=x_\ell+\alpha(c)\odot F(\operatorname{adaLN}(x_\ell,c))
-$$
+\]
 
 （$\alpha(c)$ 残差门控为解释性抽象：原文明确所有 conditioning embeddings 相加、经 FFN 回归 scale/shift，adaLN-Zero 初始化使 residual block 接近 identity；未将 $\alpha(c)$ 作为显式公式展开，可按 DiT adaLN-Zero 理解为 scale/shift 并可能包含 residual scaling/gating 的实现细节。）
 
@@ -258,9 +258,9 @@ $$
 
 与原始 DiT 不同，论文不把 absolute positional embedding 加到 token 上，而是在窗口注意力分数中使用相对位置偏置：
 
-$$
+\[
 A_{ij}=\frac{q_i^\top k_j}{\sqrt{d_h}}+B_{\text{rel}}(r_i-r_j)
-$$
+\]
 
 **多尺度结构：**
 
@@ -278,7 +278,7 @@ shifted window 默认通过 rolling token 模拟周期边界；非周期边界�
 
 用于确定性 PDE solver 的一步预测，损失为 MSE：
 
-$$
+\[
 L_S
 =
 \mathbb{E}\left[
@@ -286,41 +286,41 @@ L_S
 M_\Theta(u_{\text{in}},c)-u_{\text{out}}
 \right\|_2^2
 \right]
-$$
+\]
 
 推理时自回归 rollout：
 
-$$
+\[
 \hat u_{t+\Delta t}=M_\Theta(\hat u_t,c)
-$$
+\]
 
 **扩散 / flow matching 训练：**
 
 用于后验不确定、可能多解的问题。设：
 
-$$
+\[
 x_0\sim p_0=\mathcal{N}(0,I),\qquad x_1\sim p_1
-$$
+\]
 
 其中 $p_1$ 是目标 posterior。论文采用 flow matching 的线性概率路径：
 
-$$
+\[
 x_t=t u_{\text{out}}+[1-(1-\sigma_{\min})t]\epsilon
-$$
+\]
 
-$$
+\[
 t\in[0,1],\qquad \epsilon\sim\mathcal{N}(0,I),\qquad \sigma_{\min}=10^{-4}
-$$
+\]
 
 条件扩展为：
 
-$$
+\[
 c_t=[c,t],\qquad u_{\text{in}}^t=[u_{\text{in}},x_t]
-$$
+\]
 
 训练目标为速度场回归：
 
-$$
+\[
 L_{\text{FM}}
 =
 \mathbb{E}\left[
@@ -332,25 +332,25 @@ u_{\text{out}}
 (1-\sigma_{\min})\epsilon
 \right\|_2^2
 \right]
-$$
+\]
 
 采样时从 $x_0\sim\mathcal{N}(0,I)$ 出发，解 ODE：
 
-$$
+\[
 dx_t=M_\Theta(u_{\text{in}}^t,c_t)\,dt,\qquad t:0\to 1
-$$
+\]
 
 论文用显式 Euler：
 
-$$
+\[
 x_{t+\Delta t}=x_t+\Delta t\cdot M_\Theta(u_{\text{in}}^t,c_t)
-$$
+\]
 
 注意：这篇论文没有采用 PINN 式 PDE residual loss，即没有显式最小化
 
-$$
+\[
 \|\partial_t u-\mathcal{N}(u)\|^2
-$$
+\]
 
 它的“无监督/生成式”部分主要是 unconditional 或 conditional flow matching，而不是物理方程残差约束训练。
 
@@ -360,7 +360,7 @@ $$
 
 使用 normalized RMSE：
 
-$$
+\[
 \operatorname{nRMSE}
 =
 \frac{1}{M}
@@ -372,7 +372,7 @@ $$
 \operatorname{MSE}(0,u_{\text{out}})
 }
 }
-$$
+\]
 
 rollout 评估是在自回归生成整段轨迹后，对每个时间步比较 $\hat u_t^S$ 与 $u_t^S$，再跨系统平均。
 
@@ -403,29 +403,29 @@ rollout 评估是在自回归生成整段轨迹后，对每个时间步比较 $\
 
 默认架构超参数：
 
-$$
+\[
 p=4,\qquad w=8,\qquad \text{mlp ratio}=4.0
-$$
+\]
 
 模型尺寸：
 
-$$
+\[
 d_S=96,\qquad d_B=192,\qquad d_L=384
-$$
+\]
 
 训练设置：
 
-$$
+\[
 \text{batch size}=256,\qquad \text{lr}=4\times 10^{-5},\qquad \text{epochs}=100
-$$
+\]
 
 优化器为 AdamW，使用 bf16 mixed precision、DDP、权重 EMA decay $0.999$，以及 EMA gradient clipping。
 
 PDE-Transformer 结构深度为：
 
-$$
+\[
 [2,4,4,6,4,4,2]
-$$
+\]
 
 注意力 head 数为 16，activation 为 GELU，class dropout probability 为 0.1，qkv bias 为 true。
 

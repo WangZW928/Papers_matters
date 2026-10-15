@@ -1,6 +1,6 @@
 # 洛伦兹变换（OpenStax 大学物理 III §5.6 教材精读）
 
-# The Lorentz Transformation (OpenStax University Physics Vol. 3, §5.6)
+*The Lorentz Transformation (OpenStax University Physics Vol. 3, §5.6)*
 
 **来源：** OpenStax *University Physics Volume 3 — Optics and Modern Physics*，第 5 章 *Relativity*，§5.6 The Lorentz Transformation
 **作者：** Samuel J. Ling, Jeff Sanny, William Moebs 等（OpenStax / Rice University）
@@ -36,10 +36,10 @@
 4. 用四维时空几何（世界线、间隔、光锥）重新诠释，把洛伦兹变换类比为三维旋转。
 
 ### 3. 主要结论是什么？
-- 洛伦兹变换是唯一满足光速不变的惯性系间坐标变换，其逆变换形式对称；
+- 在相对性原理、时空均匀性/空间各向同性，以及坐标单位与原点约定下，标准洛伦兹 boost 给出满足光速不变的惯性系间坐标变换，其逆变换形式对称；
 - 时间膨胀、长度收缩、同时性相对性全部可由洛伦兹变换**一个公式组**统一导出（三个例题分别复现）；
 - 时空间隔 $\Delta s^2$ 是洛伦兹不变量，等价于三维空间中距离 $\Delta r^2$ 在旋转下的不变性；
-- 固有时 $c^2\Delta\tau^2=-\Delta s^2$ 也是洛伦兹不变量，所有惯性系一致；
+- 连接两个类时事件的惯性直线轨迹满足 $c^2\Delta\tau^2=-\Delta s^2$；任意加速轨迹的固有时须沿世界线积分 $\int\sqrt{1-v(t)^2/c^2}\,dt$，不能仅由端点间隔确定；
 - 光锥（$\Delta s^2=0$ 曲面）把时空划分为类时/类光/类空区域，因果结构由此确定。
 
 ---
@@ -151,7 +151,7 @@ y' = y,\qquad z' = z\]
 
 ### 6. 固有时与光锥
 
-$\Delta s^2$ 可正可负。当两事件满足 $(\Delta x)^2+(\Delta y)^2+(\Delta z)^2 < (c\Delta t)^2$（$\Delta s^2<0$）时，定义**固有时**
+$\Delta s^2$ 可正可负。当两事件满足 $(\Delta x)^2+(\Delta y)^2+(\Delta z)^2 < (c\Delta t)^2$（$\Delta s^2<0$）时，连接两事件的惯性直线轨迹的**固有时**满足
 
 \[c^2\Delta\tau^2 = -\Delta s^2\]
 
@@ -184,3 +184,7 @@ $\Delta s^2$ 可正可负。当两事件满足 $(\Delta x)^2+(\Delta y)^2+(\Delt
 2. 把洛伦兹变换写成快度形式（$\tanh\eta=\beta$，$\gamma=\cosh\eta$，$\beta\gamma=\sinh\eta$），它成为 Minkowski 度规下的双曲旋转。Wick rotation $t\to i\tau$ 将 $\cosh\to\cos$、$\sinh\to i\sin$，把双曲旋转变成欧氏旋转。试写出 Wick 旋转后的变换矩阵，并讨论：若把这一"度规符号翻转"机械地用到扩散方程上会得到什么（与 Tier 3 #44 的结论对照）？
 
 3. 光锥把时空分为类时（$\Delta s^2<0$）、类光（$=0$）、类空（$>0$）三类间隔。洛伦兹变换保持 $\Delta s^2$ 不变，因而保持因果序。但若允许 $v>c$ 的"参考系"（如 tachyonic 理论），变换矩阵将含虚数 $\gamma$，间隔符号不再保持。试论证：类空事件对的时序不可能靠洛伦兹变换颠倒，除非存在超光速信号——并说明这是否意味着"类空关联"（如 EPR 纠缠）必然违反相对论因果性，还是仅仅不传递信息即可。
+
+## 核对依据与边界（2026-10-15）
+
+对照[OpenStax 官方章节 §5.5](https://openstax.org/books/university-physics-volume-3/pages/5-5-the-lorentz-transformation)。本页原链接为 LibreTexts 重编排版本 §5.6，编号不同不表示内容不同。关于加速世界线的积分是补充范围说明。

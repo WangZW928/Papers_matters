@@ -1,6 +1,6 @@
 # 论相对性原理及其推论（通往广义相对论的过渡论文）
 
-# On the Relativity Principle and the Conclusions Drawn from It (Über das Relativitätsprinzip und die aus demselben gezogenen Folgerungen)
+*On the Relativity Principle and the Conclusions Drawn from It (Über das Relativitätsprinzip und die aus demselben gezogenen Folgerungen)*
 
 **作者：** Albert Einstein
 **期刊：** Jahrbuch der Radioaktivität und Elektronik 4: 411-462, 1907（1907-12-04 收稿）

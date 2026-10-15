@@ -7,7 +7,7 @@ _精读笔记｜arXiv:2405.15793v3，2024-11-11｜全文阅读：主文与相关
 ## 📌 书目信息与问题
 
 - **作者：** John Yang、Carlos E. Jimenez、Alexander Wettig、Kilian Lieret、Shunyu Yao、Karthik Narasimhan、Ofir Press
-- **来源：** [arXiv:2405.15793](https://arxiv.org/abs/2405.15793)；[代码仓库](https://github.com/princeton-nlp/SWE-agent)
+- **来源：** [arXiv:2405.15793](https://arxiv.org/abs/2405.15793v3)；[代码仓库](https://github.com/princeton-nlp/SWE-agent)
 - **研究问题：** 软件工程 Agent 的效果是否受“Agent-Computer Interface”（ACI，专为模型设计的计算机接口）显著影响，而非仅取决于基础模型？
 - **阅读范围：** 系统设计、SWE-bench 与 HumanEvalFix 评测、ACI 消融和作者讨论。
 
@@ -39,10 +39,18 @@ ACI 消融显示，Lite 上 GPT-4 配置的成功率随界面变化：摘要搜�
 - **对 SCALE_Forge 的启示：** 给工具定义窄而明确的契约、低噪声输出和可验证副作用；将候选代码读写、构建、测试和性能测量分开暴露；工具消融时固定模型、任务和预算，比较轨迹质量及最终 oracle，而不只比较模型文本。
 - **不能直接照搬：** SWE 的文件 ACI 不是高性能内核搜索的完整运行时；优化领域还需将 correctness、资源预算、编译配置、硬件计时和 artifact identity 纳入 evaluator。
 
-## ❓复读问题与价值判断
+## Review Questions
 
 1. 哪些低层接口可以由面向 Agent 的诊断工具取代？哪些原始输出必须保留以便审计？
 2. 工具摘要是否可追溯到原始日志、文件范围与工件哈希？
-3. **阅读价值：高。** 这是理解 coding-agent 工具界面、反馈形状和交互设计的基础案例；具体性能数字有明确年代与评测边界。
+3. 如何固定模型、任务与预算，检验 ACI 改动是否带来可重复的成功率提升？
+
+## 价值评估
+
+**阅读价值：高。** 这是理解 coding-agent 工具界面、反馈形状和交互设计的基础案例；具体性能数字有明确年代与评测边界。
 
 **状态：** ✅ 已精读（2026-10-15）
+
+## 核对依据与边界（2026-10-15）
+
+本次取得的 PDF 首页版本与本页声明的 2405.15793v3 一致；检查结果数字与方法边界，统一复读问题及价值评估格式。这里的“已精读”是原有阅读记录，不表示本次重新独立复现了所有实验。

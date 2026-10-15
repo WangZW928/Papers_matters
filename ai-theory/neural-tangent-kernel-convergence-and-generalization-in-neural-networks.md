@@ -1,6 +1,6 @@
 # 神经正切核：神经网络的收敛与泛化
 
-# Neural Tangent Kernel: Convergence and Generalization in Neural Networks
+*Neural Tangent Kernel: Convergence and Generalization in Neural Networks*
 
 **作者：** Arthur Jacot, Franck Gabriel, Clément Hongler
 **期刊：** NeurIPS 2018（Advances in Neural Information Processing Systems 31, pp. 8571-8580, 2018）
