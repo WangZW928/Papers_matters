@@ -113,6 +113,15 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 - 📄 [Denoising Diffusion Probabilistic Models](./ai-model/denoising-diffusion-probabilistic-models.md)
 - 📄 [Is Sora a World Simulator? A Comprehensive](./ai-model/is-sora-a-world-simulator-a-comprehensive.md)
 
+## AI Agents and Systems
+
+- 📖 [AlphaEvolve: A Coding Agent for Scientific and Algorithmic Discovery](./ai-agent-systems/alphaevolve-a-coding-agent-for-scientific-and-algorithmic-discovery.md)
+- 📖 [KernelBench: Can LLMs Write Efficient GPU Kernels?](./ai-agent-systems/kernelbench-can-llms-write-efficient-gpu-kernels.md)
+- 📖 [KernelCraft: Benchmarking for Agentic Close-to-Metal Kernel Generation on Emerging Hardware](./ai-agent-systems/kernelcraft-benchmarking-for-agentic-close-to-metal-kernel-generation.md)
+- 📖 [K-Search: LLM Kernel Generation via Co-Evolving Intrinsic World Model](./ai-agent-systems/k-search-llm-kernel-generation-via-co-evolving-intrinsic-world-model.md)
+- 📖 [Optimizing CUDA like a Human: Micro-Profiling Tools as Expert Surrogates for LLM-Based GPU Kernel Optimization](./ai-agent-systems/optimizing-cuda-like-a-human-micro-profiling-tools.md)
+- 📖 [SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering](./ai-agent-systems/swe-agent-agent-computer-interfaces-enable-automated-software-engineering.md)
+
 ## Computer Graphics
 
 - 📄 [A Clebsch Method for Free-Surface Vortical Flow Simulation](./computer-graphics/a-clebsch-method-for-free-surface-vortical-flow-simulation.md)
@@ -373,6 +382,6 @@ Doctor 的论文库，按研究方向分类整理。每篇论文包含中英文�
 
 ---
 
-**总计**: 362 篇论文（2026-08-11 实测；README 手工索引 317 篇，差 45 篇待补录） | 📖 49 篇有精读笔记 | ⏭️ 24 篇已跳过
+**总计**: 368 篇论文（原统计 362 篇 + 本次 6 篇；README 索引 320 篇，48 篇暂未录入索引） | 📖 55 篇有精读笔记 | ⏭️ 24 篇已跳过
 
-*最后更新: 2026-08-11*
+*最后更新: 2026-10-15*
