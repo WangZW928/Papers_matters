@@ -2,9 +2,9 @@
 
 > 📖 [Codex 分层阅读建议](./CODEX_DEEP_READ.md) | 🧭 [学习路线规划](./学习路线规划.md)
 
-Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 个分类目录内的 385 个文献 Markdown 文件，包含论文、教材及其他资料；同一文献在不同路径下的记录分别保留，未按独立论文去重。
+Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 个分类目录内的 386 个文献 Markdown 文件，包含论文、教材及其他资料；同一文献在不同路径下的记录分别保留，未按独立论文去重。
 
-**阅读标记**：📖 标记为精读（72 篇，含 1 篇教材）；📄 其他归档条目（289 个，内容完整性不一，不表示已读）；⏭️ 已跳过处理（24 个，常见原因为文件过大、扫描版或文本提取失败）。标记依据各文件现有记录，不表示本次重新阅读或独立复现实验。
+**阅读标记**：📖 标记为精读（73 篇，含 1 篇教材）；📄 其他归档条目（289 个，内容完整性不一，不表示已读）；⏭️ 已跳过处理（24 个，常见原因为文件过大、扫描版或文本提取失败）。标记依据各文件现有记录，不表示本次重新阅读或独立复现实验。
 
 全部精读条目已收录于 [Codex 分层阅读建议](./CODEX_DEEP_READ.md)，覆盖其中 15 个分类。
 
@@ -15,7 +15,7 @@ Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 
 | [AI for Physics](#ai-for-physics) | 101 | 11 | 1 |
 | [AI Models](#ai-models) | 5 | 3 | 0 |
 | [AI Theory](#ai-theory) | 2 | 2 | 0 |
-| [AI Agents and Systems](#ai-agents-and-systems) | 15 | 15 | 0 |
+| [AI Agents and Systems](#ai-agents-and-systems) | 16 | 16 | 0 |
 | [Computer Graphics](#computer-graphics) | 29 | 1 | 5 |
 | [Differential Geometry](#differential-geometry) | 12 | 3 | 0 |
 | [Dynamical Systems](#dynamical-systems) | 13 | 0 | 0 |
@@ -29,7 +29,7 @@ Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 
 | [Relativity](#relativity) | 3 | 3 | 0 |
 | [Vortex Dynamics](#vortex-dynamics) | 20 | 2 | 1 |
 | [Wave Mechanics](#wave-mechanics) | 7 | 2 | 4 |
-| **合计** | **385** | **72** | **24** |
+| **合计** | **386** | **73** | **24** |
 
 ---
 
@@ -152,21 +152,22 @@ Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 
 
 ## AI Agents and Systems
 
-- 📖 [Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models](./ai-agent-systems/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md)
-- 📖 [Agentic Plan Caching: Test-Time Memory for Fast and Cost-Efficient LLM Agents](./ai-agent-systems/agentic-plan-caching-test-time-memory-for-fast-and-cost-efficient-llm-agents.md)
-- 📖 [AlphaEvolve: A Coding Agent for Scientific and Algorithmic Discovery](./ai-agent-systems/alphaevolve-a-coding-agent-for-scientific-and-algorithmic-discovery.md)
-- 📖 [GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning](./ai-agent-systems/gepa-reflective-prompt-evolution-can-outperform-reinforcement-learning.md)
-- 📖 [K-Search: LLM Kernel Generation via Co-Evolving Intrinsic World Model](./ai-agent-systems/k-search-llm-kernel-generation-via-co-evolving-intrinsic-world-model.md)
-- 📖 [KernelBench: Can LLMs Write Efficient GPU Kernels?](./ai-agent-systems/kernelbench-can-llms-write-efficient-gpu-kernels.md)
-- 📖 [KernelCraft: Benchmarking for Agentic Close-to-Metal Kernel Generation on Emerging Hardware](./ai-agent-systems/kernelcraft-benchmarking-for-agentic-close-to-metal-kernel-generation.md)
-- 📖 [KernelEvolve: Scaling Agentic Kernel Coding for Heterogeneous AI Accelerators at Meta](./ai-agent-systems/kernelevolve-scaling-agentic-kernel-coding-for-heterogeneous-ai-accelerators-at-meta.md)
-- 📖 [KernelSkill: A Multi-Agent Framework for GPU Kernel Optimization](./ai-agent-systems/kernelskill-a-multi-agent-framework-for-gpu-kernel-optimization.md)
-- 📖 [MaintainCoder: Maintainable Code Generation Under Dynamic Requirements](./ai-agent-systems/maintaincoder-maintainable-code-generation-under-dynamic-requirements.md)
-- 📖 [Optimizing CUDA like a Human: Micro-Profiling Tools as Expert Surrogates for LLM-Based GPU Kernel Optimization](./ai-agent-systems/optimizing-cuda-like-a-human-micro-profiling-tools.md)
-- 📖 [Quality Assurance of LLM-generated Code: Addressing Non-Functional Quality Characteristics](./ai-agent-systems/quality-assurance-of-llm-generated-code-addressing-non-functional-quality-characteristics.md)
-- 📖 [ReAct: Synergizing Reasoning and Acting in Language Models](./ai-agent-systems/react-synergizing-reasoning-and-acting-in-language-models.md)
-- 📖 [ShinkaEvolve: Towards Open-Ended and Sample-Efficient Program Evolution](./ai-agent-systems/shinkaevolve-towards-open-ended-and-sample-efficient-program-evolution.md)
-- 📖 [SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering](./ai-agent-systems/swe-agent-agent-computer-interfaces-enable-automated-software-engineering.md)
+- 📖 Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models
+- 📖 Agentic Plan Caching: Test-Time Memory for Fast and Cost-Efficient LLM Agents
+- 📖 AlphaEvolve: A Coding Agent for Scientific and Algorithmic Discovery
+- 📖 GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning
+- 📖 K-Search: LLM Kernel Generation via Co-Evolving Intrinsic World Model
+- 📖 KernelBench: Can LLMs Write Efficient GPU Kernels?
+- 📖 KernelCraft: Benchmarking for Agentic Close-to-Metal Kernel Generation on Emerging Hardware
+- 📖 KernelEvolve: Scaling Agentic Kernel Coding for Heterogeneous AI Accelerators at Meta
+- 📖 KernelSkill: A Multi-Agent Framework for GPU Kernel Optimization
+- 📖 MaintainCoder: Maintainable Code Generation Under Dynamic Requirements
+- 📖 Optimizing CUDA like a Human: Micro-Profiling Tools as Expert Surrogates for LLM-Based GPU Kernel Optimization
+- 📖 Quality Assurance of LLM-generated Code: Addressing Non-Functional Quality Characteristics
+- 📖 ReAct: Synergizing Reasoning and Acting in Language Models
+- 📖 Recursive Self-Improvement through Multi-Agent Self-Supervision
+- 📖 ShinkaEvolve: Towards Open-Ended and Sample-Efficient Program Evolution
+- 📖 SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering
 
 ## Computer Graphics
 
@@ -471,6 +472,6 @@ Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 
 
 ---
 
-**文件统计**：17 个分类目录内共 385 个文献 Markdown 文件；其中 72 篇标记为精读（71 篇论文、1 篇教材），其余归档条目 289 个，已跳过处理 24 个。以上按文件计数，包含子目录及重复文献条目。
+**文件统计**：17 个分类目录内共 386 个文献 Markdown 文件；其中 73 篇标记为精读（72 篇论文、1 篇教材），其余归档条目 289 个，已跳过处理 24 个。以上按文件计数，包含子目录及重复文献条目。
 
 *最后更新: 2026-10-19*
