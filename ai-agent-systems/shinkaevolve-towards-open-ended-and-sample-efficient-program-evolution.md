@@ -1,49 +1,51 @@
 # ShinkaEvolve: Towards Open-Ended and Sample-Efficient Program Evolution
 
-_精读笔记｜arXiv:2509.19349v1｜PDF 52 页；重点阅读主文 §§3–4.4（pp. 1–11）及 circle-packing、AIME、ALE-Bench、MoE loss 结果；附录代码未逐行复述_
+_精读笔记｜arXiv:2509.19349v1｜PDF 52 页；重点阅读主文 §§3–4.4（pp. 1–11）及 circle-packing、AIME、ALE-Bench、MoE loss 结果；另核对附录 C.4 损失实现_
 
 ---
 
-## 📌 书目信息与问题
+## 书目信息与问题
 
 - **作者：** Robert Tjarko Lange、Yuki Imajuku、Edoardo Cetin，Sakana AI
-- **来源：** [arXiv:2509.19349](https://arxiv.org/abs/2509.19349v1)；[ShinkaEvolve 开源实现](https://github.com/SakanaAI/ShinkaEvolve)
+- **来源：** [arXiv:2509.19349v1](https://arxiv.org/abs/2509.19349v1)[^1]；[ShinkaEvolve 开源实现](https://github.com/SakanaAI/ShinkaEvolve)
 - **问题：** LLM 驱动的程序进化会耗费大量候选评估，且单一模型、父代或解空间可能造成低效/同质化。如何让 open-ended program evolution 更省 sample，并保留跨任务可用性？
 - **阅读范围：** 父代采样、程序 novelty rejection、LLM ensemble bandit、运行反馈/多目标 archive，以及四类实验。
 
-## ⚙️ 方法与机制
+## 方法与机制
 
-ShinkaEvolve 将候选程序与公开指标、scalar fitness 及文本反馈一起存入 archive。新候选由 parent 程序经 LLM mutation/edit 产生；系统提供三项主要机制：
+ShinkaEvolve 保存固定容量的程序档案，并在 island 子群间迁移部分程序。一次 mutation 的上下文包括 parent、高分和随机 inspiration；候选可由 diff、整段重写或 crossover 产生，受不可修改代码块约束（§§3.1–3.2，pp.3–4）。三个主要机制是：
 
-1. **Parent sampling**：在 uniform exploration、fitness exploitation 与 novelty 加权之间平衡，避免只沿当前 best 解局部爬山。
-2. **Code novelty rejection sampling**：对重复/近似程序拒绝采样，减少把评估预算浪费在无新信息的候选上。
-3. **Bandit-based LLM ensemble**：根据模型过往对 fitness 的改进贡献动态分配采样，同时探索尚未充分试用的模型。
+1. **Parent sampling：** weighted 规则将中位 fitness 附近的 sigmoid 权重与 `1/(1+offspring数)` 相乘；这里的 novelty 实际是较少被扩展，区别于代码语义新颖性。power-law 是另一可选策略。
+2. **Novelty rejection：** 对可修改代码做 embedding；与子群程序的最大余弦相似度超过阈值（示例 0.95）后，再让 LLM 判断是否有实质变化。该判断是启发式筛选，不是语义等价验证。
+3. **LLM ensemble bandit：** 基于 UCB1，奖励相对 parent 与初始程序中较好者的 fitness 增量，并以截断指数变换偏向较大改进；未直接按 API 或执行成本归一化（§3.3，p.5）。
 
-执行器为每个候选返回 fitness、public metrics 与文本反馈，后续 mutation 可据此定位改进点（§§3–3.3，pp. 3–5）。该 archive 是 stepping-stone 集合，不只保留冠军，支持从中间解继续探索或重组。
+执行器返回 scalar fitness、public metrics 与文本反馈；周期性 meta-scratchpad 汇总近期经验并进入后续提示。多指标进入上下文不意味着所有选择都按 Pareto 支配关系执行。
 
-## 📊 原文证据与结果
+## 原文证据与结果
 
-- **Circle packing：** 在单位正方形内放置 26 个互不重叠且不越界的圆、最大化半径和。作者报告 **150 个已评估的 LLM 程序提案**（摘要称 150 samples、§4.1 称 150 generations，图 5 横轴标注 evaluated LLM proposals；p. 6）。这不是总候选数、LLM 调用数或端到端计算预算；系统还包含无效补丁重采样、嵌入和辅助 LLM 新颖性判断（§3.2–3.3，pp. 4–5）。
-- **AIME agent scaffold：** AIME 2024 共 30 题；每题最多 10 次 LLM query，使用 GPT-4.1-nano，候选经 3 次独立运行评估，搜索 75 generations。进化发现 query 数与准确率间的 Pareto trade-off，而不是单一最优无限增加推理（§4.2，p. 7）。
-- **ALE-Bench LITE：** 从 ALE-Agent 初解继续搜索 50 generations，以 public test fitness 进化，再在 private test 上报告；10 个任务平均提升约 **2.3%**，个别任务报告竞赛级提升（§4.3，p. 8）。该流程仍需关注 public-test 过拟合风险。
-- **MoE load balancing loss：** 在已有逐层 global-batch loss 基础上增加专家最低使用率缺口项。令 \(f_{\ell,i}\) 为第 \(\ell\) 层专家 \(i\) 的 token 使用频率、\(P_{\ell,i}\) 为平均 router probability；新项用层熵相关权重 \(s(P_\ell)\) 加权对低于 \(\tau=0.064/N_E\) 的专家使用率缺口惩罚，论文系数为 0.1（Eq. 1，p. 10）。它是在已有逐层目标上增加 threshold penalty，不应概括成“原 global 项不关注单层”。具体梯度路径依赖 hard routing 的实现，不能只凭公式断言新项直接提高冷门专家频率。
+- **圆填充：** 26 圆单位正方形问题，在约 **150 次已评估程序提案**内超越所比 AlphaEvolve 构造（Fig. 5，p.6）。这不包括所有补丁重采样、embedding 和 novelty-judge 调用，也未对齐 AlphaEvolve 的模型和总算力，不能写成同预算下的普遍优势。
+- **AIME：** 用 GPT-4.1-nano 在 AIME 2024 的 30 题上搜索 75 generations，每候选评估 3 次、每题最多 10 次调用；发现 3 个专家、3 次复核和 1 次汇总的 7-call scaffold。Fig. 6 中其 2024/2023 成绩高于 Majority@5，但 **2025 为 20.0%，低于 Majority@5 的 25.6%**（§4.2，p.7）。因此存在跨年迁移证据，不能声称全面优于投票；题目是否进入训练集也未独立验证。
+- **ALE-Bench：** 从 ALE-Agent 最佳初解继续搜索 50 generations，public fitness 选择后测 private；Fig. 7 的 public Top-1 对应均分 **1879.3→1923.5**，约 **2.35%**。图中另列 Top-5 和 Max Private，后者不能与仅按 public 选解的部署口径混用（§4.3，p.8）。
+- **MoE：** 在 556M 参数、64 专家/top-8、约 2B tokens 的模型上搜索 30 次，将 CE 与负载不均衡合为 fitness；再在 2.7B、近 30B tokens、三种正则系数上验证（§4.4，p.9）。已做规模迁移，但模型架构相近，不能说尚无规模实验，也不能外推到任意 MoE。
+- **公式与代码冲突：** Eq. 1 用熵权重乘专家最低使用率缺口，阈值写 **`0.064/N_E`**（p.10）；附录 C.4 却写 **`0.01*(64/N_E)=0.64/N_E`**，相差 10 倍（p.52）。代码用 hard indices 的 `one_hot` 计算频率；按所列实现，缺口项本身不对选中频率求导，新增项的可微路径来自熵权重。应澄清实验实际版本，不能仅凭示意梯度宣称直接提升每个冷门专家的路由概率。
 
-## 🔍 评议、限制与迁移
+## 评议、限制与迁移
 
-- **贡献本质：** 把“多样性—选择—模型调度”纳入进化 harness 本身；特别是程序 novelty 与 bandit 模型调度作用于评估预算效率，而非只提升单次 LLM 输出质量。
-- **限制：** 各案例 fitness 可测且任务特定；150 次程序评估不能泛化成任意科学发现只需 150 次模型调用或相同总预算。多目标 archive 的质量受人工定制指标、初值、LLM ensemble 与运行成本影响。ALE-Bench 以 public set 搜索，有潜在选择过拟合风险；MoE loss 仍需独立训练复现和规模外推。圆填充消融中，bandit 相对固定模型 ensemble 的措辞在图注与正文强弱不一致，且所读材料未提供统计显著性检验（§4，p. 11）。
-- **对 SCALE_Forge 的启示：** 在搜索 archive 中同时保存性能、correctness、资源和策略 novelty；按“此前改善贡献”调度模型，但把模型调度效果与 candidate strategy 效果分开消融。对数值/内核搜索可拒绝相同 AST/等价配置重复测量，同时保留语义不同但性能相近的 stepping stones。
+- **贡献定位：** 组合父代扩展、多样性筛选与模型调度，减少昂贵评估中的重复候选；它搜索人定义目标下的程序，并未实现自主生成目标的 open-endedness，后者被列为未来工作（§6，p.11）。
+- **消融范围：** Fig. 9 是圆填充实验，不能据此推出 weighted sampling 在四个领域都优越。图注称 bandit 相对均匀 ensemble “略有改善”，正文称显著优于；未见对应统计检验，不把修辞上的显著当统计结论（pp.10–11）。
+- **评估与发现分开：** 更少程序评估不等于更少总成本；AIME 搜索集反复使用、ALE 初解限制探索和 MoE 代理目标都影响结果。应分别核验提出的构造、留出迁移和搜索流程贡献，而非以最佳案例支撑通用科学发现能力。
+- **对 SCALE_Forge 的启示：** 同时记录有效评估数、拒绝候选数、模型/API 成本与执行时间；让 novelty 筛选具有可恢复机制，并独立测试其误拒率。bandit 可加入成本与延迟，但这是迁移建议，不是论文已有实现。
 
 ## Review Questions
 
-1. 对浮点优化，怎样设计“代码 novelty”使其识别等价变换，又不误删数值语义不同的候选？
-2. Bandit 奖励是否应按候选质量、运行成本和分布式评估延迟联合归一化？
-3. MoE 的实际实现中，硬 top-K 的使用频率 \(f_{\ell,i}\) 是否参与反向传播、采用何种 surrogate？各核心搜索机制是否在一致预算和多随机种子下有独立消融？
+1. 将拒绝提案、辅助模型调用与程序运行都计费后，novelty filter 是否仍提高单位成本的发现率？
+2. 在其他任务和多随机种子下，bandit 相对均匀模型混合的优势能否重复？
+3. MoE 实验实际使用哪一个阈值，hard routing 下新增项的梯度路径与论文解释是否一致？
 
 ## 价值评估
 
-**六维参考（1–6）：** idea 清晰 5；可验证性 4；迁移价值 5；领域重要性 4；方法创新 4；影响力 3。**阅读价值：高，建议 Tier 2（开放式程序搜索方法）。** 对预算化进化搜索、采样多样性和模型路由有启发；每个案例的 scientific merit 仍由任务级 oracle 决定。
+**阅读价值：高，建议 Tier 2（开放式程序搜索方法）。** 对预算化进化搜索、采样多样性和模型路由有启发；每个案例的 scientific merit 仍由任务级 oracle 决定。
 
-**流程状态：** 元数据、原文、评估、精读、索引、审阅：完成（独立 Codex 只读审阅，范围限主文 pp. 1–12；未完成 Kimi 复核）；提交：跳过（未请求）。
+**流程状态：** 已按原文复核（2026-10-19），包括损失公式与附录实现；未复现实验。
 
 [^1]: Lange, Imajuku, and Cetin (2025). “ShinkaEvolve: Towards Open-Ended and Sample-Efficient Program Evolution.” arXiv:2509.19349v1. https://arxiv.org/abs/2509.19349v1

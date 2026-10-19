@@ -5,9 +5,9 @@
 **来源：** OpenStax *University Physics Volume 3 — Optics and Modern Physics*，第 5 章 *Relativity*，§5.6 The Lorentz Transformation
 **作者：** Samuel J. Ling, Jeff Sanny, William Moebs 等（OpenStax / Rice University）
 **链接：** [phys.libretexts.org §5.6](https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/05:__Relativity/5.06:_The_Lorentz_Transformation)
-**性质：** 教材章节精读（非论文，不进入 CODEX_DEEP_READ.md 论文 Tier 索引）
+**性质：** 教材章节精读（非论文，收录于 [CODEX_DEEP_READ.md 配套教材索引](../CODEX_DEEP_READ.md#配套教材精读不计入论文-tier)，不参与论文 Tier 分层）
 **阅读状态：** 🔬 精读（Doctor 指定）
-**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ⏭️(非论文) | ⑥review ✓ | ⑦提交 ✓
+**流程状态：** ①元数据 ✓ | ②初稿 ✓ | ③评估 ✓(精读) | ④补充 ✓ | ⑤索引 ✓(配套教材，2026-10-19 补录) | ⑥review ✓ | ⑦提交 ✓
 
 ---
 

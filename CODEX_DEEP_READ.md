@@ -39,6 +39,8 @@
 
 ## 第二部分：重新分层后的完整清单
 
+以下为原有 53 篇论文的分层清单；后续补充见文末按日期列出的索引及配套教材。全表截至 2026-10-19 共收录 71 篇论文、1 篇教材，覆盖当前库内所有标记为精读的文献文件。Tier 表示阅读优先级，精读标记表示笔记归档状态，不代表实验已独立复现。
+
 ## Tier 1 — 必读（6 篇）
 
 1. **Hamiltonian description of the ideal fluid** — geometric-fluid
@@ -330,6 +332,27 @@
 
 - **Agentic Plan Caching** — [`ai-agent-systems/agentic-plan-caching-test-time-memory-for-fast-and-cost-efficient-llm-agents.md`](ai-agent-systems/agentic-plan-caching-test-time-memory-for-fast-and-cost-efficient-llm-agents.md)。复用可适配的计划模板而非旧回答，对降低反复规划成本有参考。
 - **Agentic Context Engineering (ACE)** — [`ai-agent-systems/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md`](ai-agent-systems/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md)。以 itemized delta 更新缓解 playbook 细节坍缩，可用于思考如何维护可追溯的实验经验。
+
+## 精读索引补全（2026-10-19）
+
+以下补录 9 篇已归档的论文，依据各篇现有笔记及本表的研究主线建议列入 Tier 2；补录日期不表示首次精读日期。
+
+### Tier 2 — 代码搜索、GPU 评测与 Agent 工程
+
+- **AlphaEvolve: A Coding Agent for Scientific and Algorithmic Discovery** — [`ai-agent-systems/alphaevolve-a-coding-agent-for-scientific-and-algorithmic-discovery.md`](ai-agent-systems/alphaevolve-a-coding-agent-for-scientific-and-algorithmic-discovery.md)。自动评估器、进化程序库与异步搜索共同组织代码发现，适合参考其候选谱系、多样性维护和分级筛选设计；内部生产案例的收益需与公开可核验结果区分。关联：ShinkaEvolve、GEPA、K-Search。
+- **K-Search: LLM Kernel Generation via Co-Evolving Intrinsic World Model** — [`ai-agent-systems/k-search-llm-kernel-generation-via-co-evolving-intrinsic-world-model.md`](ai-agent-systems/k-search-llm-kernel-generation-via-co-evolving-intrinsic-world-model.md)。将优化策略与代码实现分层，并依据评估反馈更新搜索假设和动作优先级，直接服务多步 kernel 优化；其 world model 是搜索规划机制，不是 GPU 微架构模拟器。关联：AlphaEvolve、KernelPro、KernelSkill。
+- **KernelBench: Can LLMs Write Efficient GPU Kernels?** — [`ai-agent-systems/kernelbench-can-llms-write-efficient-gpu-kernels.md`](ai-agent-systems/kernelbench-can-llms-write-efficient-gpu-kernels.md)。将生成代码的正确性与相对基线的实测性能共同纳入评测，适合作为 kernel evaluator、失败分类和等预算比较的基础；结论须绑定工作负载、硬件、编译配置与基线。关联：KernelPro、KernelCraft、Roofline。
+- **KernelCraft: Benchmarking for Agentic Close-to-Metal Kernel Generation on Emerging Hardware** — [`ai-agent-systems/kernelcraft-benchmarking-for-agentic-close-to-metal-kernel-generation.md`](ai-agent-systems/kernelcraft-benchmarking-for-agentic-close-to-metal-kernel-generation.md)。将低层代码生成评测扩展到异构 ISA、工具交互与系统集成，适合设计后端适配和任务难度分层；不同平台的文档、工具、容差和基线必须分别记录。关联：KernelBench、KernelEvolve、SWE-agent。
+- **Optimizing CUDA like a Human: Micro-Profiling Tools as Expert Surrogates for LLM-Based GPU Kernel Optimization（KernelPro）** — [`ai-agent-systems/optimizing-cuda-like-a-human-micro-profiling-tools.md`](ai-agent-systems/optimizing-cuda-like-a-human-micro-profiling-tools.md)。将硬件计数转为可操作的专家诊断，并结合搜索组织多轮优化，是把性能经验转成 Agent 工具接口的直接参照；应保留诊断依据，并分别验证反馈工具与搜索策略的收益。关联：KernelSkill、K-Search、KernelBench。
+- **ReAct: Synergizing Reasoning and Acting in Language Models** — [`ai-agent-systems/react-synergizing-reasoning-and-acting-in-language-models.md`](ai-agent-systems/react-synergizing-reasoning-and-acting-in-language-models.md)。推理、动作与环境观察交替构成工具 Agent 的基础交互轨迹，适合建立可检查的执行反馈循环；科学代码任务仍须以真实执行日志和数值诊断验证结果。关联：SWE-agent、Agentic Plan Caching、ACE。
+- **SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering** — [`ai-agent-systems/swe-agent-agent-computer-interfaces-enable-automated-software-engineering.md`](ai-agent-systems/swe-agent-agent-computer-interfaces-enable-automated-software-engineering.md)。将搜索、浏览、编辑与观察管理的接口设计作为 Agent 算法的一部分，直接启发代码优化运行时的工具契约和低噪声反馈；迁移到 kernel 搜索时还需独立的正确性与性能评估。关联：ReAct、KernelCraft、KernelPro。
+- **MaintainCoder: Maintainable Code Generation Under Dynamic Requirements** — [`ai-agent-systems/maintaincoder-maintainable-code-generation-under-dynamic-requirements.md`](ai-agent-systems/maintaincoder-maintainable-code-generation-under-dynamic-requirements.md)。通过动态需求下的修改任务考察可维护性，并以框架设计和实现分阶段组织代码生成，适合补充长期演化代码的评测维度；竞赛题上的代理指标不能直接等同于生产仓库维护成本。关联：SWE-agent、Quality Assurance of LLM-generated Code。
+- **Quality Assurance of LLM-generated Code: Addressing Non-Functional Quality Characteristics** — [`ai-agent-systems/quality-assurance-of-llm-generated-code-addressing-non-functional-quality-characteristics.md`](ai-agent-systems/quality-assurance-of-llm-generated-code-addressing-non-functional-quality-characteristics.md)。把可维护性、安全、运行时间和内存等质量维度纳入生成代码评估，适合设计多目标接受准则与回归保护；有限共同成功样例中的经验结论应作为风险证据使用。关联：MaintainCoder、SWE-agent、KernelBench。
+
+## 配套教材精读（不计入论文 Tier）
+
+- **洛伦兹变换（OpenStax University Physics III §5.6）** — [`relativity/the-lorentz-transformation-openstax.md`](relativity/the-lorentz-transformation-openstax.md)。教材章节，作为 Einstein 1905 的配套基础阅读，串联洛伦兹变换、时间膨胀、长度收缩、同时性、时空间隔与光锥。本条纳入精读总索引，但不参与论文 Tier 分层。
+
 ## 阅读路线图
 
 1. **几何/变分基础先行** → Hamiltonian ideal fluid → Madelung transform → Schrödinger's Smoke → Inside Fluids
@@ -344,4 +367,4 @@
 
 ---
 
-*覆盖 13 个分类 | 原有 Tier 编号和路线保留；另增 9 篇精读的补充评估索引*
+*覆盖 15 个分类 | 共 72 篇精读文献：71 篇论文（原有 53 篇 + 2026-10-15 补充 9 篇 + 2026-10-19 补录 9 篇）、1 篇配套教材 | 最后核对：2026-10-19*
