@@ -31,6 +31,18 @@ KernelEvolve 将 kernel synthesis 写成带运行状态的图搜索：节点为 
 - **限制：** 这是 Meta technical report，核心生产/MTIA 数据、运行栈与工作负载难以独立复现；公开 KernelBench 与内部 production 结果是不同证据层。最高 17× 是摘要作者报告值，所读摘录未定位该峰值完整 case；baseline 也须逐行确认。报告形状表可见性能回退，且原文存在图表数字/表格 speedup 疑点，所以“100% correctness”不能解读为“所有场景都加速”。
 - **对 SCALE_Forge 的启示：** 将候选搜索、知识库和 evaluator 解耦；支持每种后端的 capabilities/diagnostics 查询，且把 hardware constraint 变为可机器检索事实。评估应对 production shape 分布、非目标 shape 和失败输入分层；为所有结果固定 baseline、编译/驱动/硬件版本与日志。AMR 框架尤其应将数据预处理、halo/packing 等 kernel 视为部署覆盖的一部分，而非只优化 GEMM。
 
+## 会议版核读补记（ISCA 2026，15 页）
+
+目录中的 `kernelevolve_isca26_paper.pdf` 是 2026 ACM/IEEE ISCA 会议版（论文集印刷页 733–745），不是上述 65 页 arXiv v4 technical report 的同一 PDF。已对这份 15 页版本单独核读，并将结论限定到该版本：
+
+- 会议版保留了系统主线：把 kernel 生成与优化表示为图搜索，通过 LLM 生成、正确性检查、硬件 profiler 反馈和上下文记忆迭代搜索（§III，PDF pp. 4–7）。
+- 作者报告 160 个 ATen operators 在三类平台上的 480 个配置均通过其正确性检查，KernelBench 250 项三层任务均通过（摘要、§IV-A，PDF pp. 1、7）。这是论文给出的有限测试集合与可配置误差容差结果，不是形式正确性证明。
+- 会议版给出生产形状与分布外形状的对照：H100 上 Conv1D 的目标 FP16 形状 `(2048,96,96,200)` 相对 PyTorch Conv1D/Conv2D 为 2.30×/1.62×；随机分布外形状 `(64,768,768,1024)` FP16 则只有 0.63×/0.49×（Table III，PDF p. 8）。因此专门针对生产 shape 的收益不代表普遍加速。
+- MTIA MBDT 数据预处理案例报告 v2i 2.94–9.25×、v3 2.31–3.09×（Fig. 10，PDF p. 12）。硬件 co-design 洞察及 production 结果来自 Meta 内部系统，外部难以独立复现。
+- 会议版更紧凑，增加了面向生产结果的明确基线与 shape 讨论；与 arXiv 长版共享系统核心，不能把长版的逐项表格审读或发现自动视为这份会议版的独立证据。
+
+**版本状态：** 目录提供的会议版已单独精读并补记（2026-10-19）；原 arXiv v4 笔记及其原结论保留。未独立复现实验或进行同行复核。
+
 ## Review Questions
 
 1. 自研硬件的知识注入应如何进行来源/版本管理，避免过期 API 指引生成不可编译代码？

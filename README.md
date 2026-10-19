@@ -125,6 +125,9 @@ Doctor 的论文库，按研究方向分类整理。条目按研究方向归档�
 - 📖 [KernelSkill: A Multi-Agent Framework for GPU Kernel Optimization](./ai-agent-systems/kernelskill-a-multi-agent-framework-for-gpu-kernel-optimization.md)
 - 📖 [K-Search: LLM Kernel Generation via Co-Evolving Intrinsic World Model](./ai-agent-systems/k-search-llm-kernel-generation-via-co-evolving-intrinsic-world-model.md)
 - 📖 [Optimizing CUDA like a Human: Micro-Profiling Tools as Expert Surrogates for LLM-Based GPU Kernel Optimization](./ai-agent-systems/optimizing-cuda-like-a-human-micro-profiling-tools.md)
+- 📖 [MaintainCoder: Maintainable Code Generation Under Dynamic Requirements](./ai-agent-systems/maintaincoder-maintainable-code-generation-under-dynamic-requirements.md)
+- 📖 [Quality Assurance of LLM-generated Code: Addressing Non-Functional Quality Characteristics](./ai-agent-systems/quality-assurance-of-llm-generated-code-addressing-non-functional-quality-characteristics.md)
+- 📖 [ReAct: Synergizing Reasoning and Acting in Language Models](./ai-agent-systems/react-synergizing-reasoning-and-acting-in-language-models.md)
 - 📖 [ShinkaEvolve: Towards Open-Ended and Sample-Efficient Program Evolution](./ai-agent-systems/shinkaevolve-towards-open-ended-and-sample-efficient-program-evolution.md)
 - 📖 [SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering](./ai-agent-systems/swe-agent-agent-computer-interfaces-enable-automated-software-engineering.md)
 
