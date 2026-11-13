@@ -1,0 +1,114 @@
+{
+  "id": "2512.21447v1",
+  "title": "An Equivariance Toolbox for Learning Dynamics",
+  "authors": [
+    "Yongyi Yang",
+    "Liu Ziyin"
+  ],
+  "version_date": "2025-12-24",
+  "source_url": "https://arxiv.org/pdf/2512.21447v1",
+  "source_sha256": "3b6ba1d8dd71d496cd5c07978bea9d4d69f341c4e510cc070a7579fc49109e97",
+  "pages": 16,
+  "text_chars": 53859,
+  "mode": "session_deep_read",
+  "assess": "skipped: explicit deep-reading request",
+  "workflow_complete": true,
+  "commit": "not_requested",
+  "push": "not_requested",
+  "schema_version": 1,
+  "doi": "10.48550/arXiv.2512.21447",
+  "venue": "arXiv preprint; no separate venue asserted",
+  "scope": "main pp.1–10 and appendix pp.13–16; references for locating sources only",
+  "reproduced_training_experiments": false,
+  "value_level": null,
+  "tier": null,
+  "stages": {
+    "dedup": "completed: exact title and arXiv ID absent from repository search",
+    "metadata": "completed: official versioned arXiv abstract",
+    "source": "completed: versioned PDF parsed, key formulas checked against rendered pages",
+    "draft": "completed: draft.md",
+    "assess": "skipped: explicit user deep-reading request",
+    "deepen": {
+      "status": "completed",
+      "provider": "openai-codex",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "agent_id": "acb7b8b6-5dd5-4c1c-b3c4-aaf0ac3d6c62",
+      "input_pdf_sha256": "3b6ba1d8dd71d496cd5c07978bea9d4d69f341c4e510cc070a7579fc49109e97",
+      "expected_artifact": "method.txt",
+      "artifact": "method.txt",
+      "sha256": "7c6dc144a9db1b11d1112d8e54d408386fc6beba407edb3b26aaca1ad14e21d6",
+      "observed_execution_window_seconds": 943,
+      "window_is_hard_timeout_proof": false
+    },
+    "application": {
+      "status": "completed",
+      "provider": "openai-codex",
+      "model": "gpt-6-sol",
+      "effort": "high",
+      "agent_id": "0ca090a4-4b78-4a26-a5fa-ef0c3cda0703",
+      "artifact": "application.txt",
+      "sha256": "2660f356b2753d205aaa5155e881bcc12793094ca579ef8c744cd488f4935f90"
+    },
+    "integrate": "completed: primary PDF formulas checked; method and application findings verified and incorporated",
+    "style_review": {
+      "status": "completed",
+      "genre": "technical-note",
+      "observations": [
+        "The note distinguishes parameter training from physical-system prediction before introducing notation",
+        "Core derivations precede correction lists; toy calculations are explicitly separated from training experiments",
+        "Replaced literal identity translation 身份 with 恒等式 and retained all mathematical conditions"
+      ]
+    },
+    "review": {
+      "status": "completed",
+      "accepted": true,
+      "reviewed_notes_sha256": "45d112faca364f14d03d91cae1e9de7d52004a4e780ddaa32b9624961dbff653",
+      "provider": "openai-codex",
+      "model": "gpt-6-sol",
+      "effort": "high",
+      "agent_id": "9e4ff59b-a100-47b7-b3e7-c05ff36f34e6",
+      "fresh_context": true,
+      "dispatch_recorded_at": "2026-11-13T05:32:08.645047+00:00",
+      "transport_success": true,
+      "artifact": "review.txt",
+      "sha256": "a5985304f58ee3329409838a3aec3919bdcd161d3cc98766f3d1aa151be55019",
+      "scope": "entire frozen note; main pp.1–10 and appendices A.1–A.5 pp.13–16; key SGF convention from cited v3 only",
+      "blocking_findings_remaining": 0
+    },
+    "index": "not_requested: session-only reading",
+    "commit": "not_requested",
+    "push": "not_requested",
+    "finalize": "completed for session-only deep reading; repository archival/index publication not requested"
+  },
+  "model_identity_note": "Routes are recorded from host dispatch; independent backend attestation is not exposed",
+  "timeout_target_seconds": 1800,
+  "hard_timeout_available": false,
+  "source_text_sha256": "eaa5983d6d6d5ac7dac974b279c8954e783196454206dd03276cc9237edf681c",
+  "draft_sha256": "cf04313e91210653c3786b7681ccf95475b1086b1f00eff2e4c144301b1c4971",
+  "supporting_reference": {
+    "id": "2402.07193v3",
+    "scope": "SGF convention and Noether flow in sections 1,3,4.1 checked by application reader; not full-paper audit",
+    "url": "https://arxiv.org/abs/2402.07193v3"
+  },
+  "notes_sha256": "45d112faca364f14d03d91cae1e9de7d52004a4e780ddaa32b9624961dbff653",
+  "resolution_log": [
+    {
+      "item": "Core identities, corrected examples, Cor1 counterexample and scope limits",
+      "decision": "accepted",
+      "handling": "Verified against PDF and two independent analyses before freezing; final reviewer confirms correctness"
+    },
+    {
+      "item": "Optional 2x2 congruence/noncommutation example",
+      "decision": "deferred_nonblocking",
+      "reason": "Current note states the precise orthogonality condition; optional illustration is not needed for correctness; frozen reviewed text retained"
+    },
+    {
+      "item": "Optional sigma^2=eta/(2S) parameter mapping",
+      "decision": "deferred_nonblocking",
+      "reason": "Current note explicitly defines its SDE convention and does not assert equivalence to arbitrary finite-step SGD; no post-review scientific edit"
+    }
+  ],
+  "completion_scope": "session deep reading, not experiment reproduction or full audit of all cited papers",
+  "scientific_content_changed_after_final_review": false
+}

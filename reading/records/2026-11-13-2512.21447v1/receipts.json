@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "kind": "lead-assembled archival manifest from retained outputs and host dispatch records; not provider-native attestation",
+  "model_identity_note": "Routes are recorded from host dispatch; independent backend attestation is not exposed",
+  "artifacts": [
+    {
+      "path": "method.txt",
+      "original_sha256": "7c6dc144a9db1b11d1112d8e54d408386fc6beba407edb3b26aaca1ad14e21d6",
+      "archived_sha256": "525021b041b93d9e2a1c4da53ccf6cd26655078aa144a5cce77b9b5afa1cddd6",
+      "path_redaction_applied": true
+    },
+    {
+      "path": "application.txt",
+      "original_sha256": "2660f356b2753d205aaa5155e881bcc12793094ca579ef8c744cd488f4935f90",
+      "archived_sha256": "2660f356b2753d205aaa5155e881bcc12793094ca579ef8c744cd488f4935f90",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "review.txt",
+      "original_sha256": "a5985304f58ee3329409838a3aec3919bdcd161d3cc98766f3d1aa151be55019",
+      "archived_sha256": "a5985304f58ee3329409838a3aec3919bdcd161d3cc98766f3d1aa151be55019",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "algebra-checks.json",
+      "original_sha256": "ba319ed6512431e38fa3667855dc653c0c81301c1ea29dbae5bd13bba1181dce",
+      "archived_sha256": "ba319ed6512431e38fa3667855dc653c0c81301c1ea29dbae5bd13bba1181dce",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "method-assets/checks.py",
+      "original_sha256": "9ae30e35cc19ab656da3e985346a67e7372b190446766710b18809807332afcd",
+      "archived_sha256": "9ae30e35cc19ab656da3e985346a67e7372b190446766710b18809807332afcd",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "method-assets/symbolic-check.txt",
+      "original_sha256": "a267fc8e360e390069224263d075f5062e60cbeb52bbbbaa95ce0213e2b0e435",
+      "archived_sha256": "a267fc8e360e390069224263d075f5062e60cbeb52bbbbaa95ce0213e2b0e435",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "method-assets/style-review.txt",
+      "original_sha256": "8a12b42eb85b7772e0ee277079cc5c072e6081e0c2bbe937038766b1143e21d1",
+      "archived_sha256": "8a12b42eb85b7772e0ee277079cc5c072e6081e0c2bbe937038766b1143e21d1",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "method-assets/receipt.txt",
+      "original_sha256": "1f5a6a849e078cf754ceb8424d5f06e064b9e40d1b14d942cd5718b8de24593e",
+      "archived_sha256": "1f5a6a849e078cf754ceb8424d5f06e064b9e40d1b14d942cd5718b8de24593e",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "method-assets/sympy-unavailable.txt",
+      "original_sha256": "1e67b2a5a9bc8384308f53723464f252f9823e1efac73cfa35f8a2eac193fa2d",
+      "archived_sha256": "1e67b2a5a9bc8384308f53723464f252f9823e1efac73cfa35f8a2eac193fa2d",
+      "path_redaction_applied": false
+    }
+  ],
+  "stages": [
+    {
+      "role": "method_reader",
+      "status": "completed",
+      "provider": "openai-codex",
+      "requested_model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "agent_id": "acb7b8b6-5dd5-4c1c-b3c4-aaf0ac3d6c62",
+      "input_pdf_sha256": "3b6ba1d8dd71d496cd5c07978bea9d4d69f341c4e510cc070a7579fc49109e97",
+      "input_notes_sha256": "cf04313e91210653c3786b7681ccf95475b1086b1f00eff2e4c144301b1c4971",
+      "output_path": "method.txt",
+      "original_output_sha256": "7c6dc144a9db1b11d1112d8e54d408386fc6beba407edb3b26aaca1ad14e21d6",
+      "archived_output_sha256": "525021b041b93d9e2a1c4da53ccf6cd26655078aa144a5cce77b9b5afa1cddd6",
+      "scope": "main pp.1–10 and appendix pp.13–16; references for locating sources only",
+      "accepted_at_session_stage": null,
+      "input_snapshot_retained": true
+    },
+    {
+      "role": "application_reader",
+      "status": "completed",
+      "provider": "openai-codex",
+      "requested_model": "gpt-6-sol",
+      "reasoning_effort": "high",
+      "agent_id": "0ca090a4-4b78-4a26-a5fa-ef0c3cda0703",
+      "input_pdf_sha256": "3b6ba1d8dd71d496cd5c07978bea9d4d69f341c4e510cc070a7579fc49109e97",
+      "input_notes_sha256": "cf04313e91210653c3786b7681ccf95475b1086b1f00eff2e4c144301b1c4971",
+      "output_path": "application.txt",
+      "original_output_sha256": "2660f356b2753d205aaa5155e881bcc12793094ca579ef8c744cd488f4935f90",
+      "archived_output_sha256": "2660f356b2753d205aaa5155e881bcc12793094ca579ef8c744cd488f4935f90",
+      "scope": "main pp.1–10 and appendix pp.13–16; references for locating sources only",
+      "accepted_at_session_stage": null,
+      "input_snapshot_retained": true
+    },
+    {
+      "role": "reviewer",
+      "status": "completed",
+      "provider": "openai-codex",
+      "requested_model": "gpt-6-sol",
+      "reasoning_effort": "high",
+      "agent_id": "9e4ff59b-a100-47b7-b3e7-c05ff36f34e6",
+      "input_pdf_sha256": "3b6ba1d8dd71d496cd5c07978bea9d4d69f341c4e510cc070a7579fc49109e97",
+      "input_notes_sha256": "45d112faca364f14d03d91cae1e9de7d52004a4e780ddaa32b9624961dbff653",
+      "output_path": "review.txt",
+      "original_output_sha256": "a5985304f58ee3329409838a3aec3919bdcd161d3cc98766f3d1aa151be55019",
+      "archived_output_sha256": "a5985304f58ee3329409838a3aec3919bdcd161d3cc98766f3d1aa151be55019",
+      "scope": "entire frozen note; main pp.1–10 and appendices A.1–A.5 pp.13–16; key SGF convention from cited v3 only",
+      "accepted_at_session_stage": true,
+      "input_snapshot_retained": true
+    }
+  ]
+}

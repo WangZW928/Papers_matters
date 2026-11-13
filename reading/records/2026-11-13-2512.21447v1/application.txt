@@ -1,0 +1,44 @@
+An Equivariance Toolbox for Learning Dynamics（arXiv:2512.21447v1）—— application/evidence_reader 独立核查
+
+阅读范围与凭据：核对 source.pdf SHA256 3b6ba1d8dd71d496cd5c07978bea9d4d69f341c4e510cc070a7579fc49109e97；阅读带 PDF 页码的 source.txt 全16页，对照 PDF 图像 p8、p9、p13、p15、p16 的关键公式。主文 PDF pp.1–10、参考文献 pp.11–12、附录 pp.13–16；下文页码为 PDF 页面上实际标注的页码。比对 draft.md 初读。只为核查 SGF 噪声约定读取引用论文 Ziyin et al. (2024), Parameter Symmetry and Noise Equilibrium of Stochastic Gradient Descent，arXiv:2402.07193v3 的 §1、§3、§4.1；没有全面审阅该引用论文。没有运行训练实验或声称获取隐藏模型回执。
+
+1. SGF/Noether flow：主文 p7–8 §5.2 式(5)、Corollary 2；附录 p15 A.3
+
+记 g_x=∇L_x(θ)、g=E g_x、H_x=∇²L_x、H=E H_x，Σ=E(g_x g_xᵀ)−ggᵀ。需要对每个样本 x 都有同一模型对称性，H(θ,0)=θ，且特征方向 J(θ)=∂λH(θ,0) 存在势 C，J=∇C；对期望/微分交换及 SDE 使用还需相应光滑、可积条件。仅从梯度与 J 正交，并不能保证任意向量场 J 都能写成梯度：C 的存在是独立假设〔p7–8〕。
+
+引用 Ziyin2024 的 SGF 约定是 dθ_t=−g(θ_t)dt+√(2σ²Σ(θ_t))dW_t，其中 σ²=η/(2S)（η 为离散步长，S 为 batch size；是该引用论文的参数对应，不应误写为本论文新实验）。Ito 公式给 dC_t=[−∇C·g+σ²Tr(Σ∇²C)]dt+∇Cᵀ√(2σ²Σ)dW_t。样本级对称性使对每个 x 均有 ∇C·g_x=0；故 ∇C·g=0、Σ∇C=0，投影噪声的二次变差 2σ² ∇CᵀΣ∇C=0，连续局部 martingale 项恒零；于是 dC_t/dt=σ²Tr(Σ∇²C)，至少在满足 SDE 常规正则性时几乎处处成立。若只假设期望损失对称、逐样本不对称，则一般会留下 martingale，不能把式子写成每条随机路径的普通导数；最多是局部漂移或期望的关系。这是 Cor2 陈述应显式补出的前提，而非仅仅符号排版问题。
+
+由对每个 x 微分 g_x·∇C=0，得到 ∇²C g_x=−H_x∇C。令 F(θ)=TrΣ=E||g_x||²−||g||²，∇F=2(E H_xg_x−Hg)。因此
+  σ²Tr(Σ∇²C)=−σ²⟨∇C,E H_xg_x−Hg⟩=−(σ²/2)⟨∇C,∇TrΣ⟩。
+结论：主文 p8 Cor2 的负号、σ²/2 与引用 SGF 的 √(2σ²Σ) 完全相符。附录 p15 A.3 最后一行印成「+1/2⟨∇C,∂θTrΣ⟩」（左端为 σ⁻² dC/dt），与该证明前一行显式的负号冲突；应改成负号。这是可修复的证明末行符号错误，并不推翻 Cor2 在所述逐样本对称性下的公式。若采用 dθ=−gdt+σ√ΣdW 的另一约定，系数才会变为 σ²/4，切勿混用。
+
+2. 末层 Hessian、softmax 与 NC：主文 p8 §5.3 式(6)(7)、附录 p15 A.4
+
+固定前层 θ′ 和 h=h(θ′)∈R^s，W∈R^{c×s}，输出 y=Wh。任意 V∈R^{c×s}，沿 W+tV 输出恰好 y+tVh，故 D²_{WW}L[vec V,vec V]=(Vh)ᵀ∇²ℓ(y)(Vh)，不仅限 rowspace(V)⊆rowspace(W)；与极化恒等式结合还给双线性形式 D²L[V_1,V_2]=(V_1h)ᵀB(V_2h)。本文 Cor3 列出的 rowspace(V)⊆rowspace(W) 是其将 P 作输出/末层左乘变换、从 V=UW（U∈R^{c×c}）套用主定理所生成方向的充分覆盖条件；不是该末层线性模型 Hessian 恒等式的必要条件。若 h=0，任意 V 均给零曲率，尤其显出这一限制不是模型本身所需。这里仅为 W-W Hessian 块，加入 θ′ 方向时还需特征网络的二阶项。Cor3 的 P 应在 good position 附近选可逆点（如 P=I）；U 是对 P 的任意 infinitesimal 扰动，U 本身不必可逆。附录 A.4 的证明对其较窄 Cor3 方向正确，但该结论可以用直接链式法则加强。
+
+softmax CE 的 B=diag(p)−ppᵀ，二次型为 Var_p(Vh)≥0。若 p→e_k、各方向输出扰动 z=Vh 有界，则 Var_p(z)→0：包括改变 top-vs-rest 的方向，其绝对曲率也趋零。以 c=3、p=(1−ε,ε/2,ε/2) 为例，低概率类之差方向对应特征值 ε/2，而 top-vs-rest 对应特征值 3ε(1−ε)/2；两者均趋零，比值趋3而不是发生绝对锐化。要谈相对锐度须说明类概率衰减比、扰动归一化；若 z 或 ||h|| 随 ε 增长，则上述有界条件也必须明确。p8 的「low-probability 方向 flat，而 top-vs-rest 有 large curvature/sharp；late-stage increasingly rigid；解释 neural collapse/self-duality」不是仅由式(7)与 p→one-hot 可推出的普遍结论；NC 还牵涉多样本类内特征坍缩、类间几何、权重与类均值对齐等训练条件。本节提供参数-输出曲率的精确映射，但 NC 的进一步解释是需额外条件和实证检验的启发，不宜记为已证明。
+
+3. 连续对称的驻点零模：主文 p9 §5.4，联系 p4 Theorem 1(ii)
+
+对称 G=Id 时 gᵀX=0；对此按 θ 微分得 Hess_L X=−(DX)ᵀg。故在 ∇L(θ*)=0 的驻点 Hess_L(θ*)X(θ*,λ)=0；只要这些特征方向在该点非零且线性无关，维数为 q 的张成空间至少产生 q 个 Hessian 零特征值（含重数）。p9 原文写「q independent ... span a q-dimensional subspace」却随即写「at least p zero eigenvalues」，q→p 无额外关系，显然是可修复的字母误写；应为 q。不能仅从形式上拥有 p 个变换参数，就推断 p 个线性无关零模：生成向量可能在驻点消失或相互依赖。驻点条件是必要的：非驻点沿弯曲对称轨道函数恒定，也不代表沿其切向直线的 Hessian 曲率为0。此处「first-order stable point」实际在式中只使用了梯度为0，不是训练动力学稳定性的证明。
+
+4. 离散固定点与镜像：主文 p5 Theorem 2、p9 §6 式(8)(9)和 Cor4、附录 p16 A.5
+
+若 L(Pθ)=L(θ)、Pθ*=θ*，链式法则给 Pᵀg=g 与 PᵀH_LP=H_L；对非线性 H_0(θ) 的普遍版，在固定点 J=D H_0 有 Jᵀg=g、JᵀH_L J+Σ_i g_i D²(H_0)_i=H_L〔p5，Theorem 2(i′)(ii′)〕。线性固定点式(8)(9)确切成立。一般可逆 P 下式(9)是 Hessian 的「合同不变」而非矩阵交换 PH_L=H_LP；反例 L(x,y)=xy，P=diag(2,1/2)，仅原点为该 P 的固定点，H_L=[[0,1],[1,0]]：PᵀH_LP=H_L，但 PH_L≠H_LP。故 p9 §6 由(9)直接称「commutes」以及据此宣布普通 eigenspace 分块，需要补正交性 Pᵀ=P⁻¹（或单列足够条件），不能用非正交一般式直接推。
+
+对正交 P，式(9)左乘 P 得 H_LP=PH_L；H_L 确实保持 P 的特征子空间（复化讨论非实特征值）。p5 称「permutations ... only eigenvalues ±1」过广：三循环置换另有 e^{±2πi/3}，但其作为正交矩阵仍满足交换结论。镜像 P=I−2OOᵀ 且 OᵀO=I，为正交且 P²=I；Fix(P)=col(O)^⊥。由 Pᵀg=g 推 Oᵀg=0；由合同不变推 PH_L=H_LP，因而 H_L 同时保持 col(O)（−1 特征空间）及其正交补（+1 特征空间）。Cor4 和 A.5 在这套特定前提下成立；镜像方向可有非零或负 Hessian 特征值，离散对称不自动生成驻点零模。证明范围从「一般 P」退回「正交镜像 P」是关键信息。
+
+5. 与上一篇参数对称性立场及证据等级
+
+与前一篇参数对称性立场工作的实质连接是研究问题与对象：从「训练参数表象存在重标度、换元、排列等冗余，不能单凭坐标解释网络」进一步落实为可算的映射 f(H(θ,λ))=G(f(θ),λ)，把同一参数空间的变换生成元 X 与输出变换 Y 链接到梯度、Hessian 的约束〔本篇 pp.3–5,7–9〕。G=Id 处理参数冗余/对称；G≠Id 处理参数动作导致输出协变（例如末层左乘），其后还要经过损失 ℓ 才得到对 L 的约束。这与物理系统输入坐标、时空运动或物理状态等变是不同层次，本文的 θ 明确是训练参数，f 的输入样本在形式化中被吸收到模型函数〔p3 §3〕。关于「上一篇」的具体作者、页码、独特论点，本次未提供该文原文或精确标识，只能给概念联系，不把该联系写成已完成逐页对照。
+
+本篇16页构成：主文方法/推论、参考文献、数学证明；从 pp.1–16 未找到独立实验设计、训练数据或超参数表、新实测性能表、实验结果图、代码/仓库链接或新的经验曲线。p1–2 引言和 p6–10 对先前「empirical observations」及外部神经坍缩文献的引用，属于解释动机和相关研究，不是本篇针对其综合预测所做的实证验证。写作应作「提出可检验的理论关系，并联系既有经验观察」，而不是「实验验证 Adam/SGD 的普遍训练预测」。其中 SGF Cor2 是特定扩散模型+逐样本对称+可积电荷 C 下的数学结论，而非所有离散 SGD 或 Adam 的轨迹实测结果。
+
+归类与建议：A.3 末行负号及 p9 零模计数字母属于可修复排印/行文问题；Cor2 逐样本对称、噪声定义、martingale 消失以及 §6 由合同升级交换所需正交性属于影响适用范围的前提；§5.3 从输出 CE 曲率推出末层『top-vs-rest 变尖锐/NC』属于需要额外理论或测量的核心解释缺口。Theorem 1 的连续链式微分工具与 Theorem 2 的固定点链式恒等式仍保有独立价值；削弱的是越过前提的实例推断，而非两条主工具的存在。
+
+可向作者追问：
+(1) Cor2 能否在陈述中写出 SGF dθ=−∇Ldt+√(2σ²Σ)dW、每样本的共同参数对称及投影 martingale 为零，并修复 A.3 最后一行的符号？如果只保留期望损失对称，结论应如何改成漂移或期望陈述？
+(2) §5.3 在 p→one-hot 时 top-vs-rest 的绝对曲率同样趋零，作者希望证明的是哪一种类概率/特征范数标度下的相对谱分离，又如何从逐样本 CE Hessian 过渡到跨类别 NC 几何？
+(3) §6 在非正交且仅满足 PᵀHP=H 时是否仍主张 eigenspace 分块？若范围缩至正交 P，三循环置换的复特征空间与 p5「置换只有±1」的表述如何协调？
+
+来源：Yang & Ziyin, An Equivariance Toolbox for Learning Dynamics, arXiv:2512.21447v1, https://arxiv.org/abs/2512.21447v1 ；SGF 约定核对：Ziyin et al., Parameter Symmetry and Noise Equilibrium of Stochastic Gradient Descent, arXiv:2402.07193v3, §1、§3、§4.1, https://arxiv.org/html/2402.07193 。

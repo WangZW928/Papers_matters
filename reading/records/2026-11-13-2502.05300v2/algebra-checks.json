@@ -1,0 +1,9 @@
+{
+  "method": "stdlib fractions, exact arithmetic",
+  "sympy": "not installed; no symbolic engine result claimed",
+  "P_squared_equals_P": true,
+  "projector_rank_by_trace": 2,
+  "ambient_dimension": 3,
+  "removed_dimension": 1,
+  "scope": "Illustrative projector calculation only; no paper experiments reproduced"
+}

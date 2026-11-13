@@ -1,0 +1,626 @@
+# An Equivariance Toolbox for Learning Dynamics：方法补充与条件核查
+
+_角色：method_reader；会话精读的独立补充，不是终审，也不进入文献库。_
+
+论文：Yongyi Yang、Liu Ziyin，arXiv:2512.21447v1，2025-12-24。原文固定版本：https://arxiv.org/abs/2512.21447v1 。输入[原PDF](<https://arxiv.org/pdf/2512.21447v1>)的 SHA256 已复核为 `3b6ba1d8dd71d496cd5c07978bea9d4d69f341c4e510cc070a7579fc49109e97`。PDF页码与印刷页码一致。
+
+已逐节读主文 pp.1–10，细读 A.1（pp.13–14）和 A.2（p.15）；另核对 A.3、A.4（p.15）与 A.5（p.16）。主文十页均检查了原PDF渲染图；附录四页自行渲染到专属 [method-assets](<method-assets/>)。原稿没有独立实验章节、训练曲线或基准表；本次没有训练实验，只有手推和精确代数检查。
+
+已读项目[AGENTS](<../../../AGENTS.md>)、[WORKFLOW](<../../../reading/WORKFLOW.md>)、[ROLES](<../../../reading/ROLES.md>)。已检查本会话技能/工具目录，加载匹配的 `sympy`、`markdown-mermaid-writing`、`writing-style-draft`、`writing-style-technical-note`，完成后加载 `writing-style-review` 并按复核意见调用 `writing-style-revise` 做局部修订；宿主没有可调用的 paper-reader 技能，按项目内流程执行。
+
+Python 缺少 SymPy 包，未安装依赖，改用标准库 Fraction 和小型多项式系数运算核查玩具恒等式；失败和后续核查分别保存在[依赖记录](<method-assets/sympy-unavailable.txt>)与[代数核查结果](<method-assets/symbolic-check.txt>)。派发路由按任务记录为 `gpt-6.1-sol/high`；底层实际 served model 不可见，不据此推断模型身份。模型阶段未重试、未换路由，未再次委派。1800秒是阶段目标，宿主没有硬截止保证。
+
+## 1. 核心贡献：把等变关系变成可计算的导数约束
+
+这里的 learning dynamics 是参数训练动力学，不是学习物理系统随时间的演化。论文从
+
+\[
+f(H(\theta,\lambda))=G(f(\theta),\lambda)
+\]
+
+出发，问参数变换如何约束损失梯度和 Hessian。数据已吸收到参数函数 \(f\) 中；\(H\) 作用于参数，\(G\) 作用于输出，二者不是输入数据增强。\(G\ne\mathrm{Id}\) 时，等变一般不等于损失不变。[^p3]
+
+最值得保留的工具是三件事：
+
+- 一阶：参数空间的某些方向导数，等于输出侧可计算的方向导数。对称性是右端为零的特例，齐次性则给出 Euler 身份。
+- 二阶：沿同一批变换生成方向的 Hessian 作用和双线性型，可以用模型的一阶导数、损失曲率以及变换自身的导数表达。
+- 离散对称：即使没有连续变换参数，在固定点仍可约束梯度及 Hessian；镜像对称给出可靠的分块结构。[^p4][^p5]
+
+Theorem1的一二阶身份可由链式法则独立重推。需要修复的是部分应用从这些身份进一步推向谱集中、锐度增长或特定守恒矩阵时所遗漏的条件；这些问题不否定核心微分工具。
+
+```mermaid
+flowchart LR
+    accTitle: Equivariance To Derivative Constraints
+    accDescr: 从参数与输出等变得到特征方向的一二阶身份，再结合具体优化器与谱条件研究动力学；后一步不是单靠等变即可完成。
+    equivariance["参数与输出等变"] --> characteristic["构造 X 和 Y"]
+    characteristic --> first_order["J X = Y 与梯度身份"]
+    first_order --> second_order["Hessian 作用与双线性型"]
+    second_order --> added_conditions["补入优化器、非退化与谱条件"]
+    added_conditions --> dynamics["守恒、范数演化或谱集中结论"]
+```
+
+## 2. Good position、矩阵约定，以及为什么不要求群
+
+### 2.1 固定常规 Jacobian 方向
+
+为避免原文高阶张量复合记号带来的转置负担，本补充统一采用列向量：
+
+\[
+\theta\in\mathbb R^d,\quad y=f(\theta)\in\mathbb R^c,\quad
+J=D_\theta f(\theta)\in\mathbb R^{c\times d},
+\]
+\[
+v=\nabla_y\ell(y)\in\mathbb R^c,\quad
+S=\nabla_y^2\ell(y)\in\mathbb R^{c\times c},\quad
+g=\nabla_\theta L(\theta)=J^\top v,\quad
+K=\nabla_\theta^2L(\theta)\in\mathbb R^{d\times d}.
+\]
+
+这里 \(K\) 表示 Hessian 矩阵，不是后面讨论的最大特征值。\(\lambda\in\mathbb R^p\) 是变换参数，不是 Hessian 特征值。
+
+在固定的 \((\theta,\lambda)\) 处记
+
+\[
+A=D_\theta H\in\mathbb R^{d\times d},\quad B=D_yG\in\mathbb R^{c\times c},
+\]
+\[
+U=D_\lambda H\in\mathbb R^{d\times p},\quad V=D_\lambda G\in\mathbb R^{c\times p}.
+\]
+
+原文的 good position 恰好要求 \(A,B\) 可逆，于是
+
+\[
+X=A^{-1}U\in\mathbb R^{d\times p},\qquad
+Y=B^{-1}V\in\mathbb R^{c\times p}.
+\]
+
+\(X\) 在 \(p>1\) 时是一组方向，而不是单个向量。它们可以线性相关或为零。Good position 不要求 \(J\) 可逆，不要求 \(g\ne0\)，也不表示极小点或训练稳定点。[^p3][^p4]
+
+所需可逆性是局部导数条件，不是 \(H,G\) 在整个空间存在全局逆函数。一阶至少需相应的可微性，二阶需邻域中的二次连续可微性；原文用 smooth 统括这些条件。连续身份应理解为在满足光滑和 good-position 条件的点成立，而非跨过奇点仍无条件成立。
+
+### 2.2 不要求群究竟放宽了什么
+
+推导不会使用组合律、单位元或逆元，只会使用同一等变等式在邻域内的导数。因此变换族可以不是群，考察的 \(\lambda\) 也不必对应单位变换。[^p3][^a1]
+
+一个手算例子：取 \(f(t)=t^2\)，令
+
+\[
+s(\lambda)=2+\tfrac12\tanh\lambda,\quad
+H(t,\lambda)=s(\lambda)t,\quad
+G(y,\lambda)=s(\lambda)^2y.
+\]
+
+该族缩放因子落在 \((1.5,2.5)\)，没有单位缩放，也不对复合封闭，所以该参数族不是群。但等变严格成立，且 \(A=s\)、\(B=s^2\) 始终可逆。在 \(\lambda=0\) 时，\(s=2,s'=1/2\)，有
+
+\[
+X=t/4,\qquad Y=y/2,\qquad JX=2t(t/4)=t^2/2=Y.
+\]
+
+这说明“不要求群”是解析推导的确实放宽，不代表可以不检查等变或光滑性，更不代表恒等式自动给出一个全局群轨道。
+
+## 3. Theorem 1 的独立推导与易读二阶形式
+
+### 3.1 从链式法则到 \(JX=Y\)
+
+令 \(J_H=Df(H(\theta,\lambda))\)。分别对 \(\theta\) 和 \(\lambda\) 求导：
+
+\[
+J_H A=BJ,\qquad J_H U=V.
+\]
+
+代入 \(U=AX\)，消去 \(J_H\)，得
+
+\[
+BJX=V,\qquad \boxed{JX=Y}.
+\]
+
+再左乘 \(v^\top\)，立即得到原文 Theorem 1(i)：
+
+\[
+\boxed{g^\top X=v^\top Y}.
+\]
+
+这与附录 A.1 的式(10)–(13)逐步对应。等变把参数扰动 \(X\) 在输出侧的效果直接写成 \(Y\)，所以无需先算完整参数梯度再理解该方向。[^a1]
+
+### 3.2 二阶身份(ii)：最实用的 Hessian-vector product 形式
+
+固定一个变换参数方向 \(a\in\mathbb R^p\)，并在对 \(\theta\) 微分时固定 \(a,\lambda\)。写
+
+\[
+x_a=Xa\in\mathbb R^d,\qquad y_a=Ya\in\mathbb R^c.
+\]
+
+这里 \(y_a\) 是特征输出，不是分类标签。由 \(g^\top x_a=v^\top y_a\) 对 \(\theta\) 求导：
+
+\[
+Kx_a+(D_\theta x_a)^\top g
+  =J^\top S y_a+(D_\theta y_a)^\top v.
+\]
+
+因此有教学上更清楚的矩阵式
+
+\[
+\boxed{Kx_a=J^\top S y_a+(D_\theta y_a)^\top v-(D_\theta x_a)^\top g.}
+\tag{M2}
+\]
+
+关键是 \(D_\theta y_a\) 含有 \(f(\theta)\) 的链式依赖，不应把特征输出误当成与 \(\theta\) 无关的常向量。
+
+要对应原文(ii)的每一项，任取 \(u\in\mathbb R^d\)：
+
+\[
+D_\theta x_a[u]=A^{-1}\{D_{\theta\lambda}^2H[u,a]-D_{\theta\theta}^2H[u,x_a]\},
+\]
+\[
+D_\theta y_a[u]=B^{-1}\{D_{y\lambda}^2G[Ju,a]-D_{yy}^2G[Ju,y_a]\}.
+\]
+
+把二式代入(M2)，与任意 \(u\) 取内积，正好得到原文五个二阶项：一个输出损失曲率项、两个参数变换修正项、两个输出变换修正项。这个推导也解释了为什么一般 \(KX\) 不是仅有 Gauss–Newton 项。[^p4][^a1]
+
+### 3.3 二阶身份(iii)：沿变换方向的双线性型
+
+固定两个变换参数方向 \(a,b\in\mathbb R^p\)。则原文(iii)等价于
+
+\[
+\begin{aligned}
+x_a^\top Kx_b={}&y_a^\top S y_b
+-g^\top A^{-1}D_{\lambda\lambda}^2H[a,b]\\
+&+g^\top A^{-1}D_{\theta\theta}^2H[x_a,x_b]
++v^\top B^{-1}D_{\lambda\lambda}^2G[a,b]\\
+&-v^\top B^{-1}D_{yy}^2G[y_a,y_b].
+\end{aligned}
+\tag{M3}
+\]
+
+所有变换导数在同一 \((\theta,\lambda)\) 或 \((f(\theta),\lambda)\) 处取值；例如 \(D_{\lambda\lambda}^2H[a,b]\in\mathbb R^d\)，所以第二项确实是标量。对全部 \(a,b\) 使用此式，就得到 \(p\times p\) 的矩阵 \(X^\top KX\)。
+
+独立核证的方法是：对等变关系分别求两次 \(\theta\) 导数和两次 \(\lambda\) 导数；在前者中代入 \(x_a,x_b\)，利用 \(Ax_a=Ua\)、\(Ax_b=Ub\)，两式在变换后点的 \(D^2f(H)\) 项相同，可以消去。随后使用 \(J_H=BJA^{-1}\) 和
+
+\[
+u^\top Kw=(Ju)^\top S(Jw)+v^\top D^2f[u,w].
+\]
+
+这就得到(M3)，对应附录式(15)、(17)、(20)–(22)。这解释了(iii)为何没有(ii)中的混合 \(\theta\lambda\) 项：它用的是两次 \(\lambda\) 微分与两次 \(\theta\) 微分之间的消元，不是漏项。[^a1]
+
+一个含非线性变换参数的核查：\(f(t)=e^t\)，\(H(t,\lambda)=t+\log(1+\lambda^2)\)，\(G(y,\lambda)=(1+\lambda^2)y\)。此时 \(X=2\lambda/(1+\lambda^2)\)、\(Y=Xy\)。在 \(t=0,\lambda=2\) 时，\(X=Y=4/5\)，\(H_{\lambda\lambda}=-6/25\)，\(G_{\lambda\lambda}=2\)，\(B=5\)，所以模型二阶修正为
+
+\[
+-JA^{-1}H_{\lambda\lambda}+B^{-1}G_{\lambda\lambda}
+=6/25+2/5=16/25=D^2f[X,X].
+\]
+
+该例说明保留变换二阶导数是必要的。
+
+## 4. 连续对称、Noether charge 与正确的矩阵守恒
+
+### 4.1 轨道恒定，不等于切向直线的 Hessian 曲率处处为零
+
+对称性 \(G=\mathrm{Id}\) 时 \(Y=0\)，由(M2)有
+
+\[
+g^\top x_a=0,\qquad Kx_a=-(D_\theta x_a)^\top g.
+\]
+
+在驻点 \(g=0\) 才立即得到 \(Kx_a=0\)。非驻点的曲率还要补偿对称轨道自身的弯曲。
+
+手算例子：\(f(u,v)=uv\)，\(L=\frac12(uv-a)^2\)，对称变换为 \((u,v)\mapsto(e^s u,e^{-s}v)\)，其方向 \(x=(u,-v)\)。取 \(u=v=1,a=0\)：
+
+\[
+g=(1,1)^\top,\quad K=\begin{pmatrix}1&2\\2&1\end{pmatrix},\quad
+x=(1,-1)^\top,
+\]
+\[
+g^\top x=0,\qquad Kx=-x,\qquad x^\top Kx=-2.
+\]
+
+损失沿双曲线轨道不变，但沿切向直线有负曲率。这与主定理完全一致。
+
+在驻点，如果特征方向张成 \(q\) 维空间，则至少有 \(q\) 个零特征值；需要数的是方向秩，不是形式上列出的对称数。原文 p.9 先写 \(q\) 维，后写“至少 \(p\) 个零特征值”，应统一修为 \(q\)。只要 \(g=0\) 即可得到此代数结论，不必把它称为已经动态稳定的点。若特征方向在某点全为零，则不产生非零零模。[^p9]
+
+### 4.2 从正交性得到守恒，需要可积的量
+
+对于普通欧氏梯度流 \(\dot\theta=-g\)，若存在 \(C\) 满足 \(\nabla C=x\)，则
+
+\[
+\dot C=\nabla C^\top\dot\theta=-x^\top g=0.
+\]
+
+这是论文 p.7–8 式(5)明确加入的条件，应保留。任意对称生成场不一定是梯度场。例如旋转方向 \(x(u,v)=(-v,u)\) 的 Jacobian 反对称，故没有局部 \(C\) 满足 \(\nabla C=x\)。这不排除特定问题另有守恒量，只说明不应把“正交向量场”直接当成“某个标量的梯度”。[^p7][^p8]
+
+重缩放例子中 \(x=(u,-v)=\nabla\frac12(u^2-v^2)\)，所以 \(u^2-v^2\) 在GF守恒。标准GD则有精确更新
+
+\[
+u_+=u-\eta(uv-a)v,\quad v_+=v-\eta(uv-a)u,
+\]
+\[
+u_+^2-v_+^2=\{1-\eta^2(uv-a)^2\}(u^2-v^2).
+\]
+
+因此有限步GD一般不是严格守恒。其更新仍与当前对称方向正交，这一点原文 p.6 说得正确；不应把该一阶事实延长成精确离散守恒。动量、Adam、非欧氏预条件、权重衰减也应分别重新推导。
+
+### 4.3 §4.1 矩阵重参数化的乘序和 Gram 应如何修复
+
+原文 p.6 确实写的是 \(f_0(W_1,W_2)=W_1W_2\)，接着写 \((PW_1,P^{-1}W_2)\)，并声称守恒 \(W_1W_1^\top-W_2W_2^\top\)。这是原PDF中的乘序/维度问题，不是文本提取误差。[^p6]
+
+固定一种维度约定：
+
+\[
+W_1\in\mathbb R^{a\times r},\quad W_2\in\mathbb R^{r\times b},\quad P\in GL(r).
+\]
+
+正确的产品不变变换是
+
+\[
+\boxed{(W_1,W_2)\mapsto(W_1P,P^{-1}W_2)},
+\]
+
+对应的GF守恒矩阵是
+
+\[
+\boxed{W_1^\top W_1-W_2W_2^\top\in\mathbb R^{r\times r}}.
+\]
+
+设损失通过乘积 \(M=W_1W_2\) 依赖这两个参数，\(E=\nabla_M L\)。则
+
+\[
+\dot W_1=-EW_2^\top,\qquad \dot W_2=-W_1^\top E,
+\]
+\[
+\frac{d}{dt}(W_1^\top W_1)
+=-W_2E^\top W_1-W_1^\top EW_2^\top
+=\frac{d}{dt}(W_2W_2^\top).
+\]
+
+两边相减即得守恒。注意该结果依赖普通欧氏、相同学习率的GF。
+
+检验原乘序的2×2例子：\(W_1=\operatorname{diag}(1,2)\)、\(W_2=I\)、\(P=\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)\)。原写法给 \(PW_1P^{-1}W_2=\operatorname{diag}(2,1)\)，已经改变了乘积。
+
+如果改用模型 \(W_2W_1\)，应成套改为变换 \((PW_1,W_2P^{-1})\) 和守恒 \(W_1W_1^\top-W_2^\top W_2\)，而不是只改其中一个转置。
+
+## 5. 齐次模型：正确身份、Corollary 1 的退化支与 ReLU 条件
+
+### 5.1 先写无除法身份
+
+设 \(f\) 为 \(m\) 次正齐次，在适用的光滑点有
+
+\[
+f(\lambda\theta)=\lambda^m f(\theta),\qquad \lambda>0.
+\]
+
+取 \(\lambda=1\)，则 \(X=\theta\)、\(Y=my\)。由 \(J\theta=my\) 得
+
+\[
+g^\top\theta=m v^\top y.
+\]
+
+再用(M2)得一般向量输出版本
+
+\[
+\boxed{K\theta=mJ^\top Sy+(m-1)g,}
+\]
+\[
+\boxed{\theta^\top K\theta=m^2y^\top Sy+m(m-1)v^\top y.}
+\]
+
+这两个式子是直接可用的工具，不需要先假设梯度与 Hessian 的像空间存在比例关系。
+
+标量输出 \(c=1\) 时，设
+
+\[
+\beta(\theta)=my\ell''(y)+(m-1)\ell'(y).
+\]
+
+则
+
+\[
+\boxed{K\theta=\beta\nabla f(\theta),\qquad g=\ell'(y)\nabla f(\theta).}
+\tag{H1}
+\]
+
+若 \(\ell'(y)\ne0\)，可以除得论文式(3)：
+
+\[
+K\theta=s(\theta)g,\qquad
+s(\theta)=\frac{my\ell''(y)}{\ell'(y)}+m-1.
+\]
+
+式(3)本身只需 \(\ell'\ne0\)，不要求 \(s\ne0\)。论文式(4)
+
+\[
+\theta^\top K\theta=m^2y^2\ell''(y)+m(m-1)y\ell'(y)
+\tag{H2}
+\]
+
+没有除法，在 \(\ell'(y)=0\) 时也成立。p.7 把“whenever \(\ell'\ne0\)”放在两式之后，教学时应拆开说明。[^p7]
+
+### 5.2 Corollary 1 缺的不是式(3)条件，而是反向求解条件
+
+设 \((\rho_k,u_k)\) 为对称 Hessian \(K\) 的正交归一特征对。若 \(\beta\ne0\)，由(H1)可得
+
+\[
+g=\alpha K\theta,\qquad \alpha=\ell'(y)/\beta,
+\]
+\[
+\langle g,u_k\rangle=\alpha\rho_k\langle\theta,u_k\rangle.
+\tag{H3}
+\]
+
+这个修正版甚至允许 \(\ell'=0\)：此时 \(g=0,\alpha=0\)。如果仍沿原式(3)推理，则要同时写 \(\ell'\ne0\) 与 \(s\ne0\)。Good position 只负责变换Jacobian可逆，不会替你保证 \(\beta\ne0\)。[^p7][^a2]
+
+关键反例是标准MSE，而非特制损失：
+
+\[
+f(t)=t^2,\qquad \ell(y)=\tfrac12(y-3)^2,\qquad t=1.
+\]
+
+此时 \(m=2,y=1,\ell'=-2,\ell''=1\)，并且
+
+\[
+L(t)=\tfrac12(t^2-3)^2,\quad g(t)=2t(t^2-3),\quad K(t)=6t^2-6,
+\]
+\[
+g(1)=-4,\quad K(1)=0,\quad \beta=2\cdot1\cdot1+1\cdot(-2)=0.
+\]
+
+在 \(H(t,\lambda)=\lambda t,G(y,\lambda)=\lambda^2y,\lambda=1\) 处，\(A=B=1\)，是完全合法的good position。式(3)正确地给出 \(K\theta=0\cdot g=0\)，但原Cor1却要求 \(-4=\alpha\cdot0\)，不存在这样的有限 \(\alpha\)。而且 \(\operatorname{col}(K)=\{0\}\)，梯度并不在其列空间内。由此，Cor1及紧接着的无条件列空间断言需要实质修正。
+
+A.2 第一行的“\(\beta=0\) 时 proposition clearly holds”正是推理断点，原页图像已核对。另一半“\(\ell'=0\Rightarrow K\theta=0\)”也不正确：\(f(t)=t^2,\ell(y)=\frac12(y-1)^2,t=1\) 时，\(g=0\) 但 \(K\theta=4\)。不过这一支Cor1本身可以选 \(\alpha=0\) 平凡成立，不应和真正反例混在一起。[A.2原页](<https://arxiv.org/pdf/2512.21447v1#page=15>)。[^a2]
+
+完整处理方式是：
+
+| 分支 | 可得结论 |
+| --- | --- |
+| \(\beta\ne0\) | 取 \(\alpha=\ell'/\beta\)，(H3)成立，\(g\in\operatorname{col}(K)\) |
+| \(g=0\) | 取 \(\alpha=0\)，关系平凡成立，Hessian不必满足 \(K\theta=0\) |
+| \(\beta=0,g\ne0\) | 已有 \(K\theta=0\)，原Cor1必然失败；列空间关系另无保证 |
+
+### 5.3 ReLU：正齐次与局部分片光滑分开检查
+
+原文 p.6 将无偏置 \(m\) 层ReLU网络称为满足所有实数 \(\lambda\) 的 \(m\) 次齐次函数，这对一般ReLU网络过强。\(\operatorname{ReLU}(\lambda z)=\lambda\operatorname{ReLU}(z)\) 保证的是 \(\lambda>0\)。负缩放会翻转激活状态；\(\lambda=0\) 又使上述 \(A\) 不可逆。[^p6]
+
+一个更稳妥的连续变换写法是 \(H(\theta,s)=e^s\theta,G(y,s)=e^{ms}y\)。它只用正缩放，对所有 \(s\in\mathbb R\) 都有可逆变换Jacobian，在 \(s=0\) 给出相同Euler和Hessian身份。
+
+但这个重参数化没有消除ReLU在激活边界的非光滑性。对固定有限数据，在相关预激活都非零的开激活区域内，参数函数是光滑的，二阶身份可在那里使用；越过零预激活边界时，经典 Hessian 可能不存在。采用某个自动微分分支或广义导数，需要另行说明，不等于主定理已经覆盖了边界。带偏置架构是否具有同一齐次次数也应逐项检查。
+
+## 6. 范数演化、sharpness 与 tiny-subspace 的准确逻辑
+
+### 6.1 范数严格增长与发散之间，还需要一步证明
+
+令 \(r=\|\theta\|\)。普通GF下，标量齐次身份给出
+
+\[
+\frac{d}{dt}\frac12r^2=-m\ell'(y)y.
+\]
+
+若 \(m>0\) 且 \(\ell'(y)y<0\)，这直接说明范数严格增加，单凭符号并不推出无界。一个可手解的反例是 \(f(\theta)=\theta,\ell(y)=\frac12(y-1)^2\)，初值 \(0<\theta_0<1\)：
+
+\[
+\theta(t)=1-(1-\theta_0)e^{-t},
+\]
+
+全过程都有 \(-\ell'(y)y>0\)，但范数趋于1。
+
+不过，对论文这里的单标量、严格递减的指数/逻辑分类损失，发散结论可以补证，而不是简单判为错误。令真实标签 \(\hat y\in\{\pm1\}\)，margin \(z=\hat y f(\theta)>0\)，损失为 \(\phi(z)=e^{-z}\) 或 \(\log(1+e^{-z})\)。GF使损失不增，\(\phi\) 严格递减，所以 \(z(t)\ge z_0>0\)。写 \(q(z)=-\phi'(z)>0\)，有
+
+\[
+\frac{d}{dt}\frac12r^2=mzq(z).
+\]
+
+反设参数始终有界；由于 \(f\) 连续，margin 也被某个 \(M\) 上界约束。\(zq(z)\) 在紧区间 \([z_0,M]\) 上有严格正下界，于是 \(r^2\) 至少线性增长，矛盾。若光滑GF解存在于所有正时间，得到 \(r(t)\to\infty\)。这是对 p.6 单标量论述的正确补全。多样本输出、一般损失、离散优化器需另作论证；范数发散本身也不等于已经证明最大间隔方向收敛。[^p6]
+
+### 6.2 Sharpness 下界正确，但下界单调性和实际锐度增长没有自动得到
+
+定义实际最大特征值 \(\kappa_{\max}=\lambda_{\max}(K)\)，它不是谱范数 \(\|K\|_{op}\)。对 \(\theta\ne0\)，Rayleigh原理与(H2)给出
+
+\[
+\boxed{\kappa_{\max}\ge
+\frac{m^2y^2\ell''(y)+m(m-1)y\ell'(y)}{\|\theta\|^2}.}
+\]
+
+这是可靠的单方向下界：右端为负时可能信息很弱；它也不测出完整谱，更不是关于训练时间的微分不等式。[^p7]
+
+p.7 接着以 \(m=1\) 指数损失声称早期 \(y^2\) 主导、暗示下界单调增长。分母 \(\|\theta\|^2\) 和损失因子都在变，不应忽略。最简单反例就是
+
+\[
+f(\theta)=\theta,\quad \hat y=1,\quad \ell(y)=e^{-y},\quad \theta>0.
+\]
+
+这里
+
+\[
+K=e^{-\theta},\quad
+\frac{\ell(y)y^2}{\theta^2}=e^{-\theta}=\kappa_{\max}.
+\]
+
+GF满足 \(\dot\theta=e^{-\theta}\)，故
+
+\[
+\dot\kappa_{\max}=-e^{-2\theta}<0,
+\quad e^{\theta(t)}=t+e^{\theta_0}.
+\]
+
+范数确实发散，锐度和下界却全程下降，包括 \(\theta\) 很小的阶段。所以本文可以提供“径向曲率的可计算下界”，但该例不足以验证 progressive sharpening。即使某个下界在某段上升，也未必推出其上方的真实 \(\kappa_{\max}\) 同步上升。
+
+### 6.3 Tiny-subspace：精确关系与额外谱假设分开
+
+在 \(\beta\ne0\) 的非退化分支，(H3)确实说明零特征值方向没有梯度分量。但这只给“梯度位于Hessian列空间”，并没有证明这个空间很小。标量输出也不强迫参数Hessian低秩，因为 \(vD^2f\) 项可满秩。
+
+例如 \(f(\theta)=\frac12\|\theta\|^2\)、\(\ell(y)=\frac12y^2\)，\(m=2\)，在 \(\theta\ne0\) 时
+
+\[
+g=y\theta,\qquad K=\theta\theta^\top+yI.
+\]
+
+径向特征值为 \(3y\)，其余 \(d-1\) 个特征值为 \(y>0\)，Hessian满秩。它满足 \(K\theta=3g\)，但不产生一个由该身份保证的低维列空间。
+
+更精确的谱集中条件可写成：对选择的特征向量集合 \(I\)，当 \(g\ne0\) 时
+
+\[
+\frac{\|P_{I^\perp}g\|^2}{\|g\|^2}
+=\frac{\sum_{k\notin I}\rho_k^2\langle\theta,u_k\rangle^2}
+{\sum_k\rho_k^2\langle\theta,u_k\rangle^2}.
+\]
+
+只有右端很小，才说明当前梯度主要落在该子空间。明显谱间隙、参数投影没有反向补偿，都是使右端变小的充分机制。原文“\(\theta\) 在很多方向投影相近”已明确是一种heuristic，应照此归类。这里权重是 \(|\rho_k|\)，也可能包含负曲率方向，而非只指最大正特征值。
+
+从“每一时刻的梯度集中”到“整段训练都在同一个 tiny subspace”，还需要特征子空间随时间稳定；动量、Adam等优化器又带来额外变化。对真正的向量输出，前面只得到 \(K\theta=mJ^\top Sy+(m-1)g\)，一般没有一个共同标量 \(\alpha\) 能把它化成(H3)。因此原文标题下的机制解释有启发性，但不是无条件的低维训练轨迹定理。[^p7]
+
+## 7. Last-layer 与 stochastic Noether flow：另外两件可用工具
+
+### 7.1 最后层二阶型其实可对任意方向直接使用
+
+固定特征提取器参数 \(\theta'\)，设 \(f(W,\theta')=Wh\)，其中 \(W\in\mathbb R^{c\times s}\)、\(h=h(\theta')\in\mathbb R^s\)。任取 \(V\in\mathbb R^{c\times s}\)，由于最后层对 \(W\) 线性，直接有
+
+\[
+\boxed{D_W^2L[V,V]=(Vh)^\top S(Vh).}
+\]
+
+这不是全参数Hessian沿任意联合扰动的公式，而是只扰动最后层、固定 \(h\) 的结论。论文Cor3只写 \(\operatorname{row}(V)\subseteq\operatorname{row}(W)\)，因为它通过 \(V=UW\) 的等变方向导出；这个方向限制是该构造的充分条件，不是二阶型本身的必要条件。A.4 的行空间推理在其范围内是正确的。使用 Theorem1 时可选基点 \(P=I\)，因而没有要求 \(W\) 本身可逆。[^p8][^a34]
+
+对softmax交叉熵，\(p=\operatorname{softmax}(y)\)，
+
+\[
+S=\operatorname{diag}(p)-pp^\top,
+\quad (Vh)^\top S(Vh)=\operatorname{Var}_{i\sim p}((Vh)_i).
+\]
+
+这给出非常直观的测量方法：参数扰动先变成logit扰动，再测其在概率分布下的方差。常数logit平移是精确零曲率方向；若 \(Vh=0\)，也是最后层零曲率方向。
+
+但p.8的“\(p\)趋向真类one-hot后top-vs-rest方向有large curvature、几何更rigid”不是该等式的一般推论。二分类时，令 \(p=(1-\varepsilon,\varepsilon)\)、\(a=Vh\)，则
+
+\[
+\operatorname{Var}_p(a)=\varepsilon(1-\varepsilon)(a_1-a_2)^2\to0
+\]
+
+只要 \(a\) 有界，top-vs-rest扰动同样变平。要主张“更sharp”，应明确是相对其他方向的尺度，或特征/扰动范数随训练增大后的参数空间归一化结果。该身份本身也没有证明 neural collapse 的类均值ETF或权重—特征自对偶结构。
+
+### 7.2 Noether flow：正文负号正确，附录末行漏负号
+
+这里明确采用Itô SDE约定
+
+\[
+d\theta=-g\,dt+\sqrt2\,\sigma R(\theta)\,dB_t,
+\quad RR^\top=\Sigma,
+\quad\Sigma=\mathbb E[g_xg_x^\top]-gg^\top.
+\]
+
+\(B_t\) 是布朗运动，\(\sigma\) 控制噪声幅度，\(g_x=\nabla L_x\)，下标 \(x\) 表示数据样本。用 \(\xi=\nabla C\) 表示对称生成场，以免和样本标签混淆。若每个样本损失具有同一个连续对称性，则 \(\xi^\top g_x=0\)，从而 \(\Sigma\xi=0\)、\(R^\top\xi=0\)。因此Itô公式中 \(C\) 的martingale项为零，只剩漂移
+
+\[
+dC=\sigma^2\operatorname{Tr}(\Sigma\nabla^2C)\,dt.
+\]
+
+对每个样本使用对称二阶身份并允许微分与期望交换，得
+
+\[
+\nabla^2C\,g_x=-\nabla^2L_x\,\xi,
+\]
+\[
+\boxed{\operatorname{Tr}(\Sigma\nabla^2C)
+=-\tfrac12\xi^\top\nabla\operatorname{Tr}\Sigma.}
+\]
+
+所以此噪声约定下
+
+\[
+\dot C=-\frac{\sigma^2}{2}
+\langle\nabla C,\nabla\operatorname{Tr}\Sigma\rangle,
+\]
+
+与正文Cor2符号一致。A.3 最后一行却印为正号，是代数漏号，原页图像已确认。若把SDE噪声写成 \(\sigma R\,dB_t\) 而不是 \(\sqrt2\sigma R\,dB_t\)，对应系数应为 \(-\sigma^2/4\)。论文引用的SGF原始来源未在本次另行获取，因此不替它补造噪声约定；这里以显式SDE消除歧义。[^p8][^a34]
+
+可验例子仍用 \(L_a(u,v)=\frac12(uv-a)^2\)，但样本标签 \(a\) 有方差 \(s_a^2\)。此时
+
+\[
+C=\tfrac12(u^2-v^2),\quad
+\Sigma=s_a^2\begin{pmatrix}v^2&uv\\uv&u^2\end{pmatrix},
+\]
+\[
+\operatorname{Tr}(\Sigma\nabla^2C)=s_a^2(v^2-u^2)=-2s_a^2C.
+\]
+
+上述 \(\sqrt2\sigma\) 约定给 \(\dot C=-2\sigma^2s_a^2C\)；当 \(\sigma^2s_a^2>0\) 时，\(C\) 指数趋于0，即两侧趋于balanced，而不是把不平衡扩大。这个例子也检验了负号。若只有平均损失对称、各样本并不共享对称性，\(\Sigma\xi=0\) 不再自动成立，不应沿用同一无martingale结论。
+
+## 8. 离散对称：主身份可靠，谱解释须补正交条件
+
+固定一个变换 \(h(\theta)=H(\theta,\lambda_0)\)，只在 \(h(\theta)=\theta\) 的固定点求导。令 \(P=Dh(\theta)\)，由 \(L\circ h=L\) 得
+
+\[
+P^\top g=g,
+\]
+\[
+P^\top KP=K-\sum_i g_i\nabla^2h_i.
+\]
+
+这是Theorem2的常规矩阵写法，不需要对离散标签 \(\lambda\) 微分。若 \(h(\theta)=P\theta\) 线性，第二项消失，得到 \(P^\top KP=K\)。[^p5][^a1]
+
+一般矩阵的合同不变不等于 \(KP=PK\)。p.9 将二者直接互换、据此按不同特征值无条件分块，缺少条件。一个2×2反例是
+
+\[
+P=\begin{pmatrix}1&2\\0&-1\end{pmatrix},\qquad
+K=\begin{pmatrix}1&1\\1&2\end{pmatrix}.
+\]
+
+有 \(P^2=I\)、\(P^\top KP=K\)，但
+
+\[
+KP=\begin{pmatrix}1&1\\1&0\end{pmatrix}
+\ne
+PK=\begin{pmatrix}3&5\\-1&-2\end{pmatrix}.
+\]
+
+取 \(f(\theta)=\frac12\theta^\top K\theta,\ell(y)=y\)，就得到实际满足线性对称的平滑模型，\(\theta=0\) 是固定点；这不是脱离定理前提的任意矩阵拼接。
+
+若补入 \(P\) 正交，则由 \(P^\top KP=K\) 确实得到 \(KP=PK\)。对原文镜像 \(P=I-2OO^\top\)，\(O^\top O=I\)，它还是对称正交 involution，因此Cor4可靠：在 \(O^\top\theta=0\) 处，\(O^\top g=0\)，Hessian保持 \(\operatorname{col}(O)\) 及其正交补。[^p9][^a5]
+
+例如 \(f(u,v)=u^2+v,\ell(y)=\frac12y^2\)，在镜像固定点 \(u=0\) 上有
+
+\[
+g=(0,v)^\top,\qquad K=\operatorname{diag}(2v,1).
+\]
+
+两个子空间解耦，但镜像方向特征值 \(2v\) 可以正、负或零；离散对称没有像连续非零生成方向那样普遍强迫零特征值。精确GF/GD从该固定子空间出发会保持在其中，前提是更新没有额外破坏对称性的项。
+
+另有两处表述需收窄：一般置换不都只有 \(\pm1\) 特征值，三循环已有复特征值；即使两个实对称矩阵可同时对角化，也应说“存在共同特征基”，而不是在Hessian有重根时说“每一个Hessian特征向量都必须与 \(P\) 特征向量对齐”。
+
+## 9. 给主Agent的整合建议与完成边界
+
+建议把最终讲解主线组织为“\(JX=Y\) → Euler/守恒 → Hessian作用 → 应用条件”，而不是先罗列错误。Theorem1的矩阵压缩(M2)、双线性式(M3)、齐次无除法身份(H1)–(H2)、正确的balancedness Gram，以及最后层方差式，是可以保留并实际使用的核心工具。
+
+需要按严重程度处理：
+
+| 问题 | 定位 | 建议处理 |
+| --- | --- | --- |
+| Cor1零系数分支失败，列空间推论不成立 | p.7、A.2 p.15 | 实质修复；给标准MSE反例，声明 \(\beta\ne0\) 或 \(g=0\) 分支 |
+| 矩阵重参数化乘序与守恒Gram错配 | §4.1 p.6 | 采用明确维度成套替换，不把它保留为已证例子 |
+| 用径向下界暗示一般progressive sharpening | §5.1 p.7 | 保留下界；把增长解释降为待附加模型条件的设想，给线性指数反例 |
+| Tiny-subspace从条件身份跳到无条件机制 | §5.1 p.7 | 写清非退化条件、谱权重公式、列空间低维与轨迹子空间稳定性是额外要求 |
+| 范数单调直接跳发散 | §4.2 p.6 | 对单标量exp/logistic补紧区间反证；对一般损失不作无条件延伸 |
+| ReLU全实数齐次与全域smooth | pp.3、6 | 改为正齐次与光滑激活区域，或用指数缩放参数 |
+| SGF附录负号 | A.3 p.15 | 标明末行漏负号；先显式约定SDE噪声幅度 |
+| Last-layer late-stage sharp/NC解读过强 | §5.3 p.8 | 区分方差等式与有界扰动下曲率消失，NC只列潜在联系 |
+| 一般离散合同不变等同对易 | §6 p.9 | 谱分块结论加入正交条件；镜像Cor4保留 |
+| 零模数量 \(q/p\) 符号混用 | §5.4 p.9 | 以实际独立方向秩 \(q\) 为准 |
+
+如果要做后续验证，先选择一个精确等变的玩具模型，分别检查等变残差、\(JX-Y\)、(M2)的向量残差和(M3)的双线性残差，再研究训练谱；这只是建议，本次没有执行训练或Hessian谱实验。近似等变还需要残差的一阶、二阶导数受控，只有函数值近似相等不够。论文 p.10 也把训练依赖的定量预测、局部/涌现等变列为未来工作。[^p10]
+
+方法补充状态：已形成可定位产物与手算/代数核查。主Agent仍须独立核证整合并冻结新版笔记，随后由新上下文 reviewer 完成终审；本补充不替代该阶段，不将“模型成功返回”写成“学术结论通过”。所有写入均在本次允许的输出与专属资产目录；正式笔记、台账、索引、仓库和Git未作修改。
+
+可供终审追问的三个问题：
+
+1. 对当前应用，good position、ReLU的光滑区域、齐次性和 \(\beta\ne0\) 是否分别验证，而不是用一个条件替代另一个？
+2. 若要把梯度身份升级为 tiny-subspace 或 progressive-sharpening 结论，究竟还缺哪一个可量化的谱/轨迹条件？
+3. 当优化器、噪声归一化或最后层扰动的范数发生变化时，哪些等式仍是点态代数身份，哪些动力学与锐度解释需要重推？
+
+[^p3]: Yang & Ziyin，原文 §3、Definition1，PDF p.3，https://arxiv.org/pdf/2512.21447v1#page=3 。
+[^p4]: 同上，Definition2、Theorem1，PDF p.4，https://arxiv.org/pdf/2512.21447v1#page=4 。
+[^p5]: 同上，Theorem2、§4.1，PDF p.5，https://arxiv.org/pdf/2512.21447v1#page=5 。
+[^p6]: 同上，§4.1–4.2，PDF p.6，https://arxiv.org/pdf/2512.21447v1#page=6 。
+[^p7]: 同上，§5.1–5.2，式(3)–(5)、Cor1，PDF p.7，https://arxiv.org/pdf/2512.21447v1#page=7 。
+[^p8]: 同上，§5.2–5.3、Cor2–3，PDF p.8，https://arxiv.org/pdf/2512.21447v1#page=8 。
+[^p9]: 同上，§5.4、§6、Cor4，PDF p.9，https://arxiv.org/pdf/2512.21447v1#page=9 。
+[^p10]: 同上，§7，PDF p.10，https://arxiv.org/pdf/2512.21447v1#page=10 。
+[^a1]: 同上，附录A.1，式(10)–(24)，PDF pp.13–14，https://arxiv.org/pdf/2512.21447v1#page=13 。
+[^a2]: 同上，附录A.2，PDF p.15，https://arxiv.org/pdf/2512.21447v1#page=15 。
+[^a34]: 同上，附录A.3–A.4，PDF p.15，https://arxiv.org/pdf/2512.21447v1#page=15 。
+[^a5]: 同上，附录A.5，PDF p.16，https://arxiv.org/pdf/2512.21447v1#page=16 。

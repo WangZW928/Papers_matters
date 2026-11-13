@@ -1,0 +1,14 @@
+两篇论文归档只读验收（2026-11-13）
+结论：归档材料与索引统计通过本次验收；归档阻断项 0。此结论限于文件、哈希、索引、审阅覆盖与凭据核查，不是重新阅读论文或训练实验复现。正式流程仍待 Lead 核实并更新两份 run.json 的 finalize=pending、workflow_complete=false；当前状态属于预定的验收交接状态，不能误报为流程已完成。
+
+范围：ai-theory/parameter-symmetry-potentially-unifies-deep-learning-theory.md、ai-theory/an-equivariance-toolbox-for-learning-dynamics.md；reading/records/2026-11-13-2502.05300v2/ 与 reading/records/2026-11-13-2512.21447v1/；README.md、CODEX_DEEP_READ.md、学习路线规划.md。逐文件读取并与归档前备份、baseline.json 比对；本次未改仓库、记录或 Git。
+
+独立核验：分类目录现有 388 个 Markdown，17 类，相对基线 386 仅增加上述两篇；AI Theory 从 2 增至 4，均为 📖。README 条目符号逐行统计 📖75／📄289／⏭️24，总表及各分类数量与文件树相符。精读索引有 75 个有效分类文献路径，覆盖 15 类，其中论文 74、教材 1；新增两篇均 Tier 3，原有 73 路径及其分层未丢失，论文 Tier 1／2／3／4 为 6／39／21／8。三个索引中的两篇入口与笔记、归档凭据链接均可解析；学习路线新增 I 节，不重排既有阶段；三个备份 SHA-256 均与 baseline.json 记录一致。
+
+2502.05300v2：归档笔记 SHA-256 fc09dad3fce7dee0d93ff5e4d728ea1016322689e510764078babfe08a0f4ce4；原审阅稿 71fa9006b9010bf3d403b185d5932629f70293c94dd4d3dffe1e81f81b870724；两稿科学正文在末尾行政状态段前逐字节相同，前缀 SHA-256 c072a3af7c487bf1454e0c042ab7b31a72d38027f2570d7d45f8ab8c45c028dd。原 PDF 位于忽略目录 .paper-runs/2026-11-13-2502.05300v2/source.pdf，SHA-256 e12c7f694df2fd5e0015e20766b5457b4f83e2bce645d8baa74fd665b1369990；公开来源为 https://arxiv.org/pdf/2502.05300v2。审阅覆盖为先前全稿独立审阅加三处实质修订的定点复核，后者明确不是新版全文重审；review.txt、review-revision.txt 和 resolution.json 的三项处理记录相互吻合。首次全稿审阅旧输入哈希 3c96c6e1… 的快照在回执中标为未保留，此为中低程度可追溯性限制，非本次归档阻断项。
+
+2512.21447v1：归档笔记 SHA-256 36f095e7e73edb36572ef3e21593904ea94aec887a74a4de8532513bc949a2c4；原审阅稿 45d112faca364f14d03d91cae1e9de7d52004a4e780ddaa32b9624961dbff653；两稿科学正文在末尾行政状态段前逐字节相同，前缀 SHA-256 6beb20b7d42e08fea71acf2c3d03935257ecb75d7536dff9e126c01276ebba5a。原 PDF 位于忽略目录 .paper-runs/2026-11-13-2512.21447v1/source.pdf，SHA-256 3b6ba1d8dd71d496cd5c07978bea9d4d69f341c4e510cc070a7579fc49109e97；公开来源为 https://arxiv.org/pdf/2512.21447v1。review.txt 记录独立审阅整份冻结笔记、主文和全部证明附录，无阻断意见；resolution.json 的两项选择性增补明确延期且非阻断。
+
+归档凭据：两目录共 24 个公开记录文件，JSON 均可解析；receipts.json 的 5＋9 项产物，归档哈希逐项与公开记录相符，原件哈希逐项与忽略目录副本相符；脱敏改变的 review.txt／method.txt 分别保留 original_sha256 与 archived_sha256。公开记录未检出机器绝对路径，笔记版本、DOI、PDF 哈希与 run.json 相符，笔记内及三个索引内的本地 Markdown 链接均可解析。gpt-6-sol/high 与 gpt-6.1-sol/high 仅是派发路由记录，不代表独立验证底层实际模型；1800 秒为目标而非宿主强制硬截止，未把记录提升为更强的执行证明。未复现训练实验，亦未审计全部引文。
+
+既存低优先级说明：README 的 AI Agents and Systems 16 个 📖 条目仍是纯文本而非直达链接；归档前备份已如此，不影响本次新增两篇或汇总计数。正式交接路径：reading/records/2026-11-13-2502.05300v2/run.json；reading/records/2026-11-13-2512.21447v1/run.json。

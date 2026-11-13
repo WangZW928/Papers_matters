@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "example_only": true,
+  "run_id": "REPLACE_WITH_UNIQUE_ID",
+  "paper": {"id": null, "title": null, "version": null},
+  "mode": "archive",
+  "explicit_deep_read": false,
+  "source": {"path": null, "sha256": null, "url": null, "scope": null, "extraction": null},
+  "notes": {"path": null, "sha256": null},
+  "value_level": null,
+  "tier": null,
+  "reading_depth": "undetermined",
+  "stages": {
+    "dedup": {"status": "pending", "depends_on": [], "artifacts": []},
+    "metadata": {"status": "pending", "depends_on": ["dedup"], "artifacts": []},
+    "source": {"status": "pending", "depends_on": ["metadata"], "artifacts": []},
+    "draft": {"status": "pending", "depends_on": ["source"], "artifacts": []},
+    "assess": {"status": "pending", "depends_on": ["draft"], "skip_reason": null, "attempts": []},
+    "deepen": {"status": "pending", "depends_on": ["assess"], "attempts": []},
+    "integrate": {"status": "pending", "depends_on": ["deepen"], "artifacts": []},
+    "index_candidate": {"status": "pending", "depends_on": ["integrate"], "artifacts": []},
+    "review": {"status": "pending", "depends_on": ["index_candidate"], "attempts": [], "reviewed_notes_sha256": null, "transport_success": false, "accepted": false},
+    "finalize": {"status": "pending", "depends_on": ["review"], "resolution_log": [], "index_published": false, "links_verified": false, "evidence_archived": false, "durable_record_path": null, "artifacts": []},
+    "commit": {"status": "not_requested", "artifacts": []},
+    "push": {"status": "not_requested", "artifacts": []}
+  },
+  "attempt_template": {
+    "attempt_id": null,
+    "provider": null,
+    "model": null,
+    "reasoning_effort": null,
+    "started_at": null,
+    "finished_at": null,
+    "scope": null,
+    "input_hashes": {},
+    "receipt_path": null,
+    "output_path": null,
+    "output_sha256": null,
+    "status": "pending",
+    "error": null
+  },
+  "transition_notes": {
+    "dependency_rule": "completed satisfies dependencies; only the two explicit branch exceptions below permit skipped; failed never satisfies a dependency",
+    "explicit_deep_read": "assess=skipped with explicit user reason satisfies deepen dependency; deepen still required",
+    "coarse": "assess completed and level<3; deepen/integrate/index_candidate/review skipped with coarse reason satisfies coarse finalize only; lead finalizes coarse note and README, index_published=null because deep index is not applicable; links_verified and evidence_archived still required",
+    "failure": "record failed attempt; downstream pending; do not retry automatically",
+    "changed_input": "retain old receipt; reset affected downstream stages to pending and record invalidation reason",
+    "review_changed_notes": "accepted=false until final notes are covered by a new review or documented nonsemantic edit check"
+  },
+  "invalidation_log": [],
+  "workflow_complete": false
+}

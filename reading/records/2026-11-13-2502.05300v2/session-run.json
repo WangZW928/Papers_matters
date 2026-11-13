@@ -1,0 +1,119 @@
+{
+  "id": "2502.05300v2",
+  "title": "Parameter Symmetry Potentially Unifies Deep Learning Theory",
+  "authors": [
+    "Liu Ziyin",
+    "Yizhou Xu",
+    "Tomaso Poggio",
+    "Isaac Chuang"
+  ],
+  "version_updated": "2025-05-23",
+  "doi": "10.48550/arXiv.2502.05300",
+  "venue": "arXiv preprint; no separate venue asserted",
+  "supporting_reference_scope": "arXiv:2505.12387v1, section 5.1 and theorem 8; method reader also checked B.11 related proof",
+  "value_level": null,
+  "tier": null,
+  "url": "https://arxiv.org/pdf/2502.05300v2",
+  "pdf_sha256": "e12c7f694df2fd5e0015e20766b5457b4f83e2bce645d8baa74fd665b1369990",
+  "pages": 23,
+  "text_chars": 78672,
+  "mode": "session_deep_read",
+  "assess": "skipped: explicit user deep-reading request",
+  "commit": "not_requested",
+  "push": "not_requested",
+  "schema_version": 1,
+  "read_scope": "main pp.1–10; appendices A/B pp.15–23; references only for locating citations",
+  "reproduced_experiments": false,
+  "stages": {
+    "dedup": "completed: repository search found no matching title",
+    "metadata": "completed: versioned arXiv abstract and API",
+    "source": "completed: versioned PDF, 23 pages",
+    "draft": "completed",
+    "assess": "skipped: explicit user deep-reading request",
+    "deepen": {
+      "status": "completed",
+      "provider": "openai-codex",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "agent_id": "108da9ae-116d-43f9-b207-a90b807412a6",
+      "artifact": "method.txt",
+      "sha256": "a625a43145bb3cffe591ee31ffaca9528e915fe4f9f5150771f9be170b7d8313"
+    },
+    "evidence": {
+      "status": "completed",
+      "provider": "openai-codex",
+      "model": "gpt-6-sol",
+      "effort": "high",
+      "agent_id": "bd4a2fa9-68fd-460f-acb1-8f6ebb27b6f6",
+      "artifact": "evidence.txt",
+      "sha256": "efa8b61e6946df51440d773f2a5ea929fe059e737dfe998fbfc734630e5cb7aa"
+    },
+    "integrate": "completed: PDF checks and companion theorem conditions incorporated",
+    "style_review": "completed: prose checked; mathematical corrections identified separately",
+    "review": {
+      "status": "completed",
+      "transport_success": true,
+      "accepted": true,
+      "provider": "openai-codex",
+      "model": "gpt-6-sol",
+      "effort": "high",
+      "agent_id": "1806f9db-4451-4624-9c15-22f66eb6d63f",
+      "fresh_context": true,
+      "reviewed_notes_sha256": "71fa9006b9010bf3d403b185d5932629f70293c94dd4d3dffe1e81f81b870724",
+      "artifact": "review-revision.txt",
+      "sha256": "7ff5739fd6d9917f3c1041035ad5a2c6ab01365f6784ee0ea0d3b5ff26d8f6ee",
+      "coverage": "prior full-note review plus targeted verification of all three substantive modifications; not a fresh full-source review of revised text"
+    },
+    "index": "not_requested: session-only reading",
+    "commit": "not_requested",
+    "push": "not_requested",
+    "finalize": "completed for session reading only; no repository archival or index update"
+  },
+  "notes_sha256": "71fa9006b9010bf3d403b185d5932629f70293c94dd4d3dffe1e81f81b870724",
+  "source_text_sha256": "683dbc19aa93a45432783d861c2a66521a6f5a5b2ce2fe67186b292a4922cc38",
+  "workflow_complete": true,
+  "model_identity_note": "Model IDs record host dispatch routes; no separate backend attestation exposed",
+  "supporting_reference": {
+    "id": "2505.12387v1",
+    "url": "https://arxiv.org/html/2505.12387v1",
+    "text_sha256": "36cfc14757330097f1a169e95af3f782d436bc3662af8d6e992d66ffa94a41b0",
+    "full_paper_audited": false
+  },
+  "review_history": [
+    {
+      "status": "completed",
+      "provider": "openai-codex",
+      "model": "gpt-6-sol",
+      "effort": "high",
+      "agent_id": "09ac4d81-e1cb-47f8-b3ff-dad6e7c7c74f",
+      "reviewed_notes_sha256": "3c96c6e1e8c722d4dc09da351748cc1a9523dd7cf86888c594cb942b685549c7",
+      "accepted": false,
+      "fresh_context": true,
+      "timeout_target_seconds": 1800,
+      "hard_timeout_available": false,
+      "artifact": "review.txt",
+      "sha256": "3328906bf48c99e0fda8d3061916841f72b7316af423c046c8113810babd6214",
+      "transport_success": true,
+      "outcome": "two substantive mathematical limitations and one counting clarification adopted; revised notes need targeted review"
+    }
+  ],
+  "resolution_log": [
+    {
+      "finding": "Theorem2 cited theorem degeneracy",
+      "decision": "accepted",
+      "change": "Added explicit zero-noise counterexample and nondegenerate/support qualifications"
+    },
+    {
+      "finding": "B.2 literal high-order hypothesis",
+      "decision": "accepted",
+      "change": "Added zero-perturbation/stationarity test; bound described as formal conclusion pending clarified hypothesis"
+    },
+    {
+      "finding": "Ndos formulas versus prose",
+      "decision": "accepted",
+      "change": "Distinguished compatible complement intent from inconsistent prose; documented h-1 neighbor baseline"
+    }
+  ],
+  "completion_scope": "session deep reading; original experiments and all cited proofs not reproduced/audited",
+  "scientific_content_changed_after_final_review": false
+}

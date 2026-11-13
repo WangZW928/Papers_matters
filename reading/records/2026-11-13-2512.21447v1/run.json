@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "run_id": "2026-11-13-2512.21447v1",
+  "mode": "archive",
+  "explicit_deep_read": true,
+  "paper": {
+    "id": "2512.21447v1",
+    "title": "An Equivariance Toolbox for Learning Dynamics",
+    "authors": [
+      "Yongyi Yang",
+      "Liu Ziyin"
+    ],
+    "version": "2512.21447v1",
+    "doi": "10.48550/arXiv.2512.21447",
+    "version_date": "2025-12-24",
+    "venue": "arXiv preprint; no separate venue asserted"
+  },
+  "source": {
+    "url": "https://arxiv.org/pdf/2512.21447v1",
+    "sha256": "3b6ba1d8dd71d496cd5c07978bea9d4d69f341c4e510cc070a7579fc49109e97",
+    "path": ".paper-runs/2026-11-13-2512.21447v1/source.pdf",
+    "public_pdf_copied_into_records": false,
+    "scope": "main pp.1–10 and appendix pp.13–16; references for locating sources only"
+  },
+  "notes": {
+    "path": "ai-theory/an-equivariance-toolbox-for-learning-dynamics.md",
+    "sha256": "36f095e7e73edb36572ef3e21593904ea94aec887a74a4de8532513bc949a2c4"
+  },
+  "value_level": null,
+  "tier": 3,
+  "reading_depth": "full_text_deep_read",
+  "experiments_reproduced": false,
+  "model_identity_note": "Routes are recorded from host dispatch; independent backend attestation is not exposed",
+  "stages": {
+    "dedup": {
+      "status": "completed"
+    },
+    "metadata": {
+      "status": "completed"
+    },
+    "source": {
+      "status": "completed"
+    },
+    "draft": {
+      "status": "completed"
+    },
+    "deepen": {
+      "status": "completed"
+    },
+    "integrate": {
+      "status": "completed"
+    },
+    "index_candidate": {
+      "status": "completed"
+    },
+    "assess": {
+      "status": "skipped",
+      "skip_reason": "Explicit user request for deep reading"
+    },
+    "review": {
+      "status": "completed",
+      "transport_success": true,
+      "accepted": true,
+      "reviewed_notes_sha256": "45d112faca364f14d03d91cae1e9de7d52004a4e780ddaa32b9624961dbff653",
+      "coverage": "Full frozen note and primary paper scope recorded in review.txt",
+      "receipt_path": "receipts.json",
+      "nonsemantic_archive_check": {
+        "status": "completed",
+        "scientific_content_unchanged": true,
+        "comparison": "byte equality before the trailing administrative/value-status block",
+        "scientific_prefix_sha256": "6beb20b7d42e08fea71acf2c3d03935257ecb75d7536dff9e126c01276ebba5a",
+        "reviewed_notes_sha256": "45d112faca364f14d03d91cae1e9de7d52004a4e780ddaa32b9624961dbff653",
+        "archived_notes_sha256": "36f095e7e73edb36572ef3e21593904ea94aec887a74a4de8532513bc949a2c4",
+        "changed_fields": [
+          "session-to-archive status",
+          "Tier 3 priority metadata",
+          "durable record links",
+          "DOI display"
+        ]
+      },
+      "archived_notes_covered_by": "prior scientific review plus documented administrative-only transfer check"
+    },
+    "finalize": {
+      "status": "completed",
+      "index_published": true,
+      "links_verified": true,
+      "evidence_archived": true,
+      "durable_record_path": "reading/records/2026-11-13-2512.21447v1",
+      "resolution_log": "resolution.json",
+      "artifacts": [
+        "archive-validation.json",
+        "archive-audit.txt",
+        "receipts.json",
+        "resolution.json",
+        "reviewed-notes.txt"
+      ],
+      "validation_sha256": "3687eaaa81f2173ffffab28ad029d2673f9435004f0eb52b8232941a4d17d9f2",
+      "archive_audit_sha256": "3c0a3b774a825c2427d3115d4628244e5232599a7ec93ac5b2b06e253528a625",
+      "archive_auditor": {
+        "agent_id": "9e710bf5-d53b-4fab-9a19-80d818e69abc",
+        "provider": "openai-codex",
+        "requested_model": "gpt-6-sol",
+        "reasoning_effort": "high",
+        "scope": "archival transfer, counts, links and evidence coverage; not a new scientific or experiment review",
+        "blocking_findings": 0
+      },
+      "post_audit_administrative_clarification": "Roadmap external-code-link wording now explicitly retains its 2026-10-19 historical check date; scientific content, paths and counts unchanged"
+    },
+    "commit": {
+      "status": "not_requested"
+    },
+    "push": {
+      "status": "not_requested"
+    }
+  },
+  "workflow_complete": true,
+  "finalized_on": "2026-11-13"
+}

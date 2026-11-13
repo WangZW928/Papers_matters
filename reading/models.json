@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "purpose": "Host-agent routing recommendations; not auto-loaded by the CLI",
+  "max_parallel_children": 2,
+  "stage_timeout_seconds": 1800,
+  "automatic_retry": false,
+  "automatic_fallback": false,
+  "roles": {
+    "lead": {"provider": "openai-codex", "model": "gpt-6-astra", "reasoning_effort": "high", "use_current_host": true},
+    "scout": {"provider": "kimi-coding", "model": "k3", "reasoning_effort": "high"},
+    "drafter": {"provider": "kimi-coding", "model": "k3", "reasoning_effort": "high"},
+    "assessor": {"provider": "openai-codex", "model": "gpt-6.1-sol", "reasoning_effort": "high"},
+    "method_reader": {"provider": "openai-codex", "model": "gpt-6.1-sol", "reasoning_effort": "high"},
+    "evidence_reader": {"provider": "openai-codex", "model": "gpt-6-sol", "reasoning_effort": "high", "optional": true},
+    "reviewer": {"provider": "openai-codex", "model": "gpt-6-sol", "reasoning_effort": "high", "fresh_context": true}
+  }
+}

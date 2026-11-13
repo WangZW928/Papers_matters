@@ -1,0 +1,40 @@
+{
+  "scientific_review_resolutions": [
+    {
+      "item": "Core identities, corrected examples, Cor1 counterexample and scope limits",
+      "decision": "accepted",
+      "handling": "Verified against PDF and two independent analyses before freezing; final reviewer confirms correctness"
+    },
+    {
+      "item": "Optional 2x2 congruence/noncommutation example",
+      "decision": "deferred_nonblocking",
+      "reason": "Current note states the precise orthogonality condition; optional illustration is not needed for correctness; frozen reviewed text retained"
+    },
+    {
+      "item": "Optional sigma^2=eta/(2S) parameter mapping",
+      "decision": "deferred_nonblocking",
+      "reason": "Current note explicitly defines its SDE convention and does not assert equivalence to arbitrary finite-step SGD; no post-review scientific edit"
+    }
+  ],
+  "archive_request": "User explicitly requested formal archival of both notes and index/statistics updates",
+  "tier": {
+    "value": 3,
+    "is_reading_priority_not_value_score": true,
+    "reason": "Supplementary parameter-geometry/training-theory branch; not a replacement for PDE/HPC or physical-conservation foundations"
+  },
+  "nonsemantic_transfer": {
+    "status": "completed",
+    "scientific_content_unchanged": true,
+    "comparison": "byte equality before the trailing administrative/value-status block",
+    "scientific_prefix_sha256": "6beb20b7d42e08fea71acf2c3d03935257ecb75d7536dff9e126c01276ebba5a",
+    "reviewed_notes_sha256": "45d112faca364f14d03d91cae1e9de7d52004a4e780ddaa32b9624961dbff653",
+    "archived_notes_sha256": "36f095e7e73edb36572ef3e21593904ea94aec887a74a4de8532513bc949a2c4",
+    "changed_fields": [
+      "session-to-archive status",
+      "Tier 3 priority metadata",
+      "durable record links",
+      "DOI display"
+    ]
+  },
+  "publication_redaction": "Machine paths rewritten to repository-relative references or versioned public PDF links; raw originals remain in ignored local cache"
+}

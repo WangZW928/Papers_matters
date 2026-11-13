@@ -1,0 +1,4 @@
+# Local reading sources, drafts, and stage receipts; never auto-publish these.
+.paper-runs/
+__pycache__/
+*.py[cod]

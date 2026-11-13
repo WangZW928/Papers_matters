@@ -1,0 +1,11 @@
+Polynomial identities for no-division Eq3 and Eq4: coefficient-exact PASS
+MSE target3 t1: g,H,beta = -4 0 0
+MSE target1 t1: g,Htheta = 0 4
+GD balancedness update: coefficient-exact PASS
+Hessian action under uv rescaling symmetry: coefficient-exact PASS
+Wrong original transform P W P^-1 = [[Fraction(2, 1), Fraction(0, 1)], [Fraction(0, 1), Fraction(1, 1)]]
+Nonorthogonal congruence invariant with failed commutation: exact PASS
+H P = [[Fraction(1, 1), Fraction(1, 1)], [Fraction(1, 1), Fraction(0, 1)]] P H = [[Fraction(3, 1), Fraction(5, 1)], [Fraction(-1, 1), Fraction(-2, 1)]]
+Noether trace identity and Sigma X=0: coefficient-exact PASS
+Nonlinear-lambda second derivative at theta0,lambda2: 16/25 = X^2
+ALL EXACT POLYNOMIAL / RATIONAL CHECKS PASSED; no training experiments

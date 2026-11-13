@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "lead-assembled archival manifest from retained outputs and host dispatch records; not provider-native attestation",
+  "model_identity_note": "Model IDs record host dispatch routes; no separate backend attestation exposed",
+  "artifacts": [
+    {
+      "path": "method.txt",
+      "original_sha256": "a625a43145bb3cffe591ee31ffaca9528e915fe4f9f5150771f9be170b7d8313",
+      "archived_sha256": "a625a43145bb3cffe591ee31ffaca9528e915fe4f9f5150771f9be170b7d8313",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "evidence.txt",
+      "original_sha256": "efa8b61e6946df51440d773f2a5ea929fe059e737dfe998fbfc734630e5cb7aa",
+      "archived_sha256": "efa8b61e6946df51440d773f2a5ea929fe059e737dfe998fbfc734630e5cb7aa",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "review.txt",
+      "original_sha256": "3328906bf48c99e0fda8d3061916841f72b7316af423c046c8113810babd6214",
+      "archived_sha256": "a6b4d06ddf79ab19a7b30c264d17711261754590adedf378cb7b631416505bf1",
+      "path_redaction_applied": true
+    },
+    {
+      "path": "review-revision.txt",
+      "original_sha256": "7ff5739fd6d9917f3c1041035ad5a2c6ab01365f6784ee0ea0d3b5ff26d8f6ee",
+      "archived_sha256": "7ff5739fd6d9917f3c1041035ad5a2c6ab01365f6784ee0ea0d3b5ff26d8f6ee",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "algebra-checks.json",
+      "original_sha256": "54233b6ddaaf02ecbfd445c62e8ea85c7d93418f3652be9d6e0a6f4d1ecf6c2d",
+      "archived_sha256": "54233b6ddaaf02ecbfd445c62e8ea85c7d93418f3652be9d6e0a6f4d1ecf6c2d",
+      "path_redaction_applied": false
+    }
+  ],
+  "stages": [
+    {
+      "role": "method_reader",
+      "status": "completed",
+      "provider": "openai-codex",
+      "requested_model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "agent_id": "108da9ae-116d-43f9-b207-a90b807412a6",
+      "input_pdf_sha256": "e12c7f694df2fd5e0015e20766b5457b4f83e2bce645d8baa74fd665b1369990",
+      "input_notes_sha256": "067dc7cd404ff6461539ab784f5e189fe6110fefdadc3b5cc0453166ec4a6a5a",
+      "output_path": "method.txt",
+      "original_output_sha256": "a625a43145bb3cffe591ee31ffaca9528e915fe4f9f5150771f9be170b7d8313",
+      "archived_output_sha256": "a625a43145bb3cffe591ee31ffaca9528e915fe4f9f5150771f9be170b7d8313",
+      "scope": "main pp.1–10; appendices A/B pp.15–23; references only for locating citations",
+      "accepted_at_session_stage": null,
+      "input_snapshot_retained": true
+    },
+    {
+      "role": "evidence_reader",
+      "status": "completed",
+      "provider": "openai-codex",
+      "requested_model": "gpt-6-sol",
+      "reasoning_effort": "high",
+      "agent_id": "bd4a2fa9-68fd-460f-acb1-8f6ebb27b6f6",
+      "input_pdf_sha256": "e12c7f694df2fd5e0015e20766b5457b4f83e2bce645d8baa74fd665b1369990",
+      "input_notes_sha256": "067dc7cd404ff6461539ab784f5e189fe6110fefdadc3b5cc0453166ec4a6a5a",
+      "output_path": "evidence.txt",
+      "original_output_sha256": "efa8b61e6946df51440d773f2a5ea929fe059e737dfe998fbfc734630e5cb7aa",
+      "archived_output_sha256": "efa8b61e6946df51440d773f2a5ea929fe059e737dfe998fbfc734630e5cb7aa",
+      "scope": "main pp.1–10; appendices A/B pp.15–23; references only for locating citations",
+      "accepted_at_session_stage": null,
+      "input_snapshot_retained": true
+    },
+    {
+      "role": "reviewer",
+      "status": "completed",
+      "provider": "openai-codex",
+      "requested_model": "gpt-6-sol",
+      "reasoning_effort": "high",
+      "agent_id": "09ac4d81-e1cb-47f8-b3ff-dad6e7c7c74f",
+      "input_pdf_sha256": "e12c7f694df2fd5e0015e20766b5457b4f83e2bce645d8baa74fd665b1369990",
+      "input_notes_sha256": "3c96c6e1e8c722d4dc09da351748cc1a9523dd7cf86888c594cb942b685549c7",
+      "output_path": "review.txt",
+      "original_output_sha256": "3328906bf48c99e0fda8d3061916841f72b7316af423c046c8113810babd6214",
+      "archived_output_sha256": "a6b4d06ddf79ab19a7b30c264d17711261754590adedf378cb7b631416505bf1",
+      "scope": "main pp.1–10; appendices A/B pp.15–23; references only for locating citations",
+      "accepted_at_session_stage": false,
+      "input_snapshot_retained": false
+    },
+    {
+      "role": "revision_reviewer",
+      "status": "completed",
+      "provider": "openai-codex",
+      "requested_model": "gpt-6-sol",
+      "reasoning_effort": "high",
+      "agent_id": "1806f9db-4451-4624-9c15-22f66eb6d63f",
+      "input_pdf_sha256": "e12c7f694df2fd5e0015e20766b5457b4f83e2bce645d8baa74fd665b1369990",
+      "input_notes_sha256": "71fa9006b9010bf3d403b185d5932629f70293c94dd4d3dffe1e81f81b870724",
+      "output_path": "review-revision.txt",
+      "original_output_sha256": "7ff5739fd6d9917f3c1041035ad5a2c6ab01365f6784ee0ea0d3b5ff26d8f6ee",
+      "archived_output_sha256": "7ff5739fd6d9917f3c1041035ad5a2c6ab01365f6784ee0ea0d3b5ff26d8f6ee",
+      "scope": "prior full-note review plus targeted verification of all three substantive modifications; not a fresh full-source review of revised text",
+      "accepted_at_session_stage": true,
+      "input_snapshot_retained": true
+    }
+  ]
+}

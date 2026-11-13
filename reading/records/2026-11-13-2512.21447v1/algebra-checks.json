@@ -1,0 +1,30 @@
+{
+  "scope": "Exact arithmetic checks of hand-derived examples; not reproduction of paper experiments",
+  "corollary1_counterexample": {
+    "f": "t^2",
+    "loss": "1/2*(y-3)^2",
+    "t": "1",
+    "gradient": "-4",
+    "hessian": "0"
+  },
+  "finite_GD_balance": {
+    "old_u2_minus_v2": "3",
+    "new_u2_minus_v2": "297/100",
+    "formula_verified": true
+  },
+  "binary_cross_entropy_fixed_direction": [
+    {
+      "epsilon": "1/10",
+      "margin_logit_curvature": "9/25"
+    },
+    {
+      "epsilon": "1/100",
+      "margin_logit_curvature": "99/2500"
+    },
+    {
+      "epsilon": "1/1000",
+      "margin_logit_curvature": "999/250000"
+    }
+  ],
+  "symbolic_engine_used": false
+}

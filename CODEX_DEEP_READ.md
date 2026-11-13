@@ -39,7 +39,7 @@
 
 ## 第二部分：重新分层后的完整清单
 
-以下为原有 53 篇论文的分层清单；后续补充见文末按日期列出的索引及配套教材。全表截至 2026-10-19 共收录 71 篇论文、1 篇教材，覆盖当前库内所有标记为精读的文献文件。Tier 表示阅读优先级，精读标记表示笔记归档状态，不代表实验已独立复现。
+以下为原有 53 篇论文的分层清单；后续补充见文末按日期列出的索引及配套教材。全表截至 2026-11-13 共收录 74 篇论文、1 篇教材，覆盖当前库内 75 个标记为精读的文献文件；计数按路径，不按独立论文去重。Tier 表示阅读优先级，精读标记表示笔记归档状态，不代表实验已独立复现。
 
 ## Tier 1 — 必读（6 篇）
 
@@ -350,6 +350,15 @@
 - **MaintainCoder: Maintainable Code Generation Under Dynamic Requirements** — `ai-agent-systems/maintaincoder-maintainable-code-generation-under-dynamic-requirements.md`。通过动态需求下的修改任务考察可维护性，并以框架设计和实现分阶段组织代码生成，适合补充长期演化代码的评测维度；竞赛题上的代理指标不能直接等同于生产仓库维护成本。关联：SWE-agent、Quality Assurance of LLM-generated Code。
 - **Quality Assurance of LLM-generated Code: Addressing Non-Functional Quality Characteristics** — `ai-agent-systems/quality-assurance-of-llm-generated-code-addressing-non-functional-quality-characteristics.md`。把可维护性、安全、运行时间和内存等质量维度纳入生成代码评估，适合设计多目标接受准则与回归保护；有限共同成功样例中的经验结论应作为风险证据使用。关联：MaintainCoder、SWE-agent、KernelBench。
 
+## 新增精读归档（2026-11-13）
+
+本次两篇均归入 AI Theory，已完成原文核读、独立补充和终审意见处理；未复现训练实验。以下 Tier 3 是相对当前 PDE/HPC 与结构保持主线的阅读优先级，不是六级阅读价值分数，也不改变既有文献的 Tier 或路线。
+
+### Tier 3 — 参数空间对称与训练几何
+
+- **Parameter Symmetry Potentially Unifies Deep Learning Theory** — [精读笔记](<ai-theory/parameter-symmetry-potentially-unifies-deep-learning-theory.md>)。核读 arXiv:2502.05300v2 主文与附录，区分动力学、容量和表示三项假说的理论及实验证据；保留固定子空间维数、对称指标和引用定理条件的核查结果。作为研究地图补充 Geometric Deep Learning 与 NTK，不视为已经成立的统一理论。[审阅与归档记录](<reading/records/2026-11-13-2502.05300v2/run.json>)。
+- **An Equivariance Toolbox for Learning Dynamics** — [精读笔记](<ai-theory/an-equivariance-toolbox-for-learning-dynamics.md>)。核读 arXiv:2512.21447v1 主文与全部证明附录，从参数/输出等变推导梯度及 Hessian 方向约束，分别处理 GF、有限步 GD、SGF 和离散固定点；保留 Corollary 1 非退化条件及相关反例。适合作为训练几何的微分工具，不等同物理动力学建模或普遍低维训练定理。[审阅与归档记录](<reading/records/2026-11-13-2512.21447v1/run.json>)。
+
 ## 配套教材精读（不计入论文 Tier）
 
 - **洛伦兹变换（OpenStax University Physics III §5.6）** — [`relativity/the-lorentz-transformation-openstax.md`](relativity/the-lorentz-transformation-openstax.md)。教材章节，作为 Einstein 1905 的配套基础阅读，串联洛伦兹变换、时间膨胀、长度收缩、同时性、时空间隔与光锥。本条纳入精读总索引，但不参与论文 Tier 分层。
@@ -368,4 +377,4 @@
 
 ---
 
-*覆盖 15 个分类 | 共 73 篇精读文献：72 篇论文（原有 53 篇 + 2026-10-15 补充 9 篇 + 2026-10-19 补录 10 篇）、1 篇配套教材 | 最后核对：2026-10-19*
+*覆盖 15 个分类 | 共 75 篇精读文献：74 篇论文（原有 53 篇 + 2026-10-15 补充 9 篇 + 2026-10-19 补录 10 篇 + 2026-11-13 新增 2 篇）、1 篇配套教材 | 最后核对：2026-11-13*

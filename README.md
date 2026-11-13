@@ -1,10 +1,12 @@
 # Papers Matters
 
-> 📖 [Codex 分层阅读建议](./CODEX_DEEP_READ.md) | 🧭 [学习路线规划](./学习路线规划.md)
+> 📖 [Codex 分层阅读建议](./CODEX_DEEP_READ.md) | 🧭 [学习路线规划](./学习路线规划.md) | [Agent 阅读入口](./AGENTS.md) | [完整阅读流程](./reading/WORKFLOW.md)
 
-Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 个分类目录内的 386 个文献 Markdown 文件，包含论文、教材及其他资料；同一文献在不同路径下的记录分别保留，未按独立论文去重。
+阅读和归档新论文时，按项目内流程执行，无需安装 paper-reader skill。下列标记沿用已有记录，不表示条目已通过新流程的独立终审；具体读到哪里、经过哪些审阅，以各篇笔记和对应记录为准。
 
-**阅读标记**：📖 标记为精读（73 篇，含 1 篇教材）；📄 其他归档条目（289 个，内容完整性不一，不表示已读）；⏭️ 已跳过处理（24 个，常见原因为文件过大、扫描版或文本提取失败）。标记依据各文件现有记录，不表示本次重新阅读或独立复现实验。
+Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 个分类目录内的 388 个文献 Markdown 文件，包含论文、教材及其他资料；同一文献在不同路径下的记录分别保留，未按独立论文去重。统计截至 2026-11-13，仅计分类目录内的文献文件，不计流程文档、运行记录和本地原文缓存。
+
+**阅读标记**：📖 标记为精读（75 篇，含 1 篇教材）；📄 其他归档条目（289 个，内容完整性不一，不表示已读）；⏭️ 已跳过处理（24 个，常见原因为文件过大、扫描版或文本提取失败）。标记依据各文件现有记录，不表示本次重新阅读或独立复现实验。
 
 全部精读条目已收录于 [Codex 分层阅读建议](./CODEX_DEEP_READ.md)，覆盖其中 15 个分类。
 
@@ -14,7 +16,7 @@ Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 
 | --- | ---: | ---: | ---: |
 | [AI for Physics](#ai-for-physics) | 101 | 11 | 1 |
 | [AI Models](#ai-models) | 5 | 3 | 0 |
-| [AI Theory](#ai-theory) | 2 | 2 | 0 |
+| [AI Theory](#ai-theory) | 4 | 4 | 0 |
 | [AI Agents and Systems](#ai-agents-and-systems) | 16 | 16 | 0 |
 | [Computer Graphics](#computer-graphics) | 29 | 1 | 5 |
 | [Differential Geometry](#differential-geometry) | 12 | 3 | 0 |
@@ -29,7 +31,7 @@ Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 
 | [Relativity](#relativity) | 3 | 3 | 0 |
 | [Vortex Dynamics](#vortex-dynamics) | 20 | 2 | 1 |
 | [Wave Mechanics](#wave-mechanics) | 7 | 2 | 4 |
-| **合计** | **386** | **73** | **24** |
+| **合计** | **388** | **75** | **24** |
 
 ---
 
@@ -147,6 +149,8 @@ Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 
 
 ## AI Theory
 
+- 📖 [An Equivariance Toolbox for Learning Dynamics](<./ai-theory/an-equivariance-toolbox-for-learning-dynamics.md>)
+- 📖 [Parameter Symmetry Potentially Unifies Deep Learning Theory](<./ai-theory/parameter-symmetry-potentially-unifies-deep-learning-theory.md>)
 - 📖 [几何深度学习：网格、群、图、测地线与规范](./ai-theory/geometric-deep-learning-grids-groups-graphs-geodesics-and-gauges.md)
 - 📖 [神经正切核：神经网络的收敛与泛化](./ai-theory/neural-tangent-kernel-convergence-and-generalization-in-neural-networks.md)
 

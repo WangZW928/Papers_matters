@@ -1,0 +1,3 @@
+首次调用：PYTHONDONTWRITEBYTECODE=1 python3 method-assets/checks.py
+结果：exit code 1；ModuleNotFoundError: No module named 'sympy'
+处理：不安装依赖、不换模型路由；改用 Python 标准库 Fraction 与小型多项式系数计算，辅以报告中的独立手推。后续 checks.py 不依赖 SymPy。没有训练实验。

@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "corpus_files": 388,
+  "categories": 17,
+  "deep_files": 75,
+  "deep_papers": 74,
+  "textbooks": 1,
+  "other_archived": 289,
+  "skipped": 24,
+  "deep_categories": 15,
+  "tier_counts": {
+    "1": 6,
+    "2": 39,
+    "3": 21,
+    "4": 8,
+    "textbook_unranked": 1
+  },
+  "ai_theory": {
+    "files": 4,
+    "deep": 4
+  },
+  "existing_tiers_unchanged": true,
+  "scientific_bodies_unchanged": true,
+  "public_records_no_machine_absolute_paths": true,
+  "artifact_hashes_verified": 14,
+  "local_file_links_checked": 514,
+  "broken_links": [],
+  "raw_pdfs_in_ignored_local_cache": true,
+  "offline_unit_tests": {
+    "passed": 27,
+    "failed": 0
+  },
+  "git_diff_check": "passed",
+  "corrections_to_stale_navigation": [
+    "Learning roadmap baseline was 385/72, actual pre-ingest corpus was 386/73",
+    "Roadmap omitted existing MASS entry and reported Tier2=38 instead of index-derived39; corrected without changing its Tier"
+  ],
+  "transfers": [
+    {
+      "id": "2502.05300v2",
+      "run_id": "2026-11-13-2502.05300v2",
+      "note": "ai-theory/parameter-symmetry-potentially-unifies-deep-learning-theory.md",
+      "record": "reading/records/2026-11-13-2502.05300v2/run.json",
+      "status": "completed",
+      "scientific_content_unchanged": true,
+      "comparison": "byte equality before the trailing administrative/value-status block",
+      "scientific_prefix_sha256": "c072a3af7c487bf1454e0c042ab7b31a72d38027f2570d7d45f8ab8c45c028dd",
+      "reviewed_notes_sha256": "71fa9006b9010bf3d403b185d5932629f70293c94dd4d3dffe1e81f81b870724",
+      "archived_notes_sha256": "fc09dad3fce7dee0d93ff5e4d728ea1016322689e510764078babfe08a0f4ce4",
+      "changed_fields": [
+        "session-to-archive status",
+        "Tier 3 priority metadata",
+        "durable record links",
+        "DOI display"
+      ]
+    },
+    {
+      "id": "2512.21447v1",
+      "run_id": "2026-11-13-2512.21447v1",
+      "note": "ai-theory/an-equivariance-toolbox-for-learning-dynamics.md",
+      "record": "reading/records/2026-11-13-2512.21447v1/run.json",
+      "status": "completed",
+      "scientific_content_unchanged": true,
+      "comparison": "byte equality before the trailing administrative/value-status block",
+      "scientific_prefix_sha256": "6beb20b7d42e08fea71acf2c3d03935257ecb75d7536dff9e126c01276ebba5a",
+      "reviewed_notes_sha256": "45d112faca364f14d03d91cae1e9de7d52004a4e780ddaa32b9624961dbff653",
+      "archived_notes_sha256": "36f095e7e73edb36572ef3e21593904ea94aec887a74a4de8532513bc949a2c4",
+      "changed_fields": [
+        "session-to-archive status",
+        "Tier 3 priority metadata",
+        "durable record links",
+        "DOI display"
+      ]
+    }
+  ]
+}
