@@ -1,0 +1,175 @@
+{
+  "run_id": "20261119-covector-fluids",
+  "kind": "Lead source-checked integration and review resolution; not a provider attestation",
+  "method_resolution": [
+    {
+      "id": "M01",
+      "finding": "Euler/Lie derivative tensor convention and lambda sign",
+      "decision": "accepted",
+      "verification": "PDF pp5,7,16; component calculation with J_ij=partial_j v_i",
+      "note_section": "把 Euler 方程改写成一形式方程"
+    },
+    {
+      "id": "M02",
+      "finding": "Frozen v differs from evolving u; extra curl term initially zero need not remain zero",
+      "decision": "accepted",
+      "verification": "PDF p7 eq28–31; p16 A.2–A.3",
+      "note_section": "环量、涡量与压力投影之间的关系"
+    },
+    {
+      "id": "M03",
+      "finding": "Open-curve pure transport versus closed-loop Kelvin for full Euler",
+      "decision": "accepted",
+      "verification": "PDF pp2,5–7; integrate exact pressure term along curves",
+      "note_section": "纯平流与完整 Euler 的环量说法不同"
+    },
+    {
+      "id": "M04",
+      "finding": "P T P=P T, not P T=T P; fixed map, admissible boundaries and topology",
+      "decision": "accepted",
+      "verification": "PDF p8 eq32–33 and exact-form pullback identity; added reader boundary/harmonic caveats",
+      "note_section": "平流与投影交换应读成什么"
+    },
+    {
+      "id": "M05",
+      "finding": "CF+MCM still projects every time step",
+      "decision": "accepted",
+      "verification": "PDF p9 Algorithm5 line10; p8 eq34 uses physical velocity",
+      "note_section": "CF+MCM：少插值速度，不是长时间不投影"
+    },
+    {
+      "id": "M06",
+      "finding": "Pressure time integrals printed with plus signs inconsistent with eq1/26",
+      "decision": "accepted_as_version_specific_reader_verification",
+      "verification": "Lead and method reader visually checked PDF p8; independently derive negative source integral from eq26",
+      "limits": "No official erratum or supplementary-code confirmation; exact-form absorption unaffected",
+      "note_section": "原文两处需要带着推导阅读的细节"
+    },
+    {
+      "id": "M07",
+      "finding": "MAC update uses column i of standard Jacobian / row i of its transpose",
+      "decision": "accepted",
+      "verification": "PDF p9 eq39–40 visually checked; direct component contraction",
+      "note_section": "MAC 网格上到底多算了什么"
+    },
+    {
+      "id": "M08",
+      "finding": "BFECC three transports, not MacCormack; extrema from u1 neighborhood",
+      "decision": "accepted",
+      "verification": "PDF p9 Algorithm4 and section5.4.2",
+      "note_section": "基础 CF：时间精度与输运精度分开看"
+    },
+    {
+      "id": "M09",
+      "finding": "Algorithm5 line8 uses current u instead of reference u0",
+      "decision": "accepted_as_unresolved_implementation_question",
+      "verification": "PDF p9 visual check; reference-domain roundtrip consistency",
+      "limits": "Printed fact confirmed; proposed reference-state correction is not an audited code fix",
+      "note_section": "原文两处需要带着推导阅读的细节"
+    },
+    {
+      "id": "M10",
+      "finding": "Non-exact force history not removed by pressure projection; inverse-map check needs two identity residuals",
+      "decision": "accepted_as_reader_implementation_analysis",
+      "verification": "PDF pp9–10 Algorithm5, sections5.3/5.4.4; source-integral derivation and inverse-map definition",
+      "limits": "Supplementary code unexamined; not an assertion that actual experiments omit forcing",
+      "note_section": "CF+MCM：少插值速度，不是长时间不投影"
+    },
+    {
+      "id": "M11",
+      "finding": "Link to Lie–Poisson quotient does not prove discrete Poisson/Casimir properties",
+      "decision": "accepted_in_limited_scope",
+      "verification": "PDF p8 quotient discussion; reader interpretation labeled; no standalone Hamiltonian survey added",
+      "note_section": "平流与投影交换应读成什么"
+    },
+    {
+      "id": "M12",
+      "finding": "Pullback not generally L2-isometric; trefoil reconnection not ideal Euler topology verification",
+      "decision": "accepted",
+      "verification": "Manual energy derivative under div-v-free compatible boundaries; PDF pp10–11 energy and trefoil experiments",
+      "note_section": "环量、涡量与压力投影之间的关系；实验证据"
+    },
+    {
+      "id": "M13",
+      "finding": "AMReX transfer requires cochain/Hodge, dual-edge vs face-flux and separate discrete compatibility tests",
+      "decision": "accepted_as_unvalidated_migration_plan",
+      "verification": "PDF p9 regular MAC baseline; proposed discretization diagnostics are explicitly reader suggestions",
+      "limits": "No AMReX/AMR/EB implementation or performance experiment performed",
+      "note_section": "放到 AMReX/VWiS 主线里，哪些东西值得带走"
+    },
+    {
+      "id": "M14",
+      "finding": "Historical checkmarks and Kimi review cannot certify current workflow",
+      "decision": "accepted",
+      "verification": "Preserved original draft hash; replaced historical all-checkmarks by current run/receipt references",
+      "note_section": "metadata and reading boundary"
+    }
+  ],
+  "evidence_resolution": [
+    {
+      "id": "E01",
+      "finding": "Actual PDF is16 pages; project-page BibTeX says15; only Figs1–17/Tables1–2 exist",
+      "decision": "accepted",
+      "verification": "PDF p1 citation, actual page count, complete text and lead project-page fetch; no missing figures/tables invented"
+    },
+    {
+      "id": "E02",
+      "finding": "Method comparison not perfectly isolated: midpoint/BFECC, DMC vs RK4, five-step map reset",
+      "decision": "accepted",
+      "verification": "PDF p10 section6; experiment setup explicitly retained"
+    },
+    {
+      "id": "E03",
+      "finding": "15% overall author observation lacks per-baseline timing table; Table2 only CF and CF+MCM",
+      "decision": "accepted",
+      "verification": "Lead visually checked PDF p10 Table2; retained trefoil8.0/4.8s example with domain/grid/dt and hybridCPU/GPU scope"
+    },
+    {
+      "id": "E04",
+      "finding": "CFL6.18/4.85/1.45 empirical for trefoil/plume, not general stability theorem",
+      "decision": "accepted",
+      "verification": "PDF p9 section5.4.3 eq41 and p14 conclusion; exact task, U definition and limitation retained"
+    },
+    {
+      "id": "E05",
+      "finding": "Taylor vortices not Taylor–Green; Figure15 MC+R numerical reference; delta-wing qualitative only",
+      "decision": "accepted",
+      "verification": "PDF pp10–14 sections6.1.1/6.3.1/6.3.3; no digitized curve error percentages invented"
+    },
+    {
+      "id": "E06",
+      "finding": "Do not count covector rotation as full Euler conservation test; external forcing changes balance laws",
+      "decision": "accepted",
+      "verification": "PDF p6 Fig5 and sections5.4.4/6.2; no flow simulation, video or code validation claimed"
+    }
+  ],
+  "review_resolution": [
+    {
+      "id": "R01",
+      "severity": "minor",
+      "finding": "Completion tense in note last paragraph before review/resolution archived",
+      "decision": "resolved_by_actual_finalization_without_note_edit",
+      "verification": "Actual independent review-01.txt and this per-item resolution are saved to durable records before canonical note/index publication; note text becomes true at publication, not treated as prior evidence",
+      "notes_sha256_unchanged": true
+    },
+    {
+      "id": "R02",
+      "severity": "minor_optional",
+      "finding": "Could spell out admissible Dirichlet potential trace/pullback conditions",
+      "decision": "acknowledged_no_semantic_edit",
+      "reason": "Frozen note already restricts same map and compatible boundaries, and warns Dirichlet conditions restrict absorbed gradients; reviewer explicitly nonblocking. Further general boundary theorem is outside this note and remains a research question. Keep reviewer-covered hash unchanged."
+    }
+  ],
+  "unresolved_research_items": [
+    "Official clarification or code audit for eq36–38 and Algorithm5 line8",
+    "Long-map nonconservative forcing implementation",
+    "Numerical reproduction of energy/CFL/timing results",
+    "AMReX/AMR/EB migration and validation"
+  ],
+  "unresolved_items_are_review_blockers": false,
+  "review_acceptance": "accepted_by_lead",
+  "reviewed_notes_sha256": "a051d927a715ac9274c066ab1059fc414132270ab008cfe261f29890caea44a1",
+  "reviewer_output_sha256": "fdc56f4341e702352df96fd626dc2ddec223bfa5530401d5de1319fc646f5312",
+  "independent_questions_location": "review-01.txt lines21–25",
+  "note_modified_after_review": false
+}

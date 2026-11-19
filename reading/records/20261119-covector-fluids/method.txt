@@ -1,0 +1,238 @@
+Covector Fluids：method_reader 独立方法意见（纯文本，非正式笔记）
+
+run_id=20261119-covector-fluids
+DOI=10.1145/3528223.3530120
+role=method_reader
+status=completed（方法阅读与意见产物完成；不代表主Agent已采纳、独立终审通过或论文实验复现）
+model_route=openai-codex/gpt-6.1-sol; reasoning_effort=high
+model_route_evidence=宿主派发运行记录；当前工具环境没有返回底层模型标识的独立自省接口，不把预设模型表误当作额外的实测证明。
+start_time=2026-11-19T10:13:07+08:00
+analysis_completed_at=2026-11-19T10:23:41+08:00
+analysis_elapsed_seconds=634（约10分34秒；宿主无硬截止，不声明严格计时保证）
+hard_timeout_available=false
+retry_or_route_switch=none
+write_scope=.paper-runs/20261119-covector-fluids/method.txt
+
+输入核对与已读范围
+
+source_pdf_sha256=e5d82df5b81da7f5edac5fa751dabd35edb67cad0ca10a55ef04ec6a9a2fcfd8
+source_txt_sha256=d08b1bdd9ec9c27cdfdb8c70358b3389404c5114613782cd1ecd689ee24f9c98
+historical_draft_sha256=86c07305dd8565e539fc2f273356e823f174b2bba169d6403fb1b3bcc0121004
+三项均由sha256sum实测匹配。PyMuPDF确认PDF为16页。已读PDF全部16页所对应的逐页文本，覆盖印刷113:1–113:16、§1–7、参考文献及Appendix A.1–A.3；方法重点为§3–5及Appendix A。历史初稿全部190行已读，仅作待纠错材料。另用read_image检查主Agent已渲染的PDF第8、9、16页，核对了积分正负号、Algorithm 4/5、Jacobian分量及附录推导；未自行写入截图。
+
+已先读项目AGENTS、WORKFLOW、ROLES，并查看研究索引和学习路线的相关入口。已检查宿主技能与工具目录；此任务只交付纯文本意见，不承担正式Markdown起草，未加载写作技能。为符号核查加载sympy技能，但python3环境没有sympy包，导入返回ModuleNotFoundError；未安装、未自动重试或切换模型。采用手工分量推导，并以标准库Fraction做了一个精确仿射pullback/环量算例。该算例只核查转置和指标约定，不是流体求解器或论文实验复现。
+
+总判断
+
+作者最可靠的方法贡献不是“给现有MAC求解器附加严格守恒证明”，而是：在固定输运场所生成的光滑可逆map下，用一形式pullback替换逐分量搬运，使梯度仍是梯度，并直接诱导正确的涡量二形式输运。因此可在速度变量层面模拟vortex-method的连续输运机制，同时保留常规projection框架。离散插值、BFECC、limiter、冻结速度及边界处理仍有误差；能量、稳定性与AMR迁移须单独验证。历史稿已纠正许多早期过度陈述，但还遗漏了交换性质的精确算子表述、Algorithm 4与MC的区别、Algorithm 5印刷歧义、原文式(36)–(38)符号不一致及源项长图处理缺口。
+
+一、符号与Euler改写：负半速度平方正确，不要与Bernoulli函数混用
+证据：PDF 1页§1式(1)；5页§3.2、§3.5式(14)及脚注3；7页§4.2式(25)–(26)；16页Appendix A.1。
+
+作者：u是物理速度向量，p是kinematic pressure；eta=u^flat为速度一形式，lambda=p−|u|²/2为Lagrangian pressure。其Euler形式是
+  ∂t eta + L_u eta = −d lambda，u=eta^sharp，div u=0。
+
+读者核算：为避免论文的∇v张量约定和程序矩阵约定混淆，统一令J_v的第i行第j列为∂_j v_i。则
+  (L_v eta)_i = v_j ∂_j eta_i + eta_j ∂_i v_j；
+  (L_v u^flat)^sharp = (v·∇)u + J_v^T u。
+作者式(14)写作(∇v)·u，但脚注3明确其分量为u_j∂_i v_j，等于上述J_v^T u，并非漏了转置。取v=u后，J_u^T u=∇(|u|²/2)，所以
+  ∂t u+(u·∇)u+J_u^T u = −∇p+∇(|u|²/2)
+                              = −∇(p−|u|²/2)。
+lambda的负号正确。另一种用Cartan公式写成∂t eta+i_u(d eta)=−d(p+|u|²/2)时出现正半速度平方；两种写法左端不同，不能互换lambda定义。
+
+变量解释：flat/sharp是由metric把向量和一形式互换的操作；本文实际算法用Euclidean metric，所以两者的数值分量可相同，但变换法则不同。d是外微分；L_v是沿v的Lie derivative；i_v是内积/收缩而非标量乘法。重复指标按求和理解。u、v单位m/s；p、lambda单位m²/s²；J_v单位1/s。离散projection常直接减∇phi，其中phi约为时间积分的lambda、单位m²/s；该Poisson势未必就是瞬时物理p或lambda，不宜从一次projection输出直接宣称得到准确物理压力。
+
+二、冻结v与被输运u必须分开：正确curl动力学不要求子步u保持无散
+证据：PDF 6页§4.1式(15)–(24)；7页§4.3式(27)–(29)、§4.4式(30)–(31)；16页A.2–A.3。
+
+作者：先估计并冻结流速v，再求线性子问题∂t u+(v·∇)u+J_v^T u=0，最后投影。v在该子问题中是给定系数，u是持续变化的未知量。v可取u^n，二阶方法则取预测的半步速度。子步中的u一般既不等于v，也不再满足div u=0；最终projection恢复约束。A.2/A.3推出其向量涡量方程时要求div v=0，而不是要求所有中间u无散。
+
+读者核算：当初始时刻v=u^n时，传统和CF子步的区别在该瞬间为一个梯度；随着u变化而v冻结，两者出现真正不同的curl演化。式(30)额外项为
+  <∇u×∇v>_i = epsilon_ijk (∂_j u_l)(∂_k v_l)
+            = 第l速度分量梯度的叉乘之和。
+这里epsilon为三维Levi-Civita符号，w=curl u。若u=v，该项瞬时为零，故不宜写成“只要用传统平流，额外项每时每刻都非零”。论文讨论的是整个冻结子步及其分裂误差。
+
+修订建议：解释传统方法时不要把“projection删除旋转分量”当作严格curl等式。连续projection只减梯度，curl本来不变；问题是先前逐分量平流没有产生正确的curl演化，并形成了随后被移除的梯度/散度部分。Fig.3的直观叙述可保留，但紧跟此精确限定。
+
+三、pullback、Kelvin和涡量二形式：区分纯平流的开曲线不变量与完整Euler的闭曲线不变量
+证据：PDF 2页式(4)；5页§3.4式(6)–(10)；6页式(19)–(24)；7页§4.2、§4.4；16页A.2、式(42f)–(42h)。
+
+作者：forward map Phi_t从初始位置映到当前粒子位置，满足dot Phi=v∘Phi；inverse map Psi_t=Phi_t^−1从当前位置回到参考位置，满足∂t Psi+v·∇Psi=0。对一形式，
+  eta_t = Psi_t^* eta_0；
+  eta_t(x) = J_Psi(x)^T eta_0(Psi_t(x))。
+它使沿Phi_t(C_0)的线积分等于初始C_0上的线积分。J_Psi的第alpha行第i列为∂_i Psi_alpha，维数为n×n、无量纲。
+
+关键限定：上式是纯Lie平流子步；它保存任意随流曲线（包括开曲线）的积分。完整Euler有−d lambda，若曲线端点为a_t、b_t，则
+  d/dt ∫_{C_t}eta = lambda(a_t)−lambda(b_t)。
+仅对闭曲线，压力exact one-form的积分必为零，得到Kelvin环量定理。历史稿行81–98应显式标出“纯平流子步”，避免把开曲线积分不变误读为完整Euler结论。非保守外力另有源项，见第十项。
+
+作者/核算：令omega=d eta，则d L_v=L_v d，且d²=0，因此无压力影响地得到
+  ∂t omega + L_v omega =0，omega_t=Psi_t^*omega_0。
+三维在固定体积形式mu下omega=i_w mu；div v=0时L_v mu=0，故
+  ∂t w+(v·∇)w−(w·∇)v=0。
+末项是vortex stretching/tilting，并非点值|w|守恒。二维omega=zeta dx∧dy，在不可压条件下zeta满足标量输运。omega的分量单位1/s，其曲面积分与环量一样为m²/s。Appendix A用体积形式、Lie bracket [v,w]=∇_v w−∇_w v完成上述转换；A.1/A.3的协变外微分推导使用平坦空间曲率为零，不能直接当作曲面离散实现证明。
+
+四、§4.5的“交换”是模exact form的等价，不是通常意义的P T=T P
+证据：PDF 7–8页§4.5式(32)–(33)，5页式(7)。
+
+作者：若xi−eta=d chi，使用同一map的pullback T=Psi^*后，Txi−Teta=d(chi∘Psi)，仍属同一等价类；末端投影选出相同的无散代表。作者称其commutativity，并说投影或reflection可以放在中间。
+
+读者给出的精确表述：对于固定map、相容边界条件下的Leray/Hodge投影P，核心关系是
+  T d chi = d(chi∘Psi)，P T P=P T。
+也即先投影再平流、与直接平流，在最后再投影时结果相同。通常T eta本身有散度，所以P T一般不等于T P。一个周期域反例：取Psi(x,y)=(x+a sin y,y)，eta=sin x dy。eta无散，但T eta=sin(x+a sin y)dy，其div为a cos y cos(x+a sin y)，一般非零；T P eta仍是这个有散场，而P T eta是无散场。
+
+若R=2P−I为reflection，则R eta与eta只差exact form。对预先固定的两段map，P T2 R T1 eta=P T2 T1 eta；插入P也同理。这解释了CF下reflection在商空间中冗余，但不意味着所有离散CF、CF+R、BiMocq结果完全相同。若中间操作改变了后续用于构造map的v，map已不同，原证明不再直接比较同一个T。BFECC、limiter、插值和有限差分也未自动实现该精确关系。
+
+边界限定：投影的唯一代表依赖给定法向速度、压力边界条件和压力常数规范；对移动壁面宜比较同一边界条件下的场差。自由表面Dirichlet压力会限制哪些梯度可由投影吸收。多连通域/周期域上，相同curl不代表两场只差全局exact form，还可能有不同harmonic circulation。因此“模exact form”“模curl为零”及“所有边界下任意梯度均可丢掉”不是同一件事。
+
+修订建议：写“消除固定输运map下压力梯度与Lie平流不相容所导致的那部分分裂误差”，不写“完全没有任何splitting error”。冻结v、midpoint时间截断、map误差等仍存在。
+
+五、长时间MCM减少的是参考速度反复重采样；每步仍需得到投影物理速度
+证据：PDF 8页§4.6式(34)–(38)及Remark 2；9页§5.3、Algorithm 5第10行；10页§6实验配置。
+
+作者：保存从上次重置起累计的Psi、Phi及参考速度u_ref，按u=P[(Psi^*u_ref^flat)^sharp]恢复当前物理速度。长期marker作为标量分量输运；速度一形式从参考场pullback。传统MCM必须记录沿轨迹累计的压力梯度，CF利用其pullback仍为exact form，免去这项历史累计。所有MCM实验用one-level mapping，每5个time steps重置；这是实验设定，不是算法理论阈值。
+
+重要纠偏：§4.6“delay pressure projection”不应解读为数步不用projection、还拿未投影场生成下一步map。Algorithm 5第10行明确每步投影；式(34)的u_t是物理解速度，map依赖整个投影速度历史。可以长期不在参考一形式中记录每次压力修正，但仍需每步求物理无散代表并据此推进map。
+
+六、视觉核实的原文积分符号问题：式(36)–(38)的加号与式(1)/(26)不一致
+证据：PDF 8页§4.6式(36)–(38)，已回看该页截图；对照PDF 1页式(1)及7页式(26)。
+
+印刷事实：本地哈希固定版本中，式(36)的压力积分、式(37)的d lambda积分、式(38)的对应梯度积分，前面实际都印为“+”；不是文本提取把负号丢了。
+
+读者推导：沿物理粒子轨迹由D_t u=−∇p应得到
+  u_t(x)=u_0(Psi_t(x))−∫_0^t (∇p_tau)(Phi_tau(Psi_t(x))) d tau。
+同理由∂t eta+L_u eta=−d lambda应有
+  eta_t=Psi_t^*eta_0−∫_0^t (Phi_tau∘Psi_t)^*d lambda_tau d tau
+       =Psi_t^*eta_0−d∫_0^t (Phi_tau∘Psi_t)^*lambda_tau d tau。
+式(38)相应也是负的gradient contribution。只要沿用前文p、lambda定义，这个负号由方程直接决定。正负不影响“该项是exact form，可以被末端projection吸收”的核心论证，但对显式累积压力的实现或压力重建有实质影响。
+
+修订建议：在笔记中单列“本版本式(36)–(38)的符号与前文负压力约定不一致；此处给出按式(1)/(26)推得的带负号表达”。这是阅读者核算与原文版本问题；未检查作者补充代码或其他版本，不推断实际实现也用了错误符号。
+
+七、Algorithm 1–3：三种时间精度概念应分清，MAC更新用的是J_Psi的列
+证据：PDF 8页Algorithm 1；9页Algorithm 2、3及§5.4.1式(39)–(40)。
+
+Algorithm 1：v=u^n；做Acovec(u^n;v,dt)；projection。其“一阶”首先是冻结输运场导致的整体时间精度。
+Algorithm 2：先v=P Acovec(u^n;u^n,dt/2)，再u^{n+1}=P Acovec(u^n;v,dt)。full step从原始u^n出发，不是接着把半步速度再推进一整步。midpoint改善冻结场时间误差；二阶表述还以光滑解、相应平流/空间精度为前提，limiter激活和复杂边界可能降低局部阶。
+Algorithm 3：用冻结v对各所需采样位置做RK4回溯形成Psi，再计算J_Psi^T(u∘Psi)。RK4用于静态v中的轨迹积分，不等于整个自洽流体算法四阶。直接子程序仍有一次插值带来的耗散；Fig.5c专门显示这点。
+
+MAC上u_i位于法向e_i的face。第i个更新分量为
+  u_i^new(F_i)=sum_alpha [∂_i Psi_alpha](F_i) u_alpha^old(Psi(F_i))。
+因此需要标准J_Psi的第i列，等价于J_Psi^T的第i行。历史稿行144称“Jacobian的一行”不够准确，按标准Jacobian定义应改为“转置Jacobian的一行/原Jacobian的一列”。例如i=x时一行系数为(∂x Psi_x, ∂x Psi_y, ∂x Psi_z)，不是(∂x Psi_x, ∂y Psi_x, ∂z Psi_x)。
+
+作者式(40)：对该face两侧cell中心C_left、C_right，∂_i Psi_alpha≈[Psi_alpha(C_right)−Psi_alpha(C_left)]/dx_i。压力与map放cell center；u、v分量放各自face。计算u∘Psi还需face center回溯点，并在那里重建全部速度分量。不能只采样原来同方向分量，否则少了矩阵混合。
+
+独立代数检查：取Psi=(x+2y,y)、eta_0=x dx，则正确pullback是(x+2y)dx+(2x+4y)dy=d[(x+2y)²/2]。用Fraction核算，在逆时针单位方形上的积分为0；误把J^T写成J会得到(x+2y)dx，其积分为−2。这个精确算例核实转置/列指标方向，未检验论文离散solver。
+
+八、Algorithm 4的BFECC不是MacCormack；limiter界取自第一次advected field
+证据：PDF 3页Table 1与§2；9页Algorithm 4及§5.4.2；10页Fig.8说明与§6实验配置。
+
+固定同一v，令A+为Acovec_sL(.;v,dt)，A−为Acovec_sL(.;v,−dt)。作者Algorithm 4是
+  u1=A+u；u0_tilde=A−u1；e=u0_tilde−u；
+  u_new=u1−A+(e/2)。
+末步要把参考位置的误差也按covector pullback输运到arrival位置。若A+对被输运场线性且无limiter，可写为A+[u−e/2]，总共三次基本输运调用。反向调用只反转时间跨度，仍固定同一v；不能把已经改变的被输运u1当成反向的flow velocity。
+
+对照的modified MacCormack常写u_MC=u1−e/2，只有前、后两次输运，不额外把误差送到arrival grid。二者均用roundtrip估计，但不是同一算法，也不应把CF中的BFECC换写为MC。本文Table 1也分别列BFECC与MC。CF的二阶midpoint与BFECC的误差补偿是不同层面；主要实验组合为Algorithm 2加Algorithm 4。
+
+§5.4.2明确：最后输出按分量clamp到u1在immediate neighboring stencil内的最小/最大值；不是笼统地对初始u或参考u_ref做donor extrema clamp。对covector，分量可因map形变而放大/旋转，标量输运中“旧值范围必不变”的直觉不适用。作者称extrema (minmod) limiter；文字具体定义是邻域min/max钳制，不宜擅自写成某个未展示的斜率minmod公式。limiter非线性，可能减阶并改变能量/环量；“non-dissipative”在此应理解为显著降低采样耗散，而非任意数据上的精确无耗散定理。
+
+九、Algorithm 5逐步解释及其第8行疑似漏下标
+证据：PDF 9页Algorithm 5第1–15行及其后说明；8页式(35)；已回看第9页截图。
+
+按作者结构：保存参考u_ref；更新inverse map Psi；u1=Psi^*u_ref；推进forward map Phi；将u1用Phi^*回送到reference grid；估计roundtrip error；把半误差以Psi^*送回并修正u1；projection；达到重置条件时把Phi/Psi设为id，同时把参考速度设为当前投影速度。两张map必须对应同一个参考时间。第3行要求midpoint流速估计；文后说用第4–10行和v=u估计，按midpoint意图应在scratch状态做半步预测，再从原来的map状态做完整步，避免预测阶段意外提交状态。论文伪代码没有展开这些copy/time-span细节。
+
+印刷事实：第8行实际印为e←u0_tilde−u，无下标0。第1行却定义u0为上次重置参考速度，第10行持续覆盖当前u；第7行回送的u0_tilde在reference坐标中，应与u0而非前一步物理u比较。按照roundtrip含义，合理修正是e=u0_tilde−u_ref。
+
+读者一致性核查：假定map与插值均精确且Phi=Psi^−1，则u0_tilde=u_ref，正确roundtrip error应为0。印刷版却给e=u_ref−u_current，重置后第二步起一般非零；第9行会把真实物理演化差误当作数值误差再次输运。这在第一步u_current=u_ref时不会暴露，必须跨多个不重置步检查。
+
+修订建议：标作“Algorithm 5第8行疑似漏下标，按参考坐标roundtrip推导应减u0；未核对补充实现”。不要不加说明地把PDF伪代码直接贴作可运行算法，也不要据此断言作者代码有bug。若源项被另行累计，参考场应包含该源项状态，roundtrip比较对象仍必须是同一reference field。
+
+十、长图中的源项与重置判据，是迁移前必须补上的实现边界
+证据：PDF 9页§5.3和Algorithm 5；10页§5.4.4–5.4.5；8页§4.6。
+
+作者：浮力/重力按Boussinesq近似f=c rho g处理，rho是被输运的密度或温度标量，在projection前u←u+dt f。边界使用法向速度匹配墙/障碍物的no-through条件、自由表面压力为零的Dirichlet条件；回溯超出区域时用域内closest point。其Neumann“no stick”不是解析no-slip黏性边界层。
+
+读者推导：空间变化rho时f^flat一般不是exact form，d(f^flat)可产生涡量，Kelvin也有相应源项。带力的长时间表示是
+  eta_t=Psi_t^*eta_0 + ∫_0^t (Phi_tau∘Psi_t)^*f_tau^flat d tau
+                         −d∫_0^t (Phi_tau∘Psi_t)^*lambda_tau d tau。
+可丢弃/由projection吸收的是最后的压力exact项，非保守力积分通常保留。若每次从固定u_ref重建后只加本步dt f，却不累计以前力作用或等价更新参考场，下一次重建会丢掉此前源项。Algorithm 5和§5.4.4没有完整展示这个长图源项账本；本文烟雾确实带力，但本次未读代码，故将其列为“实现细节未充分展开”，不把缺省伪代码直接判为实际实验实现错误。
+
+迁移建议：维护reference坐标的累计源一形式，或使用经推导等价的参考场更新/分段重置；不能把“免压力历史累计”扩大为“免所有force history”。closest-point回溯也不是处处可逆的光滑diffeomorphism，触边后不能直接援引内部精确pullback的Kelvin证明。
+
+重置判据：§5.3把map不准确例示为Phi∘Psi≠Psi∘Phi，截图确实如此。实际工程应分别监测Phi∘Psi−id和Psi∘Phi−id，而不是只测两者的交换子；两个同样错误但可交换的map也可能满足二者相等。本文实验每5步重置，并未给出可直接移植到任意AMR情形的误差阈值。
+
+十一、与Lie–Poisson主线的关系：连续商空间结构清楚，离散Poisson性质未证明
+证据：PDF 4页covector formulations背景；7页式(26)；8页§4.5的Omega^1/im(d)等价类；16页Appendix A。以下Lie–Poisson解释为读者补充，而非本文额外定理。
+
+在固定体积形式、合适周期或不穿透边界下，散度为零向量场的对偶可用一形式模exact form表示，配对为∫eta(u) mu；exact项与无散、切边界u配对为零。Euler可读作
+  ∂t[eta]+L_u[eta]=0，u由metric和无散投影从[eta]恢复；
+  H=1/2∫|u|² mu。
+这解释了pressure是商空间代表选择、pullback对应余伴随输运、Kelvin反映该几何结构。多连通域中全局circulation/harmonic部分仍需保留。
+
+边界：本文没有构造或证明数值Poisson bracket/Jacobi identity，没有证明BFECC、limiter或MAC插值是精确余伴随轨道上的离散群作用，也没有提供普遍离散Casimir、helicity或能量保持定理。因此可以称“Lie–Poisson/余伴随结构启发的速度求解器”，不应直接归类为已证明的Poisson integrator。今后连接LPNets时，应先定义离散状态空间、配对、投影与作用，而不是仅复用covector名称。
+
+十二、能量与稳定性：支持改善保持，不支持pullback自动等距或普遍CFL界
+证据：PDF 9–10页§5.4.3式(41)、Fig.8；11页Fig.9及§6.1；14页§7局限。
+
+作者结论：Taylor vortices中CF配合BFECC的能量曲线可与MC+R/BiMocq相当；trefoil中改善能量保持。作者特别强调误差补偿对能量重要。CF条件稳定，主要不稳定来源是map Jacobian对流动构型敏感；没有解析稳定性判据。给出的最大经验CFL为IVOCK 1.45、SCPF 4.85、CF 6.18，来自trefoil/smoke plume相关测试；C=U dt_critical/dx，U=max_{x,t}|u(x,t)|。这些不是任意初值、网格、边界下的可证明允许步长。
+
+读者推导：在固定不可压v、周期/无穿透边界的纯covector子步中，
+  d/dt (1/2∫|u|²)=−∫u_i u_j ∂_i v_j。
+右侧一般非零，所以一形式pullback不是普通L2等距映射。对相容齐次边界的正交projection，||P a||²=||a||²−||∇phi||²，也会移除梯度能量；组合没有因此变成严格离散保能。完整无粘Euler的连续保能来自自洽u、不可压和压力/边界条件的整体平衡。带浮力、开放边界或移动障碍物时，动能本来还可因做功/通量而变化。
+
+修订建议：说“在作者给定均匀网格、步长和误差补偿方案的实验中改善energy preservation”，不把更高图像涡细节直接当成定量精度证明。跟踪det J接近1、map inverse residual、Jacobian条件数和dt||∇v||是合理迁移诊断，但不是本文给出的理论稳定性条件。
+
+另：§6.1.2/Fig.9模拟trefoil reconnect为一大一小涡环，作者与物理实验作定性对照。光滑理想Euler的涡线冻结拓扑与这种有限分辨率重联不是同一个严格验证对象；重联现象不能用来证明数值上精确保持Kelvin/涡拓扑。本文未给出标准homogeneous isotropic turbulence decay验证；delta wing明确只作定性示范，并省略精确空气动力学所需的边界层/固液耦合建模（PDF 14页§6.3.3）。
+
+十三、MAC到AMReX/AMR的迁移：可复用局部核，不可直接继承几何保证
+证据基线：PDF 9页§5.4.1规则MAC及式(39)–(40)；10页性能摘要；14页§7仅探索Eulerian-grid advection-projection。以下全部是读者迁移建议，不是论文已在AMReX/AMR上验证的结论。
+
+建议A：先在单层Cartesian MAC实现并核对列指标。face-centered各速度分量、cell-centered map与压力可映到不同IndexType的MultiFab；map backtrace、departure interpolation、局部J计算/乘法适合patch-local kernel。远距离backtrace未必只需最近一层ghost，必须由最大位移和插值stencil确定FillPatch、跨box/level采样或轨迹分段。最终仍需全局/复合projection；“局部调整”不是“整个solver没有global solve”。
+
+建议B：不要简单地说“MAC face与一形式永远不匹配”。在正交MAC网格上，primal face中心也是穿过它的dual edge中点；u_i可以近似dual-edge circulation的点样本，也可借面积权重近似primal-face flux。前者需要dual-edge长度，后者需要face面积，属于不同cochain解释和Hodge关系。论文实际存point samples，没有实现严格积分cochain复形。原稿指出速度、环量、通量要区分是正确的，但还可补充这层primal/dual解释，而不是把face存储本身当作几何错误。
+
+建议C：固定Euclidean Cartesian分量时J_Psi^T公式直接适用。若用一般坐标的contravariant速度分量，则转换为一形式后再pullback，速度公式应为G(x)^−1 J_Psi(x)^T G(Psi(x))u_old(Psi(x))，G为metric矩阵。AMR在Cartesian物理空间不必凭空引入曲面metric，但层级间的面积/长度权重、离散Hodge及EB部分控制体几何仍需明确定义。不能把“flat/sharp数值分量相同”的单层直觉泛化到非正交坐标或任意EB复形。
+
+建议D：区分压力投影P_h、离散一形式pullback T_h^(1)、二形式pullback T_h^(2)和离散curl/外微分C_h，避免把所有东西都缩写为P。至少测试
+  C_h G_h chi≈0；
+  P_h T_h^(1) G_h chi≈0；
+  C_h T_h^(1)eta−T_h^(2)C_h eta；
+  P_h T_h^(1) P_h eta−P_h T_h^(1)eta。
+这些分别检查grad-curl兼容、梯度输运保持、外微分交换误差和§4.5的离散商空间性质；另记物质闭环circulation漂移、div residual、energy变化和limiter激活率。若C_h G_h在同一复形上代数为零，Poisson求解未完全收敛本身也不会直接使C_h G_h非零；容差主要影响无散程度与后续map，接口/算子不兼容才可能使梯度更新直接改变离散curl。
+
+建议E：AMR还需定义map的coarse-fine prolongation/restriction、ghost同步、regrid后参考时间与u_ref/Phi/Psi的同步转移、subcycling的时间插值，以及复合projection与level projection的关系。flux reflux确保的是守恒通量，不自动确保material-loop circulation；要独立测量coarse-fine环量/涡量误差。周期map可用unwrapped coordinates或displacement表示以免差分到坐标跳变；EB closest-point处理、cut-face权重和移动边界会额外影响可逆性及circulation。
+
+建议F：先对无边界障碍的刚体旋转、平滑剪切/拉伸、纯gradient场和已知二维涡场做单层收敛，再加入跨patch、跨level、regridding及障碍物。CF+MCM另监控双向map逆一致性、det J、condition number、参考场/源项累计及reset前后能量/环量跳跃。作者约15%的整体step开销来自特定均匀网格代码和CPU/GPU混合硬件，不能直接当AMReX/GPU/AMR性能承诺；通信、长map内存、全局projection与reset成本须重新profile。
+
+十四、历史初稿逐项修订优先级
+
+高优先级（涉及理解/实现，而非仅措辞）：
+1. 行81–98：明确eta_t=Psi^*eta_0和任意开曲线积分不变属于纯Lie平流；完整Euler只有闭环压力积分消失，开曲线有端点lambda差。证据见本意见第三项。
+2. 行98及方法章节：补出P T P=P T，不要把§4.5简写成无条件P T=T P；声明固定map、末端投影、边界与多连通条件。证据见第四项。
+3. 行136、144：把face需要的“Jacobian的一行”改为“J_Psi第i列，即J_Psi^T第i行”，加u_i=sum_alpha∂_i Psi_alpha u_alpha。证据为式(39)–(40)。
+4. 行138：补全Algorithm 4三次covector输运、最后对半误差也做pullback；与MC两次调用直接arrival correction分开；limiter界明确是u1邻域。证据为Algorithm 4和§5.4.2。
+5. 行140：明确CF+MCM仍每步projection，用长期reference场免压力累计，不是长期不用投影。加入Algorithm 5第8行疑似漏0下标的核查说明及式(36)–(38)负号推导注记。证据见第五、六、九项。
+6. 浮力/MCM段新增非exact外力历史累计的边界，标明伪代码未充分展开；不把压力历史可消去推广到所有源项。证据为§5.4.4和带源项读者推导。
+
+中优先级（限定与遗漏）：
+7. 行29：Fig.3的旋转/散度直观说法后补“连续projection不改curl，错误curl来自平流”；行118解释epsilon指标和v/u区别。
+8. 行146：15%为作者实现的整体性能观察，不是通用代价上界；行148补CFL测试对象和没有解析界的事实。
+9. 行152–156：能量结论保留实验条件；trefoil重联与光滑Euler拓扑冻结分开；“Taylor vortices”是两团shielded Gaussian vortices设置，不是自动等同于Taylor–Green vortex。证据为PDF 10页§6.1.1。
+10. 行162–172：保留迁移建议标签，补dual-edge与primal-face的Hodge解释、离散P T P性质、map/regrid/reference源项一致性及独立flux/circulation诊断。
+11. 研究主线增补一小段商空间/余伴随解释，并明确不是已证明的离散Lie–Poisson solver；无需为此扩写成完整Hamiltonian综述。
+
+记录性修正：
+12. 行9–11与188–190的历史“精读/流程全✓/review已完成”只能作为旧记录，不充当本次20261119运行的通过凭据。尤其“未发现阻塞性公式或算法描述问题”不能用来覆盖本次发现的印刷符号和伪代码疑点。新整合稿仍须冻结哈希并独立终审。
+13. 历史稿行174–180对严格离散守恒、任意网格和标准湍流衰减的纠偏方向正确，建议保留，不因发现原文小错误而推翻作者的连续几何机制和受限实验结论。
+
+置信边界与未复现说明
+
+高置信：Euler式(25)/(26)的lambda符号；Lie derivative分量；Jacobian列/转置行；固定map下exact-form preservation与P T P性质；BFECC/MC差别；每步projection；Appendix A涡量二形式推导。这些有公式锚点和直接分量核算。
+高置信的印刷事实：第8页式(36)–(38)实际为加号，第9页Algorithm 5第8行实际无0下标；均已读截图，不是仅依赖提取文本。
+较高置信的读者纠错：沿用前文符号时式(36)–(38)应为负；Algorithm 5按roundtrip定义应减同一reference field。尚无作者erratum、补充代码或其他版本佐证，因此把后者标为“疑似伪代码笔误”，不声称已验证实际实现bug。
+需后续验证：复杂/自由边界下的投影商空间、长图非保守力累计的实际代码路径、AMR/EB离散交换性、性能与稳定性；本意见仅给出数学约束和迁移建议。
+未复现：未编译或运行作者代码，未重跑任何论文算例、energy curve、CFL临界值、vorticity对比、15%性能结果或AMReX/AMR试验；未读取supplementary implementation。精确Fraction算例只是独立代数核查。全文阅读完成不等于实验或迁移验证完成。
+
+供主Agent冻结前自查的三个问题（不是独立终审结论）：
+1. 笔记是否把固定map下P T P=P T、完整非线性Euler的时间误差及离散误差分开，避免“平流投影严格交换”过度表述？
+2. Algorithm 4/5是否明确reference/current坐标、误差被输运的位置、reset及非保守源项累计，且原文印刷疑点与读者修正各自有标签？
+3. AMReX方案是否分别定义circulation one-form、face flux、vorticity two-form和Hodge/层间算子，并列出能区分flux守恒、Kelvin误差和projection residual的测试？

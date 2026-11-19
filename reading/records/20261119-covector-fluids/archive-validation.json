@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "frozen_note_matches_published_note": true,
+  "notes_sha256": "a051d927a715ac9274c066ab1059fc414132270ab008cfe261f29890caea44a1",
+  "source_pdf_sha256": "e5d82df5b81da7f5edac5fa751dabd35edb67cad0ca10a55ef04ec6a9a2fcfd8",
+  "review_output_sha256": "fdc56f4341e702352df96fd626dc2ddec223bfa5530401d5de1319fc646f5312",
+  "post_review_note_edit": false,
+  "corpus_files": 388,
+  "categories": 17,
+  "category_counts": {
+    "HPC": 8,
+    "ai-agent-systems": 16,
+    "ai-for-physics": 101,
+    "ai-model": 5,
+    "ai-theory": 4,
+    "computer-graphics": 29,
+    "differential-geometry": 12,
+    "dynamical-systems": 13,
+    "fluid-mechanics": 37,
+    "geometric-fluid": 56,
+    "mathematical-proofs": 1,
+    "numerical-computation": 31,
+    "quantum-computing": 32,
+    "quantum-mechanics": 13,
+    "relativity": 3,
+    "vortex-dynamics": 20,
+    "wave-mechanics": 7
+  },
+  "readme_markers": {
+    "📖": 75,
+    "📄": 289,
+    "⏭️": 24
+  },
+  "corpus_count_discovered_with": "host glob tool; category filtering of its complete result",
+  "links": {
+    "computer-graphics/covector-fluids.md": {
+      "local_links_checked": 4,
+      "missing": []
+    },
+    "README.md": {
+      "local_links_checked": 378,
+      "missing": []
+    },
+    "CODEX_DEEP_READ.md": {
+      "local_links_checked": 65,
+      "missing": []
+    },
+    "学习路线规划.md": {
+      "local_links_checked": 62,
+      "missing": []
+    }
+  },
+  "source_access": "Author PDF and project page retrieved; DOI resolves to ACM but publisher HTTP403 access challenge",
+  "syntax_checks": [
+    "One H1",
+    "Balanced inline/display math",
+    "No dollar display delimiters",
+    "Balanced fenced blocks",
+    "Mermaid accTitle/accDescr present"
+  ],
+  "not_validated": [
+    "GitHub/browser visual render",
+    "Supplementary-code audit",
+    "Flow/energy/CFL/timing reproduction",
+    "AMReX/AMR/EB migration"
+  ],
+  "all_manifest_hashes_match": true
+}

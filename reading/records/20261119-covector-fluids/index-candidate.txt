@@ -1,0 +1,13 @@
+Covector Fluids 索引候选（待终审）
+run_id=20261119-covector-fluids
+canonical=computer-graphics/covector-fluids.md
+compatibility_stub=geometric-fluid/covector-fluids.md（保持原样）
+DOI=10.1145/3528223.3530120
+Tier=2（保留）
+
+README：只在computer-graphics现有条目后补本次2026-11-19全文核证/独立审阅状态及记录入口，不新增重复文献，不改变📖历史标记含义。
+CODEX_DEEP_READ：保留原位置、编号、Tier及既有阅读理由；本篇补阅读日期、全文16页、方法/证据补充及独立上下文终审凭据入口，明确未复现。
+学习路线规划：现有Tier2行和学习顺序保持不变，无需全局重排。
+
+基线计数验证：README共388个文献路径，📖75（其中教材1）、📄289、⏭️24。对已有条目重读不会改变上述数量。完成前再次检查。
+发布关口：冻结笔记的独立终审完成，主Agent处理意见且接受，凭据持久保存并核验链接后，才把待审候选发布到公共索引。

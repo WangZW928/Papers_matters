@@ -180,7 +180,7 @@ Doctor 的论文阅读工作区，按研究方向归档。下面完整列出 17 
 - 📄 [Animating sand as a fluid](./computer-graphics/animating-sand-as-a-fluid.md)
 - 📄 [asdf](./computer-graphics/asdf.md)
 - 📄 [ChainQueen: A Real-Time Differentiable Physical Simulator](./computer-graphics/chainqueen-a-real-time-differentiable-physical-simulator.md)
-- 📖 [Covector Fluids](./computer-graphics/covector-fluids.md)
+- 📖 [Covector Fluids](<./computer-graphics/covector-fluids.md>) — 2026-11-19 重读核证，独立上下文终审通过；未复现实验。[运行记录](<./reading/records/20261119-covector-fluids/run.json>)。
 - 📄 [Eurographics/ ACM SIGGRAPH Symposium on Computer Animation (2010)](./computer-graphics/eurographics-acm-siggraph-symposium-on-computer-animation-2010.md)
 - 📄 [FLIP: A Method for Adaptively Zoned, Particle-in-Cell](./computer-graphics/flip-a-method-for-adaptively-zoned-particle-in-cell.md)
 - ⏭️ [Fluid Implicit Particles on Coadjoint Orbits](./computer-graphics/fluid-implicit-particles-on-coadjoint-orbits.md)

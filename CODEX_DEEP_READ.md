@@ -86,9 +86,10 @@
    - 为什么精读：把 Madelung 变换从代数代换提升为 Poisson/动量映射机制，是量子-经典流体对应的几何解释核心。关联：Geometric hydrodynamics via Madelung transform、Morrison-Greene 1980、Clebsch Maps。
 
 9. **Covector Fluids** — computer-graphics
-   - 文件：[`computer-graphics/covector-fluids.md`](computer-graphics/covector-fluids.md)
+   - 文件：[covector-fluids.md](<computer-graphics/covector-fluids.md>)
    - 数理基础：速度一形式、余切 pullback、Lie advection、Kelvin 环量与涡量二形式输运；规则 MAC 网格上的半拉格朗日实现。
    - 为什么精读：它把几何流体力学语言落到图形学 advection-projection solver，是结构保持流体表示与 AMReX/VWiS 离散设计之间的重要桥梁；但论文没有给出 AMR/任意网格或严格离散守恒证明。
+   - 本次核证：2026-11-19 重读作者托管的 16 页 PDF（含 Appendix A），按个人技术笔记文风重整，完成独立方法补充、实验证据核查及新上下文终审。终审覆盖的笔记哈希与意见处理见[运行记录](<reading/records/20261119-covector-fluids/run.json>)；Tier 2 不变，未复现实验。
 
 10. **Lie-Poisson Neural Networks (LPNets)** — ai-for-physics
     - 文件：[`ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md`](ai-for-physics/liepoisson-neural-networks-lpnets-data-based-computing-of-hamiltonian-systems-wi.md)

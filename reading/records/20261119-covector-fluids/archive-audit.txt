@@ -1,0 +1,10 @@
+Covector Fluids 归档验收（2026-11-19）
+查重：更新既有computer-graphics维护条目，geometric-fluid兼容入口保留；DOI与完整作者匹配。没有新建重复文献，没有调整Tier或学习路线。
+原件：作者托管16页PDF本地持久保存，SHA256见source-manifest.json。PDF第1页引文写16pages，与项目页BibTeX15页口径差异明确保留，不推断缺页。已读主文与AppendixA，主Agent视觉检查pp7/8/9/10/11/13/14/16。
+流程：用户明确精读，assess=skipped（明确理由）；method/evidence两独立上下文完成，主Agent逐项核证；个人技术笔记文风修订与复核在冻结前完成；fresh reviewer接受，无blocking/major问题；两个minor逐项处理，未修改终审后笔记字节。
+审阅：独立审阅只覆盖SHA256 a051d927a715ac9274c066ab1059fc414132270ab008cfe261f29890caea44a1。正式笔记和reviewed-notes-v1.txt与之完全相同。实际模型名称仅记录宿主请求路由，无独立底层模型自省，不称跨模型事实验证。
+状态：审阅回执、逐项意见处理和证据材料先归档，再发表正式笔记；冻结候选的完成时态在正式发表时已有实际产物支撑。未把原文疑点说成官方勘误或已修复作者代码。
+索引：README与CODEX_DEEP_READ只更新本篇状态/入口。17分类388个文献文件，📖75、📄289、⏭️24，数量不变。学习路线与兼容入口未改。
+验证：笔记及三个导航文档本地链接均存在，公式/代码围栏/标题基础检查通过，git diff --check通过。作者PDF/项目页可获取；DOI转ACM后HTTP403，未把该页面当作可读证据。未验证GitHub明暗主题渲染。
+范围：没有运行流体实验、CFL/能量/计时复现，没有审计补充代码或看视频，没有实施AMReX/AMR/EB迁移。method reader的Fraction仿射检查只是代数核证。
+版本控制：原工作区clean；未暂存、提交或推送。PDF与本地草稿仍由.gitignore排除，关键文本回执和处理记录在本归档目录保留。manifest.json记录最终文件哈希，自身不参与自身哈希。

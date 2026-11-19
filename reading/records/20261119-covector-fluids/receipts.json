@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "kind": "Lead-assembled archival manifest from host dispatches and retained child outputs; not provider-native or backend attestation",
+  "model_identity_note": "Model names are requested host routes; child tools do not expose a separate underlying-model self-attestation. Independent fresh contexts, not proof of model diversity.",
+  "artifacts": [
+    {
+      "path": "method.txt",
+      "original_sha256": "82183c1c445906eda554b3f4646e2ddac896fe9582b4f3ddb1487667a91e1fdc",
+      "archived_sha256": "82183c1c445906eda554b3f4646e2ddac896fe9582b4f3ddb1487667a91e1fdc",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "evidence.txt",
+      "original_sha256": "574461242b1fd35c59852006c6b7b9c18db090fd1caa0399d7f6edaf124139f8",
+      "archived_sha256": "574461242b1fd35c59852006c6b7b9c18db090fd1caa0399d7f6edaf124139f8",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "lead-checks.txt",
+      "original_sha256": "256fadf45dfd4f3e550d99e577bb7f132d9823394afd4015bc8fd51506d0e333",
+      "archived_sha256": "256fadf45dfd4f3e550d99e577bb7f132d9823394afd4015bc8fd51506d0e333",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "style-review.txt",
+      "original_sha256": "7177a8cb05fa2a655bb2b7e5d19cc09013b0768cb3624e97b76e01daad94e242",
+      "archived_sha256": "7177a8cb05fa2a655bb2b7e5d19cc09013b0768cb3624e97b76e01daad94e242",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "reviewed-notes-v1.txt",
+      "original_sha256": "a051d927a715ac9274c066ab1059fc414132270ab008cfe261f29890caea44a1",
+      "archived_sha256": "a051d927a715ac9274c066ab1059fc414132270ab008cfe261f29890caea44a1",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "original-note.txt",
+      "original_sha256": "86c07305dd8565e539fc2f273356e823f174b2bba169d6403fb1b3bcc0121004",
+      "archived_sha256": "86c07305dd8565e539fc2f273356e823f174b2bba169d6403fb1b3bcc0121004",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "index-candidate.txt",
+      "original_sha256": "408674eabeed6521f39608f5bd244f5d06a42735eb39b5bd8dcc7a1eb325db17",
+      "archived_sha256": "408674eabeed6521f39608f5bd244f5d06a42735eb39b5bd8dcc7a1eb325db17",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "review-01.txt",
+      "original_sha256": "fdc56f4341e702352df96fd626dc2ddec223bfa5530401d5de1319fc646f5312",
+      "archived_sha256": "fdc56f4341e702352df96fd626dc2ddec223bfa5530401d5de1319fc646f5312",
+      "path_redaction_applied": false
+    },
+    {
+      "path": "source-manifest.json",
+      "archived_sha256": "64225eb50cea1f7722e5485442476b7400de6a708ad56cfc5819c2e30054eeae",
+      "kind": "lead-produced current source/check/decision record"
+    },
+    {
+      "path": "resolution.json",
+      "archived_sha256": "1e071d959b9e09350d928823250b09818cfb68b28b620f2b6ba83e624d201b67",
+      "kind": "lead-produced current source/check/decision record"
+    },
+    {
+      "path": "archive-validation.json",
+      "archived_sha256": "c63a356849946596d7f27e7ca44ab4c24f3f03daa6a41d90db5c7bf551a2dfab",
+      "kind": "lead-produced current source/check/decision record"
+    },
+    {
+      "path": "index-style-review.txt",
+      "archived_sha256": "a599bf4a7698a1131bdf1579d7dcd0864732ec98e0f2a00cb3f79dcd1a4f1dbf",
+      "kind": "lead-produced current source/check/decision record"
+    }
+  ],
+  "stages": [
+    {
+      "attempt_id": "method-01",
+      "role": "method_reader",
+      "owner": "8923782d-6aed-4931-b00d-100510b96621",
+      "provider": "openai-codex",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high",
+      "started_at": "2026-11-19T10:13:07+08:00",
+      "status": "completed",
+      "output_path": ".paper-runs/20261119-covector-fluids/method.txt",
+      "input_hashes": {
+        "source_pdf": "e5d82df5b81da7f5edac5fa751dabd35edb67cad0ca10a55ef04ec6a9a2fcfd8",
+        "draft": "86c07305dd8565e539fc2f273356e823f174b2bba169d6403fb1b3bcc0121004",
+        "source_txt": "d08b1bdd9ec9c27cdfdb8c70358b3389404c5114613782cd1ecd689ee24f9c98"
+      },
+      "depends_on": [
+        "source:completed",
+        "draft:completed",
+        "assess:skipped_explicit_deep_read"
+      ],
+      "timeout_seconds": 1800,
+      "hard_timeout": false,
+      "finished_at": "2026-11-19T10:23:41+08:00",
+      "elapsed_seconds": 634,
+      "start_time_kind": "reader-reported; exact transport start not exposed",
+      "output_sha256": "82183c1c445906eda554b3f4646e2ddac896fe9582b4f3ddb1487667a91e1fdc",
+      "scope": "Full PDF pp1–16; sections3–5 and AppendixA; visual checks pp8,9,16",
+      "model_identity": "Host-requested route; no backend self-attestation available",
+      "verification": "Lead read final method.txt and checked main mathematical issues against original; integrated with labeled unresolved implementation questions",
+      "receipt_path": "reading/records/20261119-covector-fluids/receipts.json",
+      "archived_output_path": "reading/records/20261119-covector-fluids/method.txt",
+      "finished_at_kind": "reader-reported"
+    },
+    {
+      "attempt_id": "evidence-01",
+      "role": "evidence_reader",
+      "owner": "00e895d6-7c11-4b0c-b0b9-a9828a50316e",
+      "provider": "openai-codex",
+      "model": "gpt-6-sol",
+      "reasoning_effort": "high",
+      "started_at": "2026-11-19T02:14:35.364755+00:00",
+      "status": "completed",
+      "output_path": ".paper-runs/20261119-covector-fluids/evidence.txt",
+      "input_hashes": {
+        "source_pdf": "e5d82df5b81da7f5edac5fa751dabd35edb67cad0ca10a55ef04ec6a9a2fcfd8",
+        "draft": "86c07305dd8565e539fc2f273356e823f174b2bba169d6403fb1b3bcc0121004",
+        "source_txt": "d08b1bdd9ec9c27cdfdb8c70358b3389404c5114613782cd1ecd689ee24f9c98"
+      },
+      "depends_on": [
+        "source:completed",
+        "draft:completed",
+        "assess:skipped_explicit_deep_read"
+      ],
+      "timeout_seconds": 1800,
+      "hard_timeout": false,
+      "finished_at": "2026-11-19T02:21:51.909909+00:00",
+      "output_sha256": "574461242b1fd35c59852006c6b7b9c18db090fd1caa0399d7f6edaf124139f8",
+      "scope": "PDF pp1–16; experiments Figs5–17, Tables1–2, source metadata and initial-note claims",
+      "model_identity": "Host-requested route; child reports no runtime model self-introspection; not backend-attested",
+      "verification": "Lead read complete evidence.txt and visually checked Table2 on PDF p10; no numeric flow experiment reproduced",
+      "start_time_kind": "lead bookkeeping timestamp after dispatch; exact transport start not exposed",
+      "receipt_path": "reading/records/20261119-covector-fluids/receipts.json",
+      "archived_output_path": "reading/records/20261119-covector-fluids/evidence.txt",
+      "finished_at_kind": "lead receipt registration after completed notification; exact transport completion timestamp not exposed"
+    },
+    {
+      "attempt_id": "review-01",
+      "role": "reviewer",
+      "owner": "44148e05-f726-4165-b381-25bc1b8d6585",
+      "provider": "openai-codex",
+      "model": "gpt-6-sol",
+      "reasoning_effort": "high",
+      "fresh_context": true,
+      "started_at": "2026-11-19T10:26:30+08:00",
+      "start_time_kind": "reader-reported",
+      "scope": "Entire frozen note against PDF pp1–16; sections1–7 and AppendixA",
+      "input_hashes": {
+        "source_pdf": "e5d82df5b81da7f5edac5fa751dabd35edb67cad0ca10a55ef04ec6a9a2fcfd8",
+        "source_txt": "d08b1bdd9ec9c27cdfdb8c70358b3389404c5114613782cd1ecd689ee24f9c98",
+        "notes": "a051d927a715ac9274c066ab1059fc414132270ab008cfe261f29890caea44a1"
+      },
+      "output_path": ".paper-runs/20261119-covector-fluids/review-01.txt",
+      "status": "completed",
+      "hard_timeout": false,
+      "target_timeout_seconds": 1800,
+      "automatic_retry": false,
+      "finished_at": "2026-11-19T10:30:02+08:00",
+      "elapsed_seconds": 212,
+      "output_sha256": "fdc56f4341e702352df96fd626dc2ddec223bfa5530401d5de1319fc646f5312",
+      "transport_success": true,
+      "recommend_accept": true,
+      "model_identity": "Host-requested route; no independent backend self-attestation",
+      "receipt_path": "reading/records/20261119-covector-fluids/receipts.json",
+      "archived_output_path": "reading/records/20261119-covector-fluids/review-01.txt",
+      "finished_at_kind": "reader-reported"
+    }
+  ],
+  "final_review": {
+    "transport_success": true,
+    "lead_accepted": true,
+    "notes_sha256": "a051d927a715ac9274c066ab1059fc414132270ab008cfe261f29890caea44a1",
+    "post_review_note_edit": false,
+    "accepted_at": "2026-11-19T02:30:52.969296+00:00",
+    "publication_status_minor_resolved_by_actual_archival": true
+  }
+}

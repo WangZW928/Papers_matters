@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "run_id": "20261119-covector-fluids",
+  "created_at": "2026-11-19T02:35:15.504509+00:00",
+  "kind": "Final on-disk SHA256 integrity manifest; excludes itself to avoid self-hash",
+  "notes_path": "computer-graphics/covector-fluids.md",
+  "notes_sha256": "a051d927a715ac9274c066ab1059fc414132270ab008cfe261f29890caea44a1",
+  "source_pdf_local_path": ".paper-runs/20261119-covector-fluids/source.pdf",
+  "source_pdf_sha256": "e5d82df5b81da7f5edac5fa751dabd35edb67cad0ca10a55ef04ec6a9a2fcfd8",
+  "files": [
+    {
+      "path": "archive-validation.json",
+      "sha256": "c63a356849946596d7f27e7ca44ab4c24f3f03daa6a41d90db5c7bf551a2dfab",
+      "bytes": 1951
+    },
+    {
+      "path": "evidence.txt",
+      "sha256": "574461242b1fd35c59852006c6b7b9c18db090fd1caa0399d7f6edaf124139f8",
+      "bytes": 14193
+    },
+    {
+      "path": "index-candidate.txt",
+      "sha256": "408674eabeed6521f39608f5bd244f5d06a42735eb39b5bd8dcc7a1eb325db17",
+      "bytes": 1031
+    },
+    {
+      "path": "index-style-review.txt",
+      "sha256": "a599bf4a7698a1131bdf1579d7dcd0864732ec98e0f2a00cb3f79dcd1a4f1dbf",
+      "bytes": 1146
+    },
+    {
+      "path": "lead-checks.txt",
+      "sha256": "256fadf45dfd4f3e550d99e577bb7f132d9823394afd4015bc8fd51506d0e333",
+      "bytes": 3743
+    },
+    {
+      "path": "method.txt",
+      "sha256": "82183c1c445906eda554b3f4646e2ddac896fe9582b4f3ddb1487667a91e1fdc",
+      "bytes": 30748
+    },
+    {
+      "path": "original-note.txt",
+      "sha256": "86c07305dd8565e539fc2f273356e823f174b2bba169d6403fb1b3bcc0121004",
+      "bytes": 13142
+    },
+    {
+      "path": "receipts.json",
+      "sha256": "d5ac30900cca2b7f88e609906402419d4348ce8ccc041102a9cf5996bf95bdfc",
+      "bytes": 8668
+    },
+    {
+      "path": "resolution.json",
+      "sha256": "1e071d959b9e09350d928823250b09818cfb68b28b620f2b6ba83e624d201b67",
+      "bytes": 8763
+    },
+    {
+      "path": "review-01.txt",
+      "sha256": "fdc56f4341e702352df96fd626dc2ddec223bfa5530401d5de1319fc646f5312",
+      "bytes": 6357
+    },
+    {
+      "path": "reviewed-notes-v1.txt",
+      "sha256": "a051d927a715ac9274c066ab1059fc414132270ab008cfe261f29890caea44a1",
+      "bytes": 25833
+    },
+    {
+      "path": "run.json",
+      "sha256": "355e021d66cacbfe7f3ce6a48b7d1f73a9b7aa2839ff6efe3991afbc82c64c02",
+      "bytes": 14993
+    },
+    {
+      "path": "source-manifest.json",
+      "sha256": "64225eb50cea1f7722e5485442476b7400de6a708ad56cfc5819c2e30054eeae",
+      "bytes": 2684
+    },
+    {
+      "path": "style-review.txt",
+      "sha256": "7177a8cb05fa2a655bb2b7e5d19cc09013b0768cb3624e97b76e01daad94e242",
+      "bytes": 2435
+    },
+    {
+      "path": "archive-audit.txt",
+      "sha256": "c09c96f7b8f9d07326ebff90b4379ac929e7027a15b6cc0846b52048ff690672",
+      "bytes": 2137
+    }
+  ]
+}

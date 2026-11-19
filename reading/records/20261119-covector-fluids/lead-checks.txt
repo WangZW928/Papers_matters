@@ -1,0 +1,15 @@
+Covector Fluids 主 Agent 核证记录（2026-11-19）
+原文：source.pdf，SHA256 e5d82df5b81da7f5edac5fa751dabd35edb67cad0ca10a55ef04ec6a9a2fcfd8。
+范围：逐页提取并阅读 PDF pp.1–16（印刷113:1–113:16），含§1–7、参考文献定位、Appendix A.1–A.3。未逐项复核引用文献原件，未读取补充代码/视频，未复现数值实验。
+
+1. 元数据：PDF p1记ACM TOG 41(4), article113, July2022, 16pages，四位作者与DOI匹配。官网bibtex pages=113:1--113:15，与实际PDF16页不同；保留此差异，以实际取得版本作为阅读范围，不臆定另有版本。PDF metadata creationDate 2022-05-12，只作文件信息，不是修订版本编号。公开原文URL可能变化，保留本地字节快照及哈希。
+2. 视觉抽查：PyMuPDF渲染并read_image检查PDF pp8/9/10/16。已确认式36–38确实印正号，不是纯文本提取丢号；Alg5 line8确实印减当前u而不是u0；表2完整网格/单位已回看。原页面留在本地运行目录，不自动纳入Git。
+3. Euler符号：取J_v[i,j]=partial_j v_i，一形式Lie derivative为v_j partial_j eta_i+eta_j partial_i v_j，即v·grad u+J_v^T u。u_j partial_i u_j=partial_i(|u|²/2)，故lambda=p-|u|²/2，RHS=-d lambda，与式25/26相符。冻结v后一般不再能把J_v^T u写成grad(|u|²/2)。
+4. Kelvin：对物质曲线C_t，d/dt int_Ct eta=int_Ct(partial_t eta+L_u eta)=-int_Ct d lambda；闭曲线为0，开曲线为lambda(a)-lambda(b)。仅纯Lie transport的开曲线积分也守恒，完整Euler只对闭曲线无端点项。
+5. 投影关系：T=Psi*，T(dphi)=d(phi o Psi)，P抹去满足相容边界的exact部分，故P T P=P T，而非P T=T P。T未必将divergence-free一形式送到divergence-free一形式。该论证固定同一v/map；若重算v，不能推得整个非线性更新任意交换；不替离散插值/limiter/projection建立严格交换保证。
+6. 涡量：Omega=d eta，d L_v=L_v d；故Lie transport满足partial_t Omega+L_v Omega=0。在3D不可压v下用Omega=i_zeta mu得到partial_t zeta+v·grad zeta-zeta·grad v=0。2D incompressible时标量zeta被输运，3D点值幅值非恒定。传统平流附加项sum_l grad u_l cross grad v_l，与式30及A.3相符。
+7. MCM源项独立推导：由partial_t eta+L_u eta=-d lambda，有d/dt Phi_t*eta_t=-d(Phi_t*lambda_t)。积分后再作用Psi_t*，得eta_t=Psi_t*eta_0-d int_0^t[(Phi_tau o Psi_t)*lambda_tau]d tau。源文式37为正号，与式26约定不一致。此处为阅读者核证，不是作者勘误。exact项的正负不改变最终P后的商空间结论；不照抄错误符号，也不称其有官方更正。
+8. Alg5 line8参考态问题：u1在当前域，Phi* u1在参考域；roundtrip error自然应与参考u0比较，原文印与当前u比较。属实现前需核查代码的疑点。本次未审计补充代码，不把建议当已验证修复。
+9. MAC指标：J[i,j]=partial_j Psi_i。第i个更新分量sum_a(partial_i Psi_a) u_a(Psi)，用J的第i列/其转置第i行；旧笔记仅说Jacobian一行会掩盖转置。p9式39/40支持face上沿法向差分cell-centered Psi。
+10. 结果范围：Table2提供CF与CF+MCM单步时间，不提供对所有基线的逐例15%比值。15%是§6 Performance Summary作者总体观察；3D仅advection为CUDA，其余CPU。Fig8 Taylor vortices是两个shielded Gaussian vortices，不是Taylor–Green涡；图8曲线不能当机器精度能量守恒。Fig15 Re=300/4000、MC+R高分辨数值reference，非实验或解析真值。§6.3.3明确省略boundary layer和细致solid-fluid interaction。
+11. 本次没有运行任何流体求解器或精度、性能复现。上面3–9是手工解析推导与原文核读，不能登记成数值验证。

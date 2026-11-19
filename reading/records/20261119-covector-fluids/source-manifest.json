@@ -1,0 +1,64 @@
+{
+  "title": "Covector Fluids",
+  "doi": "10.1145/3528223.3530120",
+  "authors": [
+    "Mohammad Sina Nabizadeh",
+    "Stephanie Wang",
+    "Ravi Ramamoorthi",
+    "Albert Chern"
+  ],
+  "publication": "ACM Transactions on Graphics 41(4), Article113, July2022",
+  "version": "Author-hosted hash-fixed snapshot; no arXiv ID asserted",
+  "url": "https://cseweb.ucsd.edu/~viscomp/projects/SIG22CovectorFluids/paper/CovectorFluids.pdf",
+  "project_url": "https://cseweb.ucsd.edu/~viscomp/projects/SIG22CovectorFluids/",
+  "source_pdf_sha256": "e5d82df5b81da7f5edac5fa751dabd35edb67cad0ca10a55ef04ec6a9a2fcfd8",
+  "source_txt_sha256": "d08b1bdd9ec9c27cdfdb8c70358b3389404c5114613782cd1ecd689ee24f9c98",
+  "pdf_bytes": 34323929,
+  "pdf_pages": 16,
+  "printed_page_map": "PDF1–16 =113:1–113:16",
+  "pdf_metadata": {
+    "format": "PDF 1.5",
+    "title": "Covector Fluids",
+    "author": "Mohammad Sina Nabizadeh, Stephanie Wang, Ravi Ramamoorthi, and Albert Chern",
+    "subject": "-  Computing methodologies  ->  Computer graphics.Physical simulation.-  Mathematics of computing  ->  Partial differential equations.Differential calculus.Discretization.",
+    "keywords": "Fluid dynamics, differential forms, Lie derivatives, Kelvin circulation theorem",
+    "creator": "LaTeX with acmart 2020/02/22 v1.70 Typesetting articles for the Association for Computing Machinery and hyperref 2020/01/14 v7.00d Hypertext links for LaTeX",
+    "producer": "pdfTeX-1.40.21",
+    "creationDate": "D:20220512122452-07'00'",
+    "modDate": "D:20220512122452-07'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "metadata_discrepancy": "Project-page BibTeX says113:1--113:15; actual PDF and PDF first-page citation say16pages. No alternate-version cause inferred.",
+  "retrieved_date": "2026-11-19 Asia/Shanghai",
+  "persistent_local_source": ".paper-runs/20261119-covector-fluids/source.pdf",
+  "source_is_git_ignored": true,
+  "not_uploaded_pdf": true,
+  "read_scope": "Main sections1–7 and AppendixA.1–A.3; references used for location, not full independent reading of cited works",
+  "visual_checks": {
+    "lead": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      13,
+      14,
+      16
+    ],
+    "method_reader": [
+      8,
+      9,
+      16
+    ],
+    "evidence_reader": "PDF text-layer/block inspection, no completed read_image visual check"
+  },
+  "not_performed": [
+    "Supplementary-code audit",
+    "Video review",
+    "Flow experiments",
+    "CFL/energy/timing reproduction",
+    "AMReX/AMR/EB implementation"
+  ],
+  "reacquisition_rule": "Public host may change bytes; compare SHA256 and invalidate dependent stages on source changes; retain current local PDF snapshot."
+}
